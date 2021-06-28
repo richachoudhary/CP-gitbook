@@ -10,3 +10,7 @@
 
 * [List.py](data-structures/list.py.md)
 
+## Recursion
+
+* [Trees](recursion/trees.md)
+
