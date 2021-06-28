@@ -5,6 +5,8 @@
 ## Algorithms
 
 * [Graph](algorithms/graph.md)
+* [Tree](algorithms/tree.md)
+* [DP](algorithms/dp.md)
 
 ## Data Structures
 

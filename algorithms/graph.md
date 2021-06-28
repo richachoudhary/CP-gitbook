@@ -4,17 +4,51 @@ description: Patterns & their problem list
 
 # Graph
 
-## Patterns
+## **1. Single Source Shortest/Longest Path - SSSP/SSLP** 
 
-### **1. SSSP** 
+### **1.1 For DAGs**
 
-#### **1.1 Dijkstra  ::** `V+ElogE`
+#### **1.1.1 SSSP** 
 
-**1.2 Bellman-Ford :: `VE`** 
+* Can be done easily in `O(E+V)` using topological sort. 
+* Ref [video](https://www.youtube.com/watch?v=TXkDpqjDMHA&list=PLDV1Zeh2NRsDGO4--qE8yH72HFL1Km93P&index=17&ab_channel=WilliamFiset)
 
-Use when _negative cycles_ exist in graph. 
+{% tabs %}
+{% tab title="Logic" %}
+```python
+topo_list = [...]     # get any topological order of the DAG
+dist = [sys.maxint]*n
+dist[s] = 0
+for node in topo_list:
+    for x in node.neighbors:
+        if dist[x] > dist[node] + graph[node][x].weight:
+            dist[x] = dist[node] + graph[node][x].weight
+```
+{% endtab %}
+{% endtabs %}
 
-**1.3 Floyd Warshall ::** $$V^3$$
+#### 1.1.2 SSLP 
+
+* while SSLP on undirected graphs is **NP-HARD,** for DAGs, it could be easily solved in O\(E+V\).  
+* **Logic**: 
+  * multiply all edges with `-1` --&gt; find shorted path --&gt; multiply all edges with `-1` again
+* Ref [video](https://www.youtube.com/watch?v=TXkDpqjDMHA&list=PLDV1Zeh2NRsDGO4--qE8yH72HFL1Km93P&index=17&ab_channel=WilliamFiset)
+
+### 1.2 For Graphs \(non-DAG wale\)
+
+#### **1.2.1 Dijkstra  ::** `V+ElogE`
+
+* Fastest among three
+* Fails when _negative cycle_ exists in graph
+* **IMPLEMENTATIONS:**
+  * **1.2.1.1** Lazy Implementation
+  * 1.2.1.2 Eager Implementation
+
+**1.2.2 Bellman-Ford :: `VE`** 
+
+* Use when _negative cycles_ exist in graph. 
+
+**1.2.3 Floyd Warshall ::** $$V^3$$
 
 {% tabs %}
 {% tab title="1.1 Dijkstra" %}
