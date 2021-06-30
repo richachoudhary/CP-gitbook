@@ -152,9 +152,79 @@ else    : dp[k][i][j] = min( dp[k-1][i][j] ,dp[k-1][i][k] + dp[k-1][k][j] )
 
 ## **2. MST** 
 
+#### 2.1.1 Prim's Algo : `O(ElogE)`
+
+* Its a greedy approach.
+* Does well on _dense graphs_ \(better than Kruskal's\)
+* Doesnt work well on disconnected graph; have to run it on each connected component individually.
+
+#### 2.1.2 Kruskal's Algo
+
 Prim: O\(\(V+E\)logV\) because each vertex is inserted in heap  
 Kruskal : O\(ElogV\) most time consuming operation is sorting
 
+{% tabs %}
+{% tab title="Prims" %}
+```python
+import heapq
+import collections
+
+def minimumCost(N: int, connections: List[List[int]]) -> int:
+    graph = collections.defaultdict(list)
+    for a,b,w in connections:
+        graph[a].append((b,w))
+        graph[b].append((a,w))
+    visited,cost = set(),0
+    minHeap = [(0,1)]        # min Priority Queue
+    while minHeap:
+        minCost,city = heapq.heappop(minHeap)
+        if city not in visited:
+            cost += minCost
+            visited.add(city)
+            for nxt,c in graph[city]:
+                if nxt not in visited:
+                    heapq.heappush(minHeap,(c,nxt))
+    return -1 if len(visited) < N else cost
+```
+{% endtab %}
+
+{% tab title="Kruskals" %}
+```python
+def minimumCost(self, N: int, connections: List[List[int]]) -> int:
+    def find(node,par):
+        if par[node] == node:
+            return node
+        par[node] = find(par[node],par)
+        return par[node]
+
+    def union(a,b,par,rank1,a_rep,b_rep):
+        parent_a, par_b = par[a], par[b]
+        par[parent_a] = par[parent_b]=
+            
+    parent = [x for x in range(N+1)]
+    res,i,e,result = 0,0,0,[]
+    graph = sorted(connections,key = lambda x:x[2])
+    while i < len(graph) and e < N - 1:
+        u,v,w = graph[i]
+        uroot,vroot = find(u,parent),find(v,parent)
+        if uroot != vroot:
+            result.append([u,v])
+            res += w
+            e += 1
+            union(u,v,parent)
+        i += 1
+    if len(result) == N-1:
+        return res
+    else:
+        return -1
+```
+{% endtab %}
+{% endtabs %}
+
+### 2.2 Problems: MST
+
+* [ ] [https://leetcode.com/problems/connecting-cities-with-minimum-cost/](https://leetcode.com/problems/connecting-cities-with-minimum-cost/)
+* [ ] 
 ## 3. Topological Sort `O(V+E)`
 
 * Only DAGs can have topological sorting\(graphs with a cycle CANNOT\)
@@ -194,9 +264,12 @@ def canFinish(N, prerequisites):
 {% endtab %}
 {% endtabs %}
 
+### **3.2 Problems: Topological Sort**
+
+* [ ] 
 ## **4. Union Find `O(logV)`**
 
-## 5. **Graph coloring/Bipartition**
+## 5. **Graph colouring/Bipartition**
 
 ## 6. Cycle Detection
 
@@ -321,6 +394,7 @@ vector<string> maxNumOfSubstrings(string s) {
 * **Definitions:**
   * **Euler Path/Trail? =&gt;** a path of edges which visits every edge only once.
     * Depends on the starting vertex.
+    * “Is it possible to draw a given graph without lifting pencil from the paper and without tracing any of the edges more than once”.
   * **Euler Circuit/Cycle ? =&gt;** an eulerian path which starts & ends at the same vertex.
     * If you know your graph has Euler Cycle, you can start from any vertex.
 * **Conditions for Path & Circuits:**
@@ -363,8 +437,22 @@ vector<string> maxNumOfSubstrings(string s) {
 
 ### 8.1 Algos
 
-* Eulers Algo??
-* Carl Hierholzer's algorithm????
+* Eulers Path: [GfG](https://www.geeksforgeeks.org/eulerian-path-and-circuit/)
+* **Hierholzer's algorithm** for Euler Circuit: [GfG](https://www.geeksforgeeks.org/hierholzers-algorithm-directed-graph/)
+
+{% tabs %}
+{% tab title="Eulers path" %}
+```text
+#TODO:
+```
+{% endtab %}
+
+{% tab title="Hierholzers Algo" %}
+```
+#TODO
+```
+{% endtab %}
+{% endtabs %}
 
 ### 8.2 Problems: Euler Path & Circuits
 
@@ -373,6 +461,26 @@ vector<string> maxNumOfSubstrings(string s) {
 * [ ] [https://www.hackerearth.com/practice/algorithms/graphs/euler-tour-and-path/practice-problems/algorithm/wildcard-tree-problem-c2a1fbac/](https://www.hackerearth.com/practice/algorithms/graphs/euler-tour-and-path/practice-problems/algorithm/wildcard-tree-problem-c2a1fbac/) 
 * [ ] [https://leetcode.com/problems/cracking-the-safe/](https://leetcode.com/problems/cracking-the-safe/)  🐽🐽🐽 `+Google`
 
+## **9. Network Flow**
+
+### 9.1.1 Ford-Fulkerson Algo
+
+* **Logic:** The algo repeatedly finds **augmenting paths** through the **residual graph** & **augments the flow** until no more augmenting paths can be found.
+* **Augmenting Paths?** =&gt; is a path of edges with flow capacity &gt; 0 from **source** to **sink.**
+  * Every Augmenting path has a _bottleneck_ \(the smallest capacity wali edge\) 
+* **Augmenting the flow?** =&gt; means updating the flow values of the edge along the augmenting path.
+* **Ref:** [WilliamFiset](https://www.youtube.com/watch?v=LdOnanfc5TM&list=PLDV1Zeh2NRsDGO4--qE8yH72HFL1Km93P&index=34&ab_channel=WilliamFiset)
+
+{% hint style="info" %}
+Ford Fulkerson gives **min-cut** value as byproduct!
+{% endhint %}
+
+### 9.1.2 Edmonds Karp Algo
+
+### 9.1.3 Dinic's Algo
+
+### 9.2 Problems:  **Maximum Flow**
+
 ## Resources:
 
 * For patterns/templates:
@@ -380,7 +488,7 @@ vector<string> maxNumOfSubstrings(string s) {
   * [https://leetcode.com/discuss/general-discussion/655708/graph-for-beginners-problems-pattern-sample-solutions/](https://leetcode.com/discuss/general-discussion/655708/graph-for-beginners-problems-pattern-sample-solutions/)
   * DSU: [https://leetcode.com/discuss/general-discussion/1072418/Disjoint-Set-Union-\(DSU\)Union-Find-A-Complete-Guide](https://leetcode.com/discuss/general-discussion/1072418/Disjoint-Set-Union-%28DSU%29Union-Find-A-Complete-Guide)
 * Youtube:
-  * WilliamFiset's playlist: [https://www.youtube.com/watch?v=4NQ3HnhyNfQ&list=PLDV1Zeh2NRsDGO4--qE8yH72HFL1Km93P&index=21&ab\_channel=WilliamFiset](https://www.youtube.com/watch?v=4NQ3HnhyNfQ&list=PLDV1Zeh2NRsDGO4--qE8yH72HFL1Km93P&index=21&ab_channel=WilliamFiset)
+  * \[\] WilliamFiset's playlist: [https://www.youtube.com/watch?v=4NQ3HnhyNfQ&list=PLDV1Zeh2NRsDGO4--qE8yH72HFL1Km93P&index=21&ab\_channel=WilliamFiset](https://www.youtube.com/watch?v=4NQ3HnhyNfQ&list=PLDV1Zeh2NRsDGO4--qE8yH72HFL1Km93P&index=21&ab_channel=WilliamFiset)
 
 
 
