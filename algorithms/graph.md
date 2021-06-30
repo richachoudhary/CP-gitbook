@@ -29,14 +29,14 @@ for node in topo_list:
 
 #### 1.1.2 SSLP 
 
-* while SSLP on undirected graphs is **NP-HARD,** for DAGs, it could be easily solved in O\(E+V\).  
+* while SSLP on undirected graphs is **NP-HARD,** for DAGs, it could be easily solved in O\(E+V\). 
 * **Logic**: 
   * multiply all edges with `-1` --&gt; find shorted path --&gt; multiply all edges with `-1` again
 * Ref [video](https://www.youtube.com/watch?v=TXkDpqjDMHA&list=PLDV1Zeh2NRsDGO4--qE8yH72HFL1Km93P&index=17&ab_channel=WilliamFiset)
 
 ### 1.2 For Graphs \(non-DAG wale\)
 
-#### **1.2.1 Dijkstra  ::** `V+ ElogE`
+#### **1.2.1 Dijkstra  ::** `(V+E)logV`
 
 * Fastest among three
 * Fails when _negative cycle_ exists in graph
@@ -61,7 +61,10 @@ for node in topo_list:
 * Run the regular Bellman-ford : \(N-1\) times for the graph. After that do one more run; if any points distance updates =&gt; this is due to negative cycle =&gt; hence neg cycle exists.
 {% endhint %}
 
-**1.2.3 Floyd Warshall ::** $$V^3$$
+**1.2.3 Floyd Warshall ::** $$V^3$$OR  $$V^2 $$ if MEMO is used!
+
+* Its an **APSP**\(All Pair Shortest Path\) algo. Means it can find shortest distance b/w all 2 node pairs.
+* **Code Optimisation:** use MEMOIZATION \(similar to _matrix chain multiplication_\) : see below code
 
 {% tabs %}
 {% tab title="1.2.1 Dijkstra" %}
@@ -106,11 +109,40 @@ def bellmanFord_SSSS(matrix):
 {% endtab %}
 
 {% tab title="Floyd-Warshall" %}
-
+```python
+# input matrix = [[2,1,1],[2,3,1],[3,4,1]] : [from,to,weight]; src = k; dst = X
+def floydWarshall_SSSS(matrix):
+    # adjacency matrix works best for FloydWarshall algo
+    dist = [[float("inf") for i in range(N)] for j in range(N)]
+    for i in range(N):
+        dist[i][i] = 0    # dist of node from self: diagonal
+    for u,v,w in matrix:
+        dist[u-1][v-1] = w
+    for k in range(N):
+        for i in range(N):
+            for j in range(N):
+                dist[i][j] = min(dist[i][j],dist[i][k] + dist[k][j])
+    
+# DP relation ::makes code O(V^2) - implement similar to matrix-chain-multiplication
+# LOGIC: dist(i,j) = min( dist(i,k) + dist(k,j)) for all nodes k other than i & j
+if k==0 : dp[k][i][j] = matrix[i][j] 
+else    : dp[k][i][j] = min( dp[k-1][i][j] ,dp[k-1][i][k] + dp[k-1][k][j] )    
+```
 {% endtab %}
 {% endtabs %}
 
-### 1.x Problems
+### 1.3 Algorithm Comparison for Shortest Path\(SP\) 
+
+| - | BFS | Dijkstra's | BellmanFord | FloydWarshall |
+| :--- | :--- | :--- | :--- | :--- |
+| **Complexity** | `O(V+E)` | `O((E+V)logV)` | `O(EV)` | `O(V^3)` |
+| **Recommended Graph Size** | large | large/medium | medium/small | small |
+| **Good for APSP?** | only works on unweighted graphs | Ok | Bad | Yes |
+| **Can Detect Neg. Cycles?** | No | No  | Yes | Yes |
+| **SP on graph weighted graph** | Incorrect SP answer | Best Algorithm | Works | Bad in general |
+| **SP on unweighted graph** | Best algorithm | Ok | Bad | Bad in general |
+
+### 1.x Problems: **SSSP/SSLP** 
 
 * [ ] [https://leetcode.com/problems/network-delay-time/](https://leetcode.com/problems/network-delay-time/)  🍪🍪
 
@@ -118,30 +150,228 @@ def bellmanFord_SSSS(matrix):
 
  
 
-### **2. MST** 
+## **2. MST** 
 
 Prim: O\(\(V+E\)logV\) because each vertex is inserted in heap  
 Kruskal : O\(ElogV\) most time consuming operation is sorting
 
-### 3. Topological Sort `O(V+E)`
+## 3. Topological Sort `O(V+E)`
 
-### **4. Union Find `O(logV)`**
+* Only DAGs can have topological sorting\(graphs with a cycle CANNOT\)
+* **How to find if graph has cycle?** =&gt; use **SCC algos** \(see section\#7: SCC below\)
+* Most optimized Topological Sort implementation: **Kahn's Algo  =&gt;  `O(V+E)`**
 
-### 5. **Graph coloring/Bipartition**
+  * **Logic**: Repeatedly remove the vertices with no dependencies
 
-### 6. Cycle Detection
+{% tabs %}
+{% tab title="Kahn\'s Algo for Topological Sort" %}
+```python
+from collections import defaultdict
+
+def canFinish(N, prerequisites):
+    graph,queue,cnt = defaultdict(list),[],0
+    inDeg = [0] * N
+    for j,i in prerequisites:
+        graph[i].append(j)
+        inDeg[j] += 1
+    for i in range(numCourses):
+        if inDeg[i] == 0:
+            queue.append(i)
+    while queue:
+        ele = queue.pop(0)
+        for j in graph[ele]:
+            inDeg[j] -= 1
+            if inDeg[j] == 0:
+                queue.append(j)
+        cnt += 1
+    return queue
+    # check if all vertices are in topo OR is topo-traversal possible?
+    if cnt == N:
+        return True
+    else:
+        return False
+```
+{% endtab %}
+{% endtabs %}
+
+## **4. Union Find `O(logV)`**
+
+## 5. **Graph coloring/Bipartition**
+
+## 6. Cycle Detection
 
 6.1 for Directed graphs
 
-6.2 gor Undirected graphs
+6.2 for Undirected graphs
 
+## 7. SCCs \(Strongly Connected Cycles\)
 
+* **What?** self contained cycles in graph in & from every vertex in cycle you can reach every other vertex.
+* **Low link value:** the smallest node index which is reachable from the given node
+* **Algos**: 
 
+  * Kosaraju's  =&gt; `O(V+E)`  :  [hackerearth](https://www.hackerearth.com/practice/algorithms/graphs/strongly-connected-components/tutorial/)  , [TusharRoy](https://www.youtube.com/watch?v=RpgcYiky7uw&ab_channel=TusharRoy-CodingMadeSimple)  
+  * Tarjan's       =&gt; `O(V+E)`  : [WilliamFiset\#23](https://www.youtube.com/watch?v=wUgWX0nc4NY&list=PLDV1Zeh2NRsDGO4--qE8yH72HFL1Km93P&index=23&ab_channel=WilliamFiset)  
 
+{% tabs %}
+{% tab title="Kosaraju\'s" %}
+```cpp
+vector<vector<bool>> grev;
+vector<vector<int> > fin;
+vector<int> t;
+vector<int> mark;
+void dfs1(int node, int running){//scc 
+    mark[node]=running;
+    fin[running].push_back(node);
+    for(int nex=0;nex<26;++nex){
+        if(grev[node][nex]==0){continue;}
+        if(mark[nex]==-1){
+            dfs1(nex, running);
+        }
+        else if(mark[nex]!=running){
+            t[mark[nex]]=(running);
+        }
+    }
+}
+vector<vector<bool>> g;
+vector<int> topo;
+vector<bool>vis;
+void dfs(int node){
+    vis[node]=true;
+    for(int nex=0;nex<26;++nex){
+        if(g[node][nex]==0){continue;}
+        if(vis[nex]==false){
+            dfs(nex);
+        }
+    }
+    topo.push_back(node);
+}
+vector<string> maxNumOfSubstrings(string s) {
+    int n=s.size();
+    fin.resize(26);
+    g.resize(26,vector<bool>(26,false));//initialisatin of the graph
+    t.resize(26,-1);//initialisation of the scc
+    grev.resize(26,vector<bool>(26,false));
+    
+    vis.resize(26,false);
+    
+    vector<int> eps(26,-1);//end position 
+    vector<int> beg(26,-1);//beginning position
+    
+    for(int i=0;i<n;++i){
+        if(beg[s[i]-'a']==-1){beg[s[i]-'a']=i;}
+        eps[s[i]-'a']=i;
+    }
+    
+    for(int ch=0;ch<26;++ch){
+        
+        if(beg[ch]!=-1){
+            for(int i=beg[ch];i<=eps[ch];++i){
+                g[ch][s[i]-'a']=true;
+                grev[s[i]-'a'][ch]=true;
+            }
+        }
+    }
+    
+    //finding topologically sorted array
+    for(int i=0;i<26;++i){
+        if(!vis[i] and beg[i]!=-1){
+            dfs(i);
+        }
+    }//obtained topologically sorted array
+    reverse(topo.begin(),topo.end());
+    
+    //finding scc
+    mark.assign(26,-1);
+    int cnt =0;
+    for(auto it:topo){
+        if(mark[it]==-1){dfs1(it,cnt);++cnt;}
+    }
+    vector<string> ans;
+    for(int i=0;i<cnt;++i){
+        if(t[i]==-1){
+            int st=n,en=-1;
+            for(auto it:fin[i]){
+                st=min(st,beg[it]);
+                en=max(en,eps[it]);
+            }
+            ans.push_back(s.substr(st,en-st+1));
+        }
+    }
+    return ans;
+    
+    
+}
+```
+{% endtab %}
+{% endtabs %}
 
+### 7.1 Problems: SCCs
 
+* [ ] [https://leetcode.com/problems/course-schedule/](https://leetcode.com/problems/course-schedule/)  🐽🐽
+* [ ] [https://leetcode.com/problems/number-of-operations-to-make-network-connected/](https://leetcode.com/problems/number-of-operations-to-make-network-connected/)  🐽🐽
+* [ ] [https://leetcode.com/problems/number-of-provinces/](https://leetcode.com/problems/number-of-provinces/) 🐽🐽
+* [ ] [https://leetcode.com/problems/longest-consecutive-sequence/](https://leetcode.com/problems/longest-consecutive-sequence/) 🐽🐽
+* [ ] [https://leetcode.com/problems/critical-connections-in-a-network/](https://leetcode.com/problems/critical-connections-in-a-network/) 🐽🐽🐽
+* [ ] [https://leetcode.com/problems/maximum-number-of-non-overlapping-substrings/](https://leetcode.com/problems/maximum-number-of-non-overlapping-substrings/) 🐽🐽🐽
+* [ ] [Airbnb \| Cover all vertices with the least number of vertices](https://leetcode.com/discuss/interview-question/algorithms/124861/airbnb-cover-all-vertices-with-the-least-number-of-vertices)
 
+## 8. Euler Path & Circuits
 
+* **Definitions:**
+  * **Euler Path/Trail? =&gt;** a path of edges which visits every edge only once.
+    * Depends on the starting vertex.
+  * **Euler Circuit/Cycle ? =&gt;** an eulerian path which starts & ends at the same vertex.
+    * If you know your graph has Euler Cycle, you can start from any vertex.
+* **Conditions for Path & Circuits:**
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align:left">-</th>
+      <th style="text-align:left"><b>Eulerian Path</b>
+      </th>
+      <th style="text-align:left">Eulerian Circuit</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align:left"><b>Undirected Graph</b>
+      </td>
+      <td style="text-align:left">
+        <ul>
+          <li>Either every vertex has even degree.</li>
+          <li>OR, exactly 2 vertexes have odd degree</li>
+        </ul>
+      </td>
+      <td style="text-align:left">Every vertex has even degree.</td>
+    </tr>
+    <tr>
+      <td style="text-align:left"><b>Directed Graph</b>
+      </td>
+      <td style="text-align:left">
+        <ul>
+          <li>Exactly 2 vertex have: <b>abs(inDegree - outDegree) = 1</b>
+          </li>
+          <li>All other vertexes have equal InDegree &amp; outDegree.</li>
+        </ul>
+      </td>
+      <td style="text-align:left">Every vertex has equal inDegree &amp; outDegree</td>
+    </tr>
+  </tbody>
+</table>
+
+### 8.1 Algos
+
+* Eulers Algo??
+* Carl Hierholzer's algorithm????
+
+### 8.2 Problems: Euler Path & Circuits
+
+* [ ] [https://leetcode.com/problems/reconstruct-itinerary/](https://leetcode.com/problems/reconstruct-itinerary/) 🐽🐽
+* [ ] [https://leetcode.com/problems/minimum-time-to-collect-all-apples-in-a-tree/](https://leetcode.com/problems/minimum-time-to-collect-all-apples-in-a-tree/) 🐽🐽
+* [ ] [https://www.hackerearth.com/practice/algorithms/graphs/euler-tour-and-path/practice-problems/algorithm/wildcard-tree-problem-c2a1fbac/](https://www.hackerearth.com/practice/algorithms/graphs/euler-tour-and-path/practice-problems/algorithm/wildcard-tree-problem-c2a1fbac/) 
+* [ ] [https://leetcode.com/problems/cracking-the-safe/](https://leetcode.com/problems/cracking-the-safe/)  🐽🐽🐽 `+Google`
 
 ## Resources:
 
