@@ -7,6 +7,7 @@
 
 ## `list`
 
+* **declare 2D matrix :**  `[[0 for _ in range(1)] for _ in range(5)]`
 * **slicing**:
   * NOTATION: `list1[start:stop:step]`
   * e.g.: `num_list[-9:]` -&gt; read it as: "9th from the end, to the end."

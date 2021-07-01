@@ -4,14 +4,37 @@
 
 ### 1.1 Notes
 
+* Heron's formula for area of triangle![\text{ Area }=\sqrt{s\(s-a\)\(s-b\)\(s-c\)}](https://www.gstatic.com/education/formulas2/355397047/en/heron_s_formula.svg)
+
 ### 1.2 Problems: Geometry
 
-* [x] [1266.Minimum Time Visiting All Points](https://leetcode.com/problems/minimum-time-visiting-all-points/) 🧠
+#### 1.2.1 Easy 🧠
+
+* [x] [1266.Minimum Time Visiting All Points](https://leetcode.com/problems/minimum-time-visiting-all-points/) 
 * [x] [883. Projection Area of 3D Shapes](https://leetcode.com/problems/projection-area-of-3d-shapes/)
+* [x] [1030. Matrix Cells in Distance Order](https://leetcode.com/problems/matrix-cells-in-distance-order/) ✴️
+* [x] [892. Surface Area of 3D Shapes](https://leetcode.com/problems/surface-area-of-3d-shapes/) ✴️
+
+{% hint style="info" %}
+For problems like \(\#892\) :in geometry of 3-D blocks: think in terms of subtracting the overlap, not adding each block one-by-one.
+{% endhint %}
+
+* [x] Check collinearity : [1232. Check If It Is a Straight Line](https://leetcode.com/problems/check-if-it-is-a-straight-line/)
+  * [x] Similar: [1037.Valid Boomerang](https://leetcode.com/problems/valid-boomerang/)
+
+```python
+(x0, y0), (x1, y1) = coordinates[: 2]
+for x, y in coordinates:
+    if (x1 - x0) * (y - y1) != (x - x1) * (y1 - y0):
+        return False
+return True
+```
+
+* [x] [836.Rectangle Overlap](https://leetcode.com/problems/rectangle-overlap/) 💡
 * [ ] 
 ### 2.3 Problemsets
 
-* Leetcode tag = **geometry:** [https://leetcode.com/problemset/all/?topicSlugs=geometry](https://leetcode.com/problemset/all/?topicSlugs=geometry)
+* **`[E]`** Leetcode tag = **geometry:** [https://leetcode.com/problemset/all/?topicSlugs=geometry](https://leetcode.com/problemset/all/?topicSlugs=geometry)
 * Codeforces Tag = **geometry** : [https://codeforces.com/problemset?tags=geometry](https://codeforces.com/problemset?tags=geometry)
 
 ### 1.3 Resources: Geometry
