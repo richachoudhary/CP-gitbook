@@ -44,7 +44,7 @@ l.sort(key = lambda x: (x[0], -x[1]) )      # [(2, 4), (2, 3), (3, 4)]
 ## `set`
 
 * **declare a set**:
-  *  `s = set()`
+  * `s = set()`
   * `s = {}`
 * create set from list: `s = set(list1)`
 * **size** of set: `len(set1)`
@@ -75,8 +75,9 @@ l.sort(key = lambda x: (x[0], -x[1]) )      # [(2, 4), (2, 3), (3, 4)]
 * To **check if** a dictionary **has a key**:  `foo in d`
 * **Deleting** a key as well as its value: `del d["foo"]`
 * **Iterating**: `[(k,v) for k,v in d.items()]`
-* get only keys\(as list\): `list1 = list(d)`
-* get only values\(as list\): `list2 = d.values()`
+* get only **keys**\(as list\): `list1 = list(d)`
+* get only **values**\(as list\): `list2 = d.values()`
+  * Count of keys with val == k:  `res = sum(x == K for x in d.values())`
 
 ### `Counter` as dict
 
