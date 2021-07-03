@@ -128,10 +128,12 @@ def knapsack(wt, val, W):    #NOTE: wt is sorted here; if not->first sort
 
 #### 2.2.1 Standard Problems: Unbounded Knapsack 
 
-* [ ] GfG: [Rod Cutting Problem](https://www.geeksforgeeks.org/cutting-a-rod-dp-13/)         
+* [x] CSES: [Coin Combinations 1](https://cses.fi/problemset/task/1635/)
+  * [ ] CSES: [Coin Combinations 2](https://cses.fi/problemset/task/1636)
+* [x] [322.Coin Change](https://leetcode.com/problems/coin-change/) 🌟
+* [x] [518.Coin Change 2](https://leetcode.com/problems/coin-change-2/)
+* [x] GfG: [Rod Cutting Problem](https://www.geeksforgeeks.org/cutting-a-rod-dp-13/)         
   * [ ] Similar\(but Hard\)[1547. Minimum Cost to Cut a Stick](https://leetcode.com/problems/minimum-cost-to-cut-a-stick/)
-* [ ] [322.Coin Change](https://leetcode.com/problems/coin-change/)
-* [ ] [518.Coin Change 2](https://leetcode.com/problems/coin-change-2/)
 * [ ] [279. Perfect Squares](https://leetcode.com/problems/perfect-squares/)
 
 #### 2.2.2  Problems: Unbounded Knapsack 
@@ -151,7 +153,7 @@ def knapsack(wt, val, W):    #NOTE: wt is sorted here; if not->first sort
 * [ ] [https://leetcode.com/problems/longest-arithmetic-subsequence/](https://leetcode.com/problems/longest-arithmetic-subsequence/)
 * [ ] [https://leetcode.com/problems/stone-game-ii/](https://leetcode.com/problems/stone-game-ii/)
 * [ ] [https://leetcode.com/problems/number-of-dice-rolls-with-target-sum/](https://leetcode.com/problems/number-of-dice-rolls-with-target-sum/)
-* [ ] [https://leetcode.com/problems/dice-roll-simulation/](https://leetcode.com/problems/dice-roll-simulation/)
+* [x] [https://leetcode.com/problems/dice-roll-simulation/](https://leetcode.com/problems/dice-roll-simulation/)
 * [ ] [https://leetcode.com/problems/number-of-sets-of-k-non-overlapping-line-segments/](https://leetcode.com/problems/number-of-sets-of-k-non-overlapping-line-segments/)
 * [ ] [https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iv/](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iv/)
 * [ ] [https://leetcode.com/problems/create-maximum-number/](https://leetcode.com/problems/create-maximum-number/)
@@ -204,11 +206,19 @@ def knapsack(wt, val, W):    #NOTE: wt is sorted here; if not->first sort
 * [ ] [https://leetcode.com/problems/maximize-grid-happiness/](https://leetcode.com/problems/maximize-grid-happiness/)
 * [ ] [https://leetcode.com/problems/find-minimum-time-to-finish-all-jobs/](https://leetcode.com/problems/find-minimum-time-to-finish-all-jobs/)
 
+### 5.1 Resources: Bit DP
+
+* ✅Kartik Arora's Playlist: [Bitwise DP](https://www.youtube.com/watch?v=6sEFap7hIl4&list=PLb3g_Z8nEv1icFNrtZqByO1CrWVHLlO5g&ab_channel=KartikArora)
+
 ## 6. Digit DP
 
 * [ ] [https://leetcode.com/problems/non-negative-integers-without-consecutive-ones/](https://leetcode.com/problems/non-negative-integers-without-consecutive-ones/)
 * [ ] [https://leetcode.com/problems/numbers-at-most-n-given-digit-set/](https://leetcode.com/problems/numbers-at-most-n-given-digit-set/)
 * [ ] [https://leetcode.com/problems/numbers-with-repeated-digits/](https://leetcode.com/problems/numbers-with-repeated-digits/)
+
+### 6.1 Resources: Digit DP
+
+* ✅Kartik Arora's playlist: [Digit DP](https://www.youtube.com/watch?v=heUFId6Qd1A&list=PLb3g_Z8nEv1hB69JL9K7KfEyK8iQNj9nX&ab_channel=KartikArora)
 
 ## 7. DP on Trees
 
@@ -220,6 +230,10 @@ def knapsack(wt, val, W):    #NOTE: wt is sorted here; if not->first sort
 * [ ] [https://leetcode.com/problems/binary-tree-cameras/](https://leetcode.com/problems/binary-tree-cameras/)
 * [ ] [https://leetcode.com/problems/maximum-sum-bst-in-binary-tree/](https://leetcode.com/problems/maximum-sum-bst-in-binary-tree/)
 * [ ] [https://leetcode.com/problems/number-of-ways-to-reorder-array-to-get-same-bst/](https://leetcode.com/problems/number-of-ways-to-reorder-array-to-get-same-bst/)
+
+### 7.1 Resources: Tree DP
+
+* ✅Kartik Arora's Playlist: [Tree DP](https://www.youtube.com/watch?v=fGznXJ-LTbI&list=PLb3g_Z8nEv1j_BC-fmZWHFe6jmU_zv-8s&ab_channel=KartikArora)
 
 ## 8. DP on Graph
 
@@ -383,5 +397,6 @@ def knapsack(wt, val, W):    #NOTE: wt is sorted here; if not->first sort
 * @youtube:
   * WilliamFiset Playlist: [https://www.youtube.com/watch?v=gQszF5qdZ-0&list=PLDV1Zeh2NRsAsbafOroUBnNV8fhZa7P4u&ab\_channel=WilliamFiset](https://www.youtube.com/watch?v=gQszF5qdZ-0&list=PLDV1Zeh2NRsAsbafOroUBnNV8fhZa7P4u&ab_channel=WilliamFiset)
   * **✅Aditya Verma Playlist**: [https://www.youtube.com/watch?v=nqowUJzG-iM&list=PL\_z\_8CaSLPWekqhdCPmFohncHwz8TY2Go&ab\_channel=AdityaVerma](https://www.youtube.com/watch?v=nqowUJzG-iM&list=PL_z_8CaSLPWekqhdCPmFohncHwz8TY2Go&ab_channel=AdityaVerma)
+    * Good for problem classification & variety, but poor for intuition building
   * **✅Kartik Arora's Playlist:** [https://www.youtube.com/watch?v=24hk2qW\_BCU&list=PLb3g\_Z8nEv1h1w6MI8vNMuL\_wrI0FtqE7&ab\_channel=KartikArora](https://www.youtube.com/watch?v=24hk2qW_BCU&list=PLb3g_Z8nEv1h1w6MI8vNMuL_wrI0FtqE7&ab_channel=KartikArora)
 

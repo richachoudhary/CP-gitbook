@@ -66,6 +66,7 @@ return True
 
 ### 2.4 Resources: Maths
 
+* Kartik Arora's Playlist :[ Number Theory](https://www.youtube.com/watch?v=2NN5j1iF2ko&list=PLb3g_Z8nEv1i6NHntG5l2fPKuVu853EYy&ab_channel=KartikArora)
 * **Topcoder** :
   * \*\*\*\*[**MATHEMATICS FOR TOPCODERS**](https://www.topcoder.com/thrive/articles/Mathematics%20for%20Topcoders)\*\*\*\*
   * \*\*\*\*[**BASICS OF COMBINATORICS**](https://www.topcoder.com/thrive/articles/Basics%20of%20Combinatorics)\*\*\*\*
