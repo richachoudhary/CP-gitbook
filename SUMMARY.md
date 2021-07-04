@@ -4,6 +4,7 @@
 
 ## Algorithms
 
+* [Greeeedy](algorithms/greeeedy.md)
 * [Maths & Geometry](algorithms/maths.md)
 * [Bitwise](algorithms/bitwise.md)
 * [Design](algorithms/design.md)
@@ -20,4 +21,8 @@
 ## Recursion
 
 * [Trees](recursion/trees.md)
+
+## System Design
+
+* [Resources](system-design/resources.md)
 

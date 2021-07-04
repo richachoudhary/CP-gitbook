@@ -2,4 +2,5 @@
 
 * Taking input from user: `num = input ("Enter number :")`
 * using int\_min & int\_max in py: `-sys.maxsize`, `sys.maxsize`
+* Python's modular exponentiation method: `pow(base,expo,mod)`
 
