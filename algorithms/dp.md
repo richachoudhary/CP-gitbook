@@ -215,6 +215,7 @@ def knapsack(wt, val, W):    #NOTE: wt is sorted here; if not->first sort
 * [ ] [https://leetcode.com/problems/non-negative-integers-without-consecutive-ones/](https://leetcode.com/problems/non-negative-integers-without-consecutive-ones/)
 * [ ] [https://leetcode.com/problems/numbers-at-most-n-given-digit-set/](https://leetcode.com/problems/numbers-at-most-n-given-digit-set/)
 * [ ] [https://leetcode.com/problems/numbers-with-repeated-digits/](https://leetcode.com/problems/numbers-with-repeated-digits/)
+* [ ] AtCoder:[ Digit Product](https://atcoder.jp/contests/abc208/editorial/2216)
 
 ### 6.1 Resources: Digit DP
 

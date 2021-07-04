@@ -25,6 +25,8 @@
 
 ## Binary Search
 
+* [ ] [1044. Longest Duplicate Substring](https://leetcode.com/problems/longest-duplicate-substring/) ⚡️ - learn [this approach](https://leetcode.com/problems/longest-duplicate-substring/discuss/695029/python-binary-search-with-rabin-karp-o%28n-log-n%29-explained) =&gt; **Rolling Hash/Rabin Karp**
+
 ## Two Pointers
 
 

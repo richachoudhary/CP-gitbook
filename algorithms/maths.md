@@ -53,7 +53,29 @@ return True
 
 ### 2.1 Notes
 
+* Modular Exponentiation :
+
+```cpp
+int modularExponentiation(int x,int n,int M){    //get (x^n % M)
+    if(n==0) return 1;
+    else if(n%2 == 0) return modularExponentiation((x*x)%M,n/2,M);
+    else return (x*modularExponentiation((x*x)%M,(n-1)/2,M))%M;
+}
+// or in python: 
+math.pow(x,n,M)
+```
+
+ 
+
 ### 2.2 Problems: Maths
+
+
+
+### 2.2.2 Combinatorics
+
+* [ ] AtCoder: [Cumulative Sum](https://atcoder.jp/contests/abc208/tasks/abc208_f) \| [Editorial](https://atcoder.jp/contests/abc208/editorial/2219)
+
+
 
 
 
