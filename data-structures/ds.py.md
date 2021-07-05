@@ -112,10 +112,13 @@ l.sort(key = lambda x: (x[0], -x[1]) )      # [(2, 4), (2, 3), (3, 4)]
   * Get top `n` **lowest frequency elements:** `my_count.most_common()[:-n:-1]`
   * **wow\(@lee215\)** : `return ["%d %s" % (count[k], k) for k in count]`
 
-### `defaultdict` as dict
+### `defaultdict` as dict <a id="defaultdict"></a>
 
 * similar to dict\(returns a dictionary-like obj\) 
 * advantage: `defualtdict` _never raises a KeyError_
+* **Initialization:** i.e. what to show when key not present:
+  *  `d = defaultdict(`**`default_value`**`)`
+  * **\(Usage\)**e.g: `d = defaultdict(list)` =&gt; gives empty list \(_useful in graphs_\)
 
 \_\_
 

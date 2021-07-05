@@ -4,6 +4,73 @@ description: Patterns & their problem list
 
 # Graph
 
+## **Notes**
+
+* Graph representation: use `defaultdict`
+
+```python
+# input matrix = [[2,1,1],[2,3,1],[3,4,1]] : [from,to,weight]; src = k; dst = X
+from collections import defaultdict
+graph = defaultdict(list)
+# making adjacency list
+for i,j,w in matrix:
+    graph[i].append((j,w))
+```
+
+
+
+## 0. BFS/DFS : both `O(V+E)`
+
+{% tabs %}
+{% tab title="BFS" %}
+```python
+from collections import deque
+
+dirs = [(-1,0),(0,1),(1,0),(0,-1)]
+vis = [[False for _ in m]for _ in n]    # order of n & m is very imp here!!
+def bfs(grid: List[List[int]])
+    
+    n, m = len(grid), len(grid[0])
+    de = deque()
+    de.append(K)
+    vis[K] = True
+    
+    while de:
+        top_x,top_y = de.popleft()
+        for dx, dy in dirs:
+            x = top_x + dx
+            y = top_y + dy
+            if 0<=x<n and 0<=y<m and not vis[x][y]:
+                de.append((x,y))
+                vis[x][y] = True    
+```
+{% endtab %}
+
+{% tab title="DFS" %}
+```python
+DFS-recursive(G, s):
+    mark s as visited
+    for all neighbours w of s in Graph G:
+        if w is not visited:
+            DFS-recursive(G, w)
+```
+{% endtab %}
+{% endtabs %}
+
+* [ ] [The Maze](https://leetfree.com/problems/the-maze)
+* [x] [130. Surrounded Regions](https://leetcode.com/problems/surrounded-regions/)
+* [x] [1020.Number of Enclaves](https://leetcode.com/problems/number-of-enclaves/)
+* [ ] [1376.Time Needed to Inform All Employees](https://leetcode.com/problems/time-needed-to-inform-all-employees/)
+* [ ] [1254.Number of Closed Islands](https://leetcode.com/problems/number-of-closed-islands/)
+* [ ] [200. Number of Islands](https://leetcode.com/problems/number-of-islands/)
+* [ ] [841.Keys and Rooms](https://leetcode.com/problems/keys-and-rooms/)
+* [ ] [895. Max Area of Island](https://leetcode.com/problems/max-area-of-island/)
+* [ ] [733. Flood Fill](https://leetcode.com/problems/flood-fill/)
+* [ ] [542. 01 Matrix](https://leetcode.com/problems/01-matrix/)
+* [ ] [1162.As Far from Land as Possible](https://leetcode.com/problems/as-far-from-land-as-possible/)
+* [x] [994.Rotting Oranges](https://leetcode.com/problems/rotting-oranges/)
+* [ ] [1091.Shortest Path in Binary Matrix](https://leetcode.com/problems/shortest-path-in-binary-matrix/)
+
 ## **1. Single Source Shortest/Longest Path - SSSP/SSLP** 
 
 ### **1.1 For DAGs**
@@ -58,7 +125,7 @@ for node in topo_list:
 **How to find Negative Cycle:** using Bellman-ford.
 
 * **Logic**: For a regular graph, shorted dist path to any node can have _atmax_ \(N-1\) nodes. But for _graph with negative cycle_, there are inf shorted path for the nodes in neg.cycle.
-* Run the regular Bellman-ford : \(N-1\) times for the graph. After that do one more run; if any points distance updates =&gt; this is due to negative cycle =&gt; hence neg cycle exists.
+* Run the regular Bellman-ford : \(i.e. N-1\) times for the graph. After that do one more run; if any points distance updates =&gt; this is due to negative cycle =&gt; hence neg cycle exists.
 {% endhint %}
 
 **1.2.3 Floyd Warshall ::** $$V^3$$OR  $$V^2 $$ if MEMO is used!
@@ -73,24 +140,27 @@ for node in topo_list:
 from collections import defaultdict
 import heapq
 
-def dijkstras_SSSS():
-    graph = defaultdict(matrix)
-    # making adjacency list
-    for i,j,w in times:
-        graph[i].append((j,w))
-    heap = [(0,K)]
-    dist = [0] + [float("inf")] * N
-    vis = [False]*N         # (vis[] is needed only for optimisation; not logic)
-    vis[k] = True                                   # optimisation :1
+def dijkstras_SSSP():
+    graph = defaultdict(list)    
+    for x,y,w in matrix:
+        graph[x].append((y,w))
+    
+    dist = [float("inf")]*(n+1) # if nodes start from 1..n
+    vis = [False]*(n+1) 
+    
+    heap = [(0,k)]
+    dist[k] = 0
+    
     while heap:
-        src_dist,src = heapq.heappop(heap)
-        vis[src] = True                             # optimisation :1
-        if dist[src] > src_dist:
-            dist[nei] = src_dist
-            for j,w in graph[src]:
-                if vis[j] == True: continue         # optimisation :1 
-                heapq.heappush(heap,(src_dist+w,j))
-        if src == X: return dist[src]                # optimisation :2
+        W,s = heapq.heappop(heap)
+        if vis[s] : continue
+            
+        vis[s] = True
+        
+        for y,w in graph[s]:
+            if dist[y] > W + w:
+                dist[y] = W + w
+                heapq.heappush(heap,(dist[y],y))
     return dist
 ```
 {% endtab %}
@@ -98,11 +168,11 @@ def dijkstras_SSSS():
 {% tab title="1.2 Bellman-Ford" %}
 ```python
 # input matrix = [[2,1,1],[2,3,1],[3,4,1]] : [from,to,weight]; src = k; dst = X
-def bellmanFord_SSSS(matrix):
+def bellmanFord_SSSP(matrix):
     dist = [0] + [float("inf")] * N
     dist[k] = 0
     for node in range(1,N):        # relax each edge (N-1) times
-        for u,v,w in times:
+        for u,v,w in matrix:
             if dist[u] + w < dist[v]:
                 dist[v] = dist[u] + w
 ```
@@ -144,7 +214,16 @@ else    : dp[k][i][j] = min( dp[k-1][i][j] ,dp[k-1][i][k] + dp[k-1][k][j] )
 
 ### 1.x Problems: **SSSP/SSLP** 
 
-* [ ] [https://leetcode.com/problems/network-delay-time/](https://leetcode.com/problems/network-delay-time/)  🍪🍪
+* [x] [743. Network Delay Time](https://leetcode.com/problems/network-delay-time/)  🍪🍪
+* [ ] [1631.Path With Minimum Effort](https://leetcode.com/problems/path-with-minimum-effort/)
+* [ ] [787. Cheapest Flights Within K Stops](https://leetcode.com/problems/cheapest-flights-within-k-stops/)
+* [ ] [882. Reachable Nodes In Subdivided Graph](https://leetcode.com/problems/reachable-nodes-in-subdivided-graph/)
+* [ ] [1514.Path with Maximum Probability](https://leetcode.com/problems/path-with-maximum-probability/)
+* [ ] [1334.Find the City With the Smallest Number of Neighbors at a Threshold Distance](https://leetcode.com/problems/find-the-city-with-the-smallest-number-of-neighbors-at-a-threshold-distance/)
+* [ ] [1368.Minimum Cost to Make at Least One Valid Path in a Grid](https://leetcode.com/problems/minimum-cost-to-make-at-least-one-valid-path-in-a-grid/)
+* [ ] [1786. Number of Restricted Paths From First to Last Node](https://leetcode.com/problems/number-of-restricted-paths-from-first-to-last-node/)
+* [ ] [The Maze II](https://leetfree.com/problems/the-maze-ii)
+* [ ] [The Maze III ](https://leetfree.com/problems/the-maze-iii)
 
  
 
@@ -276,6 +355,10 @@ def canFinish(N, prerequisites):
 6.1 for Directed graphs
 
 6.2 for Undirected graphs
+
+### 6.3 Problems: Cycle Detection
+
+* [ ] [802.Find Eventual Safe States](https://leetcode.com/problems/find-eventual-safe-states/)
 
 ## 7. SCCs \(Strongly Connected Cycles\)
 
@@ -481,12 +564,17 @@ Ford Fulkerson gives **min-cut** value as byproduct!
 
 ### 9.2 Problems:  **Maximum Flow**
 
+## **10. Articulation Point & Bridges**
+
+\*\*\*\*[https://leetcode.com/discuss/general-discussion/709997/questions-based-on-articulation-points-and-bridges/799168](https://leetcode.com/discuss/general-discussion/709997/questions-based-on-articulation-points-and-bridges/799168)
+
 ## Resources:
 
 * For patterns/templates:
   * [https://leetcode.com/discuss/general-discussion/971272/Python-Graph-Algorithms-One-Place-for-quick-revision](https://leetcode.com/discuss/general-discussion/971272/Python-Graph-Algorithms-One-Place-for-quick-revision)
   * [https://leetcode.com/discuss/general-discussion/655708/graph-for-beginners-problems-pattern-sample-solutions/](https://leetcode.com/discuss/general-discussion/655708/graph-for-beginners-problems-pattern-sample-solutions/)
   * DSU: [https://leetcode.com/discuss/general-discussion/1072418/Disjoint-Set-Union-\(DSU\)Union-Find-A-Complete-Guide](https://leetcode.com/discuss/general-discussion/1072418/Disjoint-Set-Union-%28DSU%29Union-Find-A-Complete-Guide)
+  * [https://leetcode.com/discuss/interview-question/753236/List-of-graph-algorithms-for-coding-interview](https://leetcode.com/discuss/interview-question/753236/List-of-graph-algorithms-for-coding-interview)
 * Youtube:
   * \[\] WilliamFiset's playlist: [https://www.youtube.com/watch?v=4NQ3HnhyNfQ&list=PLDV1Zeh2NRsDGO4--qE8yH72HFL1Km93P&index=21&ab\_channel=WilliamFiset](https://www.youtube.com/watch?v=4NQ3HnhyNfQ&list=PLDV1Zeh2NRsDGO4--qE8yH72HFL1Km93P&index=21&ab_channel=WilliamFiset)
 
