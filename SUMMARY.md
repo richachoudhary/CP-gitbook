@@ -7,7 +7,7 @@
 * [Graph](algorithms/graph.md)
 * [Linked List](algorithms/linked-list.md)
 * [Tree](algorithms/tree.md)
-* [Recursion](algorithms/recursion.md)
+* [Recursion 💪](algorithms/recursion.md)
 * [Greeeedy](algorithms/greeeedy.md)
 * [Maths & Geometry](algorithms/maths.md)
 * [Bitwise](algorithms/bitwise.md)

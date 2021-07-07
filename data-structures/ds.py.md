@@ -2,6 +2,7 @@
 
 ### NOTEs:
 
+* **List of Data Structures implemented in python:** [https://lei-d.gitbook.io/leetcode/data-structure](https://lei-d.gitbook.io/leetcode/data-structure)
 * implement `Stack` ---&gt; with `list`
 * implement `Queue` ---&gt; with `deque`
 
@@ -40,6 +41,7 @@ l.sort(key = lambda x: (x[0], -x[1]) )      # [(2, 4), (2, 3), (3, 4)]
   * Check casing:  `mystr.islower()`
   * Change case: `string.lower()`
 * **Substring find/StrStr :** Search: `s.find(t)` -&gt; returns **first** index or -1
+* **Reverse: `str[::-1]`**
 
 ## `set`
 
