@@ -16,6 +16,7 @@
 * **get freq** of element in list/string: `list.count(x)`
 * **Insert** at given index: `list.insert(i, elem)list.insert(i, elem)`
 * **enumerate**: `for i,ar in enumerate(arr): arr[i] = ar + i`
+* **Reverse a list:** `a.reverse()`
 * reverse traversal:
   * `for i in reversed(a)`
   * retrieve original indices: `for i, e in reversed(list(enumerate(a))):`
