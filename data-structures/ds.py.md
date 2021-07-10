@@ -9,8 +9,17 @@
 ## `list`
 
 * **declare 2D matrix :**  `[[0 for _ in range(1)] for _ in range(5)]`
+* **Delete** at given index:
+
+```python
+a = ['a', 'b', 'c', 'd']
+a.pop(1)            # now a is ['a', 'c', 'd']
+a = ['a', 'b', 'c', 'd']
+a.pop()             # now a is ['a', 'b', 'c']
+```
+
 * **slicing**:
-  * NOTATION: `list1[start:stop:step]`
+  * NOTATION: `list1[start:stop:step]` **this is 1 indexed**
   * e.g.: `num_list[-9:]` -&gt; read it as: "9th from the end, to the end."
   * get "all but last n"  -&gt; `mylist[:-n or None]`
 * **get freq** of element in list/string: `list.count(x)`
@@ -81,6 +90,13 @@ l.sort(key = lambda x: (x[0], -x[1]) )      # [(2, 4), (2, 3), (3, 4)]
 * get only **keys**\(as list\): `list1 = list(d)`
 * get only **values**\(as list\): `list2 = d.values()`
   * Count of keys with val == k:  `res = sum(x == K for x in d.values())`
+* **Getting values** with fallback for key not present:
+
+```python
+d = dict()
+count += d.get(sums-k,0)    # if key not present, fallback is 0
+d[sums] = d.get(sums,0) + 1
+```
 
 ### `Counter` as dict
 
@@ -103,17 +119,39 @@ l.sort(key = lambda x: (x[0], -x[1]) )      # [(2, 4), (2, 3), (3, 4)]
 
   * **Counters with set**: since sets only have unique elements, it doesnt make sense to use counters with set
   * **Counters with dict**`my_count = Counter({'a':3, 'b':2, 'c':1})   # Counter({'a':3, 'b':2, 'c':1})`
-  * **UPDATING**:
+  * **Iterating**:
 
     ```python
-      my_count = Counter()        # defining an empty Counter
-      my_count.update("a")        # Counter({a:1})
-      my_count.update("ab")       # Counter({'a': 2, 'b': 1})
+    for k, c in C.items():
     ```
+* **Add/Remove keys**:
 
-  * Get top `n` **highest frequency elements**: `my_count.most_common(2)`
-  * Get top `n` **lowest frequency elements:** `my_count.most_common()[:-n:-1]`
-  * **wow\(@lee215\)** : `return ["%d %s" % (count[k], k) for k in count]`
+```python
+c = Counter('abbc')    # Counter({'a': 1, 'b': 2, 'c': 1})
+c.pop('a')   #returns val 
+1                      # Counter({'b': 1, 'c': 1})
+c.pop('z',None)    # checks if 'z' key exists in Counter -- the safer way of deletion
+c['a']=4               # Counter({'b': 1, 'c': 1, 'a': 1})
+```
+
+* **UPDATING**:
+
+  ```python
+    my_count = Counter()        # defining an empty Counter
+    my_count.update("a")        # Counter({a:1})
+    my_count.update("ab")       # Counter({'a': 2, 'b': 1})
+  ```
+
+* **Get Highest/Lowest ones**:
+
+  ```python
+  max(c)                        # returns max 'key' 
+  max(c.values()                # returns max 'value'
+  c.most_common(k)              # retunrs top k highest freq elements
+  c.most_common()[:-k:-1]       # k lowest freq elements 
+  ```
+
+* **wow\(@lee215\)** : `return ["%d %s" % (count[k], k) for k in count]`
 
 ### `defaultdict` as dict <a id="defaultdict"></a>
 
