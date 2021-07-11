@@ -205,6 +205,8 @@ def knapsack(wt, val, W):    #NOTE: wt is sorted here; if not->first sort
 * [ ] [https://leetcode.com/problems/distribute-repeating-integers/](https://leetcode.com/problems/distribute-repeating-integers/)
 * [ ] [https://leetcode.com/problems/maximize-grid-happiness/](https://leetcode.com/problems/maximize-grid-happiness/)
 * [ ] [https://leetcode.com/problems/find-minimum-time-to-finish-all-jobs/](https://leetcode.com/problems/find-minimum-time-to-finish-all-jobs/)
+* [ ] [1411.Number of Ways to Paint N × 3 Grid](https://leetcode.com/problems/number-of-ways-to-paint-n-3-grid/) \| 🔒\| Contest-repeat! 
+* [ ] [1931.Painting a Grid With Three Different Colors](https://leetcode.com/problems/painting-a-grid-with-three-different-colors/)  \| 🔒\| Contest-repeat!
 
 ### 5.1 Resources: Bit DP
 

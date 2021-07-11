@@ -224,6 +224,12 @@ else    : dp[k][i][j] = min( dp[k-1][i][j] ,dp[k-1][i][k] + dp[k-1][k][j] )
 * [ ] [1786. Number of Restricted Paths From First to Last Node](https://leetcode.com/problems/number-of-restricted-paths-from-first-to-last-node/)
 * [ ] [The Maze II](https://leetfree.com/problems/the-maze-ii)
 * [ ] [The Maze III ](https://leetfree.com/problems/the-maze-iii)
+* [x] [1929.Minimum Cost to Reach Destination in Time](https://leetcode.com/problems/minimum-cost-to-reach-destination-in-time/) \| @contest 🚀❤️
+* [ ] [https://leetcode.com/problems/cheapest-flights-within-k-stops/ ✅  
+  
+  ](https://leetcode.com/problems/cheapest-flights-within-k-stops/
+
+  )
 
  
 

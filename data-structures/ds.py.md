@@ -53,6 +53,13 @@ l.sort(key = lambda x: (x[0], -x[1]) )      # [(2, 4), (2, 3), (3, 4)]
 * **Substring find/StrStr :** Search: `s.find(t)` -&gt; returns **first** index or -1
 * **Reverse: `str[::-1]`**
 
+```python
+myst.find(c)    # finds first occurence of 'c' in str | if not found => -1
+myst.rfind(c)    # finds last occurence of 'c' in str | if not found => -1
+str1.startswith(str2)    # => returns bool
+str1.endswith(str2)     # => returns bool 
+```
+
 ## `set`
 
 * **declare a set**:
