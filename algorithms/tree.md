@@ -11,7 +11,9 @@
 
 
 
+## ProblemSet
 
+* [https://leetcode.com/discuss/interview-question/1337373/Tree-question-pattern-oror2021-placement](https://leetcode.com/discuss/interview-question/1337373/Tree-question-pattern-oror2021-placement)
 
 ## Resources:
 

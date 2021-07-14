@@ -1,8 +1,9 @@
 # Greeeedy
 
-## 1. Map
+## 1. List & String
 
-
+* [x] [1021.Remove Outermost Parentheses](https://leetcode.com/problems/remove-outermost-parentheses/)
+* [x] [443.String Compression](https://leetcode.com/problems/string-compression/)
 
 ## 2. Hashing
 
@@ -13,9 +14,17 @@
 
 
 
-## 3. Queue/Stack/Monotonic
+## 3. Map
 
-### 3.0 Notes:
+### 3.1 Problems
+
+* [x] [1700.Number of Students Unable to Eat Lunch](https://leetcode.com/problems/number-of-students-unable-to-eat-lunch/)
+
+
+
+## 4. Queue/Stack/Monotonic
+
+### 4.0 Notes:
 
 * How to identify **stack** problem: there'll be an dependent second nested loop. EG:
 
@@ -30,7 +39,7 @@ for i in range(0,N):
     # etc etc
 ```
 
-### 3.1 Standard Questions
+### 4.1 Standard Questions
 
 #### NGL variants:
 
@@ -185,26 +194,28 @@ def trap(h: List[int]) -> int:
 * [ ] [1130. Minimum Cost Tree From Leaf Values](https://leetcode.com/problems/minimum-cost-tree-from-leaf-values/discuss/339959/One-Pass-O%28N%29-Time-and-Space)
 * [ ] [907. Sum of Subarray Minimums](https://leetcode.com/problems/sum-of-subarray-minimums/discuss/170750/C++JavaPython-Stack-Solution)
 * [ ] [856. Score of Parentheses](https://leetcode.com/problems/score-of-parentheses/discuss/141777/C++JavaPython-O%281%29-Space)
-* [ ] **LC239. Sliding Window Maximum**
-* [ ] **LC739. Daily Temperatures**
-* [ ] **LC862. Shortest Subarray with Sum at Least K**
-* [ ] **LC907. Sum of Subarray Minimums**
+* [ ] LC239. Sliding Window Maximum
+* [ ] LC739. Daily Temperatures
+* [ ] LC862. Shortest Subarray with Sum at Least K
+* [ ] LC907. Sum of Subarray Minimums
+* [x] [1475. Final Prices With a Special Discount in a Shop](https://leetcode.com/problems/final-prices-with-a-special-discount-in-a-shop/)
 
-### 3.2 Rest of the problems
+### 4.2 Rest of the problems
 
 * [x] [391. Next Greater Element I](https://leetcode.com/problems/next-greater-element-i/)
 * [x] [503. Next Greater Element II](https://leetcode.com/problems/next-greater-element-ii/) \|  for circular array 🚀
 * [ ] [556.Next Greater Element III](https://leetcode.com/problems/next-greater-element-iii/) 🍪🍪🍪
 * [x] [155. Min Stack](https://leetcode.com/problems/min-stack/) : instead of 2 stacks, use single stack & insert pairs in it: `ele,min_ele`
   * Regular approach of `O(1)` =&gt; [Aditya Verma](https://www.youtube.com/watch?v=ZvaRHYYI0-4&list=PL_z_8CaSLPWdeOezg68SKkeLN4-T_jNHd&index=11&ab_channel=AdityaVerma)
+* [x] [1441.Build an Array With Stack Operations](https://leetcode.com/problems/build-an-array-with-stack-operations/)
 
-### 3.3 Resources
+### 4.3 Resources
 
 * [Aditya Verma's Playlist](https://www.youtube.com/watch?v=P1bAPZg5uaE&list=PL_z_8CaSLPWdeOezg68SKkeLN4-T_jNHd&ab_channel=AdityaVerma)
 
-## 4. Heap
+## 5. Heap
 
-### 4.0 Notes
+### 5.0 Notes
 
 * **Complexity** with Heap\(of size K\) : `O(nlogK)` // while with sort it'll be `O(nlogn)`
 * **NOTE:** if sorting is the only better way & asked to **do better than `O(nlogn)`** , heap is the way!
@@ -213,7 +224,7 @@ def trap(h: List[int]) -> int:
   * if **smallest K** elements   =&gt; use **max heap**
   * if **largest K**  elements     =&gt; use **min heap**
 
-### 4.1 Standard Problems
+### 5.1 Standard Problems
 
 **Top K Pattern**
 
@@ -314,6 +325,7 @@ def kClosest(self, points: List[List[int]], k: int) -> List[List[int]]:
 {% endtabs %}
 
 * [x] GfG: [Sum of all elements between k1’th and k2’th smallest elements](https://www.geeksforgeeks.org/sum-elements-k1th-k2th-smallest-elements/)
+* [x] [1337.The K Weakest Rows in a Matrix](https://leetcode.com/problems/the-k-weakest-rows-in-a-matrix/)
 * [ ] [LC \#692](https://leetcode.com/problems/top-k-frequent-words) - Top k frequent words
 * [ ] [LC \#264](https://leetcode.com/problems/ugly-number-ii/) - Ugly Number II
 * [ ] [LC \#451](https://leetcode.com/problems/sort-characters-by-frequency/) - Frequency Sort
@@ -344,15 +356,15 @@ def kClosest(self, points: List[List[int]], k: int) -> List[List[int]]:
 * [ ] [LC \#621](https://leetcode.com/problems/task-scheduler/) - Minimum number of CPU \(Task scheduler\)
 * [ ] [LC \#871](https://leetcode.com/problems/minimum-number-of-refueling-stops/) - Minimum number of Refueling stops
 
-### 4.2 Rest of the Problems
+### 5.2 Rest of the Problems
 
-\*\*\*\*
+* [x] [1046.Last Stone Weight](https://leetcode.com/problems/last-stone-weight/)
 
-## 5.Sort
+## 6.Sort
 
 
 
-## 6.Binary Search
+## 7.Binary Search
 
 * [ ] [1044. Longest Duplicate Substring](https://leetcode.com/problems/longest-duplicate-substring/) ⚡️ - learn [this approach](https://leetcode.com/problems/longest-duplicate-substring/discuss/695029/python-binary-search-with-rabin-karp-o%28n-log-n%29-explained) =&gt; **Rolling Hash/Rabin Karp**
 * [ ] [658.Find K Closest Elements](https://leetcode.com/problems/find-k-closest-elements/) \| [Soln](https://leetcode.com/problems/find-k-closest-elements/discuss/915047/Finally-I-understand-it-and-so-can-you.)
@@ -361,7 +373,7 @@ def kClosest(self, points: List[List[int]], k: int) -> List[List[int]]:
 
 [Aditya Verma playlist](https://www.youtube.com/watch?v=j7NodO9HIbk&list=PL_z_8CaSLPWeYfhtuKHj-9MpYb6XQJ_f2&ab_channel=AdityaVerma)
 
-## 7.Two Pointers
+## 8.Two Pointers
 
 
 

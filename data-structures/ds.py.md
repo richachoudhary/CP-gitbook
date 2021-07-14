@@ -78,7 +78,7 @@ str1.endswith(str2)     # => returns bool
 * **filter** unique elements in arr: `arr = list(set(arr))`
 * **Check if subset:** `A.issubset(B)`
 * set to list: `list1 = list(set1)`
-* sorted order: `for k, v in sorted(d.items())`
+* iterate: `for k, v in enumerate(s)`
 
 
 

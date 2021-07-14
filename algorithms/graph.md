@@ -70,6 +70,7 @@ DFS-recursive(G, s):
 * [ ] [1162.As Far from Land as Possible](https://leetcode.com/problems/as-far-from-land-as-possible/)
 * [x] [994.Rotting Oranges](https://leetcode.com/problems/rotting-oranges/)
 * [ ] [1091.Shortest Path in Binary Matrix](https://leetcode.com/problems/shortest-path-in-binary-matrix/)
+* [x] [797.All Paths From Source to Target](https://leetcode.com/problems/all-paths-from-source-to-target/) \| dfs + backtrack
 
 ## **1. Single Source Shortest/Longest Path - SSSP/SSLP** 
 
@@ -351,8 +352,90 @@ def canFinish(N, prerequisites):
 
 ### **3.2 Problems: Topological Sort**
 
+* [x] [997.Find the Town Judge](https://leetcode.com/problems/find-the-town-judge/)
+  * [x] SIMILAR: [1557.Minimum Number of Vertices to Reach All Nodes](https://leetcode.com/problems/minimum-number-of-vertices-to-reach-all-nodes/)
+  * **`return list(set(range(n)) - set(y for x,y in edges))`**
 * [ ] 
 ## **4. Union Find `O(logV)`**
+
+### 4.1 Template
+
+* [x] [684.Redundant Connection](https://leetcode.com/problems/redundant-connection/)
+* [x] [200. Number of Islands](https://leetcode.com/problems/number-of-islands/) \| DSU in matrix graph ⭐️⭐️ 💯
+
+{% tabs %}
+{% tab title="684" %}
+```python
+def findRedundantConnection(self, edges: List[List[int]]) -> List[int]:
+    def find(who,x):                    # find
+        while who[x] != x:
+            who[x] = who[who[x]]
+            x = who[x]
+        return x
+    
+    def union(who,x,y):                 # union
+        whox = find(who,x)
+        whoy = find(who,y)
+        who[whox] = whoy
+    
+    n = len(edges)                
+    who = [i for i in range(n+1)]        # init
+    
+    for x,y in edges:
+        whox = find(who,x)
+        whoy = find(who,y)
+        if whox != whoy:
+            union(who,x,y)
+        else:
+            return [x,y]
+    return []
+```
+{% endtab %}
+
+{% tab title="200. ⭐️" %}
+```python
+n,m = len(g), len(g[0])
+        
+cnt = sum(g[i][j] == 0 for i in range(n) for j in range(m))  #initialize to #0cells
+who = [i for i in range(n*m)]    #just its id in a decoupled matrix
+
+def find(x,y):
+    while who[x] != x:
+        who[x] = who[who[x]]
+        x = who[x]
+    return x
+def union(cnt,x,y):
+    whox,whoy = who[x],who[y]
+    who[whoy] = whoy
+    cnt -= 1
+
+
+for i in range(n):
+    for j in range(m):
+        if g[i][j] == 0:
+            if j<len(g[0])-1 :union(cnt,i,i+1)    #sequentially add down & right
+            if i<len(g)-1 :union(cnt,i,i+j)
+return cnt
+```
+{% endtab %}
+{% endtabs %}
+
+ 
+
+### 4.2 Problems
+
+* [x] [721.Accounts Merge](https://leetcode.com/problems/accounts-merge/) 🐽
+* [x] [547. Number of Provinces](https://leetcode.com/problems/number-of-provinces/)
+* [x] [959.Regions Cut By Slashes](https://leetcode.com/problems/regions-cut-by-slashes/) \| 💯\| `/\\ /` 🤩
+  * Convert every `/` into 3X3 matrix to boil this Q down to \#200.Number of Islands
+* [ ] 261, [https://leetcode.com/problems/graph-valid-tree/](https://leetcode.com/problems/graph-valid-tree/) 💲
+* [ ] 1697, [https://leetcode.com/problems/checking-existence-of-edge-length-limited-paths/](https://leetcode.com/problems/checking-existence-of-edge-length-limited-paths/) 352, [https://leetcode.com/problems/data-stream-as-disjoint-intervals/](https://leetcode.com/problems/data-stream-as-disjoint-intervals/) 1434, [https://leetcode.com/problems/number-of-ways-to-wear-different-hats-to-each-other/](https://leetcode.com/problems/number-of-ways-to-wear-different-hats-to-each-other/) 1632, [https://leetcode.com/problems/rank-transform-of-a-matrix/](https://leetcode.com/problems/rank-transform-of-a-matrix/) 128, [https://leetcode.com/problems/longest-consecutive-sequence/](https://leetcode.com/problems/longest-consecutive-sequence/) 305, [https://leetcode.com/problems/number-of-islands-ii/](https://leetcode.com/problems/number-of-islands-ii/) 💲 1202, [https://leetcode.com/problems/smallest-string-with-swaps/](https://leetcode.com/problems/smallest-string-with-swaps/) 749, [https://leetcode.com/problems/contain-virus/](https://leetcode.com/problems/contain-virus/) 1627, [https://leetcode.com/problems/graph-connectivity-with-threshold/](https://leetcode.com/problems/graph-connectivity-with-threshold/) 1168, [https://leetcode.com/problems/optimize-water-distribution-in-a-village/](https://leetcode.com/problems/optimize-water-distribution-in-a-village/) 1579, [https://leetcode.com/problems/remove-max-number-of-edges-to-keep-graph-fully-traversable/](https://leetcode.com/problems/remove-max-number-of-edges-to-keep-graph-fully-traversable/) 1061, [https://leetcode.com/problems/lexicographically-smallest-equivalent-string/](https://leetcode.com/problems/lexicographically-smallest-equivalent-string/) 1101, [https://leetcode.com/problems/the-earliest-moment-when-everyone-become-friends/](https://leetcode.com/problems/the-earliest-moment-when-everyone-become-friends/) 1258, [https://leetcode.com/problems/synonymous-sentences/](https://leetcode.com/problems/synonymous-sentences/) 1319, [https://leetcode.com/problems/number-of-operations-to-make-network-connected/](https://leetcode.com/problems/number-of-operations-to-make-network-connected/) 737, [https://leetcode.com/problems/sentence-similarity-ii/](https://leetcode.com/problems/sentence-similarity-ii/) 990, [https://leetcode.com/problems/satisfiability-of-equality-equations/](https://leetcode.com/problems/satisfiability-of-equality-equations/) 924, [https://leetcode.com/problems/minimize-malware-spread/](https://leetcode.com/problems/minimize-malware-spread/) 928, [https://leetcode.com/problems/minimize-malware-spread-ii/](https://leetcode.com/problems/minimize-malware-spread-ii/) 839, [https://leetcode.com/problems/similar-string-groups/](https://leetcode.com/problems/similar-string-groups/) 711, [https://leetcode.com/problems/number-of-distinct-islands-ii/](https://leetcode.com/problems/number-of-distinct-islands-ii/)
+
+### **4.3 Resources:**
+
+* [WilliamFiset videos](https://www.youtube.com/watch?v=ibjEGG7ylHk&ab_channel=WilliamFiset)
+
+\*\*\*\*
 
 ## 5. **Graph colouring/Bipartition**
 
