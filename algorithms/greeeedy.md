@@ -366,6 +366,16 @@ def kClosest(self, points: List[List[int]], k: int) -> List[List[int]]:
 
 ## 7.Binary Search
 
+### 7.0 Notes
+
+```python
+import bisect
+index = bisect.bisect_left(arr, x)   #first element "greater than or equal to x"
+index = bisect.bisect_right(arr, x)  #first element "greater than x" 
+```
+
+### 7.1 Problems
+
 * [ ] [1044. Longest Duplicate Substring](https://leetcode.com/problems/longest-duplicate-substring/) ⚡️ - learn [this approach](https://leetcode.com/problems/longest-duplicate-substring/discuss/695029/python-binary-search-with-rabin-karp-o%28n-log-n%29-explained) =&gt; **Rolling Hash/Rabin Karp**
 * [ ] [658.Find K Closest Elements](https://leetcode.com/problems/find-k-closest-elements/) \| [Soln](https://leetcode.com/problems/find-k-closest-elements/discuss/915047/Finally-I-understand-it-and-so-can-you.)
 
