@@ -2,8 +2,15 @@
 
 ## **Notes:**
 
-* 1&lt; 1\* pow\(2,n\)
-* 1&gt;&gt;n =&gt; 1/ pow\(2,n\)
+```python
+>>> n = 19
+>>> bin(n)
+'0b10011'
+>>> n.bit_count()
+3
+>>> (-n).bit_count()
+3
+```
 
 <table>
   <thead>
@@ -146,12 +153,34 @@
         </ul>
       </td>
     </tr>
-    <tr>
-      <td style="text-align:left"></td>
-      <td style="text-align:left"></td>
-    </tr>
   </tbody>
 </table>
+
+* **Bitmasking**:
+
+```python
+
+def display(SUBSET):        #prints the actual numbers in given SUBSET
+    for bit_no in range(0,10):
+       if SUBSET and (1<<bit_no):
+           print(bit_no + 1)
+
+def add(SUBSET,x):
+   SUBSET = SUBSET ^ (1<<(x-1))   # alters the (x-1)th bit
+def remove(SUBSET,x):
+   SUBSET = SUBSET ^ (1<<(x-1))   # alters the (x-1)th bit : same thing works here too
+
+SUBSET = 15        # 15 is the BITMASK a subset {1,2,3,4} from a set of {1,10}
+display(SUBSET)
+add(SUBSET,2)
+remove(SUBSET,5)
+```
+
+
+
+
+
+
 
 ## Problems: Bitwise
 

@@ -57,19 +57,19 @@ DFS-recursive(G, s):
 {% endtab %}
 {% endtabs %}
 
-* [ ] [The Maze](https://leetfree.com/problems/the-maze)
+* [x] [The Maze](https://leetfree.com/problems/the-maze)
 * [x] [130. Surrounded Regions](https://leetcode.com/problems/surrounded-regions/)
 * [x] [1020.Number of Enclaves](https://leetcode.com/problems/number-of-enclaves/)
-* [ ] [1376.Time Needed to Inform All Employees](https://leetcode.com/problems/time-needed-to-inform-all-employees/)
+* [x] [1376.Time Needed to Inform All Employees](https://leetcode.com/problems/time-needed-to-inform-all-employees/)
 * [ ] [1254.Number of Closed Islands](https://leetcode.com/problems/number-of-closed-islands/)
 * [ ] [200. Number of Islands](https://leetcode.com/problems/number-of-islands/)
-* [ ] [841.Keys and Rooms](https://leetcode.com/problems/keys-and-rooms/)
+* [x] [841.Keys and Rooms](https://leetcode.com/problems/keys-and-rooms/)
 * [ ] [895. Max Area of Island](https://leetcode.com/problems/max-area-of-island/)
 * [ ] [733. Flood Fill](https://leetcode.com/problems/flood-fill/)
 * [ ] [542. 01 Matrix](https://leetcode.com/problems/01-matrix/)
 * [ ] [1162.As Far from Land as Possible](https://leetcode.com/problems/as-far-from-land-as-possible/)
-* [x] [994.Rotting Oranges](https://leetcode.com/problems/rotting-oranges/)
-* [ ] [1091.Shortest Path in Binary Matrix](https://leetcode.com/problems/shortest-path-in-binary-matrix/)
+* [x] [994.Rotting Oranges](https://leetcode.com/problems/rotting-oranges/) 🍊🍊
+* [x] [1091.Shortest Path in Binary Matrix](https://leetcode.com/problems/shortest-path-in-binary-matrix/) //see 'Why DP doesnt work here!!'
 * [x] [797.All Paths From Source to Target](https://leetcode.com/problems/all-paths-from-source-to-target/) \| dfs + backtrack
 
 ## **1. Single Source Shortest/Longest Path - SSSP/SSLP** 
@@ -206,7 +206,7 @@ else    : dp[k][i][j] = min( dp[k-1][i][j] ,dp[k-1][i][k] + dp[k-1][k][j] )
 
 | - | BFS | Dijkstra's | BellmanFord | FloydWarshall |
 | :--- | :--- | :--- | :--- | :--- |
-| **Complexity** | `O(V+E)` | `O((E+V)logV)` | `O(EV)` | `O(V^3)` |
+| **Complexity** | `O(V+E)` | `O(ElogV)` | `O(EV)` | `O(V^3)` |
 | **Recommended Graph Size** | large | large/medium | medium/small | small |
 | **Good for APSP?** | only works on unweighted graphs | Ok | Bad | Yes |
 | **Can Detect Neg. Cycles?** | No | No  | Yes | Yes |
@@ -216,19 +216,18 @@ else    : dp[k][i][j] = min( dp[k-1][i][j] ,dp[k-1][i][k] + dp[k-1][k][j] )
 ### 1.x Problems: **SSSP/SSLP** 
 
 * [x] [743. Network Delay Time](https://leetcode.com/problems/network-delay-time/)  🍪🍪
-* [ ] [1631.Path With Minimum Effort](https://leetcode.com/problems/path-with-minimum-effort/)
-* [ ] [787. Cheapest Flights Within K Stops](https://leetcode.com/problems/cheapest-flights-within-k-stops/)
+* [x] [1631.Path With Minimum Effort](https://leetcode.com/problems/path-with-minimum-effort/)
+* [x] [787. Cheapest Flights Within K Stops](https://leetcode.com/problems/cheapest-flights-within-k-stops/)[ ✅](https://leetcode.com/problems/cheapest-flights-within-k-stops/
+
+  )
 * [ ] [882. Reachable Nodes In Subdivided Graph](https://leetcode.com/problems/reachable-nodes-in-subdivided-graph/)
-* [ ] [1514.Path with Maximum Probability](https://leetcode.com/problems/path-with-maximum-probability/)
+* [x] [1514.Path with Maximum Probability](https://leetcode.com/problems/path-with-maximum-probability/) \| maxHeap
 * [ ] [1334.Find the City With the Smallest Number of Neighbors at a Threshold Distance](https://leetcode.com/problems/find-the-city-with-the-smallest-number-of-neighbors-at-a-threshold-distance/)
 * [ ] [1368.Minimum Cost to Make at Least One Valid Path in a Grid](https://leetcode.com/problems/minimum-cost-to-make-at-least-one-valid-path-in-a-grid/)
 * [ ] [1786. Number of Restricted Paths From First to Last Node](https://leetcode.com/problems/number-of-restricted-paths-from-first-to-last-node/)
 * [ ] [The Maze II](https://leetfree.com/problems/the-maze-ii)
 * [ ] [The Maze III ](https://leetfree.com/problems/the-maze-iii)
-* [x] [1929.Minimum Cost to Reach Destination in Time](https://leetcode.com/problems/minimum-cost-to-reach-destination-in-time/) \| @contest 🚀❤️
-* [ ] [https://leetcode.com/problems/cheapest-flights-within-k-stops/ ✅  
-  
-  ](https://leetcode.com/problems/cheapest-flights-within-k-stops/
+* [x] [1929.Minimum Cost to Reach Destination in Time](https://leetcode.com/problems/minimum-cost-to-reach-destination-in-time/) \| @contest 🚀❤️[ ](https://leetcode.com/problems/cheapest-flights-within-k-stops/
 
   )
 
