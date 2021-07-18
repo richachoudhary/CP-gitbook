@@ -120,7 +120,7 @@ printSubsets(str,'') # init with I/P & O/P
 
 ## 2. D&C
 
-## 1. Backtrack
+## 3. Backtrack
 
 
 

@@ -251,64 +251,71 @@ Kruskal : O\(ElogV\) most time consuming operation is sorting
 {% tabs %}
 {% tab title="Prims" %}
 ```python
-import heapq
-import collections
+heap = []
+vis = set()
+mst_dist = 0
 
-def minimumCost(N: int, connections: List[List[int]]) -> int:
-    graph = collections.defaultdict(list)
-    for a,b,w in connections:
-        graph[a].append((b,w))
-        graph[b].append((a,w))
-    visited,cost = set(),0
-    minHeap = [(0,1)]        # min Priority Queue
-    while minHeap:
-        minCost,city = heapq.heappop(minHeap)
-        if city not in visited:
-            cost += minCost
-            visited.add(city)
-            for nxt,c in graph[city]:
-                if nxt not in visited:
-                    heapq.heappush(minHeap,(c,nxt))
-    return -1 if len(visited) < N else cost
+heappush(heap,(0,1))    # w,x
+while heap:
+    w,x = heappop(heap)
+
+    if x in vis:
+        continue
+    mst_dist += w
+    vis.add(x)
+
+    for j,jw in graph[x]:
+        if j not in vis:
+            heappush(heap,(jw,j))
+
+if len(vis) < n:
+    print(-1)
+else:
+    print(mst_dist)
 ```
 {% endtab %}
 
 {% tab title="Kruskals" %}
 ```python
-def minimumCost(self, N: int, connections: List[List[int]]) -> int:
-    def find(node,par):
-        if par[node] == node:
-            return node
-        par[node] = find(par[node],par)
-        return par[node]
+def find(who,x):
+    while who[x] != x:
+        who[x] = who[who[x]]
+        x = who[x]
+    return x
 
-    def union(a,b,par,rank1,a_rep,b_rep):
-        parent_a, par_b = par[a], par[b]
-        par[parent_a] = par[parent_b]=
-            
-    parent = [x for x in range(N+1)]
-    res,i,e,result = 0,0,0,[]
-    graph = sorted(connections,key = lambda x:x[2])
-    while i < len(graph) and e < N - 1:
-        u,v,w = graph[i]
-        uroot,vroot = find(u,parent),find(v,parent)
-        if uroot != vroot:
-            result.append([u,v])
-            res += w
-            e += 1
-            union(u,v,parent)
-        i += 1
-    if len(result) == N-1:
-        return res
-    else:
-        return -1
+def union(who,x,y):
+    whox, whoy = who[x], who[y]
+    who[whoy] = whox
+
+graph = []
+
+for _ in range(m):
+    x,y,w = map(int,input().split())
+    graph.append((x,y,w))
+
+graph.sort(key = lambda x: x[2])    # the costliest step in complexity
+who = [i for i in range(n+1)]
+
+mst_dist,mst_nodes = 0,[]
+
+for x,y,w in graph:
+    whox, whoy = find(who,x),find(who,y)
+    if whox != whoy:
+        union(who,x,y)
+        mst_dist += w
+        mst_nodes.append([x,y])
+if len(mst_nodes) != n-1:
+    print(-1)
+else:
+    print(mst_dist)
 ```
 {% endtab %}
 {% endtabs %}
 
 ### 2.2 Problems: MST
 
-* [ ] [https://leetcode.com/problems/connecting-cities-with-minimum-cost/](https://leetcode.com/problems/connecting-cities-with-minimum-cost/)
+* [x] [1584. Min Cost to Connect All Points](https://leetcode.com/problems/min-cost-to-connect-all-points/) 💯
+* [ ] [https://leetcode.com/problems/connecting-cities-with-minimum-cost/](https://leetcode.com/problems/connecting-cities-with-minimum-cost/) 💲
 * [ ] 
 ## 3. Topological Sort `O(V+E)`
 
