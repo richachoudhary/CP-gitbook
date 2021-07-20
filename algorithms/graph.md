@@ -70,6 +70,7 @@ DFS-recursive(G, s):
 * [ ] [1162.As Far from Land as Possible](https://leetcode.com/problems/as-far-from-land-as-possible/)
 * [x] [994.Rotting Oranges](https://leetcode.com/problems/rotting-oranges/) 🍊🍊
 * [x] [1091.Shortest Path in Binary Matrix](https://leetcode.com/problems/shortest-path-in-binary-matrix/) //see 'Why DP doesnt work here!!'
+  * _i.e. for a lonnngggg zigzag path going through \(7,0\)....-&gt;\(1,1\)-&gt;... ; by you wont have value of dp\[7\]\[0\] when you're calculating dp\[1\]\[1\]_
 * [x] [797.All Paths From Source to Target](https://leetcode.com/problems/all-paths-from-source-to-target/) \| dfs + backtrack
 
 ## **1. Single Source Shortest/Longest Path - SSSP/SSLP** 
@@ -326,32 +327,43 @@ else:
   * **Logic**: Repeatedly remove the vertices with no dependencies
 
 {% tabs %}
-{% tab title="Kahn\'s Algo for Topological Sort" %}
+{% tab title="Kahn\'s Algo for Topological Sort\(BFS Way\)" %}
 ```python
-from collections import defaultdict
+graph = defaultdict(list)
+indeg = [0 for _ in range(N)]
+for x,y in prereq:
+    graph[y].append(x)
+    indeg[x] += 1
+res,q = [],[]
+for i in range(N):
+    if indeg[i] == 0:
+        q.append(i)
+while q:
+    e = q.pop()
+    res.append(e)
+    
+    for j in graph[e]:
+        indeg[j] -= 1
+        if indeg[j] == 0:
+            q.append(j)
+return len(res) == N # check if all vertices are in topo OR is topo-traversal possible?
+return res
+```
+{% endtab %}
 
-def canFinish(N, prerequisites):
-    graph,queue,cnt = defaultdict(list),[],0
-    inDeg = [0] * N
-    for j,i in prerequisites:
-        graph[i].append(j)
-        inDeg[j] += 1
-    for i in range(numCourses):
-        if inDeg[i] == 0:
-            queue.append(i)
-    while queue:
-        ele = queue.pop(0)
-        for j in graph[ele]:
-            inDeg[j] -= 1
-            if inDeg[j] == 0:
-                queue.append(j)
-        cnt += 1
-    return queue
-    # check if all vertices are in topo OR is topo-traversal possible?
-    if cnt == N:
-        return True
-    else:
-        return False
+{% tab title="TopoSort\(DFS way\)" %}
+```python
+def topological_sort():
+    for each node:
+        if visited[node] is False:
+            dfs(node)
+
+def dfs(node):
+    visited[node] = True
+    for nei in neighbours[node]:
+        dfs(node)
+	if visited(node) = false:
+		ret.insert_at_the_front(node)
 ```
 {% endtab %}
 {% endtabs %}
@@ -361,7 +373,31 @@ def canFinish(N, prerequisites):
 * [x] [997.Find the Town Judge](https://leetcode.com/problems/find-the-town-judge/)
   * [x] SIMILAR: [1557.Minimum Number of Vertices to Reach All Nodes](https://leetcode.com/problems/minimum-number-of-vertices-to-reach-all-nodes/)
   * **`return list(set(range(n)) - set(y for x,y in edges))`**
-* [ ] 
+* [x] [207. Course Schedule](https://leetcode.com/problems/course-schedule/)
+* [x] [210. Course Schedule II](https://leetcode.com/problems/course-schedule-ii/)
+* [x] 1462.[Course Schedule IV](https://leetcode.com/problems/course-schedule-iv) ⭐️ \| see how to maintain all-inclusive prerequisite list 
+* [x] [269. Alien Dictionary](https://leetfree.com/problems/alien-dictionary) 💲
+* [x] [329. Longest Increasing Path in a Matrix](https://leetcode.com/problems/longest-increasing-path-in-a-matrix/) 💯
+* [ ] [444. Sequence Reconstruction](https://leetcode.com/problems/sequence-reconstruction/)
+* [ ] [1203. Sort Items by Groups Respecting Dependencies](https://leetcode.com/problems/sort-items-by-groups-respecting-dependencies/)
+* [ ] -------------------------------------- \[Medium\] -----------------------------------------------
+* [ ] 851.[Loud and Rich](https://leetcode.com/problems/loud-and-rich)
+* [ ] 802.[Find Eventual Safe States](https://leetcode.com/problems/find-eventual-safe-states)
+* [ ] 1786. [Number of Restricted Paths From First to Last Node](https://leetcode.com/problems/number-of-restricted-paths-from-first-to-last-node)
+* [ ] 310. [Minimum Height Trees](https://leetcode.com/problems/minimum-height-trees)
+* [ ] 444.[Sequence Reconstruction](https://leetcode.com/problems/sequence-reconstruction)
+* [ ] --------------------------------------- \[Hard\] ---------------------------------------------------
+* [ ] 1591.[Strange Printer II](https://leetcode.com/problems/strange-printer-ii)
+* [ ] 1916.[Count Ways to Build Rooms in an Ant Colony](https://leetcode.com/problems/count-ways-to-build-rooms-in-an-ant-colony)
+* [ ] 1719.[Number Of Ways To Reconstruct A Tree](https://leetcode.com/problems/number-of-ways-to-reconstruct-a-tree)
+* [ ] 1857.[Largest Color Value in a Directed Graph](https://leetcode.com/problems/largest-color-value-in-a-directed-graph)
+* [ ] 631.[Design Excel Sum Formula](https://leetcode.com/problems/design-excel-sum-formula)
+* [ ] 1632.[Rank Transform of a Matrix](https://leetcode.com/problems/rank-transform-of-a-matrix)
+
+
+
+
+
 ## **4. Union Find `O(logV)`**
 
 ### 4.1 Template
@@ -374,15 +410,14 @@ def canFinish(N, prerequisites):
 ```python
 def findRedundantConnection(self, edges: List[List[int]]) -> List[int]:
     def find(who,x):                    # find
-        while who[x] != x:
-            who[x] = who[who[x]]
-            x = who[x]
-        return x
+        if x != who[x]:
+            who[x] = find(who[x])
+        return who[x]
     
     def union(who,x,y):                 # union
         whox = find(who,x)
         whoy = find(who,y)
-        who[whox] = whoy
+        who[whox] = whoy                # x --> y
     
     n = len(edges)                
     who = [i for i in range(n+1)]        # init
@@ -412,9 +447,8 @@ def find(x,y):
     return x
 def union(cnt,x,y):
     whox,whoy = who[x],who[y]
-    who[whoy] = whoy
+    who[whoy] = whox                # x <--- y    
     cnt -= 1
-
 
 for i in range(n):
     for j in range(m):
@@ -434,8 +468,209 @@ return cnt
 * [x] [547. Number of Provinces](https://leetcode.com/problems/number-of-provinces/)
 * [x] [959.Regions Cut By Slashes](https://leetcode.com/problems/regions-cut-by-slashes/) \| 💯\| `/\\ /` 🤩
   * Convert every `/` into 3X3 matrix to boil this Q down to \#200.Number of Islands
-* [ ] 261, [https://leetcode.com/problems/graph-valid-tree/](https://leetcode.com/problems/graph-valid-tree/) 💲
-* [ ] 1697, [https://leetcode.com/problems/checking-existence-of-edge-length-limited-paths/](https://leetcode.com/problems/checking-existence-of-edge-length-limited-paths/) 352, [https://leetcode.com/problems/data-stream-as-disjoint-intervals/](https://leetcode.com/problems/data-stream-as-disjoint-intervals/) 1434, [https://leetcode.com/problems/number-of-ways-to-wear-different-hats-to-each-other/](https://leetcode.com/problems/number-of-ways-to-wear-different-hats-to-each-other/) 1632, [https://leetcode.com/problems/rank-transform-of-a-matrix/](https://leetcode.com/problems/rank-transform-of-a-matrix/) 128, [https://leetcode.com/problems/longest-consecutive-sequence/](https://leetcode.com/problems/longest-consecutive-sequence/) 305, [https://leetcode.com/problems/number-of-islands-ii/](https://leetcode.com/problems/number-of-islands-ii/) 💲 1202, [https://leetcode.com/problems/smallest-string-with-swaps/](https://leetcode.com/problems/smallest-string-with-swaps/) 749, [https://leetcode.com/problems/contain-virus/](https://leetcode.com/problems/contain-virus/) 1627, [https://leetcode.com/problems/graph-connectivity-with-threshold/](https://leetcode.com/problems/graph-connectivity-with-threshold/) 1168, [https://leetcode.com/problems/optimize-water-distribution-in-a-village/](https://leetcode.com/problems/optimize-water-distribution-in-a-village/) 1579, [https://leetcode.com/problems/remove-max-number-of-edges-to-keep-graph-fully-traversable/](https://leetcode.com/problems/remove-max-number-of-edges-to-keep-graph-fully-traversable/) 1061, [https://leetcode.com/problems/lexicographically-smallest-equivalent-string/](https://leetcode.com/problems/lexicographically-smallest-equivalent-string/) 1101, [https://leetcode.com/problems/the-earliest-moment-when-everyone-become-friends/](https://leetcode.com/problems/the-earliest-moment-when-everyone-become-friends/) 1258, [https://leetcode.com/problems/synonymous-sentences/](https://leetcode.com/problems/synonymous-sentences/) 1319, [https://leetcode.com/problems/number-of-operations-to-make-network-connected/](https://leetcode.com/problems/number-of-operations-to-make-network-connected/) 737, [https://leetcode.com/problems/sentence-similarity-ii/](https://leetcode.com/problems/sentence-similarity-ii/) 990, [https://leetcode.com/problems/satisfiability-of-equality-equations/](https://leetcode.com/problems/satisfiability-of-equality-equations/) 924, [https://leetcode.com/problems/minimize-malware-spread/](https://leetcode.com/problems/minimize-malware-spread/) 928, [https://leetcode.com/problems/minimize-malware-spread-ii/](https://leetcode.com/problems/minimize-malware-spread-ii/) 839, [https://leetcode.com/problems/similar-string-groups/](https://leetcode.com/problems/similar-string-groups/) 711, [https://leetcode.com/problems/number-of-distinct-islands-ii/](https://leetcode.com/problems/number-of-distinct-islands-ii/)
+* [x] [261. Graph Valid Tree](https://protegejj.gitbook.io/algorithm-practice/leetcode/union-find/261-graph-valid-tree)  💲\| check both: cycle & connected
+* [x] [1697.Checking Existence of Edge Length Limited Paths](https://leetcode.com/problems/checking-existence-of-edge-length-limited-paths/) 🍪🍪🍪\|also the SMART way to retain index
+* [x] [947.Most Stones Removed with Same Row or Column](https://leetcode.com/problems/most-stones-removed-with-same-row-or-column/) \| leave everything & Do this!!  ✅🚀🚀
+* [x] [1331.Rank Transform of an Array](https://leetcode.com/problems/rank-transform-of-an-array/) \| tag:Easy
+* [x] [1632.Rank Transform of a Matrix](https://leetcode.com/problems/rank-transform-of-a-matrix/) \| **GOOGLE!!!!..........last time 🐽🐽🐽**
+* [ ] [352.Data Stream as Disjoint Intervals](https://leetcode.com/problems/data-stream-as-disjoint-intervals/)
+* [ ] 128, [https://leetcode.com/problems/longest-consecutive-sequence/](https://leetcode.com/problems/longest-consecutive-sequence/) 305, [https://leetcode.com/problems/number-of-islands-ii/](https://leetcode.com/problems/number-of-islands-ii/) 💲 1202, [https://leetcode.com/problems/smallest-string-with-swaps/](https://leetcode.com/problems/smallest-string-with-swaps/) 749, [https://leetcode.com/problems/contain-virus/](https://leetcode.com/problems/contain-virus/) 1627, [https://leetcode.com/problems/graph-connectivity-with-threshold/](https://leetcode.com/problems/graph-connectivity-with-threshold/) 1168, [https://leetcode.com/problems/optimize-water-distribution-in-a-village/](https://leetcode.com/problems/optimize-water-distribution-in-a-village/) 1579, [https://leetcode.com/problems/remove-max-number-of-edges-to-keep-graph-fully-traversable/](https://leetcode.com/problems/remove-max-number-of-edges-to-keep-graph-fully-traversable/) 1061, [https://leetcode.com/problems/lexicographically-smallest-equivalent-string/](https://leetcode.com/problems/lexicographically-smallest-equivalent-string/) 1101, [https://leetcode.com/problems/the-earliest-moment-when-everyone-become-friends/](https://leetcode.com/problems/the-earliest-moment-when-everyone-become-friends/) 1258, [https://leetcode.com/problems/synonymous-sentences/](https://leetcode.com/problems/synonymous-sentences/) 1319, [https://leetcode.com/problems/number-of-operations-to-make-network-connected/](https://leetcode.com/problems/number-of-operations-to-make-network-connected/) 737, [https://leetcode.com/problems/sentence-similarity-ii/](https://leetcode.com/problems/sentence-similarity-ii/) 990, [https://leetcode.com/problems/satisfiability-of-equality-equations/](https://leetcode.com/problems/satisfiability-of-equality-equations/) 924, [https://leetcode.com/problems/minimize-malware-spread/](https://leetcode.com/problems/minimize-malware-spread/) 928, [https://leetcode.com/problems/minimize-malware-spread-ii/](https://leetcode.com/problems/minimize-malware-spread-ii/) 839, [https://leetcode.com/problems/similar-string-groups/](https://leetcode.com/problems/similar-string-groups/) 711, [https://leetcode.com/problems/number-of-distinct-islands-ii/](https://leetcode.com/problems/number-of-distinct-islands-ii/)
+
+{% tabs %}
+{% tab title="947.✅🚀" %}
+```python
+'''
+-> stones_to_be_removed = #total_stones - #forests(or Unions)
+-> union row -> cols (to distinguish b/w row & col index, do col = col + 1000) 
+'''
+n = len(stones)
+parent = [i for i in range(n)]  # id = index here
+
+def find(x):
+    if parent[x] != x:
+        parent[x] = find(parent[x])
+    return parent[x]
+
+def union(x,y):
+    parent_x = find(x)
+    parent_y = find(y)
+
+    if parent_x == parent_y:
+        return 
+    elif parent_x > parent_y:
+        parent[parent_x] = parent_y
+    else:
+        parent[parent_y] = parent_x
+
+# check if stones are connected
+def check(i,j):
+    return stones[i][0] == stones[j][0] or stones[i][1] == stones[j][1]
+
+Xs = {} # set for x axis
+Ys = {} # set for y axis
+for i,(x,y) in enumerate(stones):
+    if x not in Xs:
+        Xs[x] = i
+    if y not in Ys:
+        Ys[y] = i
+
+for i,(x,y) in enumerate(stones):
+    if Xs[x] != i:
+        union(i,Xs[x])
+    if Ys[y] != i:
+        union(i,Ys[y])
+
+ans = 0
+for i in range(n):
+    if parent[i] != i:
+        ans+=1
+
+return ans
+```
+{% endtab %}
+
+{% tab title="261.🔥" %}
+```java
+public boolean validTree(int n, int[][] edges) {
+    List<Set<Integer>> adjList = new ArrayList<>();
+
+    for (int i = 0; i < n; i++) {
+        adjList.add(new HashSet<>());
+    }
+
+    for (int[] edge : edges) {
+        adjList.get(edge[0]).add(edge[1]);
+        adjList.get(edge[1]).add(edge[0]);
+    }
+
+    boolean[] visited = new boolean[n];
+
+    // Check if graph has cycle
+    if (hasCycle(0, visited, adjList, -1)) {
+        return false;
+    }
+
+    // Check if graph is connected
+    for (int i = 0; i < n; i++) {
+        if (!visited[i]) {
+            return false;
+        }
+    }
+    return true;
+}
+
+public boolean hasCycle(int node, boolean[] visited, List<Set<Integer>> adjList, int parent) {
+    visited[node] = true;
+
+    for (int nextNode : adjList.get(node)) {
+        // (1) If nextNode is visited but it is not the parent of the curNode, then there is cycle
+        // (2) If nextNode is not visited but we still find the cycle later on, return true;
+        if ((visited[nextNode] && parent != nextNode) || (!visited[nextNode] && hasCycle(nextNode, visited, adjList, node))) {
+            return true;
+        }
+    }
+    return false;
+}
+```
+{% endtab %}
+
+{% tab title="1697.💪" %}
+```python
+# 1. DFS : O(N^2) fails for N = 10^5 =================================
+def dfs(x,y,z):
+    if x==y: return True
+    vis[x] = True
+    
+    for j,wt in graph[x]:
+        if not vis[j] and wt < z:
+            if dfs(j,y,z):
+                return True
+    return False
+        
+res = []
+
+graph = defaultdict(list)
+
+for x,y,w in edgeList:
+    graph[x].append((y,w))
+    graph[y].append((x,w))
+
+for x,y,w in queries:
+    vis = [False for _ in range(N)]
+    if dfs(x,y,w):
+        res.append(True)
+    else:
+        res.append(False)
+return res
+
+
+# 2. DSU: NlogN (sorting) ===========================
+'''
+* Add edges to the graph from smallest to largest.
+* Answer queries from smallest to largest.
+* Use a Union-Find Data Structure to check connectivity.
+'''
+
+who = list(set(range(N)))
+def find(x):
+    while who[x] != x:
+        who[x] = who[who[x]]
+        x = who[x]
+    return x
+
+    
+def union(x,y):
+    whox, whoy = who[x], who[y]
+    who[whox] = whoy    # x --> y
+def areConnected(x,y):
+    return find(x) == find(y)
+
+# sort edges & queries by weight
+e = deque(sorted((d,x,y) for (x,y,d) in edgeList))
+q = list(sorted((lim,x,y,i) for i,(x,y,lim) in enumerate(queries)))
+
+res = [False for _ in range(len(q))]
+
+for lim,x,y,i in q:
+    while e and e[0][0] < lim:
+        _,u,v = e.popleft()
+        union(u,v)            
+    if areConnected(x,y):
+        res[i] = True
+return res
+```
+{% endtab %}
+
+{% tab title="1632.🐽🐽" %}
+```python
+n, m = len(A), len(A[0])
+rank = [0] * (m + n)
+d = collections.defaultdict(list)
+for i in range(n):
+    for j in range(m):
+        d[A[i][j]].append([i, j])
+
+def find(i):
+    if p[i] != i:
+        p[i] = find(p[i])
+    return p[i]
+
+for a in sorted(d):
+    p = list(set(range(m + n)))
+    rank2 = rank[:]
+    for i, j in d[a]:
+        i, j = find(i), find(j + n)
+        p[i] = j
+        rank2[j] = max(rank2[i], rank2[j])
+    for i, j in d[a]:
+        rank[i] = rank[j + n] = A[i][j] = rank2[find(i)] + 1
+return A
+
+# https://leetcode.com/problems/rank-transform-of-a-matrix/discuss/909142/Python-Union-Find
+# https://leetcode.com/problems/rank-transform-of-a-matrix/discuss/909212/C%2B%2B-with-picture
+```
+{% endtab %}
+{% endtabs %}
 
 ### **4.3 Resources:**
 
@@ -443,17 +678,150 @@ return cnt
 
 \*\*\*\*
 
-## 5. **Graph colouring/Bipartition**
+## 5. **Graph colouring/Bipartition ⚪️🔴🔵**
+
+* [x] \*\*\*\*[**785.** Is Graph Bipartite?](https://leetcode.com/problems/is-graph-bipartite/)
+* [x] [886.Possible Bipartition](https://leetcode.com/problems/possible-bipartition/)
+
+{% tabs %}
+{% tab title="785" %}
+```python
+def dfs(src,col):
+    if vis[src]:    # no need to process already visited node
+        if color[src] != col:
+            return False
+        else:
+            return True
+    color[src] = col
+    vis[src] = True
+    for x in graph[src]:
+        if not dfs(x,col^1):
+            return False
+    return True
+
+color = [0 for _ in range(N)]  # 0:grey, 1:red, 2:blue
+vis = [False for _ in range(N)]
+
+# for every node- if not painted, paint red & do dfs
+for i in range(N):
+    if not vis[i]:
+        if not dfs(i,1):
+            return False
+return True
+```
+{% endtab %}
+{% endtabs %}
 
 ## 6. Cycle Detection
 
-6.1 for Directed graphs
+* **For Undirected graphs =&gt;** use DSU
+* **For Directed graphs =&gt;** [Modified DFS](https://www.algotree.org/algorithms/tree_graph_traversal/depth_first_search/cycle_detection_in_directed_graphs/) \(**`inPath`**\)  OR topological ordering
 
-6.2 for Undirected graphs
+{% tabs %}
+{% tab title="1.Undir::DSU" %}
+```python
+''' 
+=> use DSU on every edge
+LOGIC: for 2 nodes(x,y) connected by an edge have same parent(z); they are in cycle
+    # z-
+    # | \
+    # |  \
+    # @   \
+    # |    \
+    # |     \
+    # @      \
+    # |       \
+    # |        \
+    # x----y----
+'''
+for x,y in edges:
+    if who[x] == who[y]:
+        return true    # cycle exists
+    union(x,y)
+```
+{% endtab %}
+
+{% tab title="2.1Direc::dfs" %}
+```python
+def dfs(x):
+    vis[x] = True
+    inPath[x] = True
+    
+    for j in graph[x]:
+        if inPath[j]:
+            return True        # cycle is present
+        if not vis[j]:
+            dfs(j)
+    return False
+
+vis = [False for _ in range(N)
+inPath = [False for _ in range(N)]
+
+for i in range(N):
+    if not vis[i]:
+        dfs(i)
+```
+{% endtab %}
+
+{% tab title="2.2 Direc::topo" %}
+```
+Approach: 
+In Topological Sort, the idea is to visit the parent node followed by the child node. 
+If the given graph contains a cycle, 
+    then there is at least one node which is a parent as well as a child 
+    so this will break Topological Order.
+     
+Therefore, after the topological sort, 
+    check for every directed edge whether it follows the order or not.
+```
+{% endtab %}
+
+{% tab title="802." %}
+```python
+# find cycles in directed graph
+MEMO = {}
+def hasCycle(x,vis,inPath):
+    if x in MEMO:
+        return MEMO[x]
+    vis[x] = True
+    inPath[x] = True
+    
+    for j in graph[x]:
+        if inPath[j]:
+            MEMO[x] = True
+            return True
+        if not vis[j]:
+            if hasCycle(j,vis,inPath):
+                return True
+    inPath[x] = False   # backtrack step
+    MEMO[x] = False
+    return False
+
+N = len(adj)
+graph = defaultdict(list)
+
+for i,l in enumerate(adj):
+    graph[i].extend(l)
+    
+cycleNodes = []
+
+for i in range(N):
+    vis = [False for _ in range(N)]
+    inPath = [False for _ in range(N)]
+    if hasCycle(i,vis,inPath):
+        cycleNodes.append(i)
+
+# print(cycleNodes)
+return sorted(list(set(range(N)) - set(cycleNodes)))
+
+```
+{% endtab %}
+{% endtabs %}
 
 ### 6.3 Problems: Cycle Detection
 
-* [ ] [802.Find Eventual Safe States](https://leetcode.com/problems/find-eventual-safe-states/)
+* [x] [802.Find Eventual Safe States](https://leetcode.com/problems/find-eventual-safe-states/) .💯 
+* [x] [886.Possible Bipartition](https://leetcode.com/problems/possible-bipartition/)
 
 ## 7. SCCs \(Strongly Connected Cycles\)
 

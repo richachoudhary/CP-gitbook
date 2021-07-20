@@ -405,6 +405,7 @@ return solve(0,k,cursum,mask)
 * [ ] [https://leetcode.com/problems/find-minimum-time-to-finish-all-jobs/](https://leetcode.com/problems/find-minimum-time-to-finish-all-jobs/)
 * [ ] [1411.Number of Ways to Paint N × 3 Grid](https://leetcode.com/problems/number-of-ways-to-paint-n-3-grid/) \| 🔒\| Contest-repeat! 
 * [ ] [1931.Painting a Grid With Three Different Colors](https://leetcode.com/problems/painting-a-grid-with-three-different-colors/)  \| 🔒\| Contest-repeat!
+* [ ] [1434.Number of Ways to Wear Different Hats to Each Other](https://leetcode.com/problems/number-of-ways-to-wear-different-hats-to-each-other/) \| Same as Little Elephant & T-shirts!!!!!
 
 ### 5.1 Resources: Bit DP
 
