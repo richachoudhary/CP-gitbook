@@ -4,6 +4,7 @@
 
 * [x] [1021.Remove Outermost Parentheses](https://leetcode.com/problems/remove-outermost-parentheses/)
 * [x] [443.String Compression](https://leetcode.com/problems/string-compression/)
+* [x] [1520.Maximum Number of Non-Overlapping Substrings](https://leetcode.com/problems/maximum-number-of-non-overlapping-substrings/) 🍪🍪🍪
 
 ## 2. Hashing
 

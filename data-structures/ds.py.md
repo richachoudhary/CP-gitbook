@@ -92,7 +92,9 @@ str1.endswith(str2)     # => returns bool
   *  `d= dict()`
 * **Populating** a key with a value: `d["foo"] = "bar"`
 * To **check if** a dictionary **has a key**:  `foo in d`
-* **Deleting** a key as well as its value: `del d["foo"]`
+* **Deleting** a key as well as its value:
+  * `del d["foo"]`
+  * `d.pop("foo")`
 * **Iterating**: `[(k,v) for k,v in d.items()]`
 * get only **keys**\(as list\): `list1 = list(d)`
 * get only **values**\(as list\): `list2 = d.values()`
@@ -167,8 +169,8 @@ c['a']=4               # Counter({'b': 1, 'c': 1, 'a': 1})
 * **Initialization:** i.e. what to show when key not present:
   *  `d = defaultdict(`**`default_value`**`)`
   * **\(Usage\)**e.g: `d = defaultdict(list)` =&gt; gives empty list \(_useful in graphs_\)
-
-\_\_
+* **Delete a key:** `d.pop("key")`
+* **Delete a value**\(in defaultdict\(list\)\) : `d[key].remove(val)`
 
 ## `heapq` - min heaps
 

@@ -72,6 +72,7 @@ DFS-recursive(G, s):
 * [x] [1091.Shortest Path in Binary Matrix](https://leetcode.com/problems/shortest-path-in-binary-matrix/) //see 'Why DP doesnt work here!!'
   * _i.e. for a lonnngggg zigzag path going through \(7,0\)....-&gt;\(1,1\)-&gt;... ; by you wont have value of dp\[7\]\[0\] when you're calculating dp\[1\]\[1\]_
 * [x] [797.All Paths From Source to Target](https://leetcode.com/problems/all-paths-from-source-to-target/) \| dfs + backtrack
+* [x] [332.Reconstruct Itinerary](https://leetcode.com/problems/reconstruct-itinerary/) \| dfs + backtrack ✅✈️
 
 ## **1. Single Source Shortest/Longest Path - SSSP/SSLP** 
 
@@ -412,12 +413,13 @@ def findRedundantConnection(self, edges: List[List[int]]) -> List[int]:
     def find(who,x):                    # find
         if x != who[x]:
             who[x] = find(who[x])
-        return who[x]
+        return who[x]                    #NOTE: dont do `return x` here!!!!!!!!
     
     def union(who,x,y):                 # union
-        whox = find(who,x)
-        whoy = find(who,y)
-        who[whox] = whoy                # x --> y
+        if x<y:
+            who[find(y)] = find(x)
+        else:
+            who[find(x)] = find(y)
     
     n = len(edges)                
     who = [i for i in range(n+1)]        # init
@@ -469,6 +471,8 @@ return cnt
 * [x] [959.Regions Cut By Slashes](https://leetcode.com/problems/regions-cut-by-slashes/) \| 💯\| `/\\ /` 🤩
   * Convert every `/` into 3X3 matrix to boil this Q down to \#200.Number of Islands
 * [x] [261. Graph Valid Tree](https://protegejj.gitbook.io/algorithm-practice/leetcode/union-find/261-graph-valid-tree)  💲\| check both: cycle & connected
+* [x] [990.Satisfiability of Equality Equations](https://leetcode.com/problems/satisfiability-of-equality-equations/) \| ✅\| how to choose `x<---y`  OR `x-->y`in **`union()`**
+  * Took one day & 7 fucking attempts to get it right!
 * [x] [1697.Checking Existence of Edge Length Limited Paths](https://leetcode.com/problems/checking-existence-of-edge-length-limited-paths/) 🍪🍪🍪\|also the SMART way to retain index
 * [x] [947.Most Stones Removed with Same Row or Column](https://leetcode.com/problems/most-stones-removed-with-same-row-or-column/) \| leave everything & Do this!!  ✅🚀🚀
 * [x] [1331.Rank Transform of an Array](https://leetcode.com/problems/rank-transform-of-an-array/) \| tag:Easy
@@ -477,6 +481,38 @@ return cnt
 * [ ] 128, [https://leetcode.com/problems/longest-consecutive-sequence/](https://leetcode.com/problems/longest-consecutive-sequence/) 305, [https://leetcode.com/problems/number-of-islands-ii/](https://leetcode.com/problems/number-of-islands-ii/) 💲 1202, [https://leetcode.com/problems/smallest-string-with-swaps/](https://leetcode.com/problems/smallest-string-with-swaps/) 749, [https://leetcode.com/problems/contain-virus/](https://leetcode.com/problems/contain-virus/) 1627, [https://leetcode.com/problems/graph-connectivity-with-threshold/](https://leetcode.com/problems/graph-connectivity-with-threshold/) 1168, [https://leetcode.com/problems/optimize-water-distribution-in-a-village/](https://leetcode.com/problems/optimize-water-distribution-in-a-village/) 1579, [https://leetcode.com/problems/remove-max-number-of-edges-to-keep-graph-fully-traversable/](https://leetcode.com/problems/remove-max-number-of-edges-to-keep-graph-fully-traversable/) 1061, [https://leetcode.com/problems/lexicographically-smallest-equivalent-string/](https://leetcode.com/problems/lexicographically-smallest-equivalent-string/) 1101, [https://leetcode.com/problems/the-earliest-moment-when-everyone-become-friends/](https://leetcode.com/problems/the-earliest-moment-when-everyone-become-friends/) 1258, [https://leetcode.com/problems/synonymous-sentences/](https://leetcode.com/problems/synonymous-sentences/) 1319, [https://leetcode.com/problems/number-of-operations-to-make-network-connected/](https://leetcode.com/problems/number-of-operations-to-make-network-connected/) 737, [https://leetcode.com/problems/sentence-similarity-ii/](https://leetcode.com/problems/sentence-similarity-ii/) 990, [https://leetcode.com/problems/satisfiability-of-equality-equations/](https://leetcode.com/problems/satisfiability-of-equality-equations/) 924, [https://leetcode.com/problems/minimize-malware-spread/](https://leetcode.com/problems/minimize-malware-spread/) 928, [https://leetcode.com/problems/minimize-malware-spread-ii/](https://leetcode.com/problems/minimize-malware-spread-ii/) 839, [https://leetcode.com/problems/similar-string-groups/](https://leetcode.com/problems/similar-string-groups/) 711, [https://leetcode.com/problems/number-of-distinct-islands-ii/](https://leetcode.com/problems/number-of-distinct-islands-ii/)
 
 {% tabs %}
+{% tab title="990.✅" %}
+```python
+indeg = dict(zip(string.ascii_lowercase, [1]*26))
+who = dict(zip(string.ascii_lowercase, string.ascii_lowercase))
+
+def find(x):
+    if who[x] != x:
+        who[x] = find(who[x])
+    return who[x]
+def union(x,y):
+    if indeg[x] == indeg[y]:
+        who[find(x)] = find(y)
+        indeg[x], indeg[y] = indeg[x]+1, indeg[y]+1
+    elif indeg[x] > indeg[y]:
+        who[find(y)] = find(x)
+        indeg[x] += 1
+    else:
+        who[find(x)] = find(y)
+        indeg[y] += 1
+
+for x,sign,_,y in equations:
+    if sign == '=':
+        union(x,y)
+        
+for x,sign,_,y in equations:
+    if sign == '!':
+        if find(x) == find(y):
+            return False
+return True
+```
+{% endtab %}
+
 {% tab title="947.✅🚀" %}
 ```python
 '''
@@ -826,108 +862,202 @@ return sorted(list(set(range(N)) - set(cycleNodes)))
 ## 7. SCCs \(Strongly Connected Cycles\)
 
 * **What?** self contained cycles in graph in & from every vertex in cycle you can reach every other vertex.
-* **Low link value:** the smallest node index which is reachable from the given node
+* **Property:`SCC will always be disjoint from each other`**\(as shown in Kosaraju's. Ref:[ClementInterview](https://www.youtube.com/watch?v=qz9tKlF431k&ab_channel=Cl%C3%A9mentMihailescu)\)
 * **Algos**: 
 
-  * Kosaraju's  =&gt; `O(V+E)`  :  [hackerearth](https://www.hackerearth.com/practice/algorithms/graphs/strongly-connected-components/tutorial/)  , [TusharRoy](https://www.youtube.com/watch?v=RpgcYiky7uw&ab_channel=TusharRoy-CodingMadeSimple)  
-  * Tarjan's       =&gt; `O(V+E)`  : [WilliamFiset\#23](https://www.youtube.com/watch?v=wUgWX0nc4NY&list=PLDV1Zeh2NRsDGO4--qE8yH72HFL1Km93P&index=23&ab_channel=WilliamFiset)  
+  * ✅Kosaraju's  =&gt; `O(V+E)`  :  [hackerearth](https://www.hackerearth.com/practice/algorithms/graphs/strongly-connected-components/tutorial/)  , [TusharRoy](https://www.youtube.com/watch?v=RpgcYiky7uw&ab_channel=TusharRoy-CodingMadeSimple)  
+  * ❌Tarjan's       =&gt; `O(V+E)`  : [WilliamFiset\#23](https://www.youtube.com/watch?v=wUgWX0nc4NY&list=PLDV1Zeh2NRsDGO4--qE8yH72HFL1Km93P&index=23&ab_channel=WilliamFiset)   \| wayyyy too sophisticated to apply in realtime
 
 {% tabs %}
-{% tab title="Kosaraju\'s" %}
-```cpp
-vector<vector<bool>> grev;
-vector<vector<int> > fin;
-vector<int> t;
-vector<int> mark;
-void dfs1(int node, int running){//scc 
-    mark[node]=running;
-    fin[running].push_back(node);
-    for(int nex=0;nex<26;++nex){
-        if(grev[node][nex]==0){continue;}
-        if(mark[nex]==-1){
-            dfs1(nex, running);
-        }
-        else if(mark[nex]!=running){
-            t[mark[nex]]=(running);
-        }
-    }
-}
-vector<vector<bool>> g;
-vector<int> topo;
-vector<bool>vis;
-void dfs(int node){
-    vis[node]=true;
-    for(int nex=0;nex<26;++nex){
-        if(g[node][nex]==0){continue;}
-        if(vis[nex]==false){
-            dfs(nex);
-        }
-    }
-    topo.push_back(node);
-}
-vector<string> maxNumOfSubstrings(string s) {
-    int n=s.size();
-    fin.resize(26);
-    g.resize(26,vector<bool>(26,false));//initialisatin of the graph
-    t.resize(26,-1);//initialisation of the scc
-    grev.resize(26,vector<bool>(26,false));
-    
-    vis.resize(26,false);
-    
-    vector<int> eps(26,-1);//end position 
-    vector<int> beg(26,-1);//beginning position
-    
-    for(int i=0;i<n;++i){
-        if(beg[s[i]-'a']==-1){beg[s[i]-'a']=i;}
-        eps[s[i]-'a']=i;
-    }
-    
-    for(int ch=0;ch<26;++ch){
-        
-        if(beg[ch]!=-1){
-            for(int i=beg[ch];i<=eps[ch];++i){
-                g[ch][s[i]-'a']=true;
-                grev[s[i]-'a'][ch]=true;
-            }
-        }
-    }
-    
-    //finding topologically sorted array
-    for(int i=0;i<26;++i){
-        if(!vis[i] and beg[i]!=-1){
-            dfs(i);
-        }
-    }//obtained topologically sorted array
-    reverse(topo.begin(),topo.end());
-    
-    //finding scc
-    mark.assign(26,-1);
-    int cnt =0;
-    for(auto it:topo){
-        if(mark[it]==-1){dfs1(it,cnt);++cnt;}
-    }
-    vector<string> ans;
-    for(int i=0;i<cnt;++i){
-        if(t[i]==-1){
-            int st=n,en=-1;
-            for(auto it:fin[i]){
-                st=min(st,beg[it]);
-                en=max(en,eps[it]);
-            }
-            ans.push_back(s.substr(st,en-st+1));
-        }
-    }
-    return ans;
-    
-    
-}
+{% tab title="LOGIC:Kosaraju\'s" %}
+```python
+'''
+1. do DFS on all nodes & build a stack of nodes based on their 'finish time'
+2. reverse all edges
+3. while stack has eles: pop ele from stack & do dfs; when done, we've got a SCC.
+
+WHAT DO WE NEED TO IMPLEMENT:
+* dfs1(), dfs2()
+* a stack to keep finished nodes
+* a set to keep visited nodes in both dfs's
+
+WHY DOES THE ALGO WORKS:
+
+THe Final SCC: 
+(ABC)--->(DE)--->(F)-->(GHIJ) 
+===> The final SCC will always be a Directed Acyclic Graph(DAG)
+because if lets there was an edge from D-->A, the (ABCDE) would've been a SCC itself
+'''
+```
+{% endtab %}
+
+{% tab title="CODE:Kosaraju\'s" %}
+```python
+'''
+1. do DFS on all nodes & build a stack of nodes based on their 'finish time'
+2. reverse all edges
+3. while stack has eles: pop ele from stack & do dfs; when done, we've got a SCC.
+'''
+def postorder_dfs(G):
+    visited = set()
+    postorder = []
+
+    def helper(u):
+        visited.add(u)
+        for v in G[u]:
+            if v not in visited:
+                helper(v)
+        postorder.append(u)    # u is 'finished' now, so add it to stack
+
+    for u in set(G):
+        if u not in visited:
+            helper(u)
+    return postorder
+
+
+def reverse_graph(G):
+    rev = defaultdict(set)
+    for u in G.keys():
+        for v in G[u]:
+            rev[v].add(u)
+    return rev
+
+
+def kosaraju_scc(G):
+    # First phase :: vertices in postorder ----------------
+    postorder = postorder_dfs(G)
+
+    # Second phase ----------------------------------------
+    G = reverse_graph(G)
+
+    visited = set()
+    count = 0    # count of total SCCs in ans
+
+    def dfs(u, scc):
+        visited.add(u)
+        scc.add(u)
+
+        for v in G[u]:
+            if v not in visited:
+                dfs(v, scc)
+
+    sccs = defaultdict(set)
+
+    for u in reversed(postorder):
+        if u not in visited:
+            dfs(u, sccs[count])
+            count += 1
+
+    return sccs.values()
+```
+{% endtab %}
+
+{% tab title="990." %}
+```python
+from collections import defaultdict
+from typing import List
+
+
+def postorder_dfs(G):
+    visited = set()
+    postorder = []
+
+    def helper(u):
+        visited.add(u)
+
+        for v in G[u]:
+            if v not in visited:
+                helper(v)
+
+        postorder.append(u)
+
+    for u in set(G):
+        if u not in visited:
+            helper(u)
+
+    return postorder
+
+
+def reverse_graph(G):
+    rev = defaultdict(set)
+
+    for u in G.keys():
+        for v in G[u]:
+            rev[v].add(u)
+
+    return rev
+
+
+def kosaraju_sharir(G):
+    # First phase
+    # -----------
+
+    # vertices in postorder
+    postorder = postorder_dfs(G)
+
+    # Second phase
+    # ------------
+
+    G = reverse_graph(G)
+
+    visited = set()
+    count = 0
+
+    def dfs(u, scc):
+        visited.add(u)
+        scc.add(u)
+
+        for v in G[u]:
+            if v not in visited:
+                dfs(v, scc)
+
+    sccs = defaultdict(set)
+
+    for u in reversed(postorder):
+        if u not in visited:
+            dfs(u, sccs[count])
+            count += 1
+
+    return sccs.values()
+
+
+class Solution:
+    def equationsPossible(self, equations: List[str]) -> bool:
+        G = defaultdict(set)
+
+        vertices = set()
+
+        for eq in equations:
+            if '==' in eq:
+                x, y = eq.split('==')
+                vertices.add(x)
+                vertices.add(y)
+                G[x].add(y)
+                G[y].add(x)
+
+        # build strongly connected components of equal numbers
+        sccs = kosaraju_sharir(G)
+
+        for x, e, _, y in equations:
+            if e == '!':
+                if x == y:
+                    return False
+                for scc in sccs:
+                    # if x and y in  the same component - return false
+                    if x in scc and y in scc:
+                        return False
+
+        return True
 ```
 {% endtab %}
 {% endtabs %}
 
 ### 7.1 Problems: SCCs
 
-* [ ] [https://leetcode.com/problems/course-schedule/](https://leetcode.com/problems/course-schedule/)  🐽🐽
+* [x] [990.Satisfiability of Equality Equations](https://leetcode.com/problems/satisfiability-of-equality-equations/)
+* [x] **Clemment's interview**:[ Google Coding Interview With A High School Student](https://www.youtube.com/watch?v=qz9tKlF431k&ab_channel=Cl%C3%A9mentMihailescu) ✈️
+* [x] [207.Course Schedule](https://leetcode.com/problems/course-schedule/) \| if SCC of len &gt; 1 exits ==&gt; there is cyclic dependency
+* [ ] [1520.Maximum Number of Non-Overlapping Substrings](https://leetcode.com/problems/maximum-number-of-non-overlapping-substrings/)
 * [ ] [https://leetcode.com/problems/number-of-operations-to-make-network-connected/](https://leetcode.com/problems/number-of-operations-to-make-network-connected/)  🐽🐽
 * [ ] [https://leetcode.com/problems/number-of-provinces/](https://leetcode.com/problems/number-of-provinces/) 🐽🐽
 * [ ] [https://leetcode.com/problems/longest-consecutive-sequence/](https://leetcode.com/problems/longest-consecutive-sequence/) 🐽🐽
@@ -983,26 +1113,42 @@ vector<string> maxNumOfSubstrings(string s) {
 
 ### 8.1 Algos
 
-* Eulers Path: [GfG](https://www.geeksforgeeks.org/eulerian-path-and-circuit/)
+* Eulers Path: [GfG](https://www.geeksforgeeks.org/eulerian-path-and-circuit/) \| see \#332. for algo: `O(E+V)` **\| Resource:** [this page](http://www.graph-magics.com/articles/euler.php)
 * **Hierholzer's algorithm** for Euler Circuit: [GfG](https://www.geeksforgeeks.org/hierholzers-algorithm-directed-graph/)
 
 {% tabs %}
-{% tab title="Eulers path" %}
-```text
-#TODO:
+{% tab title="ALGO: Finding Euler Path" %}
+```
+1. Start with an empty stack and an empty circuit (eulerian path).
+    - If all vertices have even degree - choose any of them.
+    - If there are exactly 2 vertices having an odd degree - choose one of them.
+    - Otherwise no euler circuit or path exists.
+2. If current vertex has no neighbors - add it to circuit, remove the last vertex from the stack and set it as the current one. Otherwise (in case it has neighbors) - add the vertex to the stack, take any of its neighbors, remove the edge between selected neighbor and that vertex, and set that neighbor as the current vertex.
+3.Repeat step 2 until the current vertex has no more neighbors and the stack is empty.
+
+COMPLEXITY: O(V+E)
 ```
 {% endtab %}
 
-{% tab title="Hierholzers Algo" %}
-```
-#TODO
+{% tab title="CODE:\(\#332.\) Finding Euler path" %}
+```python
+def dfs(x):
+    while G[x]:
+        i = G[x].pop()
+        dfs(i)
+    euler_path.append(x)
+
+for x in G:
+    G[x] = sorted(G[x], reverse = True)    # this sorting is specific to #332.
+
+euler_path = []
+dfs("JFK")        # "JFK" is the start node here
+return euler_path[::-1]    # this reversing is part of the standard algo
 ```
 {% endtab %}
 {% endtabs %}
 
-### 8.2 Problems: Euler Path & Circuits
-
-* [ ] [https://leetcode.com/problems/reconstruct-itinerary/](https://leetcode.com/problems/reconstruct-itinerary/) 🐽🐽
+* [x] [332.Reconstruct Itinerary](https://leetcode.com/problems/reconstruct-itinerary/) ✅✈️
 * [ ] [https://leetcode.com/problems/minimum-time-to-collect-all-apples-in-a-tree/](https://leetcode.com/problems/minimum-time-to-collect-all-apples-in-a-tree/) 🐽🐽
 * [ ] [https://www.hackerearth.com/practice/algorithms/graphs/euler-tour-and-path/practice-problems/algorithm/wildcard-tree-problem-c2a1fbac/](https://www.hackerearth.com/practice/algorithms/graphs/euler-tour-and-path/practice-problems/algorithm/wildcard-tree-problem-c2a1fbac/) 
 * [ ] [https://leetcode.com/problems/cracking-the-safe/](https://leetcode.com/problems/cracking-the-safe/)  🐽🐽🐽 `+Google`

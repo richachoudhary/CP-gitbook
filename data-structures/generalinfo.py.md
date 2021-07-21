@@ -16,5 +16,11 @@
   97
   ```
 
+* Quickly generate alphabet list/dict
 
+```python
+import string
+l = list(string.ascii_lowercase)    # ['a','b',....,'z']
+letter_count = dict(zip(string.ascii_lowercase, [0]*26)) # {'a':1, 'b':1, ...'z':1}
+```
 
