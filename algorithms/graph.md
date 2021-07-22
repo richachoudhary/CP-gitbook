@@ -2,7 +2,7 @@
 description: Patterns & their problem list
 ---
 
-# Graph
+# ✅Graph
 
 ## **Notes**
 
@@ -48,11 +48,38 @@ def bfs(grid: List[List[int]])
 
 {% tab title="DFS" %}
 ```python
-DFS-recursive(G, s):
-    mark s as visited
-    for all neighbours w of s in Graph G:
-        if w is not visited:
-            DFS-recursive(G, w)
+dfs(x):
+    vis[x] = True
+    for i in graph[x]:
+        if not vis[i]:
+            dfs(i)
+```
+{% endtab %}
+
+{% tab title="1254. Grid" %}
+```python
+''' If you hit a border, this is not an island '''
+dirs = [(0,1),(0,-1),(1,0),(-1,0)]
+cnt = 0
+
+N, M = len(grid), len(grid[0])
+    
+def dfs(sx,sy):
+    if sx == 0 or sy == 0 or sx == N-1 or sy == M-1:
+        return 0
+    grid[sx][sy] = 2
+    res = 1
+    for dx,dy in dirs:
+        x, y = sx+dx, sy+dy
+        if 0<=x<N and 0<=y<M and grid[x][y]==0:
+            res *= dfs(x,y)
+    return res
+
+for i in range(1,N-1):
+    for j in range(1,M-1):
+        if grid[i][j] == 0:
+            cnt += dfs(i,j)
+return cnt
 ```
 {% endtab %}
 {% endtabs %}
@@ -61,13 +88,13 @@ DFS-recursive(G, s):
 * [x] [130. Surrounded Regions](https://leetcode.com/problems/surrounded-regions/)
 * [x] [1020.Number of Enclaves](https://leetcode.com/problems/number-of-enclaves/)
 * [x] [1376.Time Needed to Inform All Employees](https://leetcode.com/problems/time-needed-to-inform-all-employees/)
-* [ ] [1254.Number of Closed Islands](https://leetcode.com/problems/number-of-closed-islands/)
-* [ ] [200. Number of Islands](https://leetcode.com/problems/number-of-islands/)
+* [x] [1254.Number of Closed Islands](https://leetcode.com/problems/number-of-closed-islands/)
+* [x] [200. Number of Islands](https://leetcode.com/problems/number-of-islands/)
 * [x] [841.Keys and Rooms](https://leetcode.com/problems/keys-and-rooms/)
-* [ ] [895. Max Area of Island](https://leetcode.com/problems/max-area-of-island/)
-* [ ] [733. Flood Fill](https://leetcode.com/problems/flood-fill/)
-* [ ] [542. 01 Matrix](https://leetcode.com/problems/01-matrix/)
-* [ ] [1162.As Far from Land as Possible](https://leetcode.com/problems/as-far-from-land-as-possible/)
+* [x] [895. Max Area of Island](https://leetcode.com/problems/max-area-of-island/)
+* [x] [733. Flood Fill](https://leetcode.com/problems/flood-fill/)
+* [x] [542. 01 Matrix](https://leetcode.com/problems/01-matrix/)
+* [x] [1162.As Far from Land as Possible](https://leetcode.com/problems/as-far-from-land-as-possible/) \| **DP**\(2 traversal\)**:** \(i\) top\_to\_bottom \(ii\) bottom\_to\_top 
 * [x] [994.Rotting Oranges](https://leetcode.com/problems/rotting-oranges/) 🍊🍊
 * [x] [1091.Shortest Path in Binary Matrix](https://leetcode.com/problems/shortest-path-in-binary-matrix/) //see 'Why DP doesnt work here!!'
   * _i.e. for a lonnngggg zigzag path going through \(7,0\)....-&gt;\(1,1\)-&gt;... ; by you wont have value of dp\[7\]\[0\] when you're calculating dp\[1\]\[1\]_
@@ -380,7 +407,7 @@ def dfs(node):
 * [x] 1462.[Course Schedule IV](https://leetcode.com/problems/course-schedule-iv) ⭐️ \| see how to maintain all-inclusive prerequisite list 
 * [x] [269. Alien Dictionary](https://leetfree.com/problems/alien-dictionary) 💲
 * [x] [329. Longest Increasing Path in a Matrix](https://leetcode.com/problems/longest-increasing-path-in-a-matrix/) 💯
-* [ ] [444. Sequence Reconstruction](https://leetcode.com/problems/sequence-reconstruction/)
+* [x] [444. Sequence Reconstruction](https://leetfree.com/problems/sequence-reconstruction) 💲
 * [ ] [1203. Sort Items by Groups Respecting Dependencies](https://leetcode.com/problems/sort-items-by-groups-respecting-dependencies/)
 * [ ] -------------------------------------- \[Medium\] -----------------------------------------------
 * [ ] 851.[Loud and Rich](https://leetcode.com/problems/loud-and-rich)

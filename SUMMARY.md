@@ -4,7 +4,7 @@
 
 ## Algorithms
 
-* [Graph](algorithms/graph.md)
+* [✅Graph](algorithms/graph.md)
 * [Linked List](algorithms/linked-list.md)
 * [Tree](algorithms/tree.md)
 * [Recursion 💪](algorithms/recursion.md)
