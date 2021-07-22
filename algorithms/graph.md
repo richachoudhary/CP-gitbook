@@ -73,6 +73,7 @@ DFS-recursive(G, s):
   * _i.e. for a lonnngggg zigzag path going through \(7,0\)....-&gt;\(1,1\)-&gt;... ; by you wont have value of dp\[7\]\[0\] when you're calculating dp\[1\]\[1\]_
 * [x] [797.All Paths From Source to Target](https://leetcode.com/problems/all-paths-from-source-to-target/) \| dfs + backtrack
 * [x] [332.Reconstruct Itinerary](https://leetcode.com/problems/reconstruct-itinerary/) \| dfs + backtrack ✅✈️
+* [x] [1443.Minimum Time to Collect All Apples in a Tree](https://leetcode.com/problems/minimum-time-to-collect-all-apples-in-a-tree/) 🍎
 
 ## **1. Single Source Shortest/Longest Path - SSSP/SSLP** 
 
@@ -1057,6 +1058,7 @@ class Solution:
 * [x] [990.Satisfiability of Equality Equations](https://leetcode.com/problems/satisfiability-of-equality-equations/)
 * [x] **Clemment's interview**:[ Google Coding Interview With A High School Student](https://www.youtube.com/watch?v=qz9tKlF431k&ab_channel=Cl%C3%A9mentMihailescu) ✈️
 * [x] [207.Course Schedule](https://leetcode.com/problems/course-schedule/) \| if SCC of len &gt; 1 exits ==&gt; there is cyclic dependency
+* [x] [1192.Critical Connections in a Network](https://leetcode.com/problems/critical-connections-in-a-network/)
 * [ ] [1520.Maximum Number of Non-Overlapping Substrings](https://leetcode.com/problems/maximum-number-of-non-overlapping-substrings/)
 * [ ] [https://leetcode.com/problems/number-of-operations-to-make-network-connected/](https://leetcode.com/problems/number-of-operations-to-make-network-connected/)  🐽🐽
 * [ ] [https://leetcode.com/problems/number-of-provinces/](https://leetcode.com/problems/number-of-provinces/) 🐽🐽
@@ -1148,14 +1150,70 @@ return euler_path[::-1]    # this reversing is part of the standard algo
 {% endtab %}
 {% endtabs %}
 
+### 8.2 Problems
+
 * [x] [332.Reconstruct Itinerary](https://leetcode.com/problems/reconstruct-itinerary/) ✅✈️
-* [ ] [https://leetcode.com/problems/minimum-time-to-collect-all-apples-in-a-tree/](https://leetcode.com/problems/minimum-time-to-collect-all-apples-in-a-tree/) 🐽🐽
+* [ ] [753.Cracking the Safe](https://leetcode.com/problems/cracking-the-safe/)   🐽🐽🐽 `+Google`
 * [ ] [https://www.hackerearth.com/practice/algorithms/graphs/euler-tour-and-path/practice-problems/algorithm/wildcard-tree-problem-c2a1fbac/](https://www.hackerearth.com/practice/algorithms/graphs/euler-tour-and-path/practice-problems/algorithm/wildcard-tree-problem-c2a1fbac/) 
-* [ ] [https://leetcode.com/problems/cracking-the-safe/](https://leetcode.com/problems/cracking-the-safe/)  🐽🐽🐽 `+Google`
 
-## **9. Network Flow**
 
-### 9.1.1 Ford-Fulkerson Algo
+
+## **9. Articulation Point & Bridges\(bi-connected components\)**
+
+* **Articulation Point:** The node, which if removed, will increase the number of connected components in graph.
+  * Number of articulation points represent the **vulnerabilities in network**.
+* **Algo** to find Articulation points: **Tarjan's algo** : **`O(V+E)`** \| [Abdul Bari](https://www.youtube.com/watch?v=jFZsDDB0-vo&ab_channel=AbdulBari) \(**see \#1192 for CODE**\)
+* **Biconnected Graph** properties:
+  1. It is connected, i.e. it is possible to reach every vertex from every other vertex, by a simple path.
+  2. Even after removing any vertex the graph remains connected.
+
+### 9.1 Problems
+
+* [x] [1192.Critical Connections in a Network](https://leetcode.com/problems/critical-connections-in-a-network/) ✅\| has Tarjan's algo implementation
+* [ ] [https://leetcode.com/problems/minimize-malware-spread/](https://leetcode.com/problems/minimize-malware-spread/)
+* [ ] [https://leetcode.com/problems/minimize-malware-spread-ii/](https://leetcode.com/problems/minimize-malware-spread-ii/)
+* [ ] [https://leetcode.com/problems/minimum-number-of-days-to-disconnect-island/](https://leetcode.com/problems/minimum-number-of-days-to-disconnect-island/)
+
+{% tabs %}
+{% tab title="1192.✅" %}
+```python
+def dfs(self, adj_map, dist, min_dist_child, visited, parent, i, n, curr_time, out):
+    visited[i] = True
+    dist[i] = min_dist_child[i] = curr_time+1
+    for x in adj_map[i]:
+        if visited[x]:
+            if parent[i] != x:
+                min_dist_child[i] = min(min_dist_child[i], dist[x])
+        else:
+            parent[x] = i
+            self.dfs(adj_map, dist, min_dist_child, visited, parent, x, n, curr_time+1, out)
+            min_dist_child[i] = min(min_dist_child[i], min_dist_child[x])
+            if min_dist_child[x] > dist[i]:
+                out.append([i, x])
+
+def criticalConnections(self, n, connections):
+    adj_map = {}
+    for x in connections:
+        if x[0] not in adj_map:
+            adj_map[x[0]] = set()
+        if x[1] not in adj_map:
+            adj_map[x[1]] = set()
+
+        adj_map[x[0]].add(x[1])
+        adj_map[x[1]].add(x[0])
+
+    out = []
+    dist, min_dist_child, visited, parent = [float("Inf")]*n, [float("Inf")]*n, [False]*n, [-1]*n
+    self.dfs(adj_map, dist, min_dist_child, visited, parent, 0, n, 0, out)
+
+    return out
+```
+{% endtab %}
+{% endtabs %}
+
+## **10. Network Flow**
+
+### 10.1.1 Ford-Fulkerson Algo
 
 * **Logic:** The algo repeatedly finds **augmenting paths** through the **residual graph** & **augments the flow** until no more augmenting paths can be found.
 * **Augmenting Paths?** =&gt; is a path of edges with flow capacity &gt; 0 from **source** to **sink.**
@@ -1167,25 +1225,13 @@ return euler_path[::-1]    # this reversing is part of the standard algo
 Ford Fulkerson gives **min-cut** value as byproduct!
 {% endhint %}
 
-### 9.1.2 Edmonds Karp Algo
+### 10.1.2 Edmonds Karp Algo
 
-### 9.1.3 Dinic's Algo
+### 10.1.3 Dinic's Algo
 
-### 9.2 Problems:  **Maximum Flow**
+### 10.2 Problems:  **Maximum Flow**
 
-## **10. Articulation Point & Bridges**
-
-\*\*\*\*[https://leetcode.com/discuss/general-discussion/709997/questions-based-on-articulation-points-and-bridges/799168](https://leetcode.com/discuss/general-discussion/709997/questions-based-on-articulation-points-and-bridges/799168)
-
-## Resources:
-
-* For patterns/templates:
-  * [https://leetcode.com/discuss/general-discussion/971272/Python-Graph-Algorithms-One-Place-for-quick-revision](https://leetcode.com/discuss/general-discussion/971272/Python-Graph-Algorithms-One-Place-for-quick-revision)
-  * [https://leetcode.com/discuss/general-discussion/655708/graph-for-beginners-problems-pattern-sample-solutions/](https://leetcode.com/discuss/general-discussion/655708/graph-for-beginners-problems-pattern-sample-solutions/)
-  * DSU: [https://leetcode.com/discuss/general-discussion/1072418/Disjoint-Set-Union-\(DSU\)Union-Find-A-Complete-Guide](https://leetcode.com/discuss/general-discussion/1072418/Disjoint-Set-Union-%28DSU%29Union-Find-A-Complete-Guide)
-  * [https://leetcode.com/discuss/interview-question/753236/List-of-graph-algorithms-for-coding-interview](https://leetcode.com/discuss/interview-question/753236/List-of-graph-algorithms-for-coding-interview)
-* Youtube:
-  * \[\] WilliamFiset's playlist: [https://www.youtube.com/watch?v=4NQ3HnhyNfQ&list=PLDV1Zeh2NRsDGO4--qE8yH72HFL1Km93P&index=21&ab\_channel=WilliamFiset](https://www.youtube.com/watch?v=4NQ3HnhyNfQ&list=PLDV1Zeh2NRsDGO4--qE8yH72HFL1Km93P&index=21&ab_channel=WilliamFiset)
+## \*\*\*\*
 
 
 
