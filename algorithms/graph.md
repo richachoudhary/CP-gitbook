@@ -82,6 +82,62 @@ for i in range(1,N-1):
 return cnt
 ```
 {% endtab %}
+
+{% tab title="932.✅BFS+DFS" %}
+```python
+N,M = len(g), len(g[0])
+dirs = [(0,1),(0,-1),(1,0),(-1,0)]
+Q = deque()
+
+def dfs(sx,sy):
+    g[sx][sy] = 2           # paint this island with color '2'
+    Q.append((sx,sy))
+    
+    for dx,dy in dirs:
+        x, y = sx+dx , sy+dy
+        if 0<=x<N and 0<=y<M and g[x][y] == 1:
+            dfs(x,y)
+            
+#1. find first island & add to Q(for bfs later)
+island1Found = False
+for i in range(N):
+    for j in range(M):
+        if g[i][j] == 1:
+            dfs(i,j)
+            island1Found = True
+            break
+    if island1Found:
+        break
+
+#2. BFS - step by step expand island#1(col:2) until it collides with island#2(col:1)
+dist = 0
+while Q:
+    # print(g)
+    l = len(Q)
+    for i in range(l):
+        sx,sy = Q.popleft()
+
+        for dx,dy in dirs:
+            x, y = sx+dx , sy+dy
+            if 0<=x<N and 0<=y<M:
+                if g[x][y] == 1:
+                    return dist
+                if g[x][y] != 2:
+                    g[x][y] = 2
+                    Q.append((x,y))
+    dist += 1
+return -1
+
+
+'''
+elegant solution: =============================
+1. First Do a DFS on one connected component, mark them visited, add them to the queue
+2. Second Do a BFS to find the second connected component cause BFS guarantees Shortest Path optimally.
+
+diagram: https://leetcode.com/problems/shortest-bridge/discuss/189293/C%2B%2B-BFS-Island-Expansion-%2B-UF-Bonus
+'''
+```
+{% endtab %}
 {% endtabs %}
 
 * [x] [The Maze](https://leetfree.com/problems/the-maze)
@@ -101,6 +157,7 @@ return cnt
 * [x] [797.All Paths From Source to Target](https://leetcode.com/problems/all-paths-from-source-to-target/) \| dfs + backtrack
 * [x] [332.Reconstruct Itinerary](https://leetcode.com/problems/reconstruct-itinerary/) \| dfs + backtrack ✅✈️
 * [x] [1443.Minimum Time to Collect All Apples in a Tree](https://leetcode.com/problems/minimum-time-to-collect-all-apples-in-a-tree/) 🍎
+* [x] [932.Shortest Bridge](https://leetcode.com/problems/shortest-bridge/) \| **Google** \| BFS+DFS ✅
 
 ## **1. Single Source Shortest/Longest Path - SSSP/SSLP** 
 
@@ -257,7 +314,7 @@ else    : dp[k][i][j] = min( dp[k-1][i][j] ,dp[k-1][i][k] + dp[k-1][k][j] )
 * [ ] [1786. Number of Restricted Paths From First to Last Node](https://leetcode.com/problems/number-of-restricted-paths-from-first-to-last-node/)
 * [ ] [The Maze II](https://leetfree.com/problems/the-maze-ii)
 * [ ] [The Maze III ](https://leetfree.com/problems/the-maze-iii)
-* [x] [1929.Minimum Cost to Reach Destination in Time](https://leetcode.com/problems/minimum-cost-to-reach-destination-in-time/) \| @contest 🚀❤️[ ](https://leetcode.com/problems/cheapest-flights-within-k-stops/
+* [x] [1928.Minimum Cost to Reach Destination in Time](https://leetcode.com/problems/minimum-cost-to-reach-destination-in-time/) \| @contest 🚀❤️ \| **Google**[ ](https://leetcode.com/problems/cheapest-flights-within-k-stops/
 
   )
 

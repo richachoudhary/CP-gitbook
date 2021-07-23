@@ -12,10 +12,14 @@
 * **Delete** at given index:
 
 ```python
+# ------------- delete by index
 a = ['a', 'b', 'c', 'd']
 a.pop(1)            # now a is ['a', 'c', 'd']
 a = ['a', 'b', 'c', 'd']
 a.pop()             # now a is ['a', 'b', 'c']
+# ------------- delete by value
+l = ['Alice', 'Bob', 'Charlie', 'Bob', 'Dave']
+l.remove('Alice') . # ['Bob', 'Charlie', 'Bob', 'Dave']
 ```
 
 * **slicing**:

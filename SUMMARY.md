@@ -5,9 +5,9 @@
 ## Algorithms
 
 * [✅Graph](algorithms/graph.md)
+* [Recursion 💪](algorithms/recursion.md)
 * [Linked List](algorithms/linked-list.md)
 * [Tree](algorithms/tree.md)
-* [Recursion 💪](algorithms/recursion.md)
 * [Greeeedy](algorithms/greeeedy.md)
 * [Maths & Geometry](algorithms/maths.md)
 * [Bitwise](algorithms/bitwise.md)

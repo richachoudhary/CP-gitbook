@@ -11,7 +11,7 @@
   2. If the problem requires **reducing the input** at every step =&gt; use **BHI method**
      * I. **Hypotheses**: what will your function do \(_induction_\)
      * II. **Induction**: Apply that hypothesis on smaller input :: `main code` goes here
-     * III. Write **base condition** i.e. smallest valid input & include it in the beginning 
+     * III. Write **base condition** i.e. _smallest valid input_ & include it in the beginning 
      * e.g.: find height of tree [video](https://www.youtube.com/watch?v=aqLTbtWh40E&list=PL_z_8CaSLPWeT1ffjiImo0sYTcnLzo-wY&index=5&ab_channel=AdityaVerma')
   3. If you've to take choices at every step: =&gt; Make **Choice Diagram** \(like **DP**\)
 
@@ -51,7 +51,7 @@ def insertMe(arr,x):  # HYPOTHESIS: fn inserts 'x' correctly inserted at its pos
 {% endtabs %}
 
 * [x] GfG: [Delete Middle Element of Stack](https://www.geeksforgeeks.org/delete-middle-element-stack/)
-* [x] GfG: [Reverse A Stack w/o Extra Space](https://www.geeksforgeeks.org/reverse-a-stack-using-recursion/) [Video](https://www.youtube.com/watch?v=8YXQ68oHjAs&list=PL_z_8CaSLPWeT1ffjiImo0sYTcnLzo-wY&index=9&ab_channel=AdityaVerma) `O(1) ; not counting function stack`
+* [x] GfG: [Reverse A Stack w/o Extra Space](https://www.geeksforgeeks.org/reverse-a-stack-using-recursion/)  \| [Video](https://www.youtube.com/watch?v=8YXQ68oHjAs&list=PL_z_8CaSLPWeT1ffjiImo0sYTcnLzo-wY&index=9&ab_channel=AdityaVerma) `O(1) ; not counting function stack`
 
 {% tabs %}
 {% tab title="reverseStack" %}
@@ -97,7 +97,7 @@ def solve(n,s,d,h):    # no of plats, poles: source, destination, helper
     solve(n-1,h,d,s)    # move those (n-1) plates h->d    
 ```
 
-* [x] Print all subsets/powerset of a string \| [video](https://www.youtube.com/watch?v=Yg5a2FxU4Fo&list=PL_z_8CaSLPWeT1ffjiImo0sYTcnLzo-wY&index=12&ab_channel=AdityaVerma) \| Decision Tree method
+* [x] Print all subsets/powerset of a string \| [video](https://www.youtube.com/watch?v=Yg5a2FxU4Fo&list=PL_z_8CaSLPWeT1ffjiImo0sYTcnLzo-wY&index=12&ab_channel=AdityaVerma) \| **Decision Tree method**
 
 ```python
 def printSubsets(ip, op):
@@ -114,7 +114,25 @@ printSubsets(str,'') # init with I/P & O/P
 ```
 
 * [x] [Permutation with Spaces](https://practice.geeksforgeeks.org/problems/permutation-with-spaces3627/1) \| [Video](https://www.youtube.com/watch?v=1cspuQ6qHW0&list=PL_z_8CaSLPWeT1ffjiImo0sYTcnLzo-wY&index=14&ab_channel=AdityaVerma) : **NOTE:** Sometimes you've to break-down the problem before making recursion tree
+* [x] ----------------------------- \[Medium\]---------------------------
 * [x] [22.Generate Parentheses](https://leetcode.com/problems/generate-parentheses/) 🚀
+* [x] [1823.Find the Winner of the Circular Game](https://leetcode.com/problems/find-the-winner-of-the-circular-game/)
+* [ ] [241.Different Ways to Add Parentheses](https://leetcode.com/problems/different-ways-to-add-parentheses/)
+* [ ] [1545.Find Kth Bit in Nth Binary String](https://leetcode.com/problems/find-kth-bit-in-nth-binary-string/)
+* [ ] [394.Decode String](https://leetcode.com/problems/decode-string/)
+* [ ] [486.Predict the Winner](https://leetcode.com/problems/predict-the-winner/)
+* [ ] -------------------------------\[Hard\]----------------------------------
+* [ ] [10.Regular Expression Matching](https://leetcode.com/problems/regular-expression-matching/)
+* [ ] [44.Wildcard Matching](https://leetcode.com/problems/wildcard-matching/)
+* [ ] [1106.Parsing A Boolean Expression](https://leetcode.com/problems/parsing-a-boolean-expression/)
+* [ ] [761.Special Binary String](https://leetcode.com/problems/special-binary-string/)
+* [ ] [224.Basic Calculator](https://leetcode.com/problems/basic-calculator/)
+* [ ] [Basic Calculator III](https://leetcode.com/problems/basic-calculator-iii/) 💲
+* [ ] [770.Basic Calculator IV](https://leetcode.com/problems/basic-calculator-iv/)
+* [ ] [736.Parse Lisp Expression](https://leetcode.com/problems/parse-lisp-expression/)
+* [ ] [strobogrammatic-number-iii](https://leetcode.com/problems/strobogrammatic-number-iii/) 💲
+* [ ] [233.Number of Digit One](https://leetcode.com/problems/number-of-digit-one/)
+* [ ] [273.Integer to English Words](https://leetcode.com/problems/integer-to-english-words/)
 
 
 
