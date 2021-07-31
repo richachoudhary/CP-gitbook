@@ -82,7 +82,7 @@ def insertMeAtBottom(stk,x): # HYPO: inserts 'x' at the bottom of stk
 {% endtabs %}
 
 * [x] [779. K-th Symbol in Grammar](https://leetcode.com/problems/k-th-symbol-in-grammar/)
-* [x] Tower of Hanoi \| [video](https://www.youtube.com/watch?v=l45md3RYX7c&list=PL_z_8CaSLPWeT1ffjiImo0sYTcnLzo-wY&index=11&ab_channel=AdityaVerma)
+* [x] CSES: [Tower of Hanoi](https://cses.fi/problemset/task/2165) \| [video](https://www.youtube.com/watch?v=l45md3RYX7c&list=PL_z_8CaSLPWeT1ffjiImo0sYTcnLzo-wY&index=11&ab_channel=AdityaVerma) 
 
 ```python
 def solve(n,s,d,h):    # no of plats, poles: source, destination, helper
@@ -117,10 +117,9 @@ printSubsets(str,'') # init with I/P & O/P
 * [x] ----------------------------- \[Medium\]---------------------------
 * [x] [22.Generate Parentheses](https://leetcode.com/problems/generate-parentheses/) 🚀
 * [x] [1823.Find the Winner of the Circular Game](https://leetcode.com/problems/find-the-winner-of-the-circular-game/)
-* [ ] [241.Different Ways to Add Parentheses](https://leetcode.com/problems/different-ways-to-add-parentheses/)
-* [ ] [1545.Find Kth Bit in Nth Binary String](https://leetcode.com/problems/find-kth-bit-in-nth-binary-string/)
-* [ ] [394.Decode String](https://leetcode.com/problems/decode-string/)
-* [ ] [486.Predict the Winner](https://leetcode.com/problems/predict-the-winner/)
+* [x] [241.Different Ways to Add Parentheses](https://leetcode.com/problems/different-ways-to-add-parentheses/)
+* [x] [1545.Find Kth Bit in Nth Binary String](https://leetcode.com/problems/find-kth-bit-in-nth-binary-string/)
+* [ ] [394.Decode String](https://leetcode.com/problems/decode-string/) 🔒❌
 * [ ] -------------------------------\[Hard\]----------------------------------
 * [ ] [10.Regular Expression Matching](https://leetcode.com/problems/regular-expression-matching/)
 * [ ] [44.Wildcard Matching](https://leetcode.com/problems/wildcard-matching/)
@@ -138,9 +137,63 @@ printSubsets(str,'') # init with I/P & O/P
 
 ## 2. D&C
 
+* [x] [241.Different Ways to Add Parentheses](https://leetcode.com/problems/different-ways-to-add-parentheses/) ✅
+* [ ] [240.Search a 2D Matrix II](https://leetcode.com/problems/search-a-2d-matrix-ii/)
+* [ ] [342.Wiggle Sort II](https://leetcode.com/problems/wiggle-sort-ii/)
+* [ ] [23.Merge k Sorted Lists](https://leetcode.com/problems/merge-k-sorted-lists/)
+* [ ] [315.Count of Smaller Numbers After Self](https://leetcode.com/problems/count-of-smaller-numbers-after-self/)
+* [ ] [218.The Skyline Problem](https://leetcode.com/problems/the-skyline-problem/)
+* [ ] [4.Median of Two Sorted Arrays](https://leetcode.com/problems/median-of-two-sorted-arrays/)
+* [ ] [493.Reverse Pairs](https://leetcode.com/problems/reverse-pairs/)
+* [ ] [https://leetcode.com/problems/number-of-ships-in-a-rectangle/](https://leetcode.com/problems/number-of-ships-in-a-rectangle/)
+* [x] CSES: [Apple Division](https://cses.fi/problemset/result/2572485/)
+
 ## 3. Backtrack
 
+* [x] [52.N-Queens II](https://leetcode.com/problems/n-queens-ii/) \| CSES: [Chessboard and Queens](https://cses.fi/problemset/task/1624) ✅🚀
 
+{% tabs %}
+{% tab title="52. nQ" %}
+```python
+board = [[0 for _ in range(n)]for _ in range(n)]
+def canPlace(row,col):
+    if board[row][col] != 0:
+        return False
+    for i in range(row+1):
+        #check in the same col
+        if board[i][col] == 1: return False
+        #check if all diagonals are safe
+        #(Only need to check the upper rows)- as neeche toh abhi kuch rkha hi nhi
+        if 0<=row-i and 0<=col-i and (board[row-i][col-i] == 1):
+            return False
+        if 0<=row-i and col+i<n and (board[row-i][col+i] == 1):
+            return False
+    return True
+
+def nQueen(row):
+    if row == n:
+        return 1
+    res = 0
+    for col in range(n):
+        if canPlace(row, col):
+            # print('placed in row: {} '.format(row))
+            board[row][col] = 1
+            res += nQueen(row+1)
+            board[row][col] = 0
+    return res
+
+return nQueen(0)    # place from row 0 ---> row N-1
+
+'''
+TC: O(N!)
+SC: O(N*N)
+'''
+
+```
+{% endtab %}
+{% endtabs %}
+
+[https://leetcode.com/discuss/interview-question/1098081/famous-backtracking-problems](https://leetcode.com/discuss/interview-question/1098081/famous-backtracking-problems)
 
 
 

@@ -191,6 +191,7 @@ remove(SUBSET,5)
 * [ ] Count Triplets That Can Form Two Arrays of Equal XOR: [https://leetcode.com/problems/count-triplets-that-can-form-two-arrays-of-equal-xor/](https://leetcode.com/problems/count-triplets-that-can-form-two-arrays-of-equal-xor/)
 * [ ] Bitwise AND of Numbers Range: [https://leetcode.com/problems/bitwise-and-of-numbers-range/](https://leetcode.com/problems/bitwise-and-of-numbers-range/)
 * [ ] Decode XORed Permutation: [https://leetcode.com/problems/decode-xored-permutation/](https://leetcode.com/problems/decode-xored-permutation/)
+* [x] CSES: [Apple Division](https://cses.fi/problemset/result/2572485/)
 
 
 

@@ -527,6 +527,7 @@ return solve(r,len(r),5,1) - solve(l,len(l),5,1)
 
 ### 10.1 Cadane's Algorithm
 
+* [x] CSES: [Maximum Subarray Sum](https://cses.fi/problemset/task/1643)
 * [ ] [https://leetcode.com/problems/maximum-subarray/](https://leetcode.com/problems/maximum-subarray/)
 * [ ] [https://leetcode.com/problems/maximum-product-subarray/](https://leetcode.com/problems/maximum-product-subarray/)
 * [ ] [https://leetcode.com/problems/bitwise-ors-of-subarrays/](https://leetcode.com/problems/bitwise-ors-of-subarrays/)
@@ -552,7 +553,44 @@ return solve(r,len(r),5,1) - solve(l,len(l),5,1)
 
 ### 10.3 LIS
 
-* [ ] [https://leetcode.com/problems/longest-increasing-subsequence/](https://leetcode.com/problems/longest-increasing-subsequence/)
+#### 
+
+*  **LIS in O\(NlogN\)** : [KartikArora](https://www.youtube.com/watch?v=66w10xKzbRM&ab_channel=KartikArora) \| [Leetcode Post](https://leetcode.com/problems/longest-increasing-subsequence/discuss/74824/JavaPython-Binary-search-O%28nlogn%29-time-with-explanation) =&gt; Maintain Tails arr
+  * `Tails` arr contains all the starting points of diff LIS\(aptly named\)
+
+{% tabs %}
+{% tab title="LIS in O\(NlogN\)⭐️" %}
+```python
+# dp keeps some of the visited element in a sorted list, and its size is lengthOfLIS sofar.
+# It always keeps the our best chance to build a LIS in the future.
+tails = []
+for num in nums:
+    i = bisect.bisect_left(dp, num)
+    if i == len(dp):
+        tails.append(num)    #append if bigger
+    else: 
+        tails[i] = num    # replace if in-btw
+return len(tails)  
+
+```
+{% endtab %}
+
+{% tab title="Towers✅" %}
+```python
+tails = []
+for i in range(n):
+    idx = bisect.bisect_right(tails,A[i])
+    if idx == len(tails):
+        tails.append(A[i])
+    else:
+        tails[idx] = A[i]
+print(len(tails))
+```
+{% endtab %}
+{% endtabs %}
+
+* [x] CSES: [Towers](https://cses.fi/problemset/task/1073) ✅=&gt; Longest Decreasing Sequence: \(exactly same as LIS\)
+* [x] [300.Longest Increasing Subsequence ](https://leetcode.com/problems/longest-increasing-subsequence/)
 * [ ] [https://leetcode.com/problems/number-of-longest-increasing-subsequence/](https://leetcode.com/problems/number-of-longest-increasing-subsequence/)
 * [ ] [https://leetcode.com/problems/russian-doll-envelopes/](https://leetcode.com/problems/russian-doll-envelopes/)
 * [ ] [https://leetcode.com/problems/delete-columns-to-make-sorted-iii/](https://leetcode.com/problems/delete-columns-to-make-sorted-iii/)

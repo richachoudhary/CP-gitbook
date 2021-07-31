@@ -51,11 +51,20 @@ l.sort(key = lambda x: (x[0], -x[1]) )      # [(2, 4), (2, 3), (3, 4)]
 * **str-&gt;list**  **:** split a string by char: `s = txt.split("#")`
 * **list-&gt;str  :** join a list by char into string: `list1 = ['1', '2', '3'] str1 = ','.join(list1)`
 * **get freq** of element in list/string: `list.count(x)`
-* **Casing**: 
-  * Check casing:  `mystr.islower()`
-  * Change case: `string.lower()`
+* **Casing/Type checking**: 
+
+```python
+mystr.islower()       # Check is alphabet
+mystr.isnumeric()     # check if number(0-9)
+mystring.lower()      # Change case
+
+```
+
+* Check casing:  `mystr.islower()`
+* Change case: `string.lower()`
 * **Substring find/StrStr :** Search: `s.find(t)` -&gt; returns **first** index or -1
 * **Reverse: `str[::-1]`**
+* **Find:**
 
 ```python
 myst.find(c)    # finds first occurence of 'c' in str | if not found => -1
@@ -113,6 +122,7 @@ d[sums] = d.get(sums,0) + 1
 
 ### `Counter` as dict
 
+* **THEY ARE THE `MULTISET EQUIVLANTS` OF C++ \(**there's no multiset in python**\). Use:** [CSES: Traffic Lights](https://cses.fi/problemset/task/1163)
 * **BETTER Use Counter :** use `count = collections.Counter()` as dict..._very short & convenient_
   * WHAT: Python Counter is a subclass of the dict or dictionary class. It keeps track of the frequency of each element in the container.
   * WHAT: Counter counts hashable objects in Python

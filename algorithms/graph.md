@@ -158,6 +158,7 @@ diagram: https://leetcode.com/problems/shortest-bridge/discuss/189293/C%2B%2B-BF
 * [x] [332.Reconstruct Itinerary](https://leetcode.com/problems/reconstruct-itinerary/) \| dfs + backtrack ✅✈️
 * [x] [1443.Minimum Time to Collect All Apples in a Tree](https://leetcode.com/problems/minimum-time-to-collect-all-apples-in-a-tree/) 🍎
 * [x] [932.Shortest Bridge](https://leetcode.com/problems/shortest-bridge/) \| **Google** \| BFS+DFS ✅
+* [ ] CSES:[ Grid Paths](https://cses.fi/problemset/task/1625) ✅✅✅🐽\| [WilliamLin](https://www.youtube.com/watch?v=dZ_6MS14Mg4&t=2440s&ab_channel=WilliamLin)
 
 ## **1. Single Source Shortest/Longest Path - SSSP/SSLP** 
 

@@ -69,13 +69,20 @@ math.pow(x,n,M)
 
 ### 2.2 Problems: Maths
 
+* [x] CSES: [Two Sets](https://cses.fi/problemset/task/1092) \| four consecutive numbers can be divided into 2 sets of equal sums
+* [x] CSES: [Coin Piles](https://cses.fi/problemset/task/1754) \| [Solution Approach](https://discuss.codechef.com/t/coin-piles-problem-from-cses/28647/3)
+* [x] CSES: [Gray Code](https://cses.fi/problemset/task/2205) \| [Solution](https://www.geeksforgeeks.org/generate-n-bit-gray-codes/)
+* [x] CSES: [Missing Coin Sum](https://cses.fi/problemset/result/2583670/) \| [Approach](https://discuss.codechef.com/t/cses-missing-coin-sum/84039/2) ✅
+  * **KYA SEEKHA:** At any index **i** in a sorted array **a**, currSum represents `sum(a[ 0...i ])`.We can form every possible sum from `1...currSum`, when we are at index i
 
-
-### 2.2.2 Combinatorics
+### 2.3 Combinatorics
 
 * [ ] AtCoder: [Cumulative Sum](https://atcoder.jp/contests/abc208/tasks/abc208_f) \| [Editorial](https://atcoder.jp/contests/abc208/editorial/2219)
 
+### 2.4 Chess Problems:
 
+* [x] CSES: [Two Knights](https://cses.fi/problemset/task/1072) \| approach: [here](https://discuss.codechef.com/t/cses-two-knights-problem-help-needed/69448/5) & [here](https://math.stackexchange.com/questions/3266257/number-of-ways-two-knights-can-be-placed-such-that-they-dont-attack)
+* [https://codeforces.com/blog/entry/78943](https://codeforces.com/blog/entry/78943)
 
 
 

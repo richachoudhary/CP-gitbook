@@ -5,6 +5,35 @@
 * [x] [1021.Remove Outermost Parentheses](https://leetcode.com/problems/remove-outermost-parentheses/)
 * [x] [443.String Compression](https://leetcode.com/problems/string-compression/)
 * [x] [1520.Maximum Number of Non-Overlapping Substrings](https://leetcode.com/problems/maximum-number-of-non-overlapping-substrings/) 🍪🍪🍪
+* [x] CSES: [Palindrome Reorder](https://cses.fi/problemset/task/1755)
+* [x] **TYPE: Count \# Inversions** ✅
+  * [x] CSES: [Collecting Numbers](https://cses.fi/problemset/task/2216)  \| [Approach](https://discuss.codechef.com/t/cses-collecting-numbers/83775)
+  * [x] CSES: [Collecting Numbers II](https://cses.fi/problemset/task/2217) \|  [Video](https://www.youtube.com/watch?v=LEL3HW4dQew&ab_channel=ARSLONGAVITABREVIS) 🐽
+
+{% tabs %}
+{% tab title="Collecting Numbers" %}
+```python
+n= int(input())
+A = list(map(int,input().split()))
+           
+cnt = 0
+pos = [i for i in range(n)]
+
+for i in range(n):
+    pos[A[i] -1] = i    # pos[4] = 0
+
+cnt= 1  #last trip to collect all in-place ele
+for i in range(1,n):
+    if pos[i]<pos[i-1]:
+        cnt += 1
+print(cnt)
+
+'''
+VIDEO: https://www.youtube.com/watch?v=lhhHCZYoJvs&ab_channel=ARSLONGAVITABREVIS
+'''
+```
+{% endtab %}
+{% endtabs %}
 
 ## 2. Hashing
 
@@ -363,11 +392,52 @@ def kClosest(self, points: List[List[int]], k: int) -> List[List[int]]:
 
 ## 6.Sort
 
+* [x] CSES: [Stick Lengths](https://cses.fi/problemset/result/2583535/)✅ \| standard problem \|use **MEDIAN** not **MEAN**
+* [x] CSES: [Traffic Lights](https://cses.fi/problemset/task/1163) : 🐽🐽✅✅ \| [Youtube](ttps://www.youtube.com/watch?v=4HKXdh_LHps&ab_channel=ARSLONGAVITABREVIS) \| [Stackoverflow](https://stackoverflow.com/questions/63329220/i-tried-solving-traffic-lights-problem-in-the-cses-problem-set-my-approach-seem)
 
+{% tabs %}
+{% tab title="Traffic Lights" %}
+```python
+# ======================== NOOB: O(N*N(logN))
+segments = [0,x]
+for t in trafficLights:
+    segments.append(t)
+    segments.sort()
+    res =0
+    for i in range(len(segments)-1):
+        res = max(res,segments[i+1]-segments[i])
+    print(res)
+
+# 2. ====================== Using multiset+bin_serach: O(NlogN)
+
+street = [0,x]
+lights = Counter()    # MULTISET as deletion in lists take O(N) & for dict its O(1)
+lights[x] = 1
+
+for t in trafficLights:
+    r = bisect.bisect_right(street,t)
+    l = r-1
+    lights[(street[r]-street[l])] -= 1   # O(1)
+    if lights[(street[r]-street[l])] == 0:
+        lights.pop((street[r]-street[l]))
+    # add new lights
+    lights[(street[r]-t)] += 1
+    lights[(t-street[l])] += 1
+
+    street.insert(r,t) #insert new light
+    print('\t\t ', street)
+# YOUTUBE: https://www.youtube.com/watch?v=4HKXdh_LHps&ab_channel=ARSLONGAVITABREVIS
+# CODE: https://stackoverflow.com/questions/63329220/i-tried-solving-traffic-lights-problem-in-the-cses-problem-set-my-approach-seem
+
+```
+{% endtab %}
+{% endtabs %}
 
 ## 7.Binary Search
 
 ### 7.0 Notes
+
+* There is nothing like `upper_bound` in python?????????????? \(see CSES:Concert Tickets\)
 
 ```python
 import bisect
@@ -379,6 +449,8 @@ index = bisect.bisect_right(arr, x)  #first element "greater than x"
 
 * [ ] [1044. Longest Duplicate Substring](https://leetcode.com/problems/longest-duplicate-substring/) ⚡️ - learn [this approach](https://leetcode.com/problems/longest-duplicate-substring/discuss/695029/python-binary-search-with-rabin-karp-o%28n-log-n%29-explained) =&gt; **Rolling Hash/Rabin Karp**
 * [ ] [658.Find K Closest Elements](https://leetcode.com/problems/find-k-closest-elements/) \| [Soln](https://leetcode.com/problems/find-k-closest-elements/discuss/915047/Finally-I-understand-it-and-so-can-you.)
+* [ ] CSES:[ Digit Queries](https://cses.fi/problemset/result/2573072/) \| s[oln video](https://www.youtube.com/watch?v=QAcH8qD9Pe0&ab_channel=ARSLONGAVITABREVIS) ✅✅🐽
+* [ ] CSES: [Concert Tickets](https://cses.fi/problemset/task/1091) \| [WilliamLin](https://www.youtube.com/watch?v=dZ_6MS14Mg4&t=3436s&ab_channel=WilliamLin)
 
 
 
@@ -386,7 +458,8 @@ index = bisect.bisect_right(arr, x)  #first element "greater than x"
 
 ## 8.Two Pointers
 
-
+* [x] **CSES:** [Apartments](https://cses.fi/problemset/task/1084)
+* [x] CSES: [Ferris Wheel](https://cses.fi/problemset/task/1090)
 
 ## 9.Sliding Window
 
@@ -517,6 +590,7 @@ def maxSlidingWindow(self, nums: List[int], k: int) -> List[int]:
 
 #### Dynamic Size Window
 
+* [x] CSES: [Playlist](https://cses.fi/problemset/task/1141)
 * [x] [560.Subarray Sum Equals K](https://leetcode.com/problems/subarray-sum-equals-k/)✅
   * **NOTE:** Sliding window technique works only for all positive/all negative \(i.e. not for arr with both pos & neg numbers\).So soln\#1 below gets WA
 * [x] GfG\#1: [Longest substring with k unique characters](https://www.geeksforgeeks.org/find-the-longest-substring-with-k-unique-characters-in-a-given-string/) ❤️
@@ -524,6 +598,25 @@ def maxSlidingWindow(self, nums: List[int], k: int) -> List[int]:
 * [x] [424.Longest Repeating Character Replacement ](https://leetcode.com/problems/longest-repeating-character-replacement/)\(similar to \#1\) 🚀🚀
 
 {% tabs %}
+{% tab title="Playlist" %}
+```python
+n= int(input())
+A = list(map(int,input().split()))
+
+res = 0
+l = 0
+s = set()
+s.add(A[0])
+for r in range(1,n):
+    while l<r and A[r] in s:
+        s.remove(A[l])
+        l += 1
+    s.add(A[r])
+    res = max(res, r-l+1)
+print(res)
+```
+{% endtab %}
+
 {% tab title="560✅" %}
 ```python
 def subarraySum(self, nums: List[int], k: int) -> int:
@@ -623,4 +716,7 @@ def characterReplacement(self, s: str, k: int) -> int:
 
 
 ## 10.Intervals Question
+
+* [x] CSES: [Movie Festival](https://cses.fi/problemset/task/1629)
+* [x] CSES: [Restaurant Customers](https://cses.fi/problemset/task/1619)
 
