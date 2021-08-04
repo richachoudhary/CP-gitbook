@@ -51,7 +51,7 @@ import bisect
 li =  [1, 3, 4, 4, 4, 6, 7]
 #index:0  1  2  3  4  5  6    
 idx1 = bisect.bisect(li,4)          # => 5
-idx2 = bisect.bisect_left(li,4)     # => 3
+idx2 = bisect.bisect_left(li,4)     # => 2
 idx3 = bisect.bisect_right(li,4)    # => 4
 ```
 

@@ -121,6 +121,7 @@ printSubsets(str,'') # init with I/P & O/P
 * [x] [1545.Find Kth Bit in Nth Binary String](https://leetcode.com/problems/find-kth-bit-in-nth-binary-string/)
 * [ ] [394.Decode String](https://leetcode.com/problems/decode-string/) 🔒❌
 * [ ] -------------------------------\[Hard\]----------------------------------
+* [ ] CSES: [Josephus Problem II](https://cses.fi/problemset/task/2163) 🐽 \| KartikVarma-O\(N\*N\)...need to do better
 * [ ] [10.Regular Expression Matching](https://leetcode.com/problems/regular-expression-matching/)
 * [ ] [44.Wildcard Matching](https://leetcode.com/problems/wildcard-matching/)
 * [ ] [1106.Parsing A Boolean Expression](https://leetcode.com/problems/parsing-a-boolean-expression/)
@@ -146,7 +147,7 @@ printSubsets(str,'') # init with I/P & O/P
 * [ ] [4.Median of Two Sorted Arrays](https://leetcode.com/problems/median-of-two-sorted-arrays/)
 * [ ] [493.Reverse Pairs](https://leetcode.com/problems/reverse-pairs/)
 * [ ] [https://leetcode.com/problems/number-of-ships-in-a-rectangle/](https://leetcode.com/problems/number-of-ships-in-a-rectangle/)
-* [x] CSES: [Apple Division](https://cses.fi/problemset/result/2572485/)
+* [x] CSES: [Apple Division](https://cses.fi/problemset/result/2572485/) ⭐️
 
 ## 3. Backtrack
 

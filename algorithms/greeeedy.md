@@ -389,11 +389,27 @@ def kClosest(self, points: List[List[int]], k: int) -> List[List[int]]:
 ### 5.2 Rest of the Problems
 
 * [x] [1046.Last Stone Weight](https://leetcode.com/problems/last-stone-weight/)
+* [x] CSES: [Josephus Problem I](https://cses.fi/problemset/task/2162)
+
+{% tabs %}
+{% tab title="Josephus I" %}
+```python
+n = int(input())
+d = deque([i for i in range(1,n+1)])
+
+while d:
+    x = d.popleft()
+    d.append(x)
+    print(d.popleft())
+```
+{% endtab %}
+{% endtabs %}
 
 ## 6.Sort
 
 * [x] CSES: [Stick Lengths](https://cses.fi/problemset/result/2583535/)✅ \| standard problem \|use **MEDIAN** not **MEAN**
 * [x] CSES: [Traffic Lights](https://cses.fi/problemset/task/1163) : 🐽🐽✅✅ \| [Youtube](ttps://www.youtube.com/watch?v=4HKXdh_LHps&ab_channel=ARSLONGAVITABREVIS) \| [Stackoverflow](https://stackoverflow.com/questions/63329220/i-tried-solving-traffic-lights-problem-in-the-cses-problem-set-my-approach-seem)
+* [x] CSES: [Room Allocation](https://cses.fi/problemset/task/1164) ✅ \| LC: [1942.The Number of the Smallest Unoccupied Chair](https://leetcode.com/problems/the-number-of-the-smallest-unoccupied-chair/discuss/1360146/python-heap-easy-implementation-faster-than-100) -&gt; my first editorial!!
 
 {% tabs %}
 {% tab title="Traffic Lights" %}
@@ -437,20 +453,78 @@ for t in trafficLights:
 
 ### 7.0 Notes
 
-* There is nothing like `upper_bound` in python?????????????? \(see CSES:Concert Tickets\)
-
-```python
-import bisect
-index = bisect.bisect_left(arr, x)   #first element "greater than or equal to x"
-index = bisect.bisect_right(arr, x)  #first element "greater than x" 
-```
-
 ### 7.1 Problems
 
 * [ ] [1044. Longest Duplicate Substring](https://leetcode.com/problems/longest-duplicate-substring/) ⚡️ - learn [this approach](https://leetcode.com/problems/longest-duplicate-substring/discuss/695029/python-binary-search-with-rabin-karp-o%28n-log-n%29-explained) =&gt; **Rolling Hash/Rabin Karp**
 * [ ] [658.Find K Closest Elements](https://leetcode.com/problems/find-k-closest-elements/) \| [Soln](https://leetcode.com/problems/find-k-closest-elements/discuss/915047/Finally-I-understand-it-and-so-can-you.)
-* [ ] CSES:[ Digit Queries](https://cses.fi/problemset/result/2573072/) \| s[oln video](https://www.youtube.com/watch?v=QAcH8qD9Pe0&ab_channel=ARSLONGAVITABREVIS) ✅✅🐽
-* [ ] CSES: [Concert Tickets](https://cses.fi/problemset/task/1091) \| [WilliamLin](https://www.youtube.com/watch?v=dZ_6MS14Mg4&t=3436s&ab_channel=WilliamLin)
+* [x] CSES:[ Digit Queries](https://cses.fi/problemset/result/2573072/) \| s[oln video](https://www.youtube.com/watch?v=QAcH8qD9Pe0&ab_channel=ARSLONGAVITABREVIS) ✅✅🐽
+* [x] CSES: [Concert Tickets](https://cses.fi/problemset/task/1091) \| [WilliamLin](https://www.youtube.com/watch?v=dZ_6MS14Mg4&t=3436s&ab_channel=WilliamLin)✅⭐️⭐️✅ \| **Kuch naya sikha ke gya ye Q**
+
+{% tabs %}
+{% tab title="Concert Tickets:: CPP" %}
+```cpp
+multiset<int> tickets;
+cin >> n >> m;
+for (int i=0;i<n;++i){
+	cin >> h; tickets.insert(h);
+}
+for (int i=0;i<m;++i){
+	cin >> t;
+	auto it = tickets.upper_bound(t);
+	if (it==tickets.begin()){
+		cout << -1 << "\n";
+	}
+	else{
+		cout << *(--it) << "\n";
+		tickets.erase(it);
+	}
+}
+```
+{% endtab %}
+
+{% tab title="CounterTickets:: py TLE" %}
+```python
+# 1. ================ TLE: O(NlogN)
+A = list(I())  
+A.sort()
+
+for e in I():  
+    i = bisect.bisect_right(A,e)
+    if i == 0:
+        print('-1')
+    else:
+        print(A[i-1])
+        A.pop(i-1)  # COSTLY Operation: Adds extra O(N)
+
+# 2. ================== O(logN) :: use multiset (not 'set' because of duplication)
+'''
+    NOTE: there is no O(logN) seach based multiset data structure in python : https://stackoverflow.com/questions/17346905/is-there-a-python-equivalent-for-c-multisetint
+    i.e. with python you cant implement m.lower_bound() for a multimap 'm'
+'''
+A = list(I())  
+A.sort()
+print('\n',A)
+freq = Counter(A)
+
+for e in I():  
+    i = bisect.bisect_right(A,e)
+    if i > 0 and freq[A[i-1]] > 0:
+        print(A[i-1])
+        freq[A[i-1]] -= 1
+    else:
+        print('-1')
+```
+{% endtab %}
+{% endtabs %}
+
+{% hint style="danger" %}
+**NOTE**: there is no O\(logN\) search based multiset data structure in python : [https://stackoverflow.com/questions/17346905/is-there-a-python-equivalent-for-c-multisetint](https://stackoverflow.com/questions/17346905/is-there-a-python-equivalent-for-c-multisetint) 
+
+i.e. with python you cant implement m.lower\_bound\(\) for a multimap 'm'. \(closest D.S. to multiset is **collections.Counter\)**  
+So for this question, you **HAVE TO GO WITH C++** 
+
+**\(**cant use Counters either, because of case: when just prev elemnent has freq = 0 & you've to keep searching back for prev lowest ele\)
+{% endhint %}
 
 
 
@@ -458,8 +532,8 @@ index = bisect.bisect_right(arr, x)  #first element "greater than x"
 
 ## 8.Two Pointers
 
-* [x] **CSES:** [Apartments](https://cses.fi/problemset/task/1084)
-* [x] CSES: [Ferris Wheel](https://cses.fi/problemset/task/1090)
+* [x] **CSES:** [Apartments](https://cses.fi/problemset/task/1084) ⭐️💪
+* [x] CSES: [Ferris Wheel](https://cses.fi/problemset/task/1090) 
 
 ## 9.Sliding Window
 

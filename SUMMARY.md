@@ -22,8 +22,6 @@
 
 ## Recursion
 
-* [Trees](recursion/trees.md)
-
 ## System Design
 
 * [Resources](system-design/resources.md)

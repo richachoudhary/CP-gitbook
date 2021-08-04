@@ -15,7 +15,7 @@ I = lambda : map(int, input().split())     # one line to rule them all
 #=========== USAGE ==================
 #1. multiple inputs as integers
 n, x = I()
-
+l = list(I())
 #2. input a list:
 for p in I():
     # do your thing here
