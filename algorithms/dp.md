@@ -556,7 +556,8 @@ return solve(r,len(r),5,1) - solve(l,len(l),5,1)
 #### 
 
 *  **LIS in O\(NlogN\)** : [KartikArora](https://www.youtube.com/watch?v=66w10xKzbRM&ab_channel=KartikArora) \| [Leetcode Post](https://leetcode.com/problems/longest-increasing-subsequence/discuss/74824/JavaPython-Binary-search-O%28nlogn%29-time-with-explanation) =&gt; Maintain Tails arr
-  * `Tails` arr contains all the starting points of diff LIS\(aptly named\)
+  * `Tails` arr contains all the **starting** points of all **LISs**\(aptly named\)=&gt; use `bisect_left` for LIS
+  * `Tails` arr contains all the **ending** points of all **LIDs**\(aptly named\) =&gt; use `bisect_right` for LDS
 
 {% tabs %}
 {% tab title="LIS in O\(NlogN\)⭐️" %}
@@ -565,8 +566,8 @@ return solve(r,len(r),5,1) - solve(l,len(l),5,1)
 # It always keeps the our best chance to build a LIS in the future.
 tails = []
 for num in nums:
-    i = bisect.bisect_left(dp, num)
-    if i == len(dp):
+    i = bisect.bisect_left(tails, num)
+    if i == len(tails):
         tails.append(num)    #append if bigger
     else: 
         tails[i] = num    # replace if in-btw

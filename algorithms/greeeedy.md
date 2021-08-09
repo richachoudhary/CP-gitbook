@@ -9,28 +9,90 @@
 * [x] **TYPE: Count \# Inversions** ✅
   * [x] CSES: [Collecting Numbers](https://cses.fi/problemset/task/2216)  \| [Approach](https://discuss.codechef.com/t/cses-collecting-numbers/83775)
   * [x] CSES: [Collecting Numbers II](https://cses.fi/problemset/task/2217) \|  [Video](https://www.youtube.com/watch?v=LEL3HW4dQew&ab_channel=ARSLONGAVITABREVIS) 🐽
+* [x] CSES: [Subarray Sum 1](https://cses.fi/problemset/task/1660/) \| only "prefix sum"
+* [x] CSES: [Subarray Sum 2](https://cses.fi/problemset/task/1661) \| neg numbers \| prefix sum + map
+* [x] CSES: [Subarray Divisibility](https://cses.fi/problemset/result/2648945/) \| ✅ 
 
 {% tabs %}
-{% tab title="Collecting Numbers" %}
+{% tab title="Collecting Numbers✅" %}
 ```python
-n= int(input())
-A = list(map(int,input().split()))
-           
+# 1. ==================== LIS doesnt work here: WA
+tails = []
+LIS = [1]*n
+
+for i,x in enumerate(A):
+    idx = bisect.bisect_left(tails,x)
+    if idx == len(tails):
+        tails.append(x)
+        if len(tails) > 1:
+            LIS[i] = LIS[idx-1]+1
+    else:
+        tails[idx] = x
+        if idx > 0 and LIS[idx -1] == LIS[i]:
+            LIS[i] = LIS[idx-1]+1
+        else:
+            LIS[i] = LIS[idx]
+print(sum(x for x in LIS if x==1))
+
+# 2. ============== Count inversions (as numbers are in 1...n)
+
+s = set()
 cnt = 0
-pos = [i for i in range(n)]
-
-for i in range(n):
-    pos[A[i] -1] = i    # pos[4] = 0
-
-cnt= 1  #last trip to collect all in-place ele
-for i in range(1,n):
-    if pos[i]<pos[i-1]:
+for x in A:
+    if x-1 not in s:
         cnt += 1
-print(cnt)
+    s.add(x)
 
+print(cnt)
 '''
 VIDEO: https://www.youtube.com/watch?v=lhhHCZYoJvs&ab_channel=ARSLONGAVITABREVIS
 '''
+```
+{% endtab %}
+
+{% tab title="Subarray Sum 2" %}
+```python
+I = lambda : map(int, input().split())
+n,x = I()
+
+A = list(I())
+
+d = dict()
+d[0] = 1
+cnt = 0
+curr = 0
+
+for e in A:
+    curr += e
+    if curr - x in d:
+        cnt += d[curr-x]
+
+    if curr in d:
+        d[curr] += 1
+    else:
+        d[curr] = 1
+print(cnt)
+
+```
+{% endtab %}
+
+{% tab title="Subarray Divisibility" %}
+```python
+d = dict()
+d[0] = 1
+cnt = 0
+curr = 0
+
+for e in A:
+    curr = (curr+e+n)%n # '+n' because of negative numbers
+    if curr in d:
+        cnt += d[curr]
+
+    if curr in d:
+        d[curr] += 1
+    else:
+        d[curr] = 1
+print(cnt)
 ```
 {% endtab %}
 {% endtabs %}
@@ -49,6 +111,192 @@ VIDEO: https://www.youtube.com/watch?v=lhhHCZYoJvs&ab_channel=ARSLONGAVITABREVIS
 ### 3.1 Problems
 
 * [x] [1700.Number of Students Unable to Eat Lunch](https://leetcode.com/problems/number-of-students-unable-to-eat-lunch/)
+* [x] CSES: [Sliding Medium](https://cses.fi/problemset/task/1076) \| LC: [480 Sliding Window Median](https://leetcode.com/problems/sliding-window-median/)  ✅✅⭐️🚀 // `O(logK)` **NOTE: Dont skip w/o doing it!!!!!!!**
+  * Video: [link](https://www.youtube.com/watch?v=UGs_kQxJNPk&ab_channel=ARSLONGAVITABREVIS)
+* [x] CSES: [Sliding Cost](https://cses.fi/problemset/task/1077/) \| very similar to Sliding Medium; jst keep two sums: `upperSum` & `lowerSum`
+* [x] CSES: [Maximum Subarray Sum II](https://cses.fi/problemset/task/1644/) \| idea [here](https://discuss.codechef.com/t/help-with-maximum-subarray-sum-ii-from-cses/73404) 🐽
+
+{% tabs %}
+{% tab title="SlidingMedium" %}
+```cpp
+multiset<int> lo,hi;
+int k;
+void rebalance(){
+    if(k&1){
+        while(lo.size() < k/2 + 1){
+            int t = *(hi.begin());
+            hi.erase(hi.begin());
+            lo.insert(t);
+        }
+        while(lo.size()> k/2 + 1){
+            int t = *(lo.rbegin());
+            lo.erase(lo.find(t));
+            hi.insert(t);
+        }
+    }else{
+        while(lo.size() < k/2){
+            int t = *(hi.begin());
+            hi.erase(hi.begin());
+            lo.insert(t);
+        }
+        while(lo.size()> k/2){
+            int t = *(lo.rbegin());
+            lo.erase(lo.find(t));
+            hi.insert(t);
+        }
+    }
+}
+
+void ins(int x){
+    if(x < *(lo.rbegin())){
+        lo.insert(x);
+    }else{
+        hi.insert(x);
+    }
+    rebalance();
+}
+
+void rem(int x){
+    if(lo.find(x) != lo.end()){
+        lo.erase(lo.find(x));
+    }else{
+        hi.erase(hi.find(x));
+    }
+    rebalance();
+}
+
+vector<double> medianSlidingWindow(vector<int>& a, int K) {
+    vector<double>res;
+    k = K;
+    int n = a.size();
+    //special case
+    if(k==1){
+        return a;
+    }
+    
+    //first window
+    lo.insert(a[0]);
+    for(int i=1;i<k;i++){
+        ins(a[i]);
+    }
+    if(k&1){
+        res.push_back(double(*lo.rbegin()));
+    }else{
+        double x = (double(*lo.rbegin()) + double(*hi.begin()))/2;
+        res.push_back(x);
+    }
+    
+    //next windows after first
+    for(int i=k;i<n;i++){
+        if(k==1){           //special case(not reqd now, already handled @line51)
+            ins(a[i]);
+            rem(a[i-k]);
+        }else{
+            rem(a[i-k]);
+            ins(a[i]);
+        }
+        if(k&1){
+            res.push_back(double(*lo.rbegin()));
+        }else{
+            double x = (double(*lo.rbegin()) + double(*hi.begin()))/2;
+            res.push_back(x);
+        }
+    }
+    return res;
+}
+```
+{% endtab %}
+
+{% tab title="Sliding Sum" %}
+```cpp
+const ll mn = (ll) 2e5+5;
+
+ll N, K;
+ll arr[mn];
+multiset<ll> up;
+multiset<ll> low;
+ll sLow, sUp;
+
+void ins(ll val){
+	ll a = *low.rbegin();
+	if(a < val){
+		up.insert(val); sUp += val;
+		if(up.size() > K/2){
+			ll moving = *up.begin();
+			low.insert(moving); sLow += moving;
+			up.erase(up.find(moving)); sUp -= moving;
+		}
+	}
+	else{
+		low.insert(val); sLow += val;
+		if(low.size() > (K + 1)/2){
+			ll moving = *low.rbegin();
+			up.insert(*low.rbegin()); sUp += moving;
+			low.erase(low.find(*low.rbegin())); sLow -= moving;
+		}
+	}
+}
+
+void er(ll val){
+	if(up.find(val) != up.end()) up.erase(up.find(val)), sUp -= val;
+	else low.erase(low.find(val)), sLow -= val;
+	if(low.empty()){
+		ll moving = *up.begin();
+		low.insert(*up.begin()); sLow += moving;
+		up.erase(up.find(*up.begin())); sUp -= moving;
+	}
+}
+
+ll med(){ return (K%2 == 0) ? 0 : (*low.rbegin()); }
+
+int main() {
+	cin >> N >> K;
+	for(ll i = 0; i < N; i++) cin >> arr[i];
+	low.insert(arr[0]); sLow += arr[0];
+	for(ll i = 1; i < K; i++) ins(arr[i]);
+	cout << sUp - sLow + med(); if(N!=1) cout << " ";
+	for(ll i = K; i < N; i++){
+		if(K == 1){
+			ins(arr[i]);
+			er(arr[i - K]);
+		}
+		else{
+			er(arr[i - K]);
+			ins(arr[i]);
+		}
+		cout << sUp - sLow + med(); if(i != N -1) cout << " ";
+	}
+	cout << endl;
+}
+```
+{% endtab %}
+
+{% tab title="MaxSubarrSum II" %}
+```cpp
+int n,a,b;
+cin>>n>>a>>b;
+vector<ll> prefixsum(n+1);
+prefixsum[0] = 0;
+for(int i=1;i<=n;i++){
+    int x;
+    cin>>x;
+    prefixsum[i] = prefixsum[i-1] + x;
+}
+multiset<ll> curr;
+ll ans = -2e18;
+for(int i=a;i<=n;i++){
+    if(i>b){
+        curr.erase(curr.find(prefixsum[i-b-1]));
+    }
+    curr.insert(prefixsum[i-a]);
+    ans = max(ans, prefixsum[i] - *curr.begin());
+}
+cout<<ans<<"\n";
+```
+{% endtab %}
+{% endtabs %}
+
+
 
 
 
@@ -374,7 +622,7 @@ def kClosest(self, points: List[List[int]], k: int) -> List[List[int]]:
 **Two Heaps Pattern**
 
 * [ ] [LC \#295](https://leetcode.com/problems/find-median-from-data-stream) - Find median from a data stream
-* [ ] [LC \#480](https://leetcode.com/problems/sliding-window-median/) - Sliding window Median
+* [x] [LC \#480](https://leetcode.com/problems/sliding-window-median/) - Sliding window Median
 * [ ] [LC \#502](https://leetcode.com/problems/ipo/) - Maximize Capital/IPO
 
 **Minimum number Pattern**
@@ -410,6 +658,7 @@ while d:
 * [x] CSES: [Stick Lengths](https://cses.fi/problemset/result/2583535/)✅ \| standard problem \|use **MEDIAN** not **MEAN**
 * [x] CSES: [Traffic Lights](https://cses.fi/problemset/task/1163) : 🐽🐽✅✅ \| [Youtube](ttps://www.youtube.com/watch?v=4HKXdh_LHps&ab_channel=ARSLONGAVITABREVIS) \| [Stackoverflow](https://stackoverflow.com/questions/63329220/i-tried-solving-traffic-lights-problem-in-the-cses-problem-set-my-approach-seem)
 * [x] CSES: [Room Allocation](https://cses.fi/problemset/task/1164) ✅ \| LC: [1942.The Number of the Smallest Unoccupied Chair](https://leetcode.com/problems/the-number-of-the-smallest-unoccupied-chair/discuss/1360146/python-heap-easy-implementation-faster-than-100) -&gt; my first editorial!!
+* [x] CSES: [Reading Books](https://cses.fi/problemset/task/1631) \| [why max\(sum,2\*last\_ele\) works](https://codeforces.com/blog/entry/79238)
 
 {% tabs %}
 {% tab title="Traffic Lights" %}
@@ -445,6 +694,52 @@ for t in trafficLights:
 # YOUTUBE: https://www.youtube.com/watch?v=4HKXdh_LHps&ab_channel=ARSLONGAVITABREVIS
 # CODE: https://stackoverflow.com/questions/63329220/i-tried-solving-traffic-lights-problem-in-the-cses-problem-set-my-approach-seem
 
+```
+{% endtab %}
+
+{% tab title="Room Allocation" %}
+```cpp
+/*
+CANT DO WITH PYTHON: AS #NOTE.
+#NOTE: free rooms: ordered container with O(logN) addition/removal => set
+if checkin:
+    if no room free : assign new
+    if any room/s free: assing lowest free & mark that room as not-free
+if checkout:
+    mark his room as free
+*/
+int n;cin>>n;
+vector<pair<int,pair<int,int> > > guests;
+for(int i=0;i<n;i++){
+    int x,y;
+    cin >> x >> y;
+    guests.push_back(make_pair(x,make_pair(-1,i)));
+    guests.push_back(make_pair(y,make_pair(1,i)));
+}
+vector<int>res(n,0);
+sort(guests.begin(),guests.end());
+set<int>frees;
+
+int max_room = 1;
+for(int i=0;i<2*n;i++){
+    int t = guests[i].first, op = guests[i].second.first, idx = guests[i].second.second;
+    if(op == -1){    //check-in
+        if(frees.size() == 0){
+            res[idx] = max_room;
+            max_room++;
+        }else{
+            res[idx] = *frees.begin();
+            frees.erase(frees.begin());
+        }
+    }else{          //check-out
+        frees.insert(res[idx]);
+    }
+}
+
+cout<<max_room-1<<endl;
+for(int i=0;i<n;i++){
+    cout<<res[i]<<" ";
+}
 ```
 {% endtab %}
 {% endtabs %}
@@ -526,7 +821,59 @@ So for this question, you **HAVE TO GO WITH C++**
 **\(**cant use Counters either, because of case: when just prev elemnent has freq = 0 & you've to keep searching back for prev lowest ele\)
 {% endhint %}
 
+### 7.2 Linear Function based problems \(find min x for f\(x\)\)
 
+* [x] CSES: [Factory Machines ](https://cses.fi/problemset/task/1620)✅
+* [x] CSES: [Array Division](https://cses.fi/problemset/task/1085/) ✅✅
+
+{% tabs %}
+{% tab title="FactoryMachines" %}
+```python
+lb, ub = 0,10**18
+ans = 0
+while lb<=ub:
+    mid = (lb+ub)//2
+    summ = 0
+    print(f'lb = {lb} , mid = {mid} , ub = {ub}')
+    for e in A:
+        summ += mid//e
+        if summ >= t:
+            break
+    print(f'\t summ = {summ}')
+    if summ >= t:
+        ans = mid
+        ub = mid-1
+    else:
+        lb = mid+1
+print(ans)
+```
+{% endtab %}
+
+{% tab title="Array Division" %}
+```python
+n,k = I()
+A = list(I())
+
+lo,hi = max(A), sum(A)
+while lo<hi:
+    mid = (lo+hi)//2
+    cnt = 0
+    curr = 0
+    for e in A:
+        if curr+e > mid:
+            cnt += 1
+            curr = 0
+        curr += e
+        
+    cnt += 1    # count the last segment
+    if cnt > k:
+        lo = mid+1
+    else:
+        hi = mid
+print(lo)
+```
+{% endtab %}
+{% endtabs %}
 
 [Aditya Verma playlist](https://www.youtube.com/watch?v=j7NodO9HIbk&list=PL_z_8CaSLPWeYfhtuKHj-9MpYb6XQJ_f2&ab_channel=AdityaVerma)
 
@@ -534,6 +881,7 @@ So for this question, you **HAVE TO GO WITH C++**
 
 * [x] **CSES:** [Apartments](https://cses.fi/problemset/task/1084) ⭐️💪
 * [x] CSES: [Ferris Wheel](https://cses.fi/problemset/task/1090) 
+* [x] CSES: [Subarray Distinct Values](https://cses.fi/problemset/result/2649112/)
 
 ## 9.Sliding Window
 
@@ -792,5 +1140,33 @@ def characterReplacement(self, s: str, k: int) -> int:
 ## 10.Intervals Question
 
 * [x] CSES: [Movie Festival](https://cses.fi/problemset/task/1629)
+* [x] CSES: [Movei Festival II](https://cses.fi/problemset/task/1632) ✅
 * [x] CSES: [Restaurant Customers](https://cses.fi/problemset/task/1619)
+
+{% tabs %}
+{% tab title="MovieFestival -II" %}
+```cpp
+int n, k; cin >> n >> k;
+vector<pair<int, int>> v(n);
+for (int i = 0; i < n; i++) // read start time, end time
+	cin >> v[i].second >> v[i].first;
+sort(begin(v), end(v)); // sort by end time
+
+int ans = 0;
+multiset<int> end_times; // times when members will finish watching movies
+for (int i = 0; i < k; ++i)
+	end_times.insert(0);
+
+for (int i = 0; i < n; i++) {
+	auto it = end_times.upper_bound(v[i].second);
+	if (it == begin(end_times)) continue;
+	// assign movie to be watched by member in multiset who finishes at time *prev(it)
+	end_times.erase(--it);
+	// member now finishes watching at time v[i].first
+	end_times.insert(v[i].first);
+	++ ans;
+}
+```
+{% endtab %}
+{% endtabs %}
 

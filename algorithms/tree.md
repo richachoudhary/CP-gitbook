@@ -33,6 +33,13 @@
 
 * [ ] CSES: [Josephus Problem II](https://cses.fi/problemset/result/2607517/) 🐽✅
 
+### 3.2 BIT 
+
+* [ ] CSES: [Nested Range Check](https://cses.fi/problemset/task/2168) 🐽
+* [ ] CSES: [Nested Range Count](https://cses.fi/problemset/task/2169) 🐽
+
+ 
+
 ## ProblemSet
 
 * [https://leetcode.com/discuss/interview-question/1337373/Tree-question-pattern-oror2021-placement](https://leetcode.com/discuss/interview-question/1337373/Tree-question-pattern-oror2021-placement)

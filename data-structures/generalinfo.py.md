@@ -1,5 +1,9 @@
 # generalInfo.py
 
+{% hint style="info" %}
+For any question related to **Ordered Containers\(heap,set,multiset\) ====&gt; DONOT USE PYTHON**
+{% endhint %}
+
 * **Taking Input:**
 
   * Taking input from user: `num = input ("Enter number :")`
