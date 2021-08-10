@@ -29,6 +29,9 @@ def solve().....
 
 ## 1. Linear DP
 
+* [x] CSES: [Projects](https://cses.fi/problemset/task/1140) \| [Kartik Arora](https://www.youtube.com/watch?v=MJn3ogwsUbo&ab_channel=KartikArora) ✅🐽🚀
+  * Binary Search!!!! Dont skip!
+  * Dekhke lagta nhi ki DP lagegi!!!
 * [ ] [https://leetcode.com/problems/climbing-stairs/](https://leetcode.com/problems/climbing-stairs/)
 * [ ] [https://leetcode.com/problems/best-time-to-buy-and-sell-stock/](https://leetcode.com/problems/best-time-to-buy-and-sell-stock/)
 * [ ] [https://leetcode.com/problems/min-cost-climbing-stairs/](https://leetcode.com/problems/min-cost-climbing-stairs/)
@@ -65,6 +68,8 @@ def solve().....
 
 ## 2.1 0/1 Knapsack
 
+{% tabs %}
+{% tab title="Knapsack" %}
 ```python
 def knapsack(wt, val, W):    #NOTE: wt is sorted here; if not->first sort
     MEMO = {}
@@ -83,6 +88,100 @@ def knapsack(wt, val, W):    #NOTE: wt is sorted here; if not->first sort
     n = len(wt)
     return recur(wt,val,W,n)
 ```
+{% endtab %}
+
+{% tab title="MoneySums.cpp" %}
+```cpp
+int n;
+cin >> n;
+int max_sum = n*1000;
+vector<int> x(n);
+for (int&v : x) cin >> v;
+vector<vector<bool> > dp(n+1,vector<bool>(max_sum+1,false));
+dp[0][0] = true;
+for (int i = 1; i <= n; i++) {
+    for (int j = 0; j <= max_sum; j++) {
+        dp[i][j] = dp[i-1][j];
+        int left = j-x[i-1];
+        if (left >= 0 && dp[i-1][left]) {
+            dp[i][j] = true;
+        }
+    }
+}
+
+vector<int> possible;
+for (int j = 1; j <= max_sum; j++) {
+    if (dp[n][j]) {
+        possible.push_back(j);
+    }
+}
+cout << possible.size() << endl;
+for (int v : possible) {
+    cout << v << ' ';
+}
+cout << endl;
+```
+{% endtab %}
+
+{% tab title="MoneySums.py" %}
+```python
+def dp(n,curr,coins):
+    if curr == 0:
+        return True
+    if n == 0:
+        return False
+
+    if (n,curr) in MEMO:
+        return MEMO[(n,curr)]
+    op1 = dp(n-1,curr-coins[n-1],coins)
+    op2 = dp(n-1,curr,coins)
+    MEMO[(n,curr)] =  op1 or op2
+    return MEMO[(n,curr)]
+
+def f():
+    I = lambda : map(int, input().split())
+    n = int(input())
+    coins = list(I())
+    coins.sort()
+    maxsum = sum(coins)
+    
+    # ============================== o/w solution wont work!!
+    for i in range(maxsum+1):
+        dp(n,i,coins)
+
+    res = []
+    for x,y in MEMO:
+        if MEMO[(x,y)]:
+            res.append(y)
+    res = list(set(res))
+    print(len(res))
+
+    for e in res:
+        print(e, end = ' ')
+```
+{% endtab %}
+
+{% tab title="TwoSets" %}
+```cpp
+int sum = n*(n+1)/2;
+if(sum&1){
+    cout<<0<<endl;
+}else{
+    sum /= 2;
+    ll dp[n][sum+1];
+    memset(dp,0,sizeof(dp));
+    dp[0][0] = 1;
+    for(int i=1;i<n;i++){
+        for(int j=0;j<=sum;j++){
+            dp[i][j] = dp[i-1][j];
+            if (j >= i) dp[i][j] += dp[i-1][j-i] %= MOD;
+        }
+    }
+    cout<<dp[n-1][sum]<<endl;
+}
+```
+{% endtab %}
+{% endtabs %}
 
 #### 2.1.1 0/1 Knapsack Standard Variations \| source : [AdityaVerma](https://www.youtube.com/watch?v=-GtpxG6l_Mc&list=PL_z_8CaSLPWekqhdCPmFohncHwz8TY2Go&index=10&ab_channel=AdityaVerma)
 
@@ -93,6 +192,9 @@ def knapsack(wt, val, W):    #NOTE: wt is sorted here; if not->first sort
 * [x] [GfG: Sum of subset differences](https://www.geeksforgeeks.org/partition-a-set-into-two-subsets-such-that-the-difference-of-subset-sums-is-minimum/)
   * [x] **Similar:**  [1049.Last Stone Weight II](https://leetcode.com/problems/last-stone-weight-ii/submissions/)
 * [x] [494.Target Sum](https://leetcode.com/problems/target-sum/)  🎖
+* [x] CSES: [Book Shop](https://cses.fi/problemset/task/1158/)
+* [x] CSES: [Money Sums](https://cses.fi/problemset/task/1745/) \| Aisa Knapsack jo pehchaan na pao ✅⭐️💪💪🚀 \| **MUST DO**
+* [x] CSES: [Two Sets II](https://cses.fi/problemset/task/1093)
 
 #### 2.1.2  Problems: 0/1 Knapsack 
 
@@ -110,6 +212,8 @@ def knapsack(wt, val, W):    #NOTE: wt is sorted here; if not->first sort
 
 ## 2.2 Unbounded Knapsack 
 
+{% tabs %}
+{% tab title="UB knapsack\(MEMO; SC-O\(N\*N\)" %}
 ```python
 def knapsack(wt, val, W):    #NOTE: wt is sorted here; if not->first sort
     MEMO = {}
@@ -129,11 +233,68 @@ def knapsack(wt, val, W):    #NOTE: wt is sorted here; if not->first sort
     n = len(wt)
     return recur(wt,val,W,n)
 ```
+{% endtab %}
+
+{% tab title="UB Knapsack: SC-O\(N\)" %}
+```cpp
+int dp[x+1];
+dp[0] = 0;
+for(int i=1;i<=x;i++){
+	dp[i] = 1e9;
+	for(int j=0;j<n;j++){
+		if(a[j] <= i){
+			dp[i] = min(dp[i], 1+dp[i-a[j]]);
+		}
+	}
+}
+if(dp[x] >= 1e9){
+	cout<<-1;
+}else{
+	cout<<dp[x]<<endl;
+}
+```
+{% endtab %}
+
+{% tab title="CoinCombinations I" %}
+```cpp
+int dp[n][x+1];
+
+for(int i=0;i<n;i++){
+	for(int j=0;j<=x;j++){
+		if(j==0){
+			dp[i][j] = 1;
+		}else{
+			int opt1 = (j >= a[i]) ? dp[i][j-a[i]]%MOD : 0;
+			int opt2 = (i > 0) ? dp[i-1][j]%MOD : 0;
+			dp[i][j] = (opt1 + opt2)%MOD;
+		}
+	}
+} 
+```
+{% endtab %}
+
+{% tab title="Coin Combinations II" %}
+```cpp
+dp[0] = 1;
+for (int weight = 0; weight <= x; weight++) {
+	for (int i = 1; i <= n; i++) {
+		if(weight - coins[i - 1] >= 0) {
+			dp[weight] += dp[weight - coins[i - 1]];
+			dp[weight] %= MOD;
+		}
+	}
+}
+cout << dp[x] << '\n';
+```
+{% endtab %}
+{% endtabs %}
 
 #### 2.2.1 Standard Problems: Unbounded Knapsack 
 
-* [x] CSES: [Coin Combinations 1](https://cses.fi/problemset/task/1635/)
-  * [ ] CSES: [Coin Combinations 2](https://cses.fi/problemset/task/1636)
+* [x] CSES: [Minimizing Coins](https://cses.fi/problemset/task/1634/)
+* [x] CSES: [Coin Combinations 1](https://cses.fi/problemset/task/1635/) ✅
+  * [x] CSES: [Coin Combinations 2](https://cses.fi/problemset/task/1636) ✅
+  * **NOTE**: Switch the order of loops from 1 to get 2
 * [x] [322.Coin Change](https://leetcode.com/problems/coin-change/) 🌟
 * [x] [518.Coin Change 2](https://leetcode.com/problems/coin-change-2/)
 * [x] GfG: [Rod Cutting Problem](https://www.geeksforgeeks.org/cutting-a-rod-dp-13/)         
@@ -142,10 +303,10 @@ def knapsack(wt, val, W):    #NOTE: wt is sorted here; if not->first sort
 
 #### 2.2.2  Problems: Unbounded Knapsack 
 
-* [ ] ..
-
 ## 3. Multi Dimension DP
 
+* [x] CSES: [Grid Paths](https://cses.fi/problemset/task/1638/)
+* [ ] CSES: [Array Description](https://cses.fi/problemset/task/1746) \| [KartikArora](https://www.youtube.com/watch?v=d1H5JylYG4I&ab_channel=KartikArora) .🐽✅🐽 
 * [ ] [https://leetcode.com/problems/triangle/](https://leetcode.com/problems/triangle/)
 * [ ] [https://leetcode.com/problems/combination-sum-iv/](https://leetcode.com/problems/combination-sum-iv/)
 * [ ] [https://leetcode.com/problems/out-of-boundary-paths/](https://leetcode.com/problems/out-of-boundary-paths/)
@@ -176,8 +337,38 @@ def knapsack(wt, val, W):    #NOTE: wt is sorted here; if not->first sort
 * [ ] [https://leetcode.com/problems/paint-house-iii/](https://leetcode.com/problems/paint-house-iii/)
 * [ ] [https://leetcode.com/problems/count-all-possible-routes/](https://leetcode.com/problems/count-all-possible-routes/)
 
+{% tabs %}
+{% tab title="GridPaths" %}
+```cpp
+int dp[n][n];
+dp[0][0] = 1;
+for(int i=0;i<n;i++){
+	for(int j=0;j<n;j++){
+		if(a[i][j] == '.'){
+			if(i==0 && j==0){
+				dp[i][j] = 1;
+			}else{
+				int down = 0, right = 0;
+				if(i>0){
+					down = dp[i-1][j]%MOD;
+				}
+				if(j>0){
+					right= dp[i][j-1]%MOD;
+				}
+				dp[i][j] = (right+down)%MOD;
+			}
+		}else{
+			dp[i][j] = 0;
+		}
+	}
+}
+```
+{% endtab %}
+{% endtabs %}
+
 ## 4. Interval DP
 
+* [x] CSES: [Removal Game](https://cses.fi/problemset/task/1097/)
 * [ ] [https://leetcode.com/problems/guess-number-higher-or-lower-ii/](https://leetcode.com/problems/guess-number-higher-or-lower-ii/)
 * [ ] [https://leetcode.com/problems/arithmetic-slices/](https://leetcode.com/problems/arithmetic-slices/)
 * [ ] [https://leetcode.com/problems/predict-the-winner/](https://leetcode.com/problems/predict-the-winner/)
@@ -194,6 +385,31 @@ def knapsack(wt, val, W):    #NOTE: wt is sorted here; if not->first sort
 * [ ] [https://leetcode.com/problems/allocate-mailboxes/](https://leetcode.com/problems/allocate-mailboxes/)
 * [ ] [https://leetcode.com/problems/minimum-cost-to-cut-a-stick/](https://leetcode.com/problems/minimum-cost-to-cut-a-stick/)
 * [ ] [https://leetcode.com/problems/stone-game-v/](https://leetcode.com/problems/stone-game-v/)
+
+{% tabs %}
+{% tab title="RemovalGame" %}
+```python
+def dp(l,r,a):
+    if l == r: 
+        return a[l]
+    if l>r:
+        return 0
+    if (l,r) in MEMO:
+        return MEMO[(l,r)]
+    op1 = a[l] + min(dp(l+1,r-1,a), dp(l+2,r,a))
+    op2 = a[r] + min(dp(l+1,r-1,a), dp(l,r-2,a))
+    MEMO[(l,r)] = max(op1, op2)
+    return MEMO[(l,r)]
+
+def f():
+    I = lambda : map(int, input().split())
+    n = int(input())
+    a = list(I())
+
+    print(dp(0,n-1,a))
+```
+{% endtab %}
+{% endtabs %}
 
 ## 5. Bit DP
 
@@ -318,6 +534,8 @@ https://www.codechef.com/viewsolution/28505745
 
 * [x] [464.Can I Win](https://leetcode.com/problems/can-i-win/)
 * [x] [698.Partition to K Equal Sum Subsets](https://leetcode.com/problems/partition-to-k-equal-sum-subsets/) 💯💯
+* [ ] CSES: [Elevator Rides](https://cses.fi/problemset/task/1653/) 🐽✅
+* [ ] CSES: [Counting Tiles ](https://cses.fi/problemset/task/2181) \| [KartikArora](https://www.youtube.com/watch?v=lPLhmuWMRag&ab_channel=KartikArora) 🐽🐽
 
 {% tabs %}
 {% tab title="464." %}
@@ -391,6 +609,33 @@ cursum = 0
 return solve(0,k,cursum,mask)
 ```
 {% endtab %}
+
+{% tab title="ElevatorRides" %}
+```cpp
+int n, k; cin>>n>>k;
+int a[n];
+for (int i = 0; i < n; i++)
+    cin>>a[i];
+pair<int, int> dp[1<<n];
+dp[0] = {0, k+1};
+for (int s = 1; s < (1<<n); s++) {
+    dp[s] = {25, 0};
+    for (int i = 0; i < n; i++) {
+        if (s>>i&1){
+            auto [c, w] = dp[s^(1<<i)];
+            if (w + a[i] > k) {
+                c++;
+                w = min(a[i], w);
+            }
+            else
+                w += a[i];
+            dp[s] = min(dp[s], {c, w});
+        }
+    }
+}
+cout<<dp[(1<<n)-1].first;
+```
+{% endtab %}
 {% endtabs %}
 
 * [ ] [https://leetcode.com/problems/stickers-to-spell-word/](https://leetcode.com/problems/stickers-to-spell-word/)
@@ -416,10 +661,8 @@ return solve(0,k,cursum,mask)
 #### Pattern of problems:
 
 * find all X in range \[L,R\] which follow some f\(x\)    . L,R could be very huge here ~ `10^18`
-
-
-
 * [x] Q1: [Count numbers in range \[L,R\] s.t. sum of its digits == X.](https://www.youtube.com/watch?v=heUFId6Qd1A&list=PLb3g_Z8nEv1hB69JL9K7KfEyK8iQNj9nX&ab_channel=KartikArora)   \(1&lt;=L&lt;=R&lt;pow\(10,18\) , 1&lt;=X&lt;=180\)
+* [ ] CSES: [Counting Numbers](https://cses.fi/problemset/task/2220/) \| [Kartik Arora](https://www.youtube.com/watch?v=lD_irvBkeOk&ab_channel=KartikArora) 🐽✅
 
 {% tabs %}
 {% tab title="\#1." %}
@@ -483,6 +726,7 @@ return solve(r,len(r),5,1) - solve(l,len(l),5,1)
 
 ### 6.1 Resources: Digit DP
 
+* CF: [Blog](https://codeforces.com/blog/entry/84928)
 * ✅Kartik Arora's playlist: [Digit DP](https://www.youtube.com/watch?v=heUFId6Qd1A&list=PLb3g_Z8nEv1hB69JL9K7KfEyK8iQNj9nX&ab_channel=KartikArora)
 
 ## 7. DP on Trees
@@ -673,6 +917,97 @@ print(len(tails))
 * [ ] [https://leetcode.com/problems/least-operators-to-express-number/](https://leetcode.com/problems/least-operators-to-express-number/)
 * [ ] [https://leetcode.com/problems/largest-multiple-of-three/](https://leetcode.com/problems/largest-multiple-of-three/)
 * [ ] [https://leetcode.com/problems/minimum-one-bit-operations-to-make-integers-zero/](https://leetcode.com/problems/minimum-one-bit-operations-to-make-integers-zero/)
+
+## 16. Geometrical DP \(blocks, rectangles etc\)
+
+* [x] CSES: [Counting Towers](https://cses.fi/problemset/task/2413) \| [KartikArora](https://www.youtube.com/watch?v=pMEYMYTX-r0&ab_channel=KartikArora) ✅
+* [x] CSES: [Rectangle Cutting](https://cses.fi/problemset/task/1744) \| [Kartik Arora](https://www.youtube.com/watch?v=LdynQjWsO5Q&ab_channel=KartikArora) ✅
+
+{% tabs %}
+{% tab title="CountingTowers" %}
+```python
+'''
+STATES: 
+    * height of tower = i
+    * isLinked: 0/1     => whether brick of width 2 or 1
+        0: | | |  : 2 bricks of with 1 each
+        1: |   |  : brick of width 2
+RECUR:
+    * dp(i,0): 
+        1. Dont extend any tile : 
+            1.1 can place a tile of width 2  => dp(i-1,1)
+            1.2 can palce 2 tiles of widht 1 => dp(i-1,0)
+        2. Extend both:                      => dp(i-1,0)
+        3. Extend Either:                    => 2*dp(i-1,0) 
+    * dp(i,1):
+        1. Dont extend any tile....         => 1.1 + 1.2
+        4. Extend the linked piece          => dp(i-1,1)
+
+ANS: dp(n,0) + dp(n,1)
+'''
+def dp(i,linked):
+    if i == 1:
+        return 1
+
+    if (i,linked) in MEMO:
+        return MEMO[(i,linked)]
+    op1 = dp(i-1,1)%MOD         # 1.1
+    op2 = dp(i-1,0)%MOD         # 1.2
+    op3 = dp(i-1,0)%MOD     # 2
+    op4 = 2*dp(i-1,0)%MOD   #3
+    op5 = dp(i-1,1)%MOD     #4
+
+    if linked == 0:
+        MEMO[(i,linked)] = (op1 + op2 + op3 + op4)%MOD 
+    else:
+        MEMO[(i,linked)] = (op1 + op2 + op5)%MOD
+    return MEMO[(i,linked)]
+
+def f():
+    # I = lambda : map(int, input().split())
+    T = int(input())
+    for _ in range(T):
+        n = int(input())
+        res = (dp(n,0) + dp(n,1))%MOD
+        print(res)
+
+```
+{% endtab %}
+
+{% tab title="Rect Curring" %}
+```python
+'''       m
+    _____________
+    |           |
+   n|           |
+    |           |
+'''
+@lru_cache(None)
+def dp(n,m):
+    if n == m:
+        return 0
+    if (n,m) in MEMO:
+        return MEMO[(n,m)]
+    v_cut, h_cut = mxn,mxn
+
+    for i in range(1,m):
+        v_cut = min(v_cut, 1+dp(n,i)+dp(n,m-i))
+
+    for i in range(1,n):
+        h_cut = min(h_cut, 1+dp(i,m)+dp(n-i,m))
+    
+    MEMO[(n,m)] = min(v_cut,h_cut)
+    return MEMO[(n,m)] 
+
+def f():
+    I = lambda : map(int, input().split())
+    n,m = I()
+    print(dp(n,m))
+```
+{% endtab %}
+{% endtabs %}
+
+
 
 
 
