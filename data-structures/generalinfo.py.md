@@ -1,3 +1,7 @@
+---
+description: Python is about 2-4x slower than C++
+---
+
 # generalInfo.py
 
 {% hint style="info" %}
