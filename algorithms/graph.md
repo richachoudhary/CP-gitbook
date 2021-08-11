@@ -21,7 +21,19 @@ for i,j,w in matrix:
 
 ## 0. BFS/DFS : both `O(V+E)`
 
+{% hint style="info" %}
+FOR SHORTES PATH: **USE BFS!!!!!!!!!!!!!!!!!!!!**
+
+**E.g.:** Below CSES: Labyrinth; DFS doesnt work!!!
+{% endhint %}
+
 {% tabs %}
+{% tab title="" %}
+```
+
+```
+{% endtab %}
+
 {% tab title="BFS" %}
 ```python
 from collections import deque
@@ -138,8 +150,123 @@ diagram: https://leetcode.com/problems/shortest-bridge/discuss/189293/C%2B%2B-BF
 '''
 ```
 {% endtab %}
+
+{% tab title="MessageRoute" %}
+```cpp
+for(int i=0 ; i<m ; i++ )
+{
+    int u , v;
+    cin >> u >> v ;
+    g[u].pb(v);
+    g[v].pb(u);
+}
+queue < int > q;
+q.push( 1 );
+par[1] = -1;
+while( !q.empty() )
+{
+    int p = q.front() ;
+    q.pop();
+    if( p == n ) break;
+    for( auto &i : g[p] )
+        if( !par[i] ) par[i] = p , q.push( i );
+}
+if( par[n] )
+{
+    stack<int> s;
+    s.push( n );
+    int p = par[n] ;
+    while( p != -1 )
+    {
+        s.push( p );
+        p = par[p];
+    }
+    cout << (int)(s.size() ) << "\n";
+    while( !s.empty() )
+    {
+        cout << s.top() << " " ;
+        s.pop();
+    }
+}
+else
+    cout << "IMPOSSIBLE";
+```
+{% endtab %}
+
+{% tab title="Monsters\| LavaFlow" %}
+```python
+n,m = I()
+
+graph = []
+monsters = []
+dirs = [(1,0),(-1,0),(0,1),(0,-1)]
+
+#1. Construct lavas matrix ======================
+lavas = [[float('inf') for _ in range(m)] for _ in range(n)]   #the min time when monster/laba reaches the cell
+vis = [[False for _ in range(m)] for _ in range(n)]
+
+for i in range(n):
+    s = str(input())
+    row = []
+    for j in range(len(s)):
+        row.append(s[j])
+        if s[j] == 'M':
+            monsters.append((i,j))
+        if s[j] == 'A':
+            start = (i,j)
+    graph.append(row)
+
+q = deque()
+# file lavas
+for x,y in monsters:
+    q.append((x,y,0))
+
+while q:
+    x,y,t = q.popleft()
+    lavas[x][y] = min(lavas[x][y],t)
+
+    for dx,dy in dirs:
+        nx, ny = x+dx,y+dy
+        if 0<=nx<n and 0<=ny<m and graph[nx][ny] == '.' and lavas[nx][ny] > 1+t:
+            q.append((nx,ny,t+1))
+
+# for l in lavas:
+#     print(l)
+# 2. Make our player escape ===========================
+def isEscape(x,y,t):
+    return 0<=x<n and 0<=y<m and not vis[x][y] and graph[x][y] == '.' and lavas[x][y] > t
+
+q = deque()
+q.append((start[0],start[1],0,""))
+
+while q:
+    X,Y,T,path = q.popleft()
+    vis[X][Y] = True
+    if (X == n-1 or Y == m-1 or X == 0 or Y == 0) and (graph[X][Y]=='.') and T < lavas[X][Y]:
+        print("YES")
+        print(len(path))
+        print(path)
+        return
+    
+    x,y = X-1,Y
+    if isEscape(x,y,T+1):
+        q.append((x,y,T+1,path+"U"))
+    x,y = X+1,Y
+    if isEscape(x,y,T+1):
+        q.append((x,y,T+1,path+"D"))
+    x,y = X,Y-1
+    if isEscape(x,y,T+1):
+        q.append((x,y,T+1,path+"L"))
+    x,y = X,Y+1
+    if isEscape(x,y,T+1):
+        q.append((x,y,T+1,path+"R"))
+print("NO")
+
+```
+{% endtab %}
 {% endtabs %}
 
+* [x] CSES: [Message Route](https://cses.fi/problemset/task/1667/) \| BFS+backtrack ✅✅
 * [x] [The Maze](https://leetfree.com/problems/the-maze)
 * [x] [130. Surrounded Regions](https://leetcode.com/problems/surrounded-regions/)
 * [x] [1020.Number of Enclaves](https://leetcode.com/problems/number-of-enclaves/)
@@ -159,6 +286,8 @@ diagram: https://leetcode.com/problems/shortest-bridge/discuss/189293/C%2B%2B-BF
 * [x] [1443.Minimum Time to Collect All Apples in a Tree](https://leetcode.com/problems/minimum-time-to-collect-all-apples-in-a-tree/) 🍎
 * [x] [932.Shortest Bridge](https://leetcode.com/problems/shortest-bridge/) \| **Google** \| BFS+DFS ✅
 * [ ] CSES:[ Grid Paths](https://cses.fi/problemset/task/1625) ✅✅✅🐽\| [WilliamLin](https://www.youtube.com/watch?v=dZ_6MS14Mg4&t=2440s&ab_channel=WilliamLin)
+* [x] CSES: [Labyrinth](https://cses.fi/problemset/task/1193) ==&gt; **DFS** fails, **ALWAYS USE BFS for SHORTEST PATH ✅✅**
+* [x] **CSES:** [Monsters](https://cses.fi/problemset/task/1194) \| `Lava Flow Problem✅✅✅🔥🔥` \| [video](https://www.youtube.com/watch?v=hB59dxdDLII&ab_channel=Dardev)
 
 ## **1. Single Source Shortest/Longest Path - SSSP/SSLP** 
 
@@ -264,28 +393,66 @@ def bellmanFord_SSSP(matrix):
         for u,v,w in matrix:
             if dist[u] + w < dist[v]:
                 dist[v] = dist[u] + w
+                
+#============ USAGE ==================
+for _ in range(m):
+    u,v,w = I()
+    graph.append([u,v,w])
+
+def bellmanFord(src):
+    dist = [float("-inf")] * (n+1)
+    dist[src] = 0
+    for node in range(n+1):        # relax each edge (N-1) times
+        for u,v,w in graph:
+            dist[v] = min(dist[v],dist[u] + w)
+    res1 = dist[n]
+
+    #2. check for neg cycle
+    for u,v,w in graph:
+        old_v = dist[v]
+        dist[v] = min(dist[v],dist[u] + w)
+        if dist[v] != old_v:
+            dist[v] = float('inf')    # Negative cycle detected
+    res2 = dist[n]
+
+
+    if res1 != res2:
+        return '-1'
+    return res1
 ```
 {% endtab %}
 
 {% tab title="Floyd-Warshall" %}
 ```python
-# input matrix = [[2,1,1],[2,3,1],[3,4,1]] : [from,to,weight]; src = k; dst = X
-def floydWarshall_SSSS(matrix):
-    # adjacency matrix works best for FloydWarshall algo
-    dist = [[float("inf") for i in range(N)] for j in range(N)]
-    for i in range(N):
-        dist[i][i] = 0    # dist of node from self: diagonal
-    for u,v,w in matrix:
-        dist[u-1][v-1] = w
-    for k in range(N):
-        for i in range(N):
-            for j in range(N):
-                dist[i][j] = min(dist[i][j],dist[i][k] + dist[k][j])
-    
-# DP relation ::makes code O(V^2) - implement similar to matrix-chain-multiplication
-# LOGIC: dist(i,j) = min( dist(i,k) + dist(k,j)) for all nodes k other than i & j
-if k==0 : dp[k][i][j] = matrix[i][j] 
-else    : dp[k][i][j] = min( dp[k-1][i][j] ,dp[k-1][i][k] + dp[k-1][k][j] )    
+n,m,q = I()
+
+dp = [[float('inf') for _ in range(n+1)] for _ in range(n+1)]
+
+for _ in range(m):
+    u,v,w = I()
+    dp[u][v] = min(dp[u][v],w)
+    dp[v][u] = min(dp[v][u],w)
+
+#---------------------------------------------------------------------------
+def floyd_warshall(n):
+    # 1.form adj-matrix
+    for i in range(1,n+1):
+        dp[i][i] = 0
+
+    #2. Apply dp similar to matrix-chain-multiplication
+    for k in range(1,n+1):
+        for i in range(1,n+1):
+            for j in range(1,n+1):
+                dp[i][j] = min(dp[i][j], dp[i][k]+dp[k][j])
+#---------------------------------------------------------------------------
+floyd_warshall(n)
+
+for _ in range(q):
+    a,b = I()
+    if dp[a][b] >= float('inf'):
+        print('-1')
+    else:
+        print(dp[a][b])
 ```
 {% endtab %}
 {% endtabs %}
@@ -301,6 +468,75 @@ else    : dp[k][i][j] = min( dp[k-1][i][j] ,dp[k-1][i][k] + dp[k-1][k][j] )
 | **SP on graph weighted graph** | Incorrect SP answer | Best Algorithm | Works | Bad in general |
 | **SP on unweighted graph** | Best algorithm | Ok | Bad | Bad in general |
 
+{% tabs %}
+{% tab title="LongestFlighRoute" %}
+```python
+for _ in range(m):
+    u,v = I()
+    adj[u].append(v)
+
+dist = [-1]*(n+1)
+par = [-1]*(n+1)
+res = []
+dist[1] = 1
+H = [(1,1)] # dist, node
+
+while H:
+    D,X = heappop(H)
+    D = abs(D)
+    dist[X] = D
+
+    for x in adj[X]:
+        if dist[x] < 1 + D:
+            dist[x] = 1 + D
+            par[x] = X
+            heappush(H,(-dist[x],x))
+
+if dist[n] == -1:
+    print("IMPOSSIBLE")
+else:
+    res = [n]
+    e = par[n]
+    while e != -1:
+        res.append(e)
+        e = par[e]
+    
+    print(len(res))
+    for i in reversed(res):
+        print(i, end = " ")
+```
+{% endtab %}
+
+{% tab title="FlightRoutes" %}
+```python
+n,m,k = I()
+adj = defaultdict(list)
+          
+for _ in range(m):
+    u,v,w = I()
+    adj[u].append((v,w))
+                         
+dist = [[float('inf') for _ in range(k)] for _ in range(n+1)]
+                      
+H = [(0,1)] # dist,node
+dist[1][0] = 0
+         
+while H:
+    D,X = heappop(H)
+                 
+    for x,w in adj[X]:
+        if dist[x][k-1] > w+D:
+            dist[x][k-1] = w+D
+            heappush(H, (dist[x][k-1],x))
+            dist[x].sort()
+
+# print(dist)
+for e in dist[-1]:
+    print(e, end = " ")
+```
+{% endtab %}
+{% endtabs %}
+
 ### 1.x Problems: **SSSP/SSLP** 
 
 * [x] [743. Network Delay Time](https://leetcode.com/problems/network-delay-time/)  🍪🍪
@@ -315,7 +551,16 @@ else    : dp[k][i][j] = min( dp[k-1][i][j] ,dp[k-1][i][k] + dp[k-1][k][j] )
 * [ ] [1786. Number of Restricted Paths From First to Last Node](https://leetcode.com/problems/number-of-restricted-paths-from-first-to-last-node/)
 * [ ] [The Maze II](https://leetfree.com/problems/the-maze-ii)
 * [ ] [The Maze III ](https://leetfree.com/problems/the-maze-iii)
-* [x] [1928.Minimum Cost to Reach Destination in Time](https://leetcode.com/problems/minimum-cost-to-reach-destination-in-time/) \| @contest 🚀❤️ \| **Google**[ ](https://leetcode.com/problems/cheapest-flights-within-k-stops/
+* [x] [1928.Minimum Cost to Reach Destination in Time](https://leetcode.com/problems/minimum-cost-to-reach-destination-in-time/) \| @contest 🚀❤️ \| **Google**
+* [x] **CSES:** [Longest Flight Route](https://cses.fi/problemset/task/1680) \| print paths with `Dijkstras`
+* [x] CSES: [Shortest Routes II](https://cses.fi/problemset/task/1672/) \| **`Floyd-Warshall |`**&lt;standardQ&gt; \| must do 🔖🍪🚀🔖
+* [x] CSES: [High Score](https://cses.fi/problemset/task/1673/) \| **`Bellman-Ford`** `with Negative Cycle Detection`  \| &lt;standardQ&gt; \| must do  🔖🍪🚀🔖
+* [x] CSES: [Cycle Finding](https://cses.fi/problemset/task/1197/) ✅🐽
+* [x] CSES: [Flight Discount](https://cses.fi/problemset/result/2664805/) \| reversed dij: \| [approach](https://usaco.guide/problems/cses-1195-flight-discount/solution) ✅✅
+* [x] CSES: [Flight Routes](https://cses.fi/problemset/task/1196) \| 2-D Dijkstras ✅✅ \| [approach](https://www.youtube.com/watch?v=009PBKHXtyA&ab_channel=Dardev)
+
+  [  
+  ](https://leetcode.com/problems/cheapest-flights-within-k-stops/
 
   )
 
@@ -453,6 +698,45 @@ def dfs(node):
 		ret.insert_at_the_front(node)
 ```
 {% endtab %}
+
+{% tab title="LongestFlightRoute" %}
+```cpp
+queue<int> q;
+for(int i = 2; i <= n; ++i)
+{
+	if(inDegree[i] == 0)
+	{
+		q.push(i);	
+	}
+}
+while(!q.empty())
+{
+	int u = q.front();
+	q.pop();
+	for(auto v: g[u])
+	{
+		--inDegree[v];
+		if(inDegree[v] == 0)
+			q.push(v);
+	}
+}
+q.push(1);
+cnt[1] = 1;
+while(!q.empty())
+{
+	int u = q.front();
+	q.pop();
+	for(auto v: g[u])
+	{
+		--inDegree[v];
+		cnt[v] = cnt[v] + cnt[u];
+		cnt[v] %=  modb;
+		if(inDegree[v] == 0)
+			q.push(v);
+	}
+}
+```
+{% endtab %}
 {% endtabs %}
 
 ### **3.2 Problems: Topological Sort**
@@ -480,6 +764,7 @@ def dfs(node):
 * [ ] 1857.[Largest Color Value in a Directed Graph](https://leetcode.com/problems/largest-color-value-in-a-directed-graph)
 * [ ] 631.[Design Excel Sum Formula](https://leetcode.com/problems/design-excel-sum-formula)
 * [ ] 1632.[Rank Transform of a Matrix](https://leetcode.com/problems/rank-transform-of-a-matrix)
+* [x] CSES: [Longest Flight Route](https://cses.fi/problemset/task/1680) ✅
 
 
 
@@ -563,6 +848,7 @@ return cnt
 * [x] [947.Most Stones Removed with Same Row or Column](https://leetcode.com/problems/most-stones-removed-with-same-row-or-column/) \| leave everything & Do this!!  ✅🚀🚀
 * [x] [1331.Rank Transform of an Array](https://leetcode.com/problems/rank-transform-of-an-array/) \| tag:Easy
 * [x] [1632.Rank Transform of a Matrix](https://leetcode.com/problems/rank-transform-of-a-matrix/) \| **GOOGLE!!!!..........last time 🐽🐽🐽**
+* [x] CSES :[ Building Roads](https://cses.fi/problemset/task/1666) ✅
 * [ ] [352.Data Stream as Disjoint Intervals](https://leetcode.com/problems/data-stream-as-disjoint-intervals/)
 * [ ] 128, [https://leetcode.com/problems/longest-consecutive-sequence/](https://leetcode.com/problems/longest-consecutive-sequence/) 305, [https://leetcode.com/problems/number-of-islands-ii/](https://leetcode.com/problems/number-of-islands-ii/) 💲 1202, [https://leetcode.com/problems/smallest-string-with-swaps/](https://leetcode.com/problems/smallest-string-with-swaps/) 749, [https://leetcode.com/problems/contain-virus/](https://leetcode.com/problems/contain-virus/) 1627, [https://leetcode.com/problems/graph-connectivity-with-threshold/](https://leetcode.com/problems/graph-connectivity-with-threshold/) 1168, [https://leetcode.com/problems/optimize-water-distribution-in-a-village/](https://leetcode.com/problems/optimize-water-distribution-in-a-village/) 1579, [https://leetcode.com/problems/remove-max-number-of-edges-to-keep-graph-fully-traversable/](https://leetcode.com/problems/remove-max-number-of-edges-to-keep-graph-fully-traversable/) 1061, [https://leetcode.com/problems/lexicographically-smallest-equivalent-string/](https://leetcode.com/problems/lexicographically-smallest-equivalent-string/) 1101, [https://leetcode.com/problems/the-earliest-moment-when-everyone-become-friends/](https://leetcode.com/problems/the-earliest-moment-when-everyone-become-friends/) 1258, [https://leetcode.com/problems/synonymous-sentences/](https://leetcode.com/problems/synonymous-sentences/) 1319, [https://leetcode.com/problems/number-of-operations-to-make-network-connected/](https://leetcode.com/problems/number-of-operations-to-make-network-connected/) 737, [https://leetcode.com/problems/sentence-similarity-ii/](https://leetcode.com/problems/sentence-similarity-ii/) 990, [https://leetcode.com/problems/satisfiability-of-equality-equations/](https://leetcode.com/problems/satisfiability-of-equality-equations/) 924, [https://leetcode.com/problems/minimize-malware-spread/](https://leetcode.com/problems/minimize-malware-spread/) 928, [https://leetcode.com/problems/minimize-malware-spread-ii/](https://leetcode.com/problems/minimize-malware-spread-ii/) 839, [https://leetcode.com/problems/similar-string-groups/](https://leetcode.com/problems/similar-string-groups/) 711, [https://leetcode.com/problems/number-of-distinct-islands-ii/](https://leetcode.com/problems/number-of-distinct-islands-ii/)
 
@@ -792,6 +1078,42 @@ return A
 # https://leetcode.com/problems/rank-transform-of-a-matrix/discuss/909212/C%2B%2B-with-picture
 ```
 {% endtab %}
+
+{% tab title="BuildingRoads" %}
+```python
+n,m = I()
+
+who = dict()
+for i in range(1,n+1):
+    who[i] = i
+
+def find(a):
+    if a != who[a]:
+        who[a] = find(who[a])
+    return who[a]
+
+def union(a,b):
+    whoa,whob = find(a), find(b)
+    who[whoa] = whob
+
+for _ in range(m):
+    a,b = I()
+    union(a,b)
+
+disjoints = []
+
+for i in range(1,n+1):
+    if who[i] == i:
+        disjoints.append(i)
+
+# print(who)
+# print(disjoints)
+
+print(len(disjoints)-1)
+for i in range(0,len(disjoints)-1):
+    print(f'{disjoints[i]} {disjoints[i+1]}')
+```
+{% endtab %}
 {% endtabs %}
 
 ### **4.3 Resources:**
@@ -804,6 +1126,7 @@ return A
 
 * [x] \*\*\*\*[**785.** Is Graph Bipartite?](https://leetcode.com/problems/is-graph-bipartite/)
 * [x] [886.Possible Bipartition](https://leetcode.com/problems/possible-bipartition/)
+* [x] CSES:[ Building Teams](https://cses.fi/problemset/task/1668/) 
 
 {% tabs %}
 {% tab title="785" %}
@@ -938,12 +1261,178 @@ return sorted(list(set(range(N)) - set(cycleNodes)))
 
 ```
 {% endtab %}
+
+{% tab title="RoundTrip" %}
+```cpp
+int n, m;
+int sv, ev;
+vector<vector<int>> g;
+vector<int> vis;
+vector<int> parent;
+ 
+ 
+bool dfs(int u, int p)
+{
+	vis[u] = true;
+	parent[u] = p;
+	for(auto v: g[u])
+	{
+		if(v == p) continue;
+		if(vis[v]) 
+		{
+			sv = v; 
+			ev = u; 
+			return true;
+		} 
+		if(!vis[v]) 
+			if(dfs(v,u)) 
+				return true;
+	}
+	return false;
+}
+ 
+ 
+bool visit_all()
+{
+	for(int i = 1; i <= n; ++i)
+	{
+		if(!vis[i])
+			if(dfs(i,-1)) return true;
+	}
+	return false;
+}
+ 
+int32_t main()
+{
+	cin.tie(NULL);
+	cin >> n >> m;
+	g.resize(n+1);
+	vis.resize(n+1);
+	parent.resize(n+1);
+	for(int i =0 ; i < m; ++i)
+	{
+		int u, v;
+		cin >> u >> v;
+		g[u].push_back(v);
+		g[v].push_back(u);
+	}
+ 
+	if(!visit_all())
+	{
+		cout << "IMPOSSIBLE" << endl;
+		return 0;
+	}
+ 
+	int tv = ev;
+	vector<int> ans;
+	ans.push_back(ev);
+	while(tv != sv)
+	{
+		ans.push_back(parent[tv]);
+		tv = parent[tv];
+	}
+	ans.push_back(ev);
+	cout << ans.size() << endl;
+	for(auto c: ans)
+	{
+		cout << c << " ";
+	}
+ 
+}
+```
+{% endtab %}
+
+{% tab title="RoundTrip2" %}
+```cpp
+vector<set<int>> g;
+vector<int> vis;
+stack<int> recursionStack;
+vector<bool> rsFlag;
+ 
+bool dfs(int u)
+{
+	vis[u] = true;
+	recursionStack.push(u);
+	rsFlag[u] = true;
+	for(auto v: g[u])
+	{
+		if(!vis[v])
+			if(dfs(v))
+				return true;
+ 
+		if(rsFlag[v])
+		{
+			recursionStack.push(v);
+			return true;
+			//no more dfs;
+		}
+	}
+	recursionStack.pop();
+	rsFlag[u] = false;
+	return false;
+	//no cycle was detected
+}
+ 
+ 
+void visit_all()
+{
+	for(int u = 1; u <= n; ++u)
+	{
+		if(!vis[u])
+		{
+			if(dfs(u))
+				break;
+		}
+	}
+}
+ 
+int32_t main()
+{
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	cin >> n >> m;
+	g.resize(n+1);
+	vis.resize(n+1);
+	rsFlag.resize(n+1);
+	for(int i = 0; i < m; ++i)
+	{
+		int u, v;
+		cin >> u >> v;
+		g[u].insert(v);
+	}
+	visit_all();
+	if(recursionStack.empty())
+	{		
+		cout << "IMPOSSIBLE" << endl;
+		return 0;
+	}
+ 
+	vector<int> ans;
+	int temp = recursionStack.top();
+	while(!recursionStack.empty())
+	{
+		ans.push_back(recursionStack.top());
+		recursionStack.pop();
+		if(ans.back() == temp and ans.size() != 1)
+			break;
+	}
+	reverse(ans.begin(), ans.end());
+	cout << ans.size() << endl;
+	for(auto u: ans)
+	{
+		cout << u << " ";
+	}
+}
+```
+{% endtab %}
 {% endtabs %}
 
 ### 6.3 Problems: Cycle Detection
 
 * [x] [802.Find Eventual Safe States](https://leetcode.com/problems/find-eventual-safe-states/) .💯 
 * [x] [886.Possible Bipartition](https://leetcode.com/problems/possible-bipartition/)
+* [x] CSES: [Round Trip](https://cses.fi/problemset/task/1669/) ✅✅ 🐽 \| Undirected Graph \|  cycle retrieval
+* [x] CSES: [Round Trip II](https://cses.fi/problemset/task/1678) \| Directed Graph \| [Approach](https://www.youtube.com/watch?v=kzeAHV2Pw2o&ab_channel=Dardev)
 
 ## 7. SCCs \(Strongly Connected Cycles\)
 
