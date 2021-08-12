@@ -735,8 +735,35 @@ return solve(r,len(r),5,1) - solve(l,len(l),5,1)
 
 ## 8. DP on Graph
 
+* [x] CSES: [Forest Queries](https://cses.fi/problemset/result/2670872/) \| **`classic`**
 * [ ] [https://leetcode.com/problems/cheapest-flights-within-k-stops/](https://leetcode.com/problems/cheapest-flights-within-k-stops/)
 * [ ] [https://leetcode.com/problems/find-the-shortest-superstring/](https://leetcode.com/problems/find-the-shortest-superstring/)
+
+{% tabs %}
+{% tab title="ForestQueries" %}
+```python
+I = lambda : map(int, input().split())
+n,q = I()
+graph = [[0]*(n+1)]
+
+for _ in range(n):
+    s = str(input())
+    graph.append([0] + [c for c in s])
+
+DP = [[0 for _ in range(n+1)] for _ in range(n+1)]
+
+for i in range(1,n+1):
+    for j in range(1,n+1):
+        DP[i][j] = 1 if graph[i][j] == '*' else 0
+        DP[i][j] = DP[i][j] + DP[i-1][j] + DP[i][j-1] - DP[i-1][j-1]
+
+for _ in range(q):
+    x1,y1,x2,y2 = I()
+    print(DP[x2][y2] - DP[x1-1][y2] - DP[x2][y1-1] + DP[x1-1][y1-1])
+
+```
+{% endtab %}
+{% endtabs %}
 
 ## 9. String DP
 

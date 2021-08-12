@@ -6,13 +6,341 @@
   1. Extra Space can be one factor \(Explained above\)
   2. Depth First Traversals are typically recursive and recursive code requires function call overheads.
   3. The most important points is, BFS starts visiting nodes from root while DFS starts visiting nodes from leaves. So if our problem is to search something that is more likely to closer to root, we would prefer BFS. And if the target node is close to a leaf, we would prefer DFS.
+* **Rooting A tTee**: is like picking up the tree by a specific node and having all the edges point downwards
+  * Res: [https://towardsdatascience.com/graph-theory-rooting-a-tree-fb2287b09779](https://towardsdatascience.com/graph-theory-rooting-a-tree-fb2287b09779)
+* Node:
 
-## 1. General Tree Problems
+```python
+class TreeNode:
+    def __init__(self, x):
+        self.val = x
+        self.left = None
+        self.right = None
+...
+root = TreeNode(x)
+```
+
+* ffs
+
+## 1. Regular Tree Problems
 
 
 
 ##  2. DP on Trees
 
+{% tabs %}
+{% tab title="<template>⭐️" %}
+```python
+def f(node):
+    #1. Base Condition
+        if node is None: return 0
+    #-----------------
+    #2. HYPOTHESIS :: Recursive call on left & right 
+        lr = f(node->left)
+        rr = f(node-right)
+    #------------------
+    #3. INDUCTION :: Take decision & return it
+         opt1 = g(lr,rr)    # case when 'node' cant be part of final ans
+         opt2 = h()         # case when 'node cant be part of final ans
+         
+         return max(opt1, opt2)
+```
+{% endtab %}
+
+{% tab title="TreeDiameter" %}
+```python
+---------------------- works only for binary tree
+def dia(node):
+    if not node: return 0     #1. BC
+        
+    ldia = dia(node.left)    #2. Hypothesis
+    rida = dia(node.right)
+    
+    opt1 = max(ldia, rdia)        # when node isnt part of final ans
+    opt2 = 1 + ldia + rdia        # when node is part of final ans
+    return max(opt1, opt2)
+------------------------- for n-arry tree
+int n, ans;
+vector<int> adj[MAX];
+int d[MAX];
+ 
+ void dfs(int u = 1, int p = -1){
+     for(auto v:adj[u]){
+         if(v==p)continue;
+
+         dfs(v,u);
+         ans = max(ans, d[u]+d[v]+1);
+         d[u] = max(d[u],1+d[v]);
+     }
+ }
+ 
+int main() {
+    cin >> n;
+    for(int i=1;i<n;i++)
+    {
+        int u,v;
+        cin >> u >> v;
+        adj[u].push_back(v);
+        adj[v].push_back(u);
+    }
+    dfs();
+    cout<<ans;
+}
+```
+{% endtab %}
+
+{% tab title="TreeDistance I" %}
+```cpp
+vector<int>a[200005];
+int vis[200005];
+int d[200005];
+int par[200005];
+ 
+void dfs(int src, int p, int dis){
+    vis[src]=1;
+    d[src]=dis;
+    
+    for(auto i:a[src]){
+        if(!vis[i] and i!=p){
+            par[i] = src;
+            dfs(i, src, dis+1);
+        }
+    }
+}
+ 
+ 
+int main(){
+    cin>>n;
+    for(int i=0;i<n-1;i++){
+        int x, y;cin>>x>>y;
+        a[x].pb(y);
+        a[y].pb(x);
+    }
+    //==================================== DFS#1: to get one diameter end point
+    memset(par, 0, sizeof(par));
+    memset(vis, 0, sizeof(vis));
+    memset(d, 0, sizeof(d));
+    par[1]=0;
+    dfs(1, par[1], 0);
+    int node1 = -1 , node2 = -1 , ma = INT_MIN;
+    for(int i=2;i<=n;i++){
+        if(ma<d[i]){
+            node1 = i;
+            ma = d[i];
+        }
+    }
+    
+    //==================================== DFS#2: to get 2nd diameter end point
+    ma=INT_MIN;
+    memset(vis, 0, sizeof(vis));
+    memset(d, 0, sizeof(d));
+    dfs(node1 , 0 , 0);
+    
+    for(int i=1;i<=n;i++){
+        if(ma<d[i] and i!=node1){
+            node2 = i;
+            ma = d[i];
+        }
+    }
+    
+    //node1 and node2 mil gaye...
+    //ab unse dfs call kardo 
+    //==================================== DFS#: to get diameter length
+    
+    memset(vis, 0, sizeof(vis));
+    memset(d, 0, sizeof(d));
+    dfs(node1, 0 , 0);
+    vector<int>d1;d1.pb(0);
+    for(int i=1;i<=n;i++){
+        d1.pb(d[i]);
+    }
+    
+    
+    memset(vis, 0, sizeof(vis));
+    memset(d, 0, sizeof(d));
+    dfs(node2, 0 , 0);
+    
+    //cout<<d[node1]<<endl;            //for tree diameter
+    for(int i=1;i<=n;i++){              //for max dist from each node
+       cout<<max(d[i], d1[i])<<" ";
+    }
+    return 0;
+}
+```
+{% endtab %}
+
+{% tab title="MaxPathSum" %}
+```python
+# From any node to any node
+def solve(node):
+    if node is null: return 0
+    
+    lsum = solve(node.left)
+    rsum = solve(node.right)
+    
+    opt1 = max(node.val,                 # path startes from node
+                node.val + max(lsum,rsum))  # 'node' is in beech-mei of path
+    opt2 = max(node.val , lsum+rsum+node.val)
+    return max(opt1, opt2)            
+```
+{% endtab %}
+
+{% tab title="MaxLeafPathSum" %}
+```python
+# From Leaf node to leaf node
+def solve(node):
+    if node is None: return 0
+    
+    lsum = solve(node.left)
+    rsum = solve(node.right)
+    
+    opt1 = node.val + max(lsum,rsum)  # 'node' is in beech-mei of path
+    # path can start from node only if its a leaf node
+    if node.left is None and node.right is None:
+        opt1 = max(node.val, opt1)
+        
+    opt2 = max(lsum+rsum+node.val)
+    return max(opt1, opt2) 
+```
+{% endtab %}
+
+{% tab title="Subordinates" %}
+```python
+adj = defaultdict(list)
+dp = [0]*(n+1)
+
+def dfs(x,par):
+    res = 0
+    for e in adj[x]:
+        if e != par:
+            dfs(e,x)
+            res += 1 + dp[e]
+    dp[x] = res
+
+for i in range(2,n+1):
+    x = A[i-2]
+    adj[x].append(i)
+
+dfs(1,0)
+for e in dp[1:]:
+    print(e, end = " ")
+```
+{% endtab %}
+
+{% tab title="TreeMatching" %}
+```cpp
+/*
+STATES: 
+    * u : root node
+    * picked = 0/1 : whether any edge(u--v) was picked 
+ANS: max(dp(1,0), dp(1,1))
+RECUR: 
+    * dp(u,0) = SUM{ max(y,0), max(y,1) } for y:children[x]
+    * dp(u,1) = SUM{max(y,0),max(y,1)}     # for y: c1...c(i-1)
+                + 1 + dp(ci, 1)            # select this edge (u---ci)
+                + SUM{max(y,0), max(y,1)}  # for y: c(i+1)....cn 
+*/
+vector<int>adj[MAX];
+ll dp[MAX][2];
+ 
+void dfs (int src){
+    int leaf=1;
+    dp[src][1]=0;
+    dp[src][0]=0;
+
+    for(auto child:adj[src]){
+        leaf = 0;
+        dfs(child);
+    }
+    if(leaf==1)return;
+
+    for(auto child:adj[src]){
+        dp[src][0]+=max(dp[child][0],dp[child][1]);
+    }
+
+    for(auto child:adj[src]){
+        dp[src][1]=max(
+                dp[src][1],
+                1+ dp[child][0]+( dp[src][0]-max(dp[child][0],dp[child][1]))
+            );
+    }
+}
+ 
+ int main(){
+     int n;
+     cin>>n;
+     for(int i=0;i<n-1;i++){
+        int ss,ee;
+        cin>>ss>>ee;
+        adj[ss].push_back(ee);
+     }
+     dfs(1);
+     cout<<max(dp[1][0],dp[1][1])<<endl;
+}
+```
+{% endtab %}
+
+{% tab title="TreeDistance 2" %}
+```cpp
+vi ar[200001];
+lli res[200001];
+int subSize[200001];
+lli subDist[200001];
+int n;
+ 
+// preprocessing - to fill subtree-dist & subtree-size arr ==================
+void dfs1(int node , int par)
+{
+	subSize[node] = 1;
+	
+	for(int child : ar[node])
+        if(child != par)
+        {
+            dfs1(child , node);
+            subSize[node] += subSize[child];
+            
+            subDist[node] += subSize[child] + subDist[child];
+        }
+}
+ 
+// rerooting node to get ans ==================================
+void dfs(int node , int par)
+{
+	res[node] = (res[par] - subSize[node] - subDist[node]); //Rerooting1: remove contribution of self from parent's
+    res[node] += n - subSize[node] + subDist[node];         //Rerooting2: add contribution of self in ans
+	
+	for(int child : ar[node])
+	    if(child != par)
+	        dfs(child , node);
+}
+ 
+int main()
+{
+	int a , b;
+	cin>>n;
+	REP(i , n-1) cin>>a>>b , ar[a].pb(b) , ar[b].pb(a);
+	
+	dfs1(1 , -1);
+	res[1] = subDist[1];
+	
+	for(int child : ar[1])
+	dfs(child , 1);
+	
+	REP(i , n) cout<<res[i]<<" ";
+}
+```
+{% endtab %}
+{% endtabs %}
+
+* [x] CSES:[ Tree Diameter](https://cses.fi/problemset/task/1131) ✅✅ \| Basic level Tree DP \| AdityaVerma \| [KartikArora- N-ary tree](https://www.youtube.com/watch?v=qNObsKl0GGY&list=PLb3g_Z8nEv1j_BC-fmZWHFe6jmU_zv-8s&index=3&ab_channel=KartikArora)
+* [x] CSES: [Subordinates](https://cses.fi/problemset/task/1674) ✅
+* [x] CSES: [Tree Matching](https://cses.fi/problemset/task/1130) \| [kartikArora](https://www.youtube.com/watch?v=RuNAYVTn9qM&list=PLb3g_Z8nEv1j_BC-fmZWHFe6jmU_zv-8s&index=2&ab_channel=KartikArora) ✅
+* [x] CSES: [Tree Distances I](https://cses.fi/problemset/task/1132) \| Same code as TreeDiameter=&gt; use 2 dfs to get endpoints of dia ==&gt; dfs b/w them \| [underrated amazing video by HiteshTripathi](https://cses.fi/problemset/task/1132) 🚀✅✅🚀 \| **must\_do**
+* [x] CSES: [Tree Distances II](https://cses.fi/problemset/task/1133) \| **Tree Rerooting ✅🐽\|** [video](https://www.youtube.com/watch?v=lWCZOjUOjRc&t=42s)
+* [x] CF: [Distance in Tree](https://codeforces.com/contest/161/problem/D) \| \#nodes at dist K from each other \| video
+* [ ] CSES: [Company Queries I](https://cses.fi/problemset/task/1687) \| **LCA + Binary Lifting 🐽🐽**
+* [ ] CSES: [Company Queries II](https://cses.fi/problemset/task/1688) \| **LCA + Binary Lifting 🐽🐽**
+* [ ] CSES: 
 * [ ] [https://leetcode.com/problems/unique-binary-search-trees-ii/](https://leetcode.com/problems/unique-binary-search-trees-ii/)
 * [ ] [https://leetcode.com/problems/house-robber-iii/](https://leetcode.com/problems/house-robber-iii/)
 * [ ] [https://leetcode.com/problems/maximum-product-of-splitted-binary-tree/](https://leetcode.com/problems/maximum-product-of-splitted-binary-tree/)
@@ -29,7 +357,7 @@
 
 ## 3. Adv Trees Problems
 
-### 3.1 Segment Trees
+### 3.1 Segment Trees \( both: RSQ+RMQ implementations YAAAAAD honi chahiye\)
 
 * **Complexity:** Tree Construction: `O( n )` 
 * **Complexity:** Query in Range: `O( Log n )` 
@@ -119,29 +447,33 @@ def buildTree(a):
         tree[i] = tree[2*i] + tree[2*i+1]
 
 def updateTree(index, value):
-    # set value at position index 
-    tree[index + n] = value
-    index+=n
+    index+=n            # change the index to leaf node first
+    tree[index] = value    # update the value at the leaf node at the exact index
+    
     # after updating the child node,update parents
     i = index
     while i > 1: 
-    #update parent by adding new left and right child
-        tree[i//2] = tree[i] + tree[i+1]
-        i =i//2
+        tree[i//2] = tree[i] + tree[i+1]  #update parent by adding new left and right child
+        i =i//2    # move up one level at a time in the tree
 
 #RSQ for sum in range [l,r) ----> 0-based index
+    # Basically the left and right indices will move
+    # towards right and left respectively and with
+    # every each next higher level and compute the
+    # sum at each height. 
+    
 def queryTree(l, r):
     sum = 0
-    l += n
+    l += n    #change the index to leaf node first
     r += n
     while l < r:
-        if ((l & 1)>0):
+        if (l & 1):    #if left index in odd, make it even
             sum += tree[l]
             l += 1
-        if ((r & 1)>0):
+        if (r & 1):
             r -= 1
             sum += tree[r]
-        l =l// 2
+        l =l// 2            # move to the next higher level
         r =r// 2
     return sum
 
@@ -175,7 +507,11 @@ def updateTree(index, value):
     while i > 1: 
         tree[i//2] = min(tree[i],tree[i+1])    # diff
         i =i//2
-
+        
+    # Basically the left and right indices will move
+    # towards right and left respectively and with
+    # every each next higher level and compute the
+    # min at each height. 
 def RMQ(l, r):
     l += n
     r += n
@@ -204,8 +540,157 @@ if __name__ == '__main__':
         print(RMQ(l,r))
 ```
 {% endtab %}
+
+{% tab title="RangeXORQueries" %}
+```cpp
+//1. with prefix arr =================================================
+cin >> n >> q;
+for (int i=1;i<=n;++i){
+	cin >> a[i];
+	a[i]^=a[i-1]; //Calculate the xor prefix sum
+}
+while (q--){
+	cin >> u >> v;
+	cout << (a[v] xor a[u-1]) << "\n";
+}
+
+//2. with Seg Tree ====================================================
+
+const int mxN = 2e5 + 5;
+ll t[4*mxN], a[mxN];
+
+void build(int v, int tl, int tr){
+    if (tl == tr){
+        t[v] = a[tl];
+        return;
+    }
+    int tm = (tl+tr)/2;
+    build(2*v, tl, tm);
+    build(2*v+1, tm+1, tr);
+    t[v] = t[2*v] ^ t[2*v+1];
+}
+void update(int v, int tl, int tr, int l, int r, int val){
+    if (tr < l || tl > r) return;
+    if (l <= tl && tr <= r){
+        t[v] += val;
+        return;
+    }
+    int tm = (tl+tr)/2;
+    upd(2*v, tl, tm, l, r, val);
+    upd(2*v+1, tm+1, tr, l, r, val);
+}
+int query(int v, int tl, int tr, int l, int r){
+    if (tr < l || r < tl) return 0;
+    int tm = (tl+tr)/2;
+    if (l <= tl && tr <= r){
+        return t[v];
+    }
+    return get(2*v, tl, tm, l, r) ^ get(2*v+1, tm+1, tr, l, r);;
+}
+void solve(){
+    int n, q; cin >> n >> q;
+    for (int i = 1; i <= n; i++) cin >> a[i];
+    build(1, 1, n);
+    while (q--){
+        int l, r; cin >> l >> r;
+        int ans = query(1, 1, n, l, r);
+        cout << ans << endl;
+    }
+}
+ 
+```
+{% endtab %}
+
+{% tab title="RSQ:Lazy Propagation" %}
+```python
+N = 100000  # Upper limit for array size
+tree = [0] * (2 * N)
+lazy = [0] * (2 * N)
+    
+def buildTree(a,n):
+    # insert leaf nodes in tree
+    for i in range(n):
+        tree[n + i] = a[i]
+    # creating parent node by adding left and right child
+    for i in range(n - 1, 0, -1):
+        tree[i] = tree[2*i] + tree[2*i+1]
+
+# (ul,ur) : update ranges & (sl,sr) : Starting and ending indexes of elements for which current nodes stores sum
+def updateRange(ul,ur,diff, sl,sr,index=0):    
+    if lazy[index] != 0 :
+        tree[index] += (sr - sl + 1) * lazy[index]    # Make pending updates using value  stored in lazy nodes 
+  
+        # checking if it is not leaf node because if it is leaf node then we cannot go further 
+        if (sl != sr) :
+            # Since we are not yet updating children of index, we need to set lazy flags for the children 
+            lazy[index * 2 + 1] += lazy[index] 
+            lazy[index * 2 + 2] += lazy[index] 
+    
+        lazy[index] = 0     # Set the lazy value for current node as 0 as it has been updated 
+      
+    # out of range :: what is valid :: ul----sl----sr-----ur || sl----ul----ur-----sr
+    if (sl > sr or sl > ur or sr < ul) :
+        return
+  
+    if (sl >= ul and sr <= ur) :    # Current segment is fully in range :: ul----sl----sr-----ur
+        tree[index] += (sr - sl + 1) * diff    # Add the difference to current node 
+  
+        # same logic for checking leaf node or not 
+        if (sl != sr) :
+            lazy[index * 2 + 1] += diff 
+            lazy[index * 2 + 2] += diff 
+        return
+  
+    # If not completely in rang, but overlaps, recur for children, 
+    mid = (sl + sr) // 2
+    updateRange(ul, ur, diff, sl,mid,  index * 2 + 1)
+    updateRange(ul, ur, diff,mid + 1,sr, index * 2 + 2)
+  
+    tree[index] = tree[index * 2 + 1] + tree[index * 2 + 2] # And use the result of children calls to update this node 
+    
+def queryTreeRSQ(ql, qr,sl,sr,index):
+    # out of range 
+    if (sl > sr or sl > qr or sr < ql) :
+        return
+    # do the pending updates first
+    if (lazy[index] != 0) :
+        # Make pending updates to this node.  
+        # Note that this node represents sum of 
+        # elements in arr[ss..se] and all these 
+        # elements must be increased by lazy[index] 
+        tree[index] += (sr - sl + 1) * lazy[index] 
+  
+        # checking if it is not leaf node because if t is leaf node then we cannot go further 
+        if (sl != sr) :
+            # Since we are not yet updating children os index, we need to set lazy values for the children 
+            lazy[index * 2] += lazy[index] 
+            lazy[index * 2 + 1] += lazy[index] 
+  
+        # unset the lazy value for current node as it has been updated 
+        lazy[index] = 0 
+  
+    # At this point we are sure that  
+    # pending lazy updates are done for  
+    # current node. So we can return value
+    # (same as it was for query in our previous post) 
+  
+    # If this segment lies in range 
+    if (sl >= ql and sr <= qr)  :
+        return tree[index] 
+  
+    # If a part of this segment overlaps with the given range 
+    mid = (sl + sr) // 2
+    return queryTreeRSQ(ql, qr,sl,mid ,2*index) + queryTreeRSQ(ql, qr,mid+1,sr, 2*index + 1); 
+
+```
+{% endtab %}
 {% endtabs %}
 
+* [x] CSES: [Range Xor Queries](https://cses.fi/problemset/task/1650/) ✅✅ \| Doable with both: prefix array & seg Tree
+* [x] CSES: [Range Update Queries](https://cses.fi/problemset/task/1651) 🚀✅ \| update on range & query on index =&gt; **hence use Lazy Propagation here**
+  * **NOTE:** Lazy propagation isnt "just an alternative approach"
+  * Normal Seg Tree implementation =&gt; update on **point** & query on **range**
+  * Lazy Seg Tree implementation      =&gt; update on **range** & query on **point**
 * [ ] CSES: [Josephus Problem II](https://cses.fi/problemset/result/2607517/) 🐽✅
 
 ### 3.2 BIT 
