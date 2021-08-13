@@ -24,9 +24,6 @@
 
 ## System Design
 
+* [SQL](system-design/sql.md)
 * [Resources](system-design/resources.md)
-
----
-
-* [SQL](sql.md)
 
