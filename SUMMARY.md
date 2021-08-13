@@ -16,9 +16,9 @@
 
 ## Data Structures
 
+* [generalInfo](data-structures/generalinfo.md)
 * [dataStructures.py](data-structures/ds.py.md)
 * [methods.py](data-structures/methods.py.md)
-* [generalInfo.py](data-structures/generalinfo.py.md)
 
 ## Recursion
 

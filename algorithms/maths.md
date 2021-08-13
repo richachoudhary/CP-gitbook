@@ -22,6 +22,8 @@ For problems like \(\#892\) :in geometry of 3-D blocks: think in terms of subtra
 * [x] Check collinearity : [1232. Check If It Is a Straight Line](https://leetcode.com/problems/check-if-it-is-a-straight-line/)
   * [x] Similar: [1037.Valid Boomerang](https://leetcode.com/problems/valid-boomerang/)
 
+{% tabs %}
+{% tab title="1232" %}
 ```python
 (x0, y0), (x1, y1) = coordinates[: 2]
 for x, y in coordinates:
@@ -29,9 +31,147 @@ for x, y in coordinates:
         return False
 return True
 ```
+{% endtab %}
+
+{% tab title="PointLocationTest" %}
+```python
+'''
+         i   j   k
+AXB = |  x1  y1  z1 |
+      |  x2  y2  z2 |
+    = (y1z2 - y2z1)i - (x1z2 - x2z1)j + (x1y2 - x2y1)k
+'''
+
+def solve():
+    I = lambda : map(int,input().split())
+    t = int(input())
+
+    for _ in range(t):
+        x1,y1,x2,y2,x3,y3 = I()
+        # shift origin to (x1,y1)
+        x2,y2 = x2-x1, y2-y1
+        x3,y3 = x3-x1, y3-y1
+
+        cross = x3*y2 - x2*y3
+        if cross > 0:
+            print("RIGHT")
+        elif cross < 0:
+            print("LEFT")
+        else:
+            print("TOUCH")
+```
+{% endtab %}
+
+{% tab title="Line Segment Intersection" %}
+```python
+'''
+#1. check if both lines are COLINEAR YET PARALLEL:
+
+        -----------      -----------
+        p1        p2     p3     p4
+                    OR
+            ----===============--------
+            p1  p2            p3      p4 
+#2.We need to check:   #hence for _ in range(2): which swaps points in end.easy implementation 😎
+    1. line1's endponits signs w.r.t. line2
+    2. line2's endponits signs w.r.t. line2
+cuz if just 1 or 2 checked, we'll give wrong o/p for this case:
+            |
+--------    | opposite signs but still "NO" intersection 
+            |
+'''
+x1,y1,x2,y2,x3,y3,x4,y4 = I()
+#1.================================== colinear & parallel
+if cross(x2,y2,x1,y2) * cross(x4,y4,x3,y3) == 0:
+    # just exclude the case when the're not COLLINEAR
+    # 1.    -----------
+    #      ----------------     => NO
+    #
+    # 2. 
+    #    --------   ---------     => NO
+    # 3.
+    #     -------==========-------  => YES
+    #
+    # 
+    # check for case#1 : 
+    if cross(x2-x1,y2-y1,x3-x1,y3-y1) != 0:
+        print("NO")
+        break
+
+    # check for case#2 : collinear with Boundary-Box technique
+    isSolved = False
+    for _ in range(2):
+        if max(x2,x1) < min(x3,x4) or max(y2,y1) < min(y3,y4):
+            print("NO")
+            isSolved = False
+        x1,y1,x2,y2,x3,y3,x4,y4 = x3,y3,x4,y4,x1,y1,x2,y2
+    
+    if not isSolved:
+        print("YES")    #case#3
+    break
+#2. ================================= skewed
+for _ in range(2):
+    # shift origin to (x1,y1)
+    cross1 = cross(x2-x1,y2-y1,x3-x1,y3-y1)
+    cross2 = cross(x2-x1,y2-y1,x4-x1,y4-y1)
+    
+    if cross1*cross2 > 0 :  #both #3 & #4 lie on same side from line 1-->2
+        print("NO")
+        return
+    x1,y1,x2,y2,x3,y3,x4,y4 = x3,y3,x4,y4,x1,y1,x2,y2
+if not isSolved:
+    print("YES")
+```
+{% endtab %}
+
+{% tab title="Polygon Area" %}
+```python
+'''
+IDEA: 
+    * take one edge of polygon & draw lines to all other edges => dividing the polygon into Triangles.
+    * Calculate sum of areas of trianges : AreaTriangle =  cross_product//2
+    * NOTE: the trick works for both: CONVEX & CONCAVE ploygon (CROSS Product takes care of + & -ve areas)
+'''
+
+class Point:
+    def __init__(self, x,y):
+        self.x = x
+        self.y = y
+
+def cross(p1,p2,p3): # (p2 - p1) X (p3 - p1)
+
+    a = (p2.x-p1.x)*(p3.y-p1.y) # 3*2
+    b = (p3.x-p1.x)*(p2.y-p1.y) # 2*
+    return (p2.x-p1.x)*(p3.y-p1.y) - (p3.x-p1.x)*(p2.y-p1.y)
+
+def solve():
+        
+    I = lambda : map(int, input().split()) 
+    n = int(input())
+    points = []
+    for _ in range(n):
+        x,y = I()
+        p = Point(x,y)
+        points.append(p)
+
+    # fix P0
+    res = 0
+    for i in range(1,n-1):
+        res += (cross(points[0],points[i],points[i+1]))
+
+    print(abs(res)//2) 
+    
+```
+{% endtab %}
+{% endtabs %}
 
 * [x] [836.Rectangle Overlap](https://leetcode.com/problems/rectangle-overlap/) 💡
-* [ ] 
+* [x] CSES: [Point Location Test](https://cses.fi/problemset/task/2189) \|  ✅✅**Cross Product**
+* [x] CSES: [Line Segment Intersection](https://cses.fi/problemset/task/2190) ✅✅ \| `Boundary Box Technique` \|**COVERS SO MANY CONCEPTS!**
+* [x] CSES: [Polygon Area](https://cses.fi/problemset/result/2677213/) ✅✅
+* [ ] CSES: [Point in Polygon](https://www.youtube.com/watch?v=G9QTjWtK_TQ) 🐽🐽\| [video](https://www.youtube.com/watch?v=G9QTjWtK_TQ&t=5265s)
+* [ ] CSES: [Convex Hull](https://cses.fi/problemset/task/2195) ✅✅ \| [video](https://www.youtube.com/watch?v=G9QTjWtK_TQ&t=7801s) \| **Graham Scan+Jarvis Algo &gt;&gt;** shape of rubber band on nails boundary
+
 ### 2.3 Problemsets
 
 * **`[E]`** Leetcode tag = **geometry:** [https://leetcode.com/problemset/all/?topicSlugs=geometry](https://leetcode.com/problemset/all/?topicSlugs=geometry)
@@ -39,6 +179,7 @@ return True
 
 ### 1.3 Resources: Geometry
 
+* [CSES Steam by Errichto](https://www.youtube.com/watch?v=G9QTjWtK_TQ) 🚀⭐️
 * [Geometric Algorithms](https://www.cs.princeton.edu/~rs/AlgsDS07/16Geometric.pdf)
 * Topcoder:
   * [GEOMETRY CONCEPTS PART 1: BASIC CONCEPTS](https://www.topcoder.com/thrive/articles/Geometry%20Concepts%20part%201:%20Basic%20Concepts)
@@ -52,6 +193,10 @@ return True
 ## 2. Maths
 
 ### 2.1 Notes
+
+* **Binet’s formula** for calculating **Fibonacci numbers:**
+
+![](../.gitbook/assets/screenshot-2021-08-13-at-9.32.25-am.png)
 
 * Modular Exponentiation :
 
