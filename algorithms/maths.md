@@ -19,10 +19,51 @@
 For problems like \(\#892\) :in geometry of 3-D blocks: think in terms of subtracting the overlap, not adding each block one-by-one.
 {% endhint %}
 
+* [x] LC: [149.Max Points on a Line](https://leetcode.com/problems/max-points-on-a-line/) \| just count all the slopes b/w all 2 pair points
 * [x] Check collinearity : [1232. Check If It Is a Straight Line](https://leetcode.com/problems/check-if-it-is-a-straight-line/)
   * [x] Similar: [1037.Valid Boomerang](https://leetcode.com/problems/valid-boomerang/)
 
 {% tabs %}
+{% tab title="149" %}
+```python
+#2. count slopes ==========================
+
+INT_MAX = 10**5
+res = 0
+
+if n <= 2:
+    return n
+
+for i in range(n-1):
+    samePoint = 1
+    slopes = dict()
+    for j in range(i+1,n):
+        p1, p2 = points[i],points[j]
+        
+        if p1 == p2:
+            samePoint += 1
+        elif p2[0]-p1[0] == 0:
+            if INT_MAX in slopes:
+                slopes[INT_MAX] += 1
+            else:
+                slopes[INT_MAX] = 1
+        else:
+            x = (p2[1]-p1[1])/(p2[0]-p1[0])
+            if x in slopes:
+                slopes[x] += 1
+            else:
+                slopes[x] = 1
+                
+    localres = 0
+    for k,v in slopes.items():
+        localres = max(localres,v)
+    localres += samePoint
+    res =  max(res,localres)
+        
+return res
+```
+{% endtab %}
+
 {% tab title="1232" %}
 ```python
 (x0, y0), (x1, y1) = coordinates[: 2]
@@ -210,7 +251,25 @@ int modularExponentiation(int x,int n,int M){    //get (x^n % M)
 math.pow(x,n,M)
 ```
 
- 
+* Sieve of Eratosthenes
+
+```cpp
+if n <= 1:
+    return 0
+
+primes = [True for _ in range(n+1)]
+primes[0] = False
+
+primes[1] = False
+for i in range(2,int(sqrt(n+1))+1):
+    if primes[i]:
+        for j in range(i*i,n+1,i):
+            primes[j] = False
+
+return sum(x for x in primes if x)
+```
+
+
 
 ### 2.2 Problems: Maths
 
@@ -219,12 +278,13 @@ math.pow(x,n,M)
 * [x] CSES: [Gray Code](https://cses.fi/problemset/task/2205) \| [Solution](https://www.geeksforgeeks.org/generate-n-bit-gray-codes/)
 * [x] CSES: [Missing Coin Sum](https://cses.fi/problemset/result/2583670/) \| [Approach](https://discuss.codechef.com/t/cses-missing-coin-sum/84039/2) ✅
   * **KYA SEEKHA:** At any index **i** in a sorted array **a**, currSum represents `sum(a[ 0...i ])`.We can form every possible sum from `1...currSum`, when we are at index i
+* [x] LC: [166.Fraction to Recurring Decimal](https://leetcode.com/problems/fraction-to-recurring-decimal/submissions/) ✅\| recurring decimal =&gt; reminder will repeat \| [Approach](https://leetcode.com/problems/fraction-to-recurring-decimal/discuss/180004/Python-4-lines-%2832ms-beats-100%29-with-explanation)
 
-### 2.3 Combinatorics
+## 3. Combinatorics
 
 * [ ] AtCoder: [Cumulative Sum](https://atcoder.jp/contests/abc208/tasks/abc208_f) \| [Editorial](https://atcoder.jp/contests/abc208/editorial/2219)
 
-### 2.4 Chess Problems:
+## 4 Chess Problems:
 
 * [x] CSES: [Two Knights](https://cses.fi/problemset/task/1072) \| approach: [here](https://discuss.codechef.com/t/cses-two-knights-problem-help-needed/69448/5) & [here](https://math.stackexchange.com/questions/3266257/number-of-ways-two-knights-can-be-placed-such-that-they-dont-attack)
 * [https://codeforces.com/blog/entry/78943](https://codeforces.com/blog/entry/78943)

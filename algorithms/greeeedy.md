@@ -5,6 +5,7 @@
 * [x] [1021.Remove Outermost Parentheses](https://leetcode.com/problems/remove-outermost-parentheses/)
 * [x] [443.String Compression](https://leetcode.com/problems/string-compression/)
 * [x] [1520.Maximum Number of Non-Overlapping Substrings](https://leetcode.com/problems/maximum-number-of-non-overlapping-substrings/) 🍪🍪🍪
+* [x] LC: [8.String to Integer \(atoi\)](https://leetcode.com/problems/string-to-integer-atoi/)
 * [x] CSES: [Palindrome Reorder](https://cses.fi/problemset/task/1755)
 * [x] **TYPE: Count \# Inversions** ✅
   * [x] CSES: [Collecting Numbers](https://cses.fi/problemset/task/2216)  \| [Approach](https://discuss.codechef.com/t/cses-collecting-numbers/83775)
@@ -12,6 +13,10 @@
 * [x] CSES: [Subarray Sum 1](https://cses.fi/problemset/task/1660/) \| only "prefix sum"
 * [x] CSES: [Subarray Sum 2](https://cses.fi/problemset/task/1661) \| neg numbers \| prefix sum + map
 * [x] CSES: [Subarray Divisibility](https://cses.fi/problemset/result/2648945/) \| ✅ 
+* [x] LC 44: [Wildcard Matching](https://leetcode.com/problems/wildcard-matching/)
+* [x] LC [163. Missing Ranges](https://leetfree.com/problems/missing-ranges)
+* [x] LC [179.Largest Number](https://leetcode.com/problems/largest-number/) 🐽
+* [x] LC [41.First Missing Positive](https://leetcode.com/problems/first-missing-positive/) ✅🍪🍪🍪
 
 {% tabs %}
 {% tab title="Collecting Numbers✅" %}
@@ -93,6 +98,56 @@ for e in A:
     else:
         d[curr] = 1
 print(cnt)
+```
+{% endtab %}
+
+{% tab title="atoi" %}
+```python
+ls = list(s.strip())
+if len(ls) == 0 : return 0
+
+sign = -1 if ls[0] == '-' else 1
+if ls[0] in ['-','+'] : del ls[0]
+ret, i = 0, 0
+while i < len(ls) and ls[i].isdigit() :
+    ret = ret*10 + ord(ls[i]) - ord('0')
+    i += 1
+return max(-2**31, min(sign * ret,2**31-1))
+```
+{% endtab %}
+
+{% tab title="41.✅" %}
+```python
+# 1. O(NlogN) ===========================
+        
+    nums.sort()
+    res = 1
+    for e in nums:
+        if res == e:
+            res += 1
+    return res
+    
+    # 2. O(N) ===================================
+    # missing number will be in range [1,n]
+    
+    n = len(nums)
+    
+    # ignore all out of bound numbers
+    for i in range(n):
+        if nums[i] <= 0 or nums[i] > n:
+            nums[i] = n + 1
+            
+     # mark all the numbers                
+    for i in range(n):
+        if abs(nums[i]) > n:
+            continue
+        nums[abs(nums[i]) - 1] = -abs(nums[abs(nums[i]) - 1])
+    
+    # return first unmarked number
+    for i in range(n):
+        if nums[i] > 0:
+            return i + 1
+    return n + 1
 ```
 {% endtab %}
 {% endtabs %}
@@ -754,6 +809,7 @@ for(int i=0;i<n;i++){
 * [ ] [658.Find K Closest Elements](https://leetcode.com/problems/find-k-closest-elements/) \| [Soln](https://leetcode.com/problems/find-k-closest-elements/discuss/915047/Finally-I-understand-it-and-so-can-you.)
 * [x] CSES:[ Digit Queries](https://cses.fi/problemset/result/2573072/) \| s[oln video](https://www.youtube.com/watch?v=QAcH8qD9Pe0&ab_channel=ARSLONGAVITABREVIS) ✅✅🐽
 * [x] CSES: [Concert Tickets](https://cses.fi/problemset/task/1091) \| [WilliamLin](https://www.youtube.com/watch?v=dZ_6MS14Mg4&t=3436s&ab_channel=WilliamLin)✅⭐️⭐️✅ \| **Kuch naya sikha ke gya ye Q**
+* [x] LC: **4.** [Median of Two Sorted Arrays](https://leetcode.com/problems/median-of-two-sorted-arrays/) 🐽🐽✅
 
 {% tabs %}
 {% tab title="Concert Tickets:: CPP" %}
@@ -808,6 +864,32 @@ for e in I():
         freq[A[i-1]] -= 1
     else:
         print('-1')
+```
+{% endtab %}
+
+{% tab title="4." %}
+```python
+def findMedianSortedArrays(self, nums1, nums2):
+    l = len(nums1) + len(nums2)
+    if l % 2:  # the length is odd
+        return self.findKthSmallest(nums1, nums2, l//2+1)
+    else:
+        return (self.findKthSmallest(nums1, nums2, l//2) +
+        self.findKthSmallest(nums1, nums2, l//2+1))*0.5
+
+def findKthSmallest(self, nums1, nums2, k):
+    # force nums1 is not longer than nums2
+    if len(nums1) > len(nums2):
+        return self.findKthSmallest(nums2, nums1, k)
+    if not nums1:
+        return nums2[k-1]
+    if k == 1:
+        return min(nums1[0], nums2[0])
+    pa = min(int(k/2), len(nums1)); pb = k-pa  # take care here
+    if nums1[pa-1] <= nums2[pb-1]:
+        return self.findKthSmallest(nums1[pa:], nums2, k-pa)
+    else:
+        return self.findKthSmallest(nums1, nums2[pb:], k-pb)
 ```
 {% endtab %}
 {% endtabs %}

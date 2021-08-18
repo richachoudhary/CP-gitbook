@@ -36,7 +36,6 @@ def solve().....
 * [ ] [https://leetcode.com/problems/best-time-to-buy-and-sell-stock/](https://leetcode.com/problems/best-time-to-buy-and-sell-stock/)
 * [ ] [https://leetcode.com/problems/min-cost-climbing-stairs/](https://leetcode.com/problems/min-cost-climbing-stairs/)
 * [ ] [https://leetcode.com/problems/divisor-game/](https://leetcode.com/problems/divisor-game/)
-* [ ] [https://leetcode.com/problems/decode-ways/](https://leetcode.com/problems/decode-ways/)
 * [ ] [https://leetcode.com/problems/unique-binary-search-trees/](https://leetcode.com/problems/unique-binary-search-trees/)
 * [ ] [https://leetcode.com/problems/house-robber/](https://leetcode.com/problems/house-robber/)
 * [ ] [https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-cooldown/](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-cooldown/)
@@ -767,6 +766,10 @@ for _ in range(q):
 
 ## 9. String DP
 
+* [x] LC 5. [Longest Palindromic Substring](https://leetcode.com/problems/longest-palindromic-substring/) \| [Video](https://www.youtube.com/watch?v=0CKUjDcUYYA) \| **NOT A DP Problem!!!** \| expand from all mid pts✅🚀✅
+* [x] LC 44: [Wildcard Matching](https://leetcode.com/problems/wildcard-matching/) ✅ \| very similar to **Edit Distance!!**
+* [x] LC 10: [Regular Expression Matching](https://leetcode.com/problems/regular-expression-matching/) ✅✅\| **diff from \#44**. Freq asked in FAANG!! \| [**TusharRoy**](https://www.youtube.com/watch?v=l3hda49XcDE)\*\*\*\*
+* [x] LC 90: [Decode Ways](https://leetcode.com/problems/decode-ways/)
 * [ ] [https://leetcode.com/problems/is-subsequence/](https://leetcode.com/problems/is-subsequence/)
 * [ ] [https://leetcode.com/problems/palindrome-partitioning/](https://leetcode.com/problems/palindrome-partitioning/)
 * [ ] [https://leetcode.com/problems/palindrome-partitioning-ii/](https://leetcode.com/problems/palindrome-partitioning-ii/)
@@ -787,6 +790,113 @@ for _ in range(q):
 * [ ] [https://leetcode.com/problems/find-all-good-strings/](https://leetcode.com/problems/find-all-good-strings/)
 * [ ] [https://leetcode.com/problems/string-compression-ii/](https://leetcode.com/problems/string-compression-ii/)
 * [ ] [https://leetcode.com/problems/number-of-ways-to-form-a-target-string-given-a-dictionary/](https://leetcode.com/problems/number-of-ways-to-form-a-target-string-given-a-dictionary/)
+
+{% tabs %}
+{% tab title="5.✅" %}
+```python
+n = len(s)
+if n == 0:
+    return ""
+
+resl,ress = 1, s[0]
+#1.expand all odd lengh palindromes
+for i in range(n):
+    l,r = i-1, i+1
+    while l>= 0 and r <=n-1:
+        if s[l] != s[r]:
+            break
+        else:
+            if r-l+1 > resl:
+                resl = r-l+1
+                ress = s[l:r+1]
+        l -= 1
+        r += 1
+
+#2. Expand all even-length palindromes
+for i in range(n-1):
+    l,r = i,i+1   # l,i,i+1,r
+    while l>= 0 and r <=n-1:
+        if s[l] != s[r]:
+            break
+        else:
+            if r-l+2 > resl:
+                resl = r-l+2
+                ress = s[l:r+1]
+        l -= 1
+        r += 1
+    
+return ress
+```
+{% endtab %}
+
+{% tab title="44" %}
+```python
+def isMatch(self, s: str, p: str) -> bool:
+    n,m = len(s), len(p)
+    
+    dp = [[False for _ in range(m+1)] for _ in range(n+1)]
+    dp[0][0] = True
+    
+    # we set values to true until a non "*" character is found : for s = "adceb", p = "*a*b"
+    for j in range(1, len(p)+1):
+        if p[j-1] != '*':
+            break
+        dp[0][j] = True
+    
+    for i in range(1,n+1):
+        for j in range(1,m+1):
+            if s[i-1] == p[j-1] or p[j-1]=='?':
+                dp[i][j] = dp[i-1][j-1]
+            elif p[j-1] == '*':
+                dp[i][j] = dp[i][j-1] or dp[i-1][j] or dp[i-1][j-1]
+    
+    return dp[n][m]
+```
+{% endtab %}
+
+{% tab title="10.✅" %}
+```python
+def isMatch(self, s: str, p: str) -> bool:
+    s, p = ' '+ s, ' '+ p
+    lenS, lenP = len(s), len(p)
+    dp = [[0]*(lenP) for i in range(lenS)]
+    dp[0][0] = 1
+
+    for j in range(1, lenP):
+        if p[j] == '*':
+            dp[0][j] = dp[0][j-2]
+
+    for i in range(1, lenS):
+        for j in range(1, lenP):
+            if p[j] in {s[i], '.'}:
+                dp[i][j] = dp[i-1][j-1]
+            elif p[j] == "*":
+                dp[i][j] = dp[i][j-2] or int(dp[i-1][j] and p[j-1] in {s[i], '.'})
+
+    return bool(dp[-1][-1])
+```
+{% endtab %}
+
+{% tab title="90" %}
+```python
+def recur(s,i):
+    # BC
+    if i == len(s):
+        return 1
+    if s[i] == '0':
+        return 0
+    if i in MEMO:
+        return MEMO[i]
+    # recursion
+    opt1 = recur(s,i+1)
+    opt2 = 0
+    if i<= len(s)-2 and (s[i] == '1' or (s[i] == '2' and s[i+1] <= '6')):
+        opt2 = recur(s,i+2) 
+    MEMO[i] = opt1 + opt2
+    return MEMO[i]
+```
+{% endtab %}
+{% endtabs %}
 
 ## 9. Probability DP
 

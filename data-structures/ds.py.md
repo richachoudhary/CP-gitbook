@@ -81,8 +81,8 @@ str1.endswith(str2)     # => returns bool
 * create set from list: `s = set(list1)`
 * **size** of set: `len(set1)`
 * check if element **exists** in set: `if x in s`
-* insert element in set: `s.add(x)`
-* remove element from set: `s.remove(x)`
+* **insert** element in set: `s.add(x)`
+* **remove** element from set: `s.remove(x)`
 * **Set Operations:**
   * union: `s = set1 | set2`
   * intersection: `s = set1 & set2`

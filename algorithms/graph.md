@@ -288,6 +288,7 @@ print("NO")
 * [ ] CSES:[ Grid Paths](https://cses.fi/problemset/task/1625) ✅✅✅🐽\| [WilliamLin](https://www.youtube.com/watch?v=dZ_6MS14Mg4&t=2440s&ab_channel=WilliamLin)
 * [x] CSES: [Labyrinth](https://cses.fi/problemset/task/1193) ==&gt; **DFS** fails, **ALWAYS USE BFS for SHORTEST PATH ✅✅**
 * [x] **CSES:** [Monsters](https://cses.fi/problemset/task/1194) \| `Lava Flow Problem✅✅✅🔥🔥` \| [video](https://www.youtube.com/watch?v=hB59dxdDLII&ab_channel=Dardev)
+* [x] LC 127. [Word Ladder](https://leetcode.com/problems/word-ladder/)
 
 ## **1. Single Source Shortest/Longest Path - SSSP/SSLP** 
 
@@ -737,6 +738,62 @@ while(!q.empty())
 }
 ```
 {% endtab %}
+
+{% tab title="269✅" %}
+```python
+I = lambda : map(str,input().split(','))
+    
+def findFistMistmatch(w1,w2):
+    n,m = len(w1),len(w2)
+
+    i,j = 0,0
+    while i<n and j<m:
+        if w1[i] != w2[j]:
+            return [w1[i],w2[j]]
+        i,j = i+1, j+1
+    return []
+
+A = list(I())
+
+# for adj list
+adj = defaultdict(list)
+indeg = dict()
+for c in list(string.ascii_lowercase):
+    indeg[c] = 0
+
+chars = set()
+for i in range(1,len(A)):
+    w1,w2 = A[i-1],A[i]
+
+    x,y = findFistMistmatch(w1,w2)
+    if x and y:
+        chars.add(x)
+        chars.add(y)
+        adj[x].append(y)
+        indeg[y] += 1
+
+# perform topo
+Q = deque()
+for c in list(string.ascii_lowercase):
+    if c in chars and indeg[c] == 0:
+        Q.append(c)
+
+res = []
+while Q:
+    print(Q)
+    x = Q.popleft()
+    res.append(x)
+
+    for y in adj[x]:
+        indeg[y] -= 1
+        if indeg[y] == 0:
+            Q.append(y)
+
+
+res =  ''.join(res)
+print(res)
+```
+{% endtab %}
 {% endtabs %}
 
 ### **3.2 Problems: Topological Sort**
@@ -747,7 +804,7 @@ while(!q.empty())
 * [x] [207. Course Schedule](https://leetcode.com/problems/course-schedule/)
 * [x] [210. Course Schedule II](https://leetcode.com/problems/course-schedule-ii/)
 * [x] 1462.[Course Schedule IV](https://leetcode.com/problems/course-schedule-iv) ⭐️ \| see how to maintain all-inclusive prerequisite list 
-* [x] [269. Alien Dictionary](https://leetfree.com/problems/alien-dictionary) 💲
+* [x] [269. Alien Dictionary](https://leetfree.com/problems/alien-dictionary) 💲✅
 * [x] [329. Longest Increasing Path in a Matrix](https://leetcode.com/problems/longest-increasing-path-in-a-matrix/) 💯
 * [x] [444. Sequence Reconstruction](https://leetfree.com/problems/sequence-reconstruction) 💲
 * [ ] [1203. Sort Items by Groups Respecting Dependencies](https://leetcode.com/problems/sort-items-by-groups-respecting-dependencies/)
