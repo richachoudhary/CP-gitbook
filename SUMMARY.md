@@ -1,6 +1,6 @@
 # Table of contents
 
-* [INDEX](README.md)
+* [.](README.md)
 
 ## Algorithms
 
@@ -27,4 +27,6 @@
 * [OOP](system-design/oop.md)
 * [SQL](system-design/sql.md)
 * [Resources](system-design/resources.md)
+* [LLD](system-design/lld.md)
+* [HLD](system-design/hld.md)
 

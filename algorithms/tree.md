@@ -357,7 +357,58 @@ int main()
 
 ## 3. Adv Trees Problems
 
-### 3.1 Segment Trees \( both: RSQ+RMQ implementations YAAAAAD honi chahiye\)
+### 3.1 Trie
+
+{% tabs %}
+{% tab title="14. Template✅" %}
+```python
+struct TrieNode{
+    TrieNode* children[26];
+    int freq;
+};
+
+void insert(TrieNode* root, string s){
+    TrieNode* node = root;
+    for(char c:s){
+        if(!node->children[c-'a']){
+            TrieNode* child = new TrieNode();
+            child->freq=1;
+            node->children[c-'a'] = child;
+        }else{
+            node->children[c-'a']->freq += 1;
+        }
+        node = node->children[c-'a'];
+    }
+}
+
+void traverse(TrieNode* root, string& ans, int size){
+    for(int i=0;i<26;i++){
+        if(root->children[i] && root->children[i]->freq == size){
+            ans += (i+'a');
+            traverse(root->children[i],ans,size);
+        }
+    }
+}
+
+string longestCommonPrefix(vector<string>& strs) {
+    TrieNode* root = new TrieNode();
+    root->freq=0;
+    for(string s:strs){
+        root->freq += 1;
+        insert(root,s);
+    }
+    
+    string ans="";
+    traverse(root,ans,strs.size());
+    return ans;
+}
+```
+{% endtab %}
+{% endtabs %}
+
+* [x] LC [14.Longest Common Prefix](https://leetcode.com/problems/longest-common-prefix/)✅
+
+### 3.2 Segment Trees \( both: RSQ+RMQ implementations YAAAAAD honi chahiye\)
 
 * **Complexity:** Tree Construction: `O( n )` 
 * **Complexity:** Query in Range: `O( Log n )` 
@@ -693,7 +744,7 @@ def queryTreeRSQ(ql, qr,sl,sr,index):
   * Lazy Seg Tree implementation      =&gt; update on **range** & query on **point**
 * [ ] CSES: [Josephus Problem II](https://cses.fi/problemset/result/2607517/) 🐽✅
 
-### 3.2 BIT 
+### 3.3 BIT 
 
 * [ ] CSES: [Nested Range Check](https://cses.fi/problemset/task/2168) 🐽
 * [ ] CSES: [Nested Range Count](https://cses.fi/problemset/task/2169) 🐽

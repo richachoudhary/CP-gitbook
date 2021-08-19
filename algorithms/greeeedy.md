@@ -810,6 +810,7 @@ for(int i=0;i<n;i++){
 * [x] CSES:[ Digit Queries](https://cses.fi/problemset/result/2573072/) \| s[oln video](https://www.youtube.com/watch?v=QAcH8qD9Pe0&ab_channel=ARSLONGAVITABREVIS) ✅✅🐽
 * [x] CSES: [Concert Tickets](https://cses.fi/problemset/task/1091) \| [WilliamLin](https://www.youtube.com/watch?v=dZ_6MS14Mg4&t=3436s&ab_channel=WilliamLin)✅⭐️⭐️✅ \| **Kuch naya sikha ke gya ye Q**
 * [x] LC: **4.** [Median of Two Sorted Arrays](https://leetcode.com/problems/median-of-two-sorted-arrays/) 🐽🐽✅
+* [x] LC 33: [Search in Rotated Sorted Array](https://leetcode.com/problems/search-in-rotated-sorted-array/) ☑️
 
 {% tabs %}
 {% tab title="Concert Tickets:: CPP" %}
@@ -890,6 +891,34 @@ def findKthSmallest(self, nums1, nums2, k):
         return self.findKthSmallest(nums1[pa:], nums2, k-pa)
     else:
         return self.findKthSmallest(nums1, nums2[pb:], k-pb)
+```
+{% endtab %}
+
+{% tab title="33✅" %}
+```python
+def search(self, nums: List[int], target: int) -> int:
+    if not nums:
+        return -1
+
+    low, high = 0, len(nums) - 1
+
+    while low <= high:
+        mid = (low + high) // 2
+        if target == nums[mid]:
+            return mid
+
+        if nums[low] <= nums[mid]:
+            if nums[low] <= target <= nums[mid]:
+                high = mid - 1
+            else:
+                low = mid + 1
+        else:
+            if nums[mid] <= target <= nums[high]:
+                low = mid + 1
+            else:
+                high = mid - 1
+
+    return -1
 ```
 {% endtab %}
 {% endtabs %}

@@ -101,11 +101,29 @@ return helper(head,None)
 
 ```
 {% endtab %}
+
+{% tab title="2.✅" %}
+```python
+dummy = cur = ListNode(0)
+carry = 0
+while l1 or l2 or carry:
+    if l1:
+        carry += l1.val
+        l1 = l1.next
+    if l2:
+        carry += l2.val
+        l2 = l2.next
+    cur.next = ListNode(carry%10)
+    cur = cur.next
+    carry //= 10
+return dummy.next
+```
+{% endtab %}
 {% endtabs %}
 
 * [ ] [234.Palindrome Linked List](https://leetcode.com/problems/palindrome-linked-list/)
 * [ ] [61.Rotate List](https://leetcode.com/problems/rotate-list/)
-* [ ] [2.Add Two Numbers](https://leetcode.com/problems/add-two-numbers/)
+* [x] [2.Add Two Numbers](https://leetcode.com/problems/add-two-numbers/) ✅🚀
 * [ ] [141.Linked List Cycle](https://leetcode.com/problems/linked-list-cycle/)
 * [ ] [142.Linked List Cycle II](https://leetcode.com/problems/linked-list-cycle-ii/)
 * [ ] [138.Copy List with Random Pointer](https://leetcode.com/problems/copy-list-with-random-pointer/)
