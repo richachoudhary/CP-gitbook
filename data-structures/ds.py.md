@@ -92,6 +92,16 @@ str1.endswith(str2)     # => returns bool
 * **Check if subset:** `A.issubset(B)`
 * set to list: `list1 = list(set1)`
 * **iterate**: `for k, v in enumerate(s)`
+* To counter **sets as in C++** \(which are ordered containers & here python's set is not\), use Sorted
+
+```python
+from sortedcontainers import SortedList, SortedSet, SortedDict
+
+sorted_set = SortedSet([1, 1, 2, 3, 4])
+  
+sorted_set.add(1)    # O(logN)
+sorted_set.remove(5) # O(logN) 
+```
 
 
 
@@ -217,7 +227,26 @@ hp[0]
 * **MAX\_HEAP**, converting list to `(-1)*list` helps:
   * e.g. [1046. Last Stone Weight](https://leetcode.com/problems/last-stone-weight/)
 
+## `SortedList`
 
+* Sorted list is a sorted mutable sequence in which the values are maintained in sorted order.
+* **Heap vs SortedList:**
+  * Deletion by key is verryyyyyy expensive in Heaps
+* **Complexity:**
+  * SortedList.add\(x\) .       =&gt; **O\(logN\)**
+  * SortedList.remove\(x\)  =&gt; **O\(logN\)** 
+* Usage:
+
+```python
+from sortedcontainers import SortedList, SortedSet, SortedDict
+  
+# initializing a sorted list with parameters
+sorted_list = SortedList([1, 2, 3, 4])
+sorted_list.add(1)     # O(logN)
+sorted_list.remove(2)  # O(logN)
+```
+
+* Used in [LC 218.The Skyline Problem](https://leetcode.com/problems/the-skyline-problem/) 🌇
 
 ## `deque`
 

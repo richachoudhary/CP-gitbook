@@ -355,12 +355,106 @@ int main()
 * ✅Kartik Arora's Playlist: [Tree DP](https://www.youtube.com/watch?v=fGznXJ-LTbI&list=PLb3g_Z8nEv1j_BC-fmZWHFe6jmU_zv-8s&ab_channel=KartikArora)
 * Aditya Verma's Playlist: [TreeDP](https://www.youtube.com/watch?v=qZ5zayHSH2g&list=PL_z_8CaSLPWfxJPz2-YKqL9gXWdgrhvdn&ab_channel=AdityaVerma)
 
-## 3. Adv Trees Problems
+## 3. Adv Trees 
 
 ### 3.1 Trie
 
 {% tabs %}
-{% tab title="14. Template✅" %}
+{% tab title="208.\(TEMPLATE.py\)🔵🔴" %}
+```python
+from collections import defaultdict
+
+class TrieNode(object):
+    def __init__(self):
+        self.nodes = defaultdict(TrieNode)  # Easy to insert new node.
+        self.isword = False  # True for the end of the trie.
+
+
+class Trie(object):
+    def __init__(self):
+        self.root = TrieNode()
+
+    def insert(self, word):
+        curr = self.root
+        for char in word:
+            curr = curr.nodes[char]
+        curr.isword = True
+
+    def search(self, word):
+        curr = self.root
+        for char in word:
+            if char not in curr.nodes:
+                return False
+            curr = curr.nodes[char]
+        return curr.isword
+
+    def startsWith(self, prefix):
+        curr = self.root
+        for char in prefix:
+            if char not in curr.nodes:
+                return False
+            curr = curr.nodes[char]
+        return True
+```
+{% endtab %}
+
+{% tab title="214.py🚀" %}
+```python
+class TrieNode():
+    def __init__(self):
+        self.children = collections.defaultdict(TrieNode)
+        self.isWord = False
+    
+class Trie():
+    def __init__(self):
+        self.root = TrieNode()
+    
+    def insert(self, word):
+        node = self.root
+        for w in word:
+            node = node.children[w]
+        node.isWord = True
+    
+    def search(self, word):
+        node = self.root
+        for w in word:
+            node = node.children.get(w)
+            if not node:
+                return False
+        return node.isWord
+    
+class Solution(object):
+    def findWords(self, board, words):
+        res = []
+        trie = Trie()
+        node = trie.root
+        for w in words:
+            trie.insert(w)
+        for i in range(len(board)):
+            for j in range(len(board[0])):
+                self.dfs(board, node, i, j, "", res)
+        return res
+    
+    def dfs(self, board, node, i, j, path, res):
+        if node.isWord:
+            res.append(path)
+            node.isWord = False
+        if i < 0 or i >= len(board) or j < 0 or j >= len(board[0]):
+            return 
+        tmp = board[i][j]
+        node = node.children.get(tmp)
+        if not node:
+            return 
+        board[i][j] = "#"
+        self.dfs(board, node, i+1, j, path+tmp, res)
+        self.dfs(board, node, i-1, j, path+tmp, res)
+        self.dfs(board, node, i, j-1, path+tmp, res)
+        self.dfs(board, node, i, j+1, path+tmp, res)
+        board[i][j] = tmp
+```
+{% endtab %}
+
+{% tab title="14. cpp✅" %}
 ```python
 struct TrieNode{
     TrieNode* children[26];
@@ -406,6 +500,8 @@ string longestCommonPrefix(vector<string>& strs) {
 {% endtab %}
 {% endtabs %}
 
+* [x] LC [208.Implement Trie \(Prefix Tree\)](https://leetcode.com/problems/implement-trie-prefix-tree/) 🔴🔵
+* [x] LC [214. Word Search II](https://leetcode.com/problems/word-search-ii/) ✅🚀
 * [x] LC [14.Longest Common Prefix](https://leetcode.com/problems/longest-common-prefix/)✅
 
 ### 3.2 Segment Trees \( both: RSQ+RMQ implementations YAAAAAD honi chahiye\)

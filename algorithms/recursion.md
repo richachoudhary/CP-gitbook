@@ -138,6 +138,32 @@ printSubsets(str,'') # init with I/P & O/P
 
 ## 2. D&C
 
+{% tabs %}
+{% tab title="395." %}
+```python
+from collections import Counter
+def longestSubstring(self, s: str, k: int) -> int:
+    
+    cnt = collections.Counter(s)
+    st = 0
+    maxst = 0
+    for i, c in enumerate(s):
+        if cnt[c] < k:
+            maxst = max(maxst, self.longestSubstring(s[st:i], k))
+            st = i + 1
+    return len(s) if st == 0 else max(maxst, self.longestSubstring(s[st:], k))
+
+
+'''
+The idea is that any characters in the string that do not satisfy the requirement
+break the string in multiple parts that do not contain these characters, 
+and for each part we should check the requirement again
+'''
+        
+```
+{% endtab %}
+{% endtabs %}
+
 * [x] [241.Different Ways to Add Parentheses](https://leetcode.com/problems/different-ways-to-add-parentheses/) ✅
 * [ ] [240.Search a 2D Matrix II](https://leetcode.com/problems/search-a-2d-matrix-ii/)
 * [ ] [342.Wiggle Sort II](https://leetcode.com/problems/wiggle-sort-ii/)
@@ -148,6 +174,7 @@ printSubsets(str,'') # init with I/P & O/P
 * [ ] [493.Reverse Pairs](https://leetcode.com/problems/reverse-pairs/)
 * [ ] [https://leetcode.com/problems/number-of-ships-in-a-rectangle/](https://leetcode.com/problems/number-of-ships-in-a-rectangle/)
 * [x] CSES: [Apple Division](https://cses.fi/problemset/result/2572485/) ⭐️
+* [x] LC: [395. Longest Substring with At Least K Repeating Characters](https://leetcode.com/problems/longest-substring-with-at-least-k-repeating-characters/) ✅🚀🐽
 
 ## 3. Backtrack
 

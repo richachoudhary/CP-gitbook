@@ -102,6 +102,29 @@ return helper(head,None)
 ```
 {% endtab %}
 
+{% tab title="141." %}
+```python
+class ListNode:
+    def __init__(self, x):
+        self.val = x
+        self.next = None
+
+class Solution:
+    def hasCycle(self, head: ListNode) -> bool:
+        
+        if head is None or head.next is None:
+            return False
+        slow, fast = head, head.next
+        
+        while fast and fast.next:
+            if slow == fast:
+                return True
+            slow = slow.next
+            fast = fast.next.next
+        return False
+```
+{% endtab %}
+
 {% tab title="2.✅" %}
 ```python
 dummy = cur = ListNode(0)
@@ -119,14 +142,81 @@ while l1 or l2 or carry:
 return dummy.next
 ```
 {% endtab %}
+
+{% tab title="234.✅" %}
+```python
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+class Solution:
+    def isPalindrome(self, head: ListNode) -> bool:
+        if head is None or head.next is None:
+            return True
+        
+        slow = head
+        fast = head
+        
+        while(fast is not None and fast.next is not None):
+            slow = slow.next
+            fast = fast.next.next
+            
+        slow = self.reverseList(slow)
+        fast = head
+        
+        while(slow):
+            if slow.val != fast.val:
+                return False
+            slow = slow.next
+            fast = fast.next
+            
+        return True
+      
+    def reverseList(self, node):
+        current = node
+        previous = None
+        
+        while(current):
+            currentNext = current.next
+            current.next = previous
+            previous = current
+            current = currentNext
+            
+        return previous
+```
+{% endtab %}
+
+{% tab title="138." %}
+```python
+def copyRandomList(self, head: 'Node') -> 'Node':    
+    oldToCopy = { None:None}    #for last node
+    
+    #1. first pass: hashmap key: old node, val: new copy node
+    curr = head
+    while curr:
+        copy = Node(curr.val)
+        oldToCopy[curr] = copy
+        curr = curr.next
+    
+    #2. second pass: creating .next & .random for copy nodes
+    curr = head
+    while curr:
+        copy = oldToCopy[curr]
+        copy.next = oldToCopy[curr.next]
+        copy.random = oldToCopy[curr.random]
+        curr = curr.next
+    
+    return oldToCopy[head]
+```
+{% endtab %}
 {% endtabs %}
 
-* [ ] [234.Palindrome Linked List](https://leetcode.com/problems/palindrome-linked-list/)
+* [x] [234.Palindrome Linked List](https://leetcode.com/problems/palindrome-linked-list/) ✅
 * [ ] [61.Rotate List](https://leetcode.com/problems/rotate-list/)
 * [x] [2.Add Two Numbers](https://leetcode.com/problems/add-two-numbers/) ✅🚀
-* [ ] [141.Linked List Cycle](https://leetcode.com/problems/linked-list-cycle/)
+* [x] [141.Linked List Cycle](https://leetcode.com/problems/linked-list-cycle/) ✅🚀
 * [ ] [142.Linked List Cycle II](https://leetcode.com/problems/linked-list-cycle-ii/)
-* [ ] [138.Copy List with Random Pointer](https://leetcode.com/problems/copy-list-with-random-pointer/)
+* [x] [138.Copy List with Random Pointer](https://leetcode.com/problems/copy-list-with-random-pointer/) \| Deep copy \| chillar
 
 ## 2. All Problems
 

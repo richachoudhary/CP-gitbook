@@ -17,6 +17,8 @@
 * [x] LC [163. Missing Ranges](https://leetfree.com/problems/missing-ranges)
 * [x] LC [179.Largest Number](https://leetcode.com/problems/largest-number/) 🐽
 * [x] LC [41.First Missing Positive](https://leetcode.com/problems/first-missing-positive/) ✅🍪🍪🍪
+* [x] LC [14.Longest Common Prefix](https://leetcode.com/problems/longest-common-prefix/) ✅\| kaafi clever
+* [x] LC [334.Increasing Triplet Subsequence](https://leetcode.com/problems/increasing-triplet-subsequence/) \| **O\(N\)**
 
 {% tabs %}
 {% tab title="Collecting Numbers✅" %}
@@ -150,6 +152,34 @@ return max(-2**31, min(sign * ret,2**31-1))
     return n + 1
 ```
 {% endtab %}
+
+{% tab title="14." %}
+```python
+if not strs: return ''
+        
+m, M = min(strs), max(strs)
+
+for i, c in enumerate(m):
+    if c != M[i]:  
+        return m[:i]
+return m
+```
+{% endtab %}
+
+{% tab title="334." %}
+```python
+def increasingTriplet(self, nums: List[int]) -> bool:
+    first = second = float('inf')
+    for n in nums:
+        if n <= first:
+            first = n
+        elif n <= second:
+            second = n
+        else:
+            return True
+    return False
+```
+{% endtab %}
 {% endtabs %}
 
 ## 2. Hashing
@@ -161,17 +191,133 @@ return max(-2**31, min(sign * ret,2**31-1))
 
 
 
-## 3. Map
+## 3. Map \| Set \| SortedList
 
 ### 3.1 Problems
 
+* [x] LC [218.The Skyline Problem](https://leetcode.com/problems/the-skyline-problem/) ✅🌇\| uses **SortedList** 
+* [x] LC[ 146. LRU Cache](https://leetcode.com/problems/lru-cache/) ✅✅✅
 * [x] [1700.Number of Students Unable to Eat Lunch](https://leetcode.com/problems/number-of-students-unable-to-eat-lunch/)
 * [x] CSES: [Sliding Medium](https://cses.fi/problemset/task/1076) \| LC: [480 Sliding Window Median](https://leetcode.com/problems/sliding-window-median/)  ✅✅⭐️🚀 // `O(logK)` **NOTE: Dont skip w/o doing it!!!!!!!**
   * Video: [link](https://www.youtube.com/watch?v=UGs_kQxJNPk&ab_channel=ARSLONGAVITABREVIS)
 * [x] CSES: [Sliding Cost](https://cses.fi/problemset/task/1077/) \| very similar to Sliding Medium; jst keep two sums: `upperSum` & `lowerSum`
 * [x] CSES: [Maximum Subarray Sum II](https://cses.fi/problemset/task/1644/) \| idea [here](https://discuss.codechef.com/t/help-with-maximum-subarray-sum-ii-from-cses/73404) 🐽
+* [x] LC [315.Count of Smaller Numbers After Self](https://leetcode.com/problems/count-of-smaller-numbers-after-self/) 🍪🍪🍪\| **SortedList \|** BST \| MergeSort
 
 {% tabs %}
+{% tab title="218 🌇" %}
+```python
+from sortedcontainers import SortedList
+class Solution:
+    def getSkyline(self, buildings: List[List[int]]) -> List[List[int]]:
+        events = []
+        
+        for l,r,h in buildings:
+            events.append((l,h,-1)) #starting event
+            events.append((r,h,1))  #ending event
+            
+        events.sort()   #sort by X cordinate
+        n = len(events)
+        
+        res = []
+        active_heights = SortedList([0]) #min heap of curr all hights in current window
+        
+        i = 0
+        while i<n:
+            curr_x = events[i][0]
+            
+            #process all events with same X together
+            while i<n and events[i][0] == curr_x:
+                x,h,t = events[i]
+                
+                if t == -1:                      #starting event
+                    active_heights.add(h)
+                else:
+                    active_heights.remove(h)    #ending event
+                i += 1
+                
+            #check if biggest height has changed in window due to this event
+            if len(res) == 0 or (len(res) > 0 and res[-1][1] != active_heights[-1]):
+                res.append((curr_x, active_heights[-1]))
+        return res
+```
+{% endtab %}
+
+{% tab title="146." %}
+```python
+#1. ================================= SLOWER :: using dict()
+from collections import deque
+
+class LRUCache:
+
+    def __init__(self, capacity: int):
+        self.size = capacity
+        self.deque = deque()
+    
+    def _find(self, key: int) -> int:
+		#Linearly scans the deque for a specified key. Returns -1 if it does not exist, returns the index of the deque if it exists
+        for i in range(len(self.deque)):
+            x = self.deque[i]
+            if x[0] == key:
+                return i 
+        return -1
+    
+    def get(self, key: int) -> int:
+        idx = self._find(key)
+        if idx == -1:
+            return -1
+        else:
+            k, v = self.deque[idx]
+            del self.deque[idx] # We have to put this pair at the end of the queue so, we have to delete it first
+            self.deque.append((k, v)) # And now, we put it at the end of the queue. So, the most viewed ones will be always at the end and be saved from popping when new capacity got hit.
+            return v
+                
+
+    def put(self, key: int, value: int) -> None:
+        idx = self._find(key)
+        if idx == -1:
+            if len(self.deque) >= self.size:
+                self.deque.popleft()
+            self.deque.append((key,value))
+        else:
+            del self.deque[idx]
+            self.deque.append((key, value))
+            
+#2. ========================================= FASTER : using OrderedDict
+from collections import OrderedDict
+
+class LRUCache:
+
+    def __init__(self, capacity: int):
+        self.size = capacity
+        self.cache = OrderedDict()
+    
+    def get(self, key: int) -> int:
+        if key not in self.cache:
+            return -1
+        else:
+            self.cache.move_to_end(key)  # Gotta keep this pair fresh, move to end of OrderedDict
+            return self.cache[key]
+
+    def put(self, key: int, value: int) -> None:
+        if key not in self.cache:
+            if len(self.cache) >= self.size:
+                self.cache.popitem(last=False) # last=True, LIFO; last=False, FIFO. We want to remove in FIFO fashion. 
+        else:
+            self.cache.move_to_end(key) # Gotta keep this pair fresh, move to end of OrderedDict
+            
+		    self.cache[key] = value
+		
+'''
+The reason that using OrderedDict was faster than using deque is:
+* the method move_to_end() in OrderedDict is in O(1) time complexity
+     => (it uses a dictionary to record the location of each element) 
+ * but the remove() method in deque is O(n) 
+     => (have to iterate the double-linked list to find the element)
+'''
+```
+{% endtab %}
+
 {% tab title="SlidingMedium" %}
 ```cpp
 multiset<int> lo,hi;
@@ -347,6 +493,27 @@ for(int i=a;i<=n;i++){
     ans = max(ans, prefixsum[i] - *curr.begin());
 }
 cout<<ans<<"\n";
+```
+{% endtab %}
+
+{% tab title="315" %}
+```python
+from sortedcontainers import SortedList
+class Solution:
+    def countSmaller(self, nums: List[int]) -> List[int]:
+        sortedlist = SortedList([]) # To maintain the sorted list on go and also have O(logN) insert and bisect.
+        result = []
+        for num in nums[::-1]:
+            idx = sortedlist.bisect_left(num) # bisect to find where the current number should insert
+            result.append(idx) # this gives the lesser numbers on the left
+            sortedlist.add(num) # then update the sorted list 
+        return result[::-1]
+'''
+if not SortedList, there are other(& more tricky ways) too:
+    1.Merge Sort
+    2.BST
+    3. Index/AVL Tree
+'''
 ```
 {% endtab %}
 {% endtabs %}
@@ -811,6 +978,7 @@ for(int i=0;i<n;i++){
 * [x] CSES: [Concert Tickets](https://cses.fi/problemset/task/1091) \| [WilliamLin](https://www.youtube.com/watch?v=dZ_6MS14Mg4&t=3436s&ab_channel=WilliamLin)✅⭐️⭐️✅ \| **Kuch naya sikha ke gya ye Q**
 * [x] LC: **4.** [Median of Two Sorted Arrays](https://leetcode.com/problems/median-of-two-sorted-arrays/) 🐽🐽✅
 * [x] LC 33: [Search in Rotated Sorted Array](https://leetcode.com/problems/search-in-rotated-sorted-array/) ☑️
+* [x] LC [34.Find First and Last Position of Element in Sorted Array](https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/) ✅
 
 {% tabs %}
 {% tab title="Concert Tickets:: CPP" %}
@@ -919,6 +1087,25 @@ def search(self, nums: List[int], target: int) -> int:
                 high = mid - 1
 
     return -1
+```
+{% endtab %}
+
+{% tab title="34." %}
+```python
+def searchRange(self, nums: List[int], target: int) -> List[int]:
+    start = 0; end = len(nums)-1
+    while start <= end:
+        mid = (start+end) // 2
+        if nums[start] == nums[end] == target:
+            return [start, end]
+        if nums[mid] < target:
+            start = mid+1
+        elif nums[mid] > target:
+            end = mid-1
+        else:
+            if nums[start] != target: start += 1
+            if nums[end] != target: end -= 1
+    return [-1,-1]
 ```
 {% endtab %}
 {% endtabs %}

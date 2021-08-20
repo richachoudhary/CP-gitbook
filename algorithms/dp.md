@@ -770,6 +770,8 @@ for _ in range(q):
 * [x] LC 44: [Wildcard Matching](https://leetcode.com/problems/wildcard-matching/) ✅ \| very similar to **Edit Distance!!**
 * [x] LC 10: [Regular Expression Matching](https://leetcode.com/problems/regular-expression-matching/) ✅✅\| **diff from \#44**. Freq asked in FAANG!! \| [**TusharRoy**](https://www.youtube.com/watch?v=l3hda49XcDE)\*\*\*\*
 * [x] LC 90: [Decode Ways](https://leetcode.com/problems/decode-ways/)
+* [x] LC [140. Word Break II](https://leetcode.com/problems/word-break-ii/) 🚀 \| **`startswith`**
+  * [x] LC: [139.Word Break](https://leetcode.com/problems/word-break/)
 * [ ] [https://leetcode.com/problems/is-subsequence/](https://leetcode.com/problems/is-subsequence/)
 * [ ] [https://leetcode.com/problems/palindrome-partitioning/](https://leetcode.com/problems/palindrome-partitioning/)
 * [ ] [https://leetcode.com/problems/palindrome-partitioning-ii/](https://leetcode.com/problems/palindrome-partitioning-ii/)
@@ -780,7 +782,6 @@ for _ in range(q):
 * [ ] [https://leetcode.com/problems/longest-happy-string/](https://leetcode.com/problems/longest-happy-string/)
 * [ ] [https://leetcode.com/problems/longest-valid-parentheses/](https://leetcode.com/problems/longest-valid-parentheses/)
 * [ ] [https://leetcode.com/problems/distinct-subsequences/](https://leetcode.com/problems/distinct-subsequences/)
-* [ ] [https://leetcode.com/problems/word-break-ii/](https://leetcode.com/problems/word-break-ii/)
 * [ ] [https://leetcode.com/problems/count-the-repetitions/](https://leetcode.com/problems/count-the-repetitions/)
 * [ ] [https://leetcode.com/problems/concatenated-words/](https://leetcode.com/problems/concatenated-words/)
 * [ ] [https://leetcode.com/problems/count-different-palindromic-subsequences/](https://leetcode.com/problems/count-different-palindromic-subsequences/)
@@ -894,6 +895,59 @@ def recur(s,i):
         opt2 = recur(s,i+2) 
     MEMO[i] = opt1 + opt2
     return MEMO[i]
+```
+{% endtab %}
+
+{% tab title="140.✅" %}
+```python
+
+# 139. Word Break I ======================================
+ def wordBreak(self, s: str, wordDict: List[str]) -> bool:
+        MEMO = {}
+        def recur(s):
+            if s in MEMO:
+                return MEMO[s]
+            if s in wordDict:
+                return True
+            
+            for word in wordDict:
+                if not s.startswith(word):
+                    continue
+                elif len(word) == len(s):
+                    MEMO[s] = True
+                    return True
+                else:
+                    if recur(s[len(word):]):
+                        MEMO[s] = True
+                        return True
+            MEMO[s] = False
+            return False
+        return recur(s)
+
+# 140. Word Break II ======================================
+
+def wordBreak(self, s: str, wordDict: List[str]) -> List[str]:
+        
+    def recur(s, wordDict, memo):
+        if s in memo: return memo[s]
+        if not s: return []
+
+        res = []
+        for word in wordDict:
+            if not s.startswith(word):
+                continue
+            if len(word) == len(s):
+                res.append(word)
+            else:
+                resultOfTheRest = recur(s[len(word):], wordDict, memo)
+                for item in resultOfTheRest:
+                    item = word + ' ' + item
+                    res.append(item)
+        memo[s] = res
+        return res
+    
+    return recur(s, wordDict, {})
+
 ```
 {% endtab %}
 {% endtabs %}
