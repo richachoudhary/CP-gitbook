@@ -91,3 +91,11 @@ l = list(string.ascii_lowercase)    # ['a','b',....,'z']
 letter_count = dict(zip(string.ascii_lowercase, [0]*26)) # {'a':1, 'b':1, ...'z':1}
 ```
 
+* **Mutable Data Types in python: 🟢**
+  * list
+  * set
+  * dict
+* **Immutable Data Types in python: 🔴**
+  * String                     \(fucking @Sanjay saying-"Strings are immutable"\)
+  * Tuples
+

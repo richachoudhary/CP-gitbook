@@ -57,7 +57,7 @@ l.sort(key = lambda x: (x[0], -x[1]) )      # [(2, 4), (2, 3), (3, 4)]
 mystr.islower()       # Check is alphabet
 mystr.isnumeric()     # check if number(0-9)
 mystring.lower()      # Change case
-
+mystr.isalnum()       # checks alphanumeric
 ```
 
 * Check casing:  `mystr.islower()`
