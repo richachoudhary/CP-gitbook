@@ -15,7 +15,7 @@
     * APIs =&gt; Django/Flask
 * [ ] Learn design principles - with implementation
   * [x] Udemy: [Design Patterns in Python](https://razorpay.udemy.com/course/design-patterns-python/) ☑️\| done **S.O.L.I.D.** \| **TODO**: finish rest later
-  * [ ] Udemy: [Pragmatic System Design](https://razorpay.udemy.com/course/pragmatic-system-design/)
+  * [x] Udemy: [Pragmatic System Design](https://razorpay.udemy.com/course/pragmatic-system-design/)
 * [ ] Revise Django, Node, React, Next - & have all the working code ready for interviews
   * [ ] React2025
   * [ ] Udemy: [Full Stack Web Development with Python and Django Course](https://razorpay.udemy.com/course/crash-course-web-development-python-django/)

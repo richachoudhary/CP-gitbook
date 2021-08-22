@@ -279,6 +279,9 @@ return sum(x for x in primes if x)
 * [x] CSES: [Missing Coin Sum](https://cses.fi/problemset/result/2583670/) \| [Approach](https://discuss.codechef.com/t/cses-missing-coin-sum/84039/2) ✅
   * **KYA SEEKHA:** At any index **i** in a sorted array **a**, currSum represents `sum(a[ 0...i ])`.We can form every possible sum from `1...currSum`, when we are at index i
 * [x] LC: [166.Fraction to Recurring Decimal](https://leetcode.com/problems/fraction-to-recurring-decimal/submissions/) ✅\| recurring decimal =&gt; reminder will repeat \| [Approach](https://leetcode.com/problems/fraction-to-recurring-decimal/discuss/180004/Python-4-lines-%2832ms-beats-100%29-with-explanation)
+* [x] LC [1980.Find Unique Binary String](https://leetcode.com/problems/find-unique-binary-string/) \| **Cantor's Diagonalization** \| [Video@veritassium](https://www.youtube.com/watch?v=OxGsU8oIWjY) 
+  * **Some infinities\(Uncountable Infinity-** party bus people**\) are BIGGER than other infinities\(Countable Infinities-** hotel rooms 1...inf\) 
+  * Just watch the video; so fucking mind-blowing
 
 ## 3. Combinatorics
 
