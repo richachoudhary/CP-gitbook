@@ -209,6 +209,29 @@ def copyRandomList(self, head: 'Node') -> 'Node':
     return oldToCopy[head]
 ```
 {% endtab %}
+
+{% tab title="23.🍪" %}
+```python
+def mergeKLists(self, lists: List[ListNode]) -> ListNode:
+    head = ListNode(None)
+    curr = head
+    h = []
+    for i in range(len(lists)):
+        if lists[i]:
+            heapq.heappush(h, (lists[i].val, i))
+            lists[i] = lists[i].next
+    
+    while h:
+        val, i = heapq.heappop(h)
+        curr.next = ListNode(val)
+        curr = curr.next
+        if lists[i]:
+            heapq.heappush(h, (lists[i].val, i))
+            lists[i] = lists[i].next
+    
+    return head.next
+```
+{% endtab %}
 {% endtabs %}
 
 * [x] [234.Palindrome Linked List](https://leetcode.com/problems/palindrome-linked-list/) ✅
@@ -217,6 +240,7 @@ def copyRandomList(self, head: 'Node') -> 'Node':
 * [x] [141.Linked List Cycle](https://leetcode.com/problems/linked-list-cycle/) ✅🚀
 * [ ] [142.Linked List Cycle II](https://leetcode.com/problems/linked-list-cycle-ii/)
 * [x] [138.Copy List with Random Pointer](https://leetcode.com/problems/copy-list-with-random-pointer/) \| Deep copy \| chillar
+* [x] 23. [Merge k Sorted Lists](https://leetcode.com/problems/merge-k-sorted-lists/) 🍪🍪🍪✅
 
 ## 2. All Problems
 

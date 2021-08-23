@@ -24,7 +24,99 @@ root = TreeNode(x)
 
 ## 1. Regular Tree Problems
 
+* [x] \*\*\*\*[**Inorder Successor in Binary Search Tree**](https://www.geeksforgeeks.org/inorder-successor-in-binary-search-tree/) ✅💪
 
+{% tabs %}
+{% tab title="InO\_Succ✅" %}
+```python
+# Method 1: (Uses Parent Pointer) 
+'''
+1. If right subtree of node is not NULL, then succ lies in right subtree. 
+    => Go to right subtree and return the node with minimum key value in the right subtree.
+2. If right sbtree of node is NULL, then succ is one of the ancestors. 
+    => Travel up using the parent pointer until you see a node which is
+       left child of its parent. The parent of such a node is the succ.
+'''
+class Node:
+    def __init__(self, key):
+        self.data = key
+        self.left = None
+        self.right = None
+
+    def inOrderSuccessor(n):
+     
+        # Step 1 of the above algorithm
+        if n.right is not None:
+            return minValue(n.right)
+     
+        # Step 2 of the above algorithm
+        p = n.parent
+        while( p is not None):
+            if n != p.right :
+                break
+            n = p
+            p = p.parent
+        return p
+     
+    def minValue(node):
+        current = node
+     
+        # loop down to find the leftmost leaf
+        while(current is not None):
+            if current.left is None:
+                break
+            current = current.left
+     
+        return current
+
+
+# Method 2: 
+'''
+1. If right subtree of node is not NULL, then succ lies in right subtree. 
+    => {same as above}
+2. If right sbtree of node is NULL, then succ is one of the ancestors. 
+    => Travel down the tree, if a node’s data is greater than root’s data
+      then go right side, otherwise, go to left side.
+'''
+class Node:
+    def __init__(self, key):
+        self.data = key
+        self.left = None
+        self.right = None
+ 
+def inOrderSuccessor(root, n):
+     
+    # Step 1 of the above algorithm
+    if n.right is not None:
+        return minValue(n.right)
+ 
+    # Step 2 of the above algorithm
+    succ=Node(None)
+     
+    while( root):
+        if(root.data<n.data):
+            root=root.right
+        elif(root.data>n.data):
+            succ=root
+            root=root.left
+        else:
+            break
+    return succ
+ 
+def minValue(node):
+    current = node
+ 
+    # loop down to find the leftmost leaf
+    while(current is not None):
+        if current.left is None:
+            break
+        current = current.left
+ 
+    return current
+ 
+```
+{% endtab %}
+{% endtabs %}
 
 ##  2. DP on Trees
 

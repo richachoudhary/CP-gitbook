@@ -3,9 +3,18 @@
 ## **Notes:**
 
 ```python
+# int to binary
 >>> n = 19
->>> bin(n)
-'0b10011'
+>>> bin(n)                # '0b10011'
+# binary to int
+>>> int('11111111', 2)    # 255
+
+# binary to int (base 32)
+>>> bit_str = '{0:032b}'.format(5)    # 00000000000000000000000000000101
+# binary to int (base 16)
+>>> bit_str = '{0:032b}'.format(5)    # 0000000000000101
+
+
 >>> n.bit_count()
 3
 >>> (-n).bit_count()
