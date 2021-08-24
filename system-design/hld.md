@@ -58,7 +58,7 @@
 ## TODOs:
 
 * [x] Learn concepts from Grokking the SysD interview\(Part-2\)
-* [ ] Finish System Design Primer in-depth
+* [x] Finish System Design Primer in-depth
 * [ ] Start doing questions: 
   * [ ] Grokking SysD Part I 
   * [ ] Youtube

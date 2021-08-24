@@ -24,9 +24,10 @@
 
 ## System Design
 
-* [OOP](system-design/oop.md)
 * [SQL](system-design/sql.md)
-* [Resources](system-design/resources.md)
-* [LLD](system-design/lld.md)
+* [LLD:Theory \(OOPs\)](system-design/lld.md)
+* [LLD:Questions](system-design/lld-questions.md)
 * [HLD](system-design/hld.md)
+* [HLD:Questions](system-design/hld-questions.md)
+* [Resources](system-design/resources.md)
 
