@@ -498,6 +498,31 @@ if __name__ == '__main__':
     unittest.main()    # runs all
 ```
 
+## 10. Enums in Python OOP
+
+```python
+from enum import Enum
+
+class Direction(Enum):
+    UP = "UP"
+    DOWN = "DOWN"
+    NONE = "NONE"
+
+class Elevator:
+
+    def __init__(self, curr_direction=Direction.UP):
+        self._id = Elevator.ids
+        self._curr_direction = curr_direction
+
+    @property
+    def curr_direction(self):
+        return Direction[self._curr_direction].name    # returns string 'UP'
+if __name__ == "__main__":
+
+    el = Elevator(curr_direction="DOWN", curr_state="IDLE", curr_floor=5)
+    print(el.curr_direction)  #  # returns string 'DOWN' 
+```
+
 ## \#Things to do:
 
 * [x] Understand OOPs using Python
