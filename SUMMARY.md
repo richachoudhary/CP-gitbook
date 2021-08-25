@@ -9,10 +9,10 @@
 * [Linked List](algorithms/linked-list.md)
 * [Tree](algorithms/tree.md)
 * [Greeeedy](algorithms/greeeedy.md)
+* [DP](algorithms/dp.md)
 * [Maths & Geometry](algorithms/maths.md)
 * [Bitwise](algorithms/bitwise.md)
 * [Design](algorithms/design.md)
-* [DP](algorithms/dp.md)
 
 ## Data Structures
 

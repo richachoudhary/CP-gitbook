@@ -1,6 +1,6 @@
 # dataStructures.py
 
-### NOTEs:
+## NOTEs:
 
 * **List of Data Structures implemented in python:** [https://lei-d.gitbook.io/leetcode/data-structure](https://lei-d.gitbook.io/leetcode/data-structure)
 * implement `Stack` ---&gt; with `list`
@@ -27,7 +27,7 @@ l.remove('Alice') . # ['Bob', 'Charlie', 'Bob', 'Dave']
   * e.g.: `num_list[-9:]` -&gt; read it as: "9th from the end, to the end."
   * get "all but last n"  -&gt; `mylist[:-n or None]`
 * **get freq** of element in list/string: `list.count(x)`
-* **Insert** at given index: `list.insert(i, elem)list.insert(i, elem)`
+* **Insert** at given index: `list.insert(i, elem)`
 * **enumerate**: `for i,ar in enumerate(arr): arr[i] = ar + i`
 * **Reverse a list:** `a.reverse()`
 * reverse traversal:
@@ -198,7 +198,7 @@ c['a']=4               # Counter({'b': 1, 'c': 1, 'a': 1})
 
 ## `heapq` - min heaps
 
-* returns somewhat sorted list
+* returns **somewhat** sorted list
 * Usage:
 
 ```python

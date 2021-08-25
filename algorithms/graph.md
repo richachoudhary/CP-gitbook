@@ -28,12 +28,6 @@ FOR SHORTES PATH: **USE BFS!!!!!!!!!!!!!!!!!!!!**
 {% endhint %}
 
 {% tabs %}
-{% tab title="" %}
-```
-
-```
-{% endtab %}
-
 {% tab title="BFS" %}
 ```python
 from collections import deque
@@ -153,6 +147,51 @@ diagram: https://leetcode.com/problems/shortest-bridge/discuss/189293/C%2B%2B-BF
 
 {% tab title="MessageRoute" %}
 ```cpp
+# ============================================ PY[WA on few]
+def solve():
+    I = lambda: map(int, input().split())
+    n, m = I()
+    adj = defaultdict(list)
+
+    for _ in range(m):
+        x, y = I()
+        adj[x].append(y)
+        adj[y].append(x)
+
+    par = [0]*(n+1)
+    # BFS
+    Q = deque()
+    Q.append(1)
+    par[1] = -1
+    
+    while Q:
+        p = Q.pop()
+        
+        if p == n:
+            break
+        
+        for x in adj[p]:
+            if not par[x]:
+                Q.append(x)
+                par[x] = p
+    
+    # Traverse back from n-> 1
+    if not par[n]:
+        print("IMPOSSIBLE")
+        return
+    
+    path = []
+    curr = n
+    while curr != -1:
+        path.append(curr)
+        curr = par[curr]
+        
+    print(len(path))
+    for p in reversed(path):
+        print(p,end = " ")
+    return 
+
+#============================================= CPP[AC}
 for(int i=0 ; i<m ; i++ )
 {
     int u , v;
@@ -284,7 +323,7 @@ print("NO")
 * [x] [797.All Paths From Source to Target](https://leetcode.com/problems/all-paths-from-source-to-target/) \| dfs + backtrack
 * [x] [332.Reconstruct Itinerary](https://leetcode.com/problems/reconstruct-itinerary/) \| dfs + backtrack ✅✈️
 * [x] [1443.Minimum Time to Collect All Apples in a Tree](https://leetcode.com/problems/minimum-time-to-collect-all-apples-in-a-tree/) 🍎
-* [x] [932.Shortest Bridge](https://leetcode.com/problems/shortest-bridge/) \| **Google** \| BFS+DFS ✅
+* [x] [934.Shortest Bridge](https://leetcode.com/problems/shortest-bridge/) \| **Google** \| BFS+DFS ✅
 * [ ] CSES:[ Grid Paths](https://cses.fi/problemset/task/1625) ✅✅✅🐽\| [WilliamLin](https://www.youtube.com/watch?v=dZ_6MS14Mg4&t=2440s&ab_channel=WilliamLin)
 * [x] CSES: [Labyrinth](https://cses.fi/problemset/task/1193) ==&gt; **DFS** fails, **ALWAYS USE BFS for SHORTEST PATH ✅✅**
 * [x] **CSES:** [Monsters](https://cses.fi/problemset/task/1194) \| `Lava Flow Problem✅✅✅🔥🔥` \| [video](https://www.youtube.com/watch?v=hB59dxdDLII&ab_channel=Dardev)
@@ -536,6 +575,94 @@ for e in dist[-1]:
     print(e, end = " ")
 ```
 {% endtab %}
+
+{% tab title="Flight Discount" %}
+```cpp
+/*
+Say we use the discount coupon on the edge between cities A and B.
+There are two cases: we can go from 1->A->B->N OR 1->B->A->N
+
+We can use Dijkstra's to compute:
+* dis1:  the distance from 1->N to every vertex.
+* distN: dist of A-> for every vertext
+
+Then our answer is: MIN {dist1[A] + c(A,B) + distN[B] } for every vertex A--B
+    * where c(A,B) is the cost to travel from 1->B after applying coupon to that flight
+*/
+int n, m;
+cin >> n >> m;
+//in[i] contains flights from city i
+//out[i] contains flights to city i
+vector<pair<int, int>> in[100000], out[100000];
+for (int i = 0; i < m; i++)
+{
+	int a, b, c;
+	cin >> a >> b >> c;
+	out[a - 1].push_back({b - 1, c});
+	in[b - 1].push_back({a - 1, c});
+}
+priority_queue<pair<long long, int>> q; //(-price, city)
+bool visited[100000]{};
+
+//find the price to go from city 1 to all other cities
+long long dist1[100000];
+fill(dist1, dist1 + n, 1e18);
+dist1[0] = 0;
+q.push({0, 0});
+while (!q.empty())
+{
+	int a = q.top().second;
+	q.pop();
+	if (visited[a]) continue;
+	visited[a] = true;
+	for (auto i : out[a])
+	{
+		int b = i.first, w = i.second;
+		if (dist1[a] + w < dist1[b])
+		{
+			dist1[b] = dist1[a] + w;
+			q.push({-dist1[b], b});
+		}
+	}
+}
+
+//find the price to go from each city to city n
+long long distn[100000];
+fill(distn, distn + n, 1e18);
+fill(visited, visited + n, false);
+distn[n - 1] = 0;
+q.push({0, n - 1});
+while (!q.empty())
+{
+	int a = q.top().second;
+	q.pop();
+	if (visited[a]) continue;
+	visited[a] = true;
+	for (auto i : in[a])
+	{
+		int b = i.first, w = i.second;
+		if (distn[a] + w < distn[b])
+		{
+			distn[b] = distn[a] + w;
+			q.push({-distn[b], b});
+		}
+	}
+}
+
+//take the minimum cost after using the coupon over all pairs of cities
+long long cost = dist1[n - 1];
+for (int a = 0; a < n; a++)
+{
+	for (auto i : out[a])
+	{
+		int b = i.first, w = i.second;
+		cost = min(cost, dist1[a] + distn[b] + w / 2);
+	}
+}
+cout << cost << endl;
+return 0;
+```
+{% endtab %}
 {% endtabs %}
 
 ### 1.x Problems: **SSSP/SSLP** 
@@ -557,15 +684,10 @@ for e in dist[-1]:
 * [x] CSES: [Shortest Routes II](https://cses.fi/problemset/task/1672/) \| **`Floyd-Warshall |`**&lt;standardQ&gt; \| must do 🔖🍪🚀🔖
 * [x] CSES: [High Score](https://cses.fi/problemset/task/1673/) \| **`Bellman-Ford`** `with Negative Cycle Detection`  \| &lt;standardQ&gt; \| must do  🔖🍪🚀🔖
 * [x] CSES: [Cycle Finding](https://cses.fi/problemset/task/1197/) ✅🐽
-* [x] CSES: [Flight Discount](https://cses.fi/problemset/result/2664805/) \| reversed dij: \| [approach](https://usaco.guide/problems/cses-1195-flight-discount/solution) ✅✅
-* [x] CSES: [Flight Routes](https://cses.fi/problemset/task/1196) \| 2-D Dijkstras ✅✅ \| [approach](https://www.youtube.com/watch?v=009PBKHXtyA&ab_channel=Dardev)
+* [x] CSES:  [Flight Routes](https://cses.fi/problemset/task/1196) \|  ✅✅ \| [approach](https://www.youtube.com/watch?v=009PBKHXtyA&ab_channel=Dardev) \| 2-D dijkstra's
+* [x]  CSES: [Flight Discount](https://cses.fi/problemset/result/2664805/) \| reversed dij: \| [approach](https://usaco.guide/problems/cses-1195-flight-discount/solution) ✅✅ aise hi questions toh dekhne mei impossible lagte hai BC!!!!............so damn ea
 
-  [  
-  ](https://leetcode.com/problems/cheapest-flights-within-k-stops/
 
-  )
-
- 
 
  
 
@@ -579,8 +701,8 @@ for e in dist[-1]:
 
 #### 2.1.2 Kruskal's Algo
 
-Prim: O\(\(V+E\)logV\) because each vertex is inserted in heap  
-Kruskal : O\(ElogV\) most time consuming operation is sorting
+Prim: O\(\(V+E\)logV\) because each vertex is inserted in **heap**  
+Kruskal : O\(ElogV\) most time consuming operation is **sorting**
 
 {% tabs %}
 {% tab title="Prims" %}
@@ -654,7 +776,7 @@ else:
 ## 3. Topological Sort `O(V+E)`
 
 * Only DAGs can have topological sorting\(graphs with a cycle CANNOT\)
-* **How to find if graph has cycle?** =&gt; use **SCC algos** \(see section\#7: SCC below\)
+* **How to find if graph has cycle?** =&gt; use **SCC algos** \(see **section\#6: CycleDetection** below\)
 * Most optimized Topological Sort implementation: **Kahn's Algo  =&gt;  `O(V+E)`**
 
   * **Logic**: Repeatedly remove the vertices with no dependencies
