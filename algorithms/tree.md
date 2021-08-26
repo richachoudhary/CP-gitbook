@@ -3,9 +3,9 @@
 ## Notes:
 
 * **DFS vs BFS:: How to Pick One?**
-  1. Extra Space can be one factor \(Explained above\)
-  2. Depth First Traversals are typically recursive and recursive code requires function call overheads.
-  3. The most important points is, BFS starts visiting nodes from root while DFS starts visiting nodes from leaves. So if our problem is to search something that is more likely to closer to root, we would prefer BFS. And if the target node is close to a leaf, we would prefer DFS.
+  1. Extra Space can be one factor \(Explained below\)
+  2. **Depth First Traversals** are typically recursive and recursive code requires **function call overheads**.
+  3. The most important points is, BFS starts visiting nodes from root while DFS starts visiting nodes from leaves. So if our problem is to search something that is more likely to **closer to root,** we would prefer **BFS**. And if the target node is **close to a leaf**, we would prefer **DFS**.
 * **Rooting A tTee**: is like picking up the tree by a specific node and having all the edges point downwards
   * Res: [https://towardsdatascience.com/graph-theory-rooting-a-tree-fb2287b09779](https://towardsdatascience.com/graph-theory-rooting-a-tree-fb2287b09779)
 * Node:
@@ -25,6 +25,7 @@ root = TreeNode(x)
 ## 1. Regular Tree Problems
 
 * [x] \*\*\*\*[**Inorder Successor in Binary Search Tree**](https://www.geeksforgeeks.org/inorder-successor-in-binary-search-tree/) ✅💪
+* [x] 501. [Find Mode in Binary Search Tree](https://leetcode.com/problems/find-mode-in-binary-search-tree/) \| MindTickle!
 
 {% tabs %}
 {% tab title="InO\_Succ✅" %}
@@ -52,7 +53,8 @@ class Node:
         # Step 2 of the above algorithm
         p = n.parent
         while( p is not None):
-            if n != p.right :
+            #if n != p.right :
+            if n == p.left :
                 break
             n = p
             p = p.parent
@@ -70,7 +72,7 @@ class Node:
         return current
 
 
-# Method 2: 
+# Method 2: w/o parent pointer
 '''
 1. If right subtree of node is not NULL, then succ lies in right subtree. 
     => {same as above}
@@ -114,6 +116,48 @@ def minValue(node):
  
     return current
  
+```
+{% endtab %}
+
+{% tab title="501" %}
+```python
+#1. O(N) space ==================================================
+    cnts = collections.Counter()
+    self.maxx = 0
+    
+    def helper(node):
+        # nonlocal maxx
+        if not node:
+            return
+        cnts[node.val] += 1
+        self.maxx = max(self.maxx, cnts[node.val])
+        helper(node.left)
+        helper(node.right)
+        
+    helper(root)
+    return [k for k,v in cnts.items() if v == self.maxx]
+
+    #2. O(1) Space ===================================================
+    prev,count=0,0
+    ans=[]
+    c=0
+    def inorder(root):
+        nonlocal prev,count,c,ans
+        if root:
+            inorder(root.left)
+            if prev==root.val:
+                count+=1
+            else:
+                prev=root.val
+                count=1
+            if count>c:
+                c=count
+                ans=[root.val]
+            elif count==c:
+                ans.append(root.val)
+            inorder(root.right)
+    inorder(root)
+    return(ans)
 ```
 {% endtab %}
 {% endtabs %}
@@ -270,7 +314,7 @@ def solve(node):
     lsum = solve(node.left)
     rsum = solve(node.right)
     
-    opt1 = max(node.val,                 # path startes from node
+    opt1 = max(node.val,                    # path startes from node
                 node.val + max(lsum,rsum))  # 'node' is in beech-mei of path
     opt2 = max(node.val , lsum+rsum+node.val)
     return max(opt1, opt2)            
@@ -427,7 +471,7 @@ int main()
 * [x] CSES:[ Tree Diameter](https://cses.fi/problemset/task/1131) ✅✅ \| Basic level Tree DP \| AdityaVerma \| [KartikArora- N-ary tree](https://www.youtube.com/watch?v=qNObsKl0GGY&list=PLb3g_Z8nEv1j_BC-fmZWHFe6jmU_zv-8s&index=3&ab_channel=KartikArora)
 * [x] CSES: [Subordinates](https://cses.fi/problemset/task/1674) ✅
 * [x] CSES: [Tree Matching](https://cses.fi/problemset/task/1130) \| [kartikArora](https://www.youtube.com/watch?v=RuNAYVTn9qM&list=PLb3g_Z8nEv1j_BC-fmZWHFe6jmU_zv-8s&index=2&ab_channel=KartikArora) ✅
-* [x] CSES: [Tree Distances I](https://cses.fi/problemset/task/1132) \| Same code as TreeDiameter=&gt; use 2 dfs to get endpoints of dia ==&gt; dfs b/w them \| [underrated amazing video by HiteshTripathi](https://cses.fi/problemset/task/1132) 🚀✅✅🚀 \| **must\_do**
+* [x] CSES: [Tree Distances I](https://cses.fi/problemset/task/1132) \| Same code as TreeDiameter=&gt; use 2 dfs to get endpoints of dia ==&gt; dfs b/w them \| [underrated amazing video by HiteshTripathi](https://www.youtube.com/watch?v=Rnv4qvoxsTo&ab_channel=HiteshTripathi) 🚀✅✅🚀 \| **must\_do**
 * [x] CSES: [Tree Distances II](https://cses.fi/problemset/task/1133) \| **Tree Rerooting ✅🐽\|** [video](https://www.youtube.com/watch?v=lWCZOjUOjRc&t=42s)
 * [x] CF: [Distance in Tree](https://codeforces.com/contest/161/problem/D) \| \#nodes at dist K from each other \| video
 * [ ] CSES: [Company Queries I](https://cses.fi/problemset/task/1687) \| **LCA + Binary Lifting 🐽🐽**
@@ -605,7 +649,7 @@ string longestCommonPrefix(vector<string>& strs) {
 {% tabs %}
 {% tab title="IMPLEMENTATION: recursive" %}
 ```cpp
-onst int N = 100000;
+const int N = 100000;
 int tree[2 * N];
  
 void build(int node, int start, int end)

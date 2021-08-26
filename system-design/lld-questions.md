@@ -1106,8 +1106,6 @@ class Elevator:
 
 ## 7. Stock Exchange
 
-
-
 ## Chess
 
 ## Snake & Ladder
@@ -1119,8 +1117,6 @@ class Elevator:
 ## Amazon
 
 ## Facebook
-
-
 
 ## LinkedIn
 

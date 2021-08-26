@@ -19,6 +19,10 @@
 * [x] LC [41.First Missing Positive](https://leetcode.com/problems/first-missing-positive/) ✅🍪🍪🍪
 * [x] LC [14.Longest Common Prefix](https://leetcode.com/problems/longest-common-prefix/) ✅\| kaafi clever
 * [x] LC [334.Increasing Triplet Subsequence](https://leetcode.com/problems/increasing-triplet-subsequence/) \| **O\(N\)**
+* [x] LC [68. Text Justification](https://leetcode.com/problems/text-justification/) 💪🔴
+  * Asked in Coinbase **Karat Test** \| multiple times
+  * so many corner cases; impossible to solve in interview
+  * Built upon \[EASY\] [1592.Rearrange Spaces Between Words](https://leetcode.com/problems/rearrange-spaces-between-words/) ✅💪
 
 {% tabs %}
 {% tab title="Collecting Numbers✅" %}
@@ -178,6 +182,72 @@ def increasingTriplet(self, nums: List[int]) -> bool:
         else:
             return True
     return False
+```
+{% endtab %}
+
+{% tab title="1592" %}
+```python
+def reorderSpaces(self, text: str) -> str:
+
+    spaces = text.count(" ")
+    words = text.split()
+    if len(words) == 1:
+        return words[0] + (" " * spaces)
+
+    sep_count = len(words) - 1
+    spaces_between_words = spaces // sep_count
+    spaces_in_the_end = spaces % sep_count
+    return (" " * spaces_between_words).join(words) + (" " * spaces_in_the_end)
+```
+{% endtab %}
+
+{% tab title="68" %}
+```python
+def fullJustify(self, words: List[str], maxWidth: int):
+    
+    #--------------------------------------
+    # Updated version of EASY: [1592. Rearrange Spaces Between Words](https://leetcode.com/problems/rearrange-spaces-between-words/)
+    def reorderSpaces(text):
+        spaces = text.count(" ")
+        s = text.split(" ")
+
+        while "" in s :
+            s.remove("")
+
+        if len(s) == 1:
+            return s[0] + " "*spaces
+
+        #min no of spaces between each word
+        nsw = spaces//(len(s)-1)
+        #no. of spaces left 
+        nsl = spaces%(len(s)-1)
+        result = ""
+        for i in range(len(s)) :
+            if i != len(s)-1 :
+                result += s[i] + (" ")*nsw
+                if nsl > 0:
+                    result += " "
+                    nsl -= 1
+            else:
+                result += s[i]  
+        return result
+    #--------------------------------------
+    result = []
+    last = words.pop(0)
+    while words:
+        if len(last) + len(words[0])  >= maxWidth :
+            t = last + (" ")*(maxWidth-len(last))
+            last = words.pop(0)
+            result.append(t)
+        elif len(last) + len(words[0]) < maxWidth :
+            last = last + " " + words.pop(0)             
+    result.append(last + (" ")*(maxWidth-len(last)))
+
+    #reorder every row
+    for i in range(len(result)-1):
+        result[i] = reorderSpaces(result[i])
+    return result 
+        
 ```
 {% endtab %}
 {% endtabs %}
@@ -1315,7 +1385,7 @@ def findAnagrams(self, s: str, p: str) -> List[int]:
 ```
 {% endtab %}
 
-{% tab title="" %}
+{% tab title="239." %}
 ```python
 from heapq import heappush, heappop
 def maxSlidingWindow(self, nums: List[int], k: int) -> List[int]:

@@ -30,7 +30,6 @@ def sortArr(arr):    # Hypothesis: fn sorts the arr
     arr.pop()
     sortArr(arr)
     insertMe(arr,last)    # flip page to see its implementation
-    arr.append(last)
 ```
 {% endtab %}
 

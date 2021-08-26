@@ -217,6 +217,13 @@
     * Removes the need to install [X.509 certificates](https://en.wikipedia.org/wiki/X.509) on each server
   * **Session persistence** - Issue cookies and route a specific client's requests to same instance if the web apps do not keep track of sessions
 * Techniques of Failure Protection: it's common to set up multiple load balancers, either in [active-passive](https://github.com/donnemartin/system-design-primer#active-passive) or [active-active](https://github.com/donnemartin/system-design-primer#active-active) mode.
+* Amazon's **ELB:**
+  * 2 level LB: 
+    * 1.zone wise\(**z1,z2,...**\)
+    * 2.secondary array of  LBs\(**LB1,LB2,...**\)
+  * hence more optimization
+
+![](../.gitbook/assets/screenshot-2021-08-26-at-2.16.55-am.png)
 
 ### Routing Techniques
 
@@ -607,6 +614,8 @@ gfg = b64encode(s)    #  b’R2Vla3NGb3JHZWVrcw==’
   * batching together similar requests from cache to DB
 * **Hysterix**
   * **@ api\_management**
+  * =&gt; **usedTo:** avoid **Cascading Failures**
+    * graceful degradation
   * circuit breaking 
   * health check
   * redirect
