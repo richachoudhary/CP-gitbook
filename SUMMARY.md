@@ -2,6 +2,11 @@
 
 * [.](README.md)
 
+## META
+
+* [About@me](meta/about-me.md)
+* [HM Round](meta/hm-round.md)
+
 ## Algorithms
 
 * [✅Graph](algorithms/graph.md)
@@ -19,8 +24,6 @@
 * [generalInfo](data-structures/generalinfo.md)
 * [dataStructures.py](data-structures/ds.py.md)
 * [methods.py](data-structures/methods.py.md)
-
-## Recursion
 
 ## System Design
 
