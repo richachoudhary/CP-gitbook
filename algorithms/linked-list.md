@@ -14,10 +14,48 @@ class ListNode:
 
 ## 1. Common Problems
 
+* [x] [148.Sort List](https://leetcode.com/problems/sort-list/) \| **MergeSort ✅✅**
 * [x] [83. Remove Duplicates from Sorted List](https://leetcode.com/problems/remove-duplicates-from-sorted-list/) 🌟
 * [x] [82.Remove Duplicates from Sorted List II](https://leetcode.com/problems/remove-duplicates-from-sorted-list-ii/) 🌟 🏴‍☠️
 
 {% tabs %}
+{% tab title="" %}
+```python
+def mergeSort(head):
+    if not head or not head.next : 
+        return head                 # as we branch and move left, left ... when only one node is left, we return it
+    
+    left = slow = fast = head
+    fast = fast.next                # for [1,2,3,4] as mid will be node 3, if this statement not used
+    while fast and fast.next:
+        slow = slow.next
+        fast = fast.next.next
+        
+    right = slow.next               # slow is at middle, next elements are considered right
+    slow.next = None                # this makes left has only left part
+    
+    left_sorted = mergeSort(left)
+    right_sorted = mergeSort(right)
+    return merge(left_sorted, right_sorted)
+
+def merge(l1, l2):
+    dummy = ListNode(-1)
+    prev = dummy
+    while l1 and l2:
+        if l1.val <= l2.val:
+            prev.next = l1
+            l1 = l1.next
+        else:
+            prev.next = l2
+            l2 = l2.next            
+        prev = prev.next
+    prev.next = l1 or l2    # one of l1 and l2 can be non-null at this point
+    return dummy.next
+
+return mergeSort(head)
+```
+{% endtab %}
+
 {% tab title="83. remove I" %}
 ```python
 def deleteDuplicates(head):

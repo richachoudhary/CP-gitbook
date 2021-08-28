@@ -1,5 +1,9 @@
 # LLD:Questions
 
+## \# Resources:
+
+* Grokking OO Interview: [Git repo + solutions \(in python\)](https://github.com/tssovi/grokking-the-object-oriented-design-interview/tree/master/object-oriented-design-case-studies)
+
 ## 0. Template 🔖
 
 ```text
@@ -33,6 +37,676 @@
 5. `Run + Integration Tests + Edge Cases + Bonus Features`
 6. `Writing UTs` : if time permits
 ```
+
+
+
+## 1. Library Management System
+
+#### System Requirements:
+
+* **Add/Remove/Edit book:** To add, remove or modify a book or book item.
+* **Search catalog:** To search books by title, author, subject or publication date.
+* **Register new account/cancel membership:** To add a new member or cancel the membership of an existing member.
+* **Check-out book:** To borrow a book from the library.
+* **Reserve book:** To reserve a book which is not currently available.
+* **Renew a book:** To re-borrow an already checked-out book.
+* **Return a book:** To return a book to the library which was issued to a member.
+
+#### Classes:
+
+* **NOTE:** 
+  * For simplicity, we are not defining getter and setter functions. 
+  * **Assume** that: all class attributes are private and **accessed** through their respective **public getter methods** and **modified** only through their **public** **setter** methods function.
+* **Models:  ============================================================**
+* **BookReservation**
+  * creation\_date
+  * status
+  * book\_item\_barcode
+  * member\_id
+  * fetch\_reservation\_details\(barcode\)
+* **BookLending**
+  * creation\_date
+  * due\_date
+  * return\_date
+  * book\_item\_barcode
+  * member\_id
+  * lend\_book\(barcode, member\_id\)
+  * fetch\_lending\_details\(barcode\)
+* **Fine**
+  * creation\_date
+  * book\_item\_barcode
+  * member\_id
+  * collect\_fine\(member\_id, days\)
+* **Book**
+  * book\_id
+  * title
+  * subject
+  * publisher
+  * language
+  * authors = \[\]
+* **BookItem\(Book\)**
+  * barcode
+  * borrowed
+  * due\_date
+  * price
+  * status
+  * placed\_at
+  * **checkout**\(member\_id\)
+* **Reck** //optional
+  * number 
+  * location\_identifier
+* **AccountTypes============================================================**
+* **Account:**
+  * id
+  * pwd
+  * status : ENUM\(ACTIVE, CLOSED, CANCELED, BLACKLISTED, NONE\)
+  * Person :
+* **Librarian\(Account\)**
+  * add\_book\_item\(\)
+* **Member\(Account\)**
+  * date\_of\_membership
+  * total\_books\_checkedout
+  * get\_total\_books\_checkedout\(\)
+  * **reserve\_book\_item**\(\)
+  * increment\_total\_books\_checkedout\(\)
+  * **renew\_book\_item**\(\)
+  * **checkout\_book\_item**\(\)
+  * check\_for\_fine\(\)
+  * **return\_book\_item**\(\)
+  * **renew\_book\_item**\(\)
+* **Searching Books ============================================================**
+  * **Search**
+    * search\_by\_title\(\)
+    * search\_by\_author\(\)
+    * search\_by\_subject\(\)
+    * search\_by\_pub\_date\(\)
+  * **Catalog\(Search\)  -**-------&gt; implemented separately, as in future new search metrics might come up
+    * search\_by\_title\(\)
+    * search\_by\_author\(\)
+
+{% tabs %}
+{% tab title="constants.py" %}
+```python
+from abc import ABC
+from enum import Enum
+
+class BookFormat(Enum):
+    HARDCOVER, PAPERBACK, AUDIO_BOOK, EBOOK, NEWSPAPER, MAGAZINE, JOURNAL = 1, 2, 3, 4, 5, 6, 7
+
+class BookStatus(Enum):
+    AVAILABLE, RESERVED, LOANED, LOST = 1, 2, 3, 4
+
+class ReservationStatus(Enum):
+    WAITING, PENDING, CANCELED, NONE = 1, 2, 3, 4
+
+class AccountStatus(Enum):
+    ACTIVE, CLOSED, CANCELED, BLACKLISTED, NONE = 1, 2, 3, 4, 5
+
+class Person(ABC):
+    def __init__(self, name, address, email, phone):
+        self.__name = name
+        self.__address = address
+        self.__email = email
+        self.__phone = phone
+
+class Constants:
+    def __init__(self):
+      self.MAX_BOOKS_ISSUED_TO_A_USER = 5
+      self.MAX_LENDING_DAYS = 10
+```
+{% endtab %}
+
+{% tab title="models.py" %}
+```python
+from abc import ABC, abstractmethod
+from .constants import *
+
+class BookReservation:
+    def __init__(self, creation_date, status, book_item_barcode, member_id):
+        self.__creation_date = creation_date
+        self.__status = status
+        self.__book_item_barcode = book_item_barcode
+        self.__member_id = member_id
+
+    def fetch_reservation_details(self, barcode):
+        None
+
+
+class BookLending:
+    def __init__(self, creation_date, due_date, book_item_barcode, member_id):
+        self.__creation_date = creation_date
+        self.__due_date = due_date
+        self.__return_date = None
+        self.__book_item_barcode = book_item_barcode
+        self.__member_id = member_id
+
+    def lend_book(self, barcode, member_id):
+        None
+
+    def fetch_lending_details(self, barcode):
+        None
+
+
+class Fine:
+    def __init__(self, creation_date, book_item_barcode, member_id):
+        self.__creation_date = creation_date
+        self.__book_item_barcode = book_item_barcode
+        self.__member_id = member_id
+
+    def collect_fine(self, member_id, days):
+        None
+
+class Book(ABC):
+    def __init__(self, book_id, title, subject, publisher):
+        self.__book_id = book_id
+        self.__title = title
+        self.__subject = subject
+        self.__publisher = publisher
+        self.__authors = []
+
+class BookItem(Book):
+    def __init__(self, barcode, is_reference_only, borrowed, due_date, price, book_format, status,
+                 date_of_purchase, publication_date, placed_at):
+        self.__barcode = barcode
+        self.__is_reference_only = is_reference_only
+        self.__borrowed = borrowed
+        self.__due_date = due_date
+        self.__price = price
+        self.__status = status
+        self.__placed_at = placed_at
+
+    def checkout(self, member_id):
+        if self.get_is_reference_only():
+            print("self book is Reference only and can't be issued")
+            return False
+        if not BookLending.lend_book(self.get_bar_code(), member_id):
+            return False
+        self.update_book_item_status(BookStatus.LOANED)
+        return True
+
+
+class Rack:
+    def __init__(self, number, location_identifier):
+        self.__number = number
+        self.__location_identifier = location_identifier
+
+```
+{% endtab %}
+
+{% tab title="account\_types.py" %}
+```python
+from abc import ABC, abstractmethod
+from datetime import datetime
+
+from .constants import *
+from .models import *
+
+class Account(ABC):
+    def __init__(self, id, password, person, status=AccountStatus.Active):
+        self.__id = id
+        self.__password = password
+        self.__status = status
+        self.__person = person
+
+    def reset_password(self):
+        None
+
+
+class Librarian(Account):
+    def __init__(self, id, password, person, status=AccountStatus.Active):
+        super().__init__(id, password, person, status)
+
+    def add_book_item(self, book_item):
+        None
+
+class Member(Account):
+    def __init__(self, id, password, person, status=AccountStatus.Active):
+        super().__init__(id, password, person, status)
+        self.__date_of_membership = datetime.date.today()
+        self.__total_books_checkedout = 0
+
+    def get_total_books_checkedout(self):
+        return self.__total_books_checkedout
+
+    def reserve_book_item(self, book_item):
+        None
+
+    def increment_total_books_checkedout(self):
+        None
+
+    def renew_book_item(self, book_item):
+        None
+
+    def checkout_book_item(self, book_item):
+        if self.get_total_books_checked_out() >= Constants.MAX_BOOKS_ISSUED_TO_A_USER:
+            print("The user has already checked-out maximum number of books")
+            return False
+        
+        book_reservation = BookReservation.fetch_reservation_details(book_item.get_barcode())
+        
+        if book_reservation != None and book_reservation.get_member_id() != self.get_id():
+            # book item has a pending reservation from another user
+            print("self book is reserved by another member")
+            return False
+        elif book_reservation != None:
+            # book item has a pending reservation from the give member, update it
+            book_reservation.update_status(ReservationStatus.COMPLETED)
+
+        if not book_item.checkout(self.get_id()):
+            return False
+
+        self.increment_total_books_checkedout()
+        return True
+
+    def check_for_fine(self, book_item_barcode):
+        book_lending = BookLending.fetch_lending_details(book_item_barcode)
+        due_date = book_lending.get_due_date()
+        today = datetime.date.today()
+        # check if the book has been returned within the due date
+        if today > due_date:
+            diff = today - due_date
+            diff_days = diff.days
+            Fine.collect_fine(self.get_member_id(), diff_days)
+
+    def return_book_item(self, book_item):
+        self.check_for_fine(book_item.get_barcode())
+        book_reservation = BookReservation.fetch_reservation_details(book_item.get_barcode())
+        if book_reservation != None:
+            # book item has a pending reservation
+            book_item.update_book_item_status(BookStatus.RESERVED)
+            book_reservation.send_book_available_notification()
+            book_item.update_book_item_status(BookStatus.AVAILABLE)
+
+    def renew_book_item(self, book_item):
+        self.check_for_fine(book_item.get_barcode())
+        book_reservation = BookReservation.fetch_reservation_details(
+        book_item.get_barcode())
+        # check if self book item has a pending reservation from another member
+        if book_reservation != None and book_reservation.get_member_id() != self.get_member_id():
+            print("self book is reserved by another member")
+            self.decrement_total_books_checkedout()
+            book_item.update_book_item_state(BookStatus.RESERVED)
+            book_reservation.send_book_available_notification()
+            return False
+        elif book_reservation != None:
+            # book item has a pending reservation from self member
+            book_reservation.update_status(ReservationStatus.COMPLETED)
+
+        BookLending.lend_book(book_item.get_bar_code(), self.get_member_id())
+        book_item.update_due_date(datetime.datetime.now().AddDays(Constants.MAX_LENDING_DAYS))
+        return True
+
+
+```
+{% endtab %}
+
+{% tab title="search\_books.py" %}
+```python
+from abc import ABC
+
+class Search(ABC):
+    def search_by_title(self, title):
+        None
+
+    def search_by_author(self, author):
+        None
+
+    def search_by_subject(self, subject):
+        None
+
+    def search_by_pub_date(self, publish_date):
+        None
+
+class Catalog(Search):
+    def __init__(self):
+        self.__book_titles = {}
+        self.__book_authors = {}
+        self.__book_subjects = {}
+        self.__book_publication_dates = {}
+
+    def search_by_title(self, query):
+        # return all books containing the string query in their title.
+        return self.__book_titles.get(query)    #NOTE: assume DB connection
+
+    def search_by_author(self, query):
+        # return all books containing the string query in their author's name.
+        return self.__book_authors.get(query)   #NOTE: assume DB connection 
+
+```
+{% endtab %}
+{% endtabs %}
+
+## 2. Parking Lot \| `Singleton🟢`
+
+#### System Requirements:
+
+* **Take ticket:** To provide customers with a new parking ticket when entering the parking lot.
+* **Scan ticket:** To scan a ticket to find out the total charge.
+* **Make payment:** To pay the ticket fee with credit card
+* **Add/Modify parking rate:** To allow admin to add or modify the hourly parking rate.
+
+#### Out of Scope
+
+* **Add/Remove/Edit parking floor:** To add, remove or modify a parking floor from the system. Each floor can have its own display board to show free parking spots.
+* **Add/Remove/Edit parking spot:** To add, remove or modify a parking spot on a parking floor.
+* **Add/Remove a parking attendant:** To add or remove a parking attendant from the system.
+* **3rd party payment integration**
+
+**Classes:**
+
+**1.Constants =================================================================**
+
+* **VehicleTypes**: CAR, BIKE, TRUCK
+* **ParkingSpotType:HANDICAPPED**, COMPACT, REGULAR, LARGE
+* **ParkingTicketStatus**: ACTIVE, PAID, LOST
+* **Person**
+  * name
+  * address
+  * email
+  * phone
+
+**2.Acc Types =================================================================**
+
+* **Account** : interface
+  * name
+  * password
+  * person 
+  * reset\_pwd\(\)
+* **Admin\(Account\)**
+  * `add`\_`parking_spot(spot)`
+* **ParkingAttendent\(Account\)**
+  * `process_ticket(ticket_number )`
+* **User\(Account\)**
+
+#### 3.Vehicles ===================================================================
+
+* **Vehicle** : interface
+  * id
+  * type
+  * ticket
+  * license\_number
+  * assign\_ticket\(\)
+* **Car\(Vehicle\)**
+* **Bike\(Vehicle\)**
+* **Truck\(Vehicle\)**
+
+#### 4.ParkingSpots ===============================================================
+
+* **ParkingSpot :** interface
+  * number
+  * free:bool
+  * vehicle: Vehicle
+  * type
+  * is\_free\(\)
+  * assign\_vehicle\(\)
+  * remove\_vehicle\(\)
+* **HandicappedSpot\(ParkingSpot\)**
+* **CompactSpot\(ParkingSpot\)**
+* **RegularSpot\(ParkingSpot\)**
+* **LargeSpot\(ParkingSpot\)**
+
+#### 5.ParkingLot \(main system class\) ================================================
+
+* **ParkingLot**
+  * name
+  * rates = \[\]
+  * `curr_vehicle_counts`
+  * `curr_active_tickets = []`
+  * `generate_new_parking_ticket()`
+  * **NOTE!!!!** Our system will have only **one object of this class**. This can be enforced by using the [**Singleton**](https://en.wikipedia.org/wiki/Singleton_pattern) **pattern**. 💫🟢🟢🟢🟢
+    * **WHAT IS SINGLETON PATTERN:** is a software design pattern that **restricts the instantiation of a class to only one object**.
+    * Everywhere: entry/exit \|\| checkin/checkout: **ONLY this object CAN create new parking ticket**: using method `get_new_parking_ticket()`
+
+{% tabs %}
+{% tab title="constants.py" %}
+```python
+from enum import Enum
+
+
+class VehicleType(Enum):
+    CAR, BIKE, TRUCK, BUS  = 1, 2, 3,4
+
+class ParkingSpotType(Enum):
+    HANDICAPPED, COMPACT, REGULAR, LARGE = 1, 2, 3, 4
+
+class ParkingTicketStatus(Enum):
+    ACTIVE, PAID, LOST = 1, 2, 3
+    # ELECTRIC -> ??
+
+class Person():
+    def __init__(self, name, address, email, phone):
+        self.__name = name
+        self.__address = address
+        self.__email = email
+        self.__phone = phone
+```
+{% endtab %}
+
+{% tab title="account\_types.py" %}
+```python
+from .constants import *
+
+class Account:
+    def __init__(self, user_name, password, person):
+        self.__user_name = user_name
+        self.__password = password
+        self.__person = person
+
+    def reset_password(self):
+        None
+
+
+class Admin(Account):
+    def __init__(self, user_name, password, person):
+        super().__init__(user_name, password, person)
+
+    def add_parking_spot(self, floor_name, spot):
+        None
+
+class ParkingAttendant(Account):
+    def __init__(self, user_name, password, person):
+        super().__init__(user_name, password, person)
+
+    def process_ticket(self, ticket_number):
+        None
+
+```
+{% endtab %}
+
+{% tab title="vehicles.py" %}
+```python
+from abc import ABC
+from .constants import  *
+
+class Vehicle(ABC):
+    def __init__(self, license_number, vehicle_type, ticket=None):
+        self.__license_number = license_number
+        self.__type = vehicle_type
+        self.__ticket = ticket
+
+    def assign_ticket(self, ticket):
+        self.__ticket = ticket
+
+
+class Car(Vehicle):
+    def __init__(self, license_number, ticket=None):
+        super().__init__(license_number, VehicleType.CAR, ticket)
+
+
+class Bike(Vehicle):
+    def __init__(self, license_number, ticket=None):
+        super().__init__(license_number, VehicleType.BIKE, ticket)
+
+
+class Truck(Vehicle):
+    def __init__(self, license_number, ticket=None):
+        super().__init__(license_number, VehicleType.TRUCK, ticket)
+
+
+```
+{% endtab %}
+
+{% tab title="parking\_spot.py" %}
+```python
+from abc import ABC
+from .constants import  *
+
+class ParkingSpot(ABC):
+    def __init__(self, number, parking_spot_type):
+        self.__number = number
+        self.__free = True
+        self.__vehicle = None
+        self.__parking_spot_type = parking_spot_type
+
+    def is_free(self):
+        return self.__free
+
+    def assign_vehicle(self, vehicle):
+        self.__vehicle = vehicle
+        free = False
+
+    def remove_vehicle(self):
+        self.__vehicle = None
+        free = True
+
+
+class HandicappedSpot(ParkingSpot):
+    def __init__(self, number):
+        super().__init__(number, ParkingSpotType.HANDICAPPED)
+
+
+class CompactSpot(ParkingSpot):
+    def __init__(self, number):
+        super().__init__(number, ParkingSpotType.COMPACT)
+
+
+class RegularSpot(ParkingSpot):
+    def __init__(self, number):
+        super().__init__(number, ParkingSpotType.REGULAR)
+        
+class LargeSpot(ParkingSpot):
+    def __init__(self, number):
+        super().__init__(number, ParkingSpotType.LARGE)
+
+```
+{% endtab %}
+
+{% tab title="parking\_lot.py🟢" %}
+```python
+import threading
+from .constants import *
+
+class ParkingLot:
+    # singleton ParkingLot to ensure only one object of ParkingLot in the system,
+    # all entrance panels will use this object to create new parking ticket: get_new_parking_ticket(),
+    # similarly exit panels will also use this object to close parking tickets
+    instance = None
+
+    class __OnlyOne:
+        def __init__(self, name, address):
+        # 1. initialize variables: read name, address and parking_rate from database
+        # 2. initialize parking floors: read the parking floor map from database,
+        #    this map should tell how many parking spots are there on each floor. This
+        #    should also initialize max spot counts too.
+        # 3. initialize parking spot counts by reading all active tickets from database
+
+            self.__name = name
+            self.__address = address
+            self.__parking_rate = ParkingRate()
+
+            self.__compact_spot_count = 0
+            self.__regular_spot_count = 0
+            self.__large_spot_count = 0
+
+            self.__max_compact_count = 0
+            self.__max_regular_count = 0
+            self.__max_large_count = 0
+
+            # all active parking tickets, identified by their ticket_number
+            self.__active_tickets = {}
+
+            self.__lock = threading.Lock()
+
+    def __init__(self, name, address):
+        if not ParkingLot.instance:
+            ParkingLot.instance = ParkingLot.__OnlyOne(name, address)
+        else:
+            ParkingLot.instance.__name = name
+            ParkingLot.instance.__address = addres
+
+    def get_new_parking_ticket(self, vehicle):
+        if self.is_full(vehicle.get_type()):
+            raise Exception('Parking full!')
+            
+    # synchronizing to allow multiple entrances panels to issue a new
+    # parking ticket without interfering with each other
+    
+        self.__lock.acquire()
+        
+        ticket = ParkingTicket()
+        vehicle.assign_ticket(ticket)
+        ticket.save_in_DB()
+        # if the ticket is successfully saved in the database, we can increment the parking spot count
+        self.__increment_spot_count(vehicle.get_type())
+        self.__active_tickets.put(ticket.get_ticket_number(), ticket)
+        
+        self.__lock.release()
+        return ticket
+
+    def is_full(self, type):
+        # trucks and bus can only be parked in LargeSpot
+        if type == VehicleType.Truck or type == VehicleType.Bus:
+            return self.__large_spot_count >= self.__max_large_count
+
+        # cars can be parked at compact or large spots
+        if type == VehicleType.Car:
+            return (self.__compact_spot_count + self.__large_spot_count) >= (self.__max_compact_count + self.__max_large_count)
+
+        # bikes car can be parked at compact, regular or large spots
+        return (self.__compact_spot_count + self.__regular_spot_count + self.__large_spot_count) >= (self.__max_compact_count + self.__max_regular_count
+                                                                                                  + self.__max_large_count)
+
+    # increment the parking spot count based on the vehicle type
+    def increment_spot_count(self, type):
+        large_spot_count = 0
+        motorbike_spot_count = 0
+        compact_spot_count = 0
+        electric_spot_count = 0
+        if type == VehicleType.Truck or type == VehicleType.Bus:
+            large_spot_count += 1
+        elif type == VehicleType.Car:
+            regular_spot_count += 1
+        else:  # bike
+            if self.__compact_spot_count < self.__max_compact_count:
+                compact_spot_count += 1
+            elif self.__regular_spot_count < self.__max_regular_count:
+                regular_spot_count += 1
+            else:
+                large_spot_count += 1
+
+```
+{% endtab %}
+{% endtabs %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
