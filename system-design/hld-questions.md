@@ -1618,13 +1618,138 @@ city() # it calls the function city
 
 ![](../.gitbook/assets/screenshot-2021-08-28-at-9.37.18-pm.png)
 
-## 12. Elastic Search \| Search Engine Indexing
+## 12. API Rate Limiter
 
-## 13. OTP Generation
+* **Video:** [link](https://www.youtube.com/watch?v=mhUQe4BKZXs&ab_channel=TechDummiesNarendraL)
+* **Use Cases:**
+  * Security: prevent DDoS attacks
+  * Freemium model\(e.g. ML APIs\)
+* **Type of Rate limiting:**
+  * number of request allowed per user per hour/day
+  * Concurrent\(system wide\): prevent DDoS attacks
+  * location/IP based
+* **Algorithms available to do Rate Limiting:**
+  1. **Token Bucket**
+     * For every user; store his last API hit time & number of tokens left
+     * **e.g: ProductHunt API**
+     * `user_id -> {last_hit_time, tokens_left}`
+     * store this in **key-val DB \(Redis\)**
+     * for each new request; update the values in DB
+     * Deny request when tokens\_left = 0
+  2. **Leaky Bucket**
+     * maintain a **fixed-size-queue** 
+     * All the incoming req\(from all users\) are processed via this queue\(in **FIFO** order\)
+     * when the queue size is full; deny the incoming requests
+  3. **Fixed Window Counter**
+     * only **N** requests can be processed in a time **T** 
+     * so for every window of **`|t .... t+T|`** ; count the incoming reqs;
+       * when the **counter reached N**; deny the further reqs in this **time duration**
+* **Issues in Distributed API Rate limiter**
+  1. **Global Inconsistency : Race condition**
+     * if every node of the distributed system has its own LB & count-keeper DB;
+     * =&gt; user can hit multiple LBs\(situated in diff regions\) & bypass the **global-counter check**
+     * **How to solve it?**
+     * **\#1.**=&gt; use **Sticky sessions**
+       * i.e. always redirect User1 to Node1
+       * **Still issues:**
+         * this approach can increase load on certain LBs\(while other LBs are free\)
+     * **\#2:** =&gt; use **Locking**
+       * =&gt; Put a lock on user1 key in central DB, each time its updated
+       * So that no 2 simultaneous requests can update the **req\_count for the same user**
+       * **Its better than Sticky sessions:**
+         * as now we can hit all LBs equally
+       * **The Bad:**
+         * it increases overall response time of the API
+     * **Other solutions:**
+       * add some buffer to **rate limit** \(allow +5%\)
+         * **The Bad:** defeats the purpose of keeping rate limit
+       * keep syncing data b/w nodes 
+         * **The BAD:** increases latency
 
-## 14. API Rate Limiter
+![](../.gitbook/assets/screenshot-2021-08-28-at-11.10.46-pm.png)
 
-## 15. Uber Backend
+## 13. Search Engine \| Indexing \|  Elastic Search 
+
+* 3 Steps of A Search Engine:
+
+![](../.gitbook/assets/screenshot-2021-08-29-at-12.04.51-am.png)
+
+![](../.gitbook/assets/screenshot-2021-08-29-at-12.05.58-am.png)
+
+**1. Crawling:**
+
+* Google servers keep crawling chunks of internet
+* while crawing, it keeps **rank** of each page\(using **page\_rank**\)
+  * if more & reputed sites are directing to a site, it has high rank
+  * **Damping factor**\(e.g. dp = 0.85\) for **random access**
+    * i.e. 85% of the time crawler will get move to the directed site
+    * 15% of the time crawler will jump to **any random page on** **whole internet**
+
+**2.  Inverted Indexing**
+
+* Working\(below pic\)
+* puts all this **metadata** in **metadata\_db**
+* **Implemented using B-Trees - `O(logN)`**
+
+![](../.gitbook/assets/screenshot-2021-08-29-at-12.09.36-am.png)
+
+**3. Querying/Searching**
+
+* Sanitize, filter, stemm, lemmatize the search query to get **query\_keywords**
+* **e.g.: Keyword targeting @flipkart 😎**
+* **Approaches:**
+  1. **Conjunctive Querying -&gt; AND**
+     * Performs **AND operation** on all the **`words in query_keywords`** 
+     * returns only those docs which have all the keywords present in them
+  2. **Disjunctive Querying -&gt; UNION** 
+     * Takes all the document which have **ANY of the keyword present**
+     * then performs **UNION** on these docs
+     * Then removes **duplicates** from the result
+  3. **Conjunctive with Positioning**
+     * The order of words in query is also imp!!!
+       * E.g: if query is `men in black`
+       * And if you dont consider the order of words; you'll also return results for `black in men`😂
+     * HOW does it work?
+       1. get results of normal **Conjunctive Querying**
+       2. filter only those results which have **relative ordering** in place
+          * E.g. 
+            * QUERY: men-0, in-1, black-2
+            * Valid results: men-12, in-100, black-150✅
+            * Invalid results: men-100, in-20, black-5❌
+
+## 14. Uber 
+
+* **Location DBs**
+
+  * \*\*\*\*[GauravSen](https://www.youtube.com/watch?v=OcUKFIjhKu0&ab_channel=GauravSen)
+  * zip codes aren't practical
+  * **Fractals:** divide the space into smaller spaces:
+    * Store as **B-Tree**
+
+  \*\*\*\*
+
+![](../.gitbook/assets/screenshot-2021-08-29-at-12.45.36-am.png)
+
+![](../.gitbook/assets/screenshot-2021-08-28-at-11.43.23-pm.png)
+
+![](../.gitbook/assets/screenshot-2021-08-28-at-11.42.25-pm.png)
+
+
+
+## 15. OTP Generation
+
+* See **\#TinyUrl**
+
+## 16. Distributed Locks
+
+* [Video](https://www.youtube.com/watch?v=v7x75aN9liM&ab_channel=TechDummiesNarendraL)
+* See **\#GoogleDoc** & **\#APIRateLimiter**
+* Use **LockManager**
+
+## 17. Yelp \| TripAdvisor \|  find Nearest Friend
+
+* **Location DBs**
+  * See \#**Uber**
 
 ## \#More From Leetcode
 
