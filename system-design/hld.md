@@ -1,5 +1,8 @@
 # HLD
 
+* **Encrypt** with **public** key
+* **Decrypt** with **private** key
+
 ## 1. **Scalability Trade-offs**
 
 * There’s no free lunch i.e. everything is a trade-off:
@@ -606,7 +609,45 @@ s = b'GeeksForGeeks'
 gfg = b64encode(s)    #  b’R2Vla3NGb3JHZWVrcw==’
 ```
 
-## 12.Other Terms
+## 12. Microservices: Application layer scaling
+
+### 12.0 Microservices
+
+* Architecture build with group of **loosely coupled** individual services.
+* Usually communicate with each other with **REST/RPC** protocol
+* all services have their **own database =&gt; POLYGLOT ARCHITECTURE\(SQL+NoSQL\)**
+  * **Disadv.** =&gt; lots of joins on DB queries
+  * **Adv.** =&gt; service based horizontal scaling
+
+### 12.1 API Gateway
+
+* **WHY USE?** =&gt; N separate calls to N microservices to get result of 1 query ❌
+  * So, use this & make a single call to it
+  * API gateway has logic to call which N calls to make.
+* **Advantages:**
+  * It can make **parallel calls** too, if reqd
+  * takes case of auth & filtering etc
+  * **SSL termination**
+    * verify HTTPS only on call from client to API gateway
+    * all internal calls are HTTP/RPC etc
+  * **Load Balancing**
+  * **Insulation** \(sanitation of 3P requests\)
+
+![](../.gitbook/assets/screenshot-2021-08-28-at-6.09.29-am.png)
+
+### 12.2 Service Discovery
+
+* **WHAT?** =&gt; its a pattern to **identify** the **network addresses** of all of the microservices' instances
+* It has a **Service Register.**
+  * Give me the list of all network addresses of **Inventory** service's instances\(see above ss\)
+* **Service Discovery =&gt;**  simply the service which **reads** the **Service Register**
+  * **TYPE1 : Client Side Service Discovery:**
+    * client talks to **Service Discovery** -&gt; asks the latest addresses of microservices -&gt; use this address to redirected there
+  * **TYPE2: Server Side Service Discovery:**
+    * client talks to **API Gateway** -&gt; API Gateway asks Service Discovery about the  latest addresses of microservices -&gt; use this address to redirected there
+* **used@ServiceDiscoveryTool =&gt;** Zookeeper
+
+## 13.Other Terms
 
 * **Varnish**
   * **@ distributed\_cache**
@@ -643,7 +684,7 @@ gfg = b64encode(s)    #  b’R2Vla3NGb3JHZWVrcw==’
 * [x] Consistent Hashing
 * [ ] OSI Model
 * [ ] HTTPS
-* [ ] SSL + encryption\(pub key vs priv key\)
+* [x] SSL + encryption\(pub key vs priv key\)
 * [x] Hash algos: SHA-256, RSA 
 * [ ] cryptography **@CoinBase** 💲
 

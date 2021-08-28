@@ -10,15 +10,57 @@
 #2. Back-of-the-envelope estimation ============================
         2.1 Scale of System
         2.2 Storage size estimation
+        2.3 Bandwidth esitmation(read+write)
 #3. APIs =======================================================
         GET  /name/:id      Req:{}, Res:{}
         POST /name/:id      Req:{} 
 #4. Models:Classes, DB Schema & ER diagrams=====================
-#5. Draw Basic HLD =============================================
-#6. EVOLVE HLD to scale & indepth discussion of components =====
+        * Tables
+        
+        * DBs & choice(NoSQL/SQL)
+#5. Draw 'Basic HLD'=============================================
+#6. EVOLVE & 'Draw Detailed HLD' with the discussion on each comp =====
 #7. Walk down flow of every action =============================
 #7. Identifying and resolving bottlenecks ======================
+
 ```
+
+#### \#1. Requirement Gathering ======================================
+
+#### 1.1 Functional Requirements
+
+* 
+#### 1.2 NonFunctional Requirements - Usage Patterns\(read heavy/CAP tradeoffs\)
+
+* 
+#### 1.3 Out of Scope
+
+* 
+#### \#2. Back-of-the-envelope estimation ============================
+
+#### 2.1 Scale of System
+
+* 
+#### 2.2 Storage size estimation
+
+* 
+#### 2.3 Bandwidth estimation\(read+write\)
+
+* 
+#### \#3. APIs =======================================================
+
+* 
+#### \#4. Models:Classes, DB Schema & ER diagrams=====================
+
+#### 4.1 Tables Schemas 
+
+* 
+#### 4.2 DBs choices\(NoSQL/SQL\)
+
+* 
+#### \#5. Draw 'Basic HLD'=============================================
+
+#### \#6. Detailed HLD ================================================
 
 ## 1.Instagram
 
@@ -205,6 +247,7 @@
 ## 3. TinyURL
 
 * Whimsical board: [link](https://whimsical.com/tinyurl-XRrbRGZFccA2bhgqDBsRGp)
+* Amazing similar read: HN: [How does Google Authenticator work?](https://prezu.ca/post/2021-07-30-totp-1/) 🤯
 
 ```text
 #1. Requirement Gathering ======================================
@@ -811,7 +854,7 @@ city() # it calls the function city
 
 ```
 
-### Notes on some components:
+#### Notes on some components:
 
 * **Netflix's Cloud:**
   * Netflix operates in two clouds: **AWS and Open Connect.**
@@ -882,21 +925,706 @@ city() # it calls the function city
 
 ![](../.gitbook/assets/screenshot-2021-08-26-at-5.45.02-pm.png)
 
-## 5. Twitter
+## 5. Ketto/Go Fund Me
 
-## 6. BookMyShow
+* Whimsical: [link](https://whimsical.com/ketto-2S14YgGQ5Er7SLUPxdep5g)
+* Source: [LC](https://leetcode.com/discuss/interview-question/system-design/1397022/Go-Fund-me-System-design)
+
+```text
+#1. Requirement Gathering ======================================
+        1.1 Functional Requirements
+
+            * Registered users can create campaigns to fund their cause.
+            * Registered users can view a campaign by campaign ID
+            * Registered users can collect money against a campaign
+            * Registered users could contribute to a campaign based on campaign ID
+            * Once a day we flush the collected money into the creator’s account
+
+        1.2 NonFunctional Requirements - Usage Patterns/Tradeoffs
+
+            * Low latency
+            * Durability changes made to the campaigns or newly created campaign should not be lost
+            * Eventual consistency
+            * It is a growing system
+
+        1.3 Out of Scope
+            * User registration
+            * Analytics
+            * Recommendation
+            * Search
+            * Guest flow
+
+#2. Back-of-the-envelope estimation ============================
+        2.1 Scale of System
+            * Total Active users: 50M
+            * New users added daily: 50K (as 'growing system')
+            * CAMPAIGN CREATION:
+                1 user creates 5 campaigns => 5*50 => 250M campaigns
+            * CAMPAIGN VIEWING:
+                5M view capaigns daily => 5M/(24*3600) => 60 cmps/sec
+            * => Hence, Load on the system isnt much
+
+        2.2 Storage size estimation
+            * SKIPPED (nothing much of storage here)
+
+#3. APIs =======================================================
+        * createCampaign(userId, String campaignName, CampaignDetails campaignDetails) 
+            → returns campaignId of the created campaign
+
+        * getCampaignDetails(userId, campaignId) 
+            → Returns CamapignDetails of the given camapignId
+
+        * pay(userId, CampaignId, PaymentDetails paymentDetails) 
+            → return a boolean if the payment was successful or not also updates the total collected amount against the campaign
+
+#4. Models:Classes, DB Schema & ER diagrams=====================
+    * SKIPPED
+
+#5. Draw Basic HLD =============================================
+    * Campaign Creator Service
+    * Campaign Viewer Service
+
+#6. EVOLVE HLD to scale & indepth discussion of components =====
+    Add/disucss on these optimisations:
+    * Load balancer - which is entry point to our website
+    * Gateway -- which would be responsible for filtering requests and authentication and authorization
+    * Service discovery --- Would be responsible for providing service end points to internal services and also load balancing internally
+    * Caching
+    
+```
+
+![](../.gitbook/assets/screenshot-2021-08-28-at-6.23.13-am.png)
+
+![](../.gitbook/assets/screenshot-2021-08-28-at-6.36.56-am.png)
+
+## 6. Twitter
+
+* Whimsical Board [link](https://whimsical.com/twitter-63T4oateDAL6ZdsaJ5LdHT)
+* Video [link](https://www.youtube.com/watch?v=wYk0xPP_P_8&ab_channel=TechDummiesNarendraL)
+
+#### \#1. Requirement Gathering =============================================
+
+* **1.1 Functional Requirements**
+  * tweet
+    * text
+    * photo
+    * video
+  * trends 
+    * see all the tending topics/hastags
+  * follow others
+  * timeline
+    * home timeline\(whom user follows\)
+    * user timeline\(user history\)
+    * search timeline\(all tweets as per searched keyword\)
+* **1.2 NonFunctional Requirements** - Usage Patterns\(read heavy/CAP tradeoffs\)
+  * Highly available
+  * Acceptable latency for timeline generation
+  * Consistency can take a hit:
+    * if a user doesn’t see a tweet for a while, it should be fine.
+    * **Eventual Consistency** 
+  * User traffic will be distributed unevenly throughout the day
+* **1.3 Out of Scope**
+  * replying on tweets
+  * tweet notification
+  * suggestion - whom to follow
+  * user tagging
+
+#### \#2. Back-of-the-envelope estimation =========================================
+
+* **2.1 Scale of System**
+  * Daily Active Users\(DAU\) : 200M
+  * write: 2 tweets per user per day
+    * =&gt; daily writes = 2\*200M = 400M/day
+  * read:write = 1000:1
+    * =&gt; daily reads = 400B/day
+    * system is read-heavy
+* **2.2 Storage size estimation**
+  * **Text**: 140 chars a tweet
+    * 2 bytes to store 1 char \(w/o any compression\)
+    * +30 bytes for tweet metadata\(timestamp, location, userID\)
+    * =&gt; 400M\*\(280b+30b\) = 120GB/day
+  * **photo**: 1 in 5 tweets has a photo
+    * size of 1 photo = 200KB
+    * =&gt; 400M\*200KB/5 = 400M\*40KB = 16MB\*M = 16TB
+  * **video**: 1 in 10 tweets has a video
+    * size of 1 video = 2MB
+    * =&gt; 400M\*2MB/10 = 80TB
+  * **=&gt; Total daily storage reqd** = 120GB + 16TB + 80TB
+    * = 96.12 TB/day
+    * =&gt; 1.11 GB/sec
+* **2.3 Bandwidth estimation**
+  * view tweets:
+    * **text**:
+      * =&gt; text: 28B\*280b = 7840GB/day = **90MB/sec**
+    * user see all the **photos** of every tweet
+      * =&gt; 28B/5\*200KB = 13GB/s
+    * user plays 1 in every 3 **videos** of tweet
+      * =&gt; \(28B/10/3\)\*2MB = 22GB/s
+    * **=&gt; total** = 35Gb/s
+
+#### \#3. APIs =======================================================
+
+* **tweet**\(api\_dev\_key, tweet\_data, tweet\_location, user\_location, media\_ids\)
+  * =&gt; returns tweet url to view
+* **search**\(api\_dev\_key, search\_terms, maximum\_results\_to\_return, sort, page\_token\)
+  * =&gt; JSON containing information about a list of tweets
+
+#### \#4. Table Schemas & DB Choices=====================
+
+* **Tables:**
+  * **User**
+    * userID : PK, int
+    * name
+    * email
+    * pwd\(hashed\)
+    * 3rd party login OAuth
+    * last login
+  * **Tweet**
+    * tweetID: PK,int
+    * userID
+    * text
+    * createdAt\(ts\)
+    * locationCordinates
+    * mediaAddress
+  * **Follower**
+    * followerID : FK
+    * followeeID : FK
+    * timestamp
+* **Relations:**
+  * 1-Many in User ---- Tweet
+  * 1-Many in User ---- Follower
+*  \[?\] Retweets:
+  * are to be considered a unique tweet & store in 'Tweet' table itself
+* **DB choice:**
+  * photos+vidoes =&gt; DFS
+    * HDFS/S3
+    * can be queued
+  * User, Tweet, Follower tables =&gt; NoSQL
+    * Distributed NoSQL
+    * =&gt; RDBMS, though good for relations here wont be scalable enough
+  * Relationship b/w tables: use **key-value DB** i.e. **Redis✅**
+    * `<userID> -> [tweetIDs]`
+    * `<userID> -> [followerIDs]`
+
+#### \#5. Draw 'Basic HLD'=============================================
+
+![](../.gitbook/assets/screenshot-2021-08-28-at-1.25.03-pm.png)
+
+#### \#6. EVOLVE & 'Draw Detailed HLD' with the discussion on each comp =====
+
+1.    **How User Timeline is generated?**
+   * Go to Redis table\#1 : &lt;userID&gt; -&gt; \[tweetIDs\]
+   * SCALING UP: **cache** 
+2. **How to generate Home Timeline**
+   * **Steps using Join**
+     * get all followers of the user
+     * get their latest tweets
+     * merge, sort & display
+   * **SCALING UP:**
+
+   1. ❌Shard/NoSQL/multiple nodes =&gt; wont be as fast as twitter
+   2. ✅ use "**Fanout**"
+
+   * **Fanout**
+     * Fanout =&gt; when a new tweet is generated; process it & DISTRIBUTE it to user timelines
+     * **WORKING**:
+       1.  user makes a new tweet
+       2. Store it in Tweets table
+       3. Push this tweet into his 'User Timeline'
+       4. Fan-out this tweet into 'Home Timeline' of ALL his followers
+     * Hence; no DB query is required!!!
+     * **NOTE**: Do not do this precomputation for **'Passive users'**
+
+![](../.gitbook/assets/screenshot-2021-08-28-at-12.42.25-pm.png)
+
+    3. **How to handle celebrity tweets?**
+
+* celebrity has MILLIONS of followers
+* **WORKING:**
+
+  * **Celebrity side:**
+    1. celebrity makes a tweet
+    2. Store it in his Tweets table
+    3. Push it to his 'User Timeline'
+    4. **DO NOT FAN OUT**
+  * **Fan Side:**
+
+  1. Every fan has a list of celebirties he follows
+  2. When the fan opens his 'Home Timeline':
+     * Go to all the celebrities he follows & check their latet tweets
+     * =&gt; All these operations are Redis operations =&gt; wont take much time
+  3. Store these latest celebrity tweets in a separate sorted list
+  4. Show these tweets along with users timeline tweets in his 'Home Timeline'
+
+  * **NOTE**: Do not do this precomputation for **'Passive users'**
+
+  \*\*\*\*
+
+![](../.gitbook/assets/screenshot-2021-08-28-at-12.44.37-pm.png)
+
+#### 4. **Generate \#Trends**
+
+* How to see if a topic is trending?
+  * It has more \#tweets in short span
+  * i.e. topic with 1000 tweets in 5 min is a \#TredningTopic
+  * But a topic with 10,000 tweets in 1 month is \#NotATrendingTopic
+  * Eg.: election result, movie, cricket store, oplymics/game
+* **HOW TO GENERATE:**
+  * Collect & Realtime process all tweets 
+    * Filter out redundant Hashtags \(\#Enjoy, \#Life, \#YOLO, \#FOOD etc\)
+    * Policy violation
+    * Copy-write violation
+  * using **Kafka+Spark** 
+  * Store it in Trending Db\(Redis\)
+
+####     5. **Twitter Search Timeline \| Indexing🚀🚀**
+
+* Twitter uses **EarlyBird**
+  * =&gt; inverted full text indexing
+* **HOW:**
+  1. Breakdown/stemming every tweet into **keywords**
+  2. Store all these keywords in a DISTRIBUTED BIG TABLE \(mapped with their resp. tweetIDs\)
+  3. **Map/Reduce** works here
+* **Scaling:**
+  * **Sharding** based on keyword / Location
+  * **Caching**
+  * **Ranking** by popularity
 
 ## 7. Whatsapp/FB Messenger
 
-## 8. Pastebin
+* Whimsical [link](https://whimsical.com/whatsapp-PTxBKeAFpZyHk3WNT2kzpi)
+* Video: [link](https://www.youtube.com/watch?v=L7LtmfFYjc4&ab_channel=TechDummiesNarendraL)
 
-## 9. Google Docs
+#### \#1. Requirement Gathering ======================================
 
-## 10. Dropbox
+#### 1.1 Functional Requirements
 
-## 11. Twitter/Uber Search\(&lt;elasticsearch&gt;\)
+* one-to-one chat
+* Send media
+* keep track of the online/offline statuses of its users
+* support the persistent storage of chat history
+* Group Chats
+* Push Notifications : to offline users
+* End-to-end Encryption
 
-## 12. Typehead Suggestion
+#### 1.2 NonFunctional Requirements - Usage Patterns\(read heavy/CAP tradeoffs\)
+
+* Real time exp with minimum latency
+* Highly consistent: same chat history on all their devices
+* Target high availability; but can be traded off for consistency
+
+#### 1.3 Out of Scope
+
+* Voice call/video call
+
+#### \#2. Back-of-the-envelope estimation ============================
+
+#### 2.1 Scale of System
+
+* DAU = 500M
+* 1 user sends 40 msgs daily
+* ==&gt; 20B msgs per day 
+
+#### 2.2 Storage size estimation
+
+* size of 1 msg = 100bytes
+  * =&gt; total size  = 20B\*100 byte = 2TB/day
+    * =&gt; 5PB for 5 years
+
+#### 2.3 Bandwidth estimation\(read+write\)
+
+* incoming & outgoing data = 2TB/\(24\*3600\) = 25MB/s 
+
+#### \#3. APIs =======================================================
+
+* 
+#### \#4. Models:Classes, DB Schema & ER diagrams=====================
+
+#### 4.1 Tables Schemas 
+
+* Users
+* Key value: u\_id -&gt; processing\_msgs
+* Key value: u\_id -&gt; pending\_msgs
+* key value: msgID -&gt; mediaID
+
+#### 4.2 DBs choices\(NoSQL/SQL\)
+
+* RDBMS or NoSQL wont scale this much 
+  * we cannot afford to **read/write a row** from the database **every time a user receives/sends** a message
+* Instead use: **BigTable/HBase**
+
+#### \#5. Draw 'Basic HLD'=============================================
+
+#### \#6. Detailed HLD ================================================
+
+* Whatsapp is e.g. of **Duplex Connection \(**implemented with **HTTP long polling\)**
+  * i.e. connection can start from any client end
+  * i.i.e chatting can be initiated from anyone to the other person
+  * Other type of connections: **TCP, UDP, Websocket**
+* **How sending & receiving of msg takes place:**
+  * A wants to send msg to B
+  * **WHAT DOESNT WORK:**
+    * **Poll Model:** Users can periodically ask the server if there are any new messages for them
+      * **issue:** latency
+      * **issue:** wastage of resources\(when there's no message\)
+  * **WHAT DOES WORK:** 
+    * **Push Model**: Users can keep a connection open with the server and can depend upon the server to notify them whenever there are new messages.
+  * **@A's end**
+    1. clientA sends a msg to clientB
+    2. this msg gets stored in phone's local db - **sqlite**
+    3. android app sends this msg from db to **App server**
+  * **@B's end**
+    * **if B is online\(**i.e. is connected to App server**\)**
+      * App Server sends this msg to B
+    * **elif B is offline\(**i.e. not connected to App server**\)**
+      * App server stores this msg in DB
+      * As soon as B is online next time; server sends the msg to B
+* **How does Messaging Server work:**
+  * It makes a **Queue** for all the msgs sent by users
+  * It also has a **table** mapping pid to msgs\_lists
+  * if B is online; it sends the msg directly
+  * if B is offline: it keeps the msg in B's queue -&gt; sends when B's up
+  * if B is doesnt have a whatsapp acc: server dumps A's msg in a **separate DB**
+* **How does Acknowledgement work? ✔️☑️\| tick, double tick, blue tick**
+  * **Single Tick**
+    * is sent to clientA when server receives its msg
+  * **Double Tick**
+    * when server has found a connection to clientB\(see **Duplex above**\); it sends msg to clientB
+    * clientB sends ack that it has received the msg
+    * server sends ack to A that B has received the msg
+  * **Blue Tick**
+    * when B reads msg; it sends ack to server
+    * server sends ack to A; that ur msg has been read
+* **Last Seen**
+  * Server keeps on sending **heartbeats** every 5 sec or so
+  * and updates last seen value in the table
+* **Sending Media**
+  * A sends media to server
+  * server uploads this media on a CDN
+  * and returns the link to A
+  * then server shares this link to B; so that it can access that media
+* **End to end encryption**
+  * A and B exchange their **public keys**
+  * every msg sent from A is first encrypted using A's public key
+  * upon receiving this msg; B decrypts it with its private key
+* **Group chat\(for small group &lt;200\):**
+  * the message from User A is copied to each group member’s message sync queue: one for User B and the second for User C. You can think of the message sync queue as an inbox for a recipient. 
+  * This design choice is good for small group chat because:
+    * it simplifies message sync flow as each client only needs to check its own inbox to get new messages.
+    * when the group number is small, storing a copy in each recipient’s inbox is not too expensive.
+
+![](../.gitbook/assets/screenshot-2021-08-28-at-3.39.18-pm.png)
+
+## 8. Dropbox/Drive \| @CoinBase
+
+* Whimsical: [link](https://whimsical.com/dropbox-Pxo3WmfgEvHq4MXhYeme84)
+
+#### \#1. Requirement Gathering ======================================
+
+#### 1.1 Functional Requirements
+
+* upload/download
+* automatic synchronization between devices
+* history of updates\(versioning\)
+* should support offline editing
+
+#### 1.2 NonFunctional Requirements - Usage Patterns\(read heavy/CAP tradeoffs\)
+
+* Cross device consistency: all the data should be in sync
+* ACID-ity is required
+* Read == Write
+
+#### 1.3 Out of Scope
+
+* 
+#### \#2. Back-of-the-envelope estimation ============================
+
+#### 2.1 Scale of System
+
+* Total users = 500M
+* DAU = 100M
+* each user connects from 3 different devices
+* 1 user has 200 files/photos
+  * =&gt; Total files = 100B 
+* 10 requests per user per day 
+  * =&gt; 100M requests/day
+* High write & read
+
+#### 2.2 Storage size estimation
+
+* avg file size = 1MB
+  * =&gt; total space reqd = 1MB\*100B = **100 PB**
+
+#### 4.2 DBs choices\(NoSQL/SQL\)
+
+* **Metadata DB:**
+  * has to be **ACID** \(for conflict resolve\)
+  * =&gt; SQL  
+
+#### \#5. Draw 'Basic HLD'=============================================
+
+#### \#6. Detailed HLD ================================================
+
+* **How versioning works?✅**
+  * **OPTION\#1**: keep a separate copy in cloud after every change.
+    * **Issue with this approach:** in a 2GB file, even for a single char change; we'll have to keep a full 2GB file in cloud. =&gt; Huge wastage of resources
+  * **OPTION\#2:** break down the file into **1000 chunks** \(2MB each\)
+    * On first upload: all **1000 chunks** & **1 metadata file** are uploaded to cloud
+    * On subsequent changes; lets say only **chunk\#1 & chunk\#10**1 were change; so **only these 2 chunks** & **metadata file** gets uploaded in **version2.0**
+    * **Another adv:** the upload script can work in **parallel to upload** each chunk individually.
+* **Client:**
+  * is configured to keep track of files inside the folder
+  * Client Application monitors the workspace folder on the user’s machine and syncs all files/folders in it with the remote Cloud Storage
+  * operations for the client:
+    1. Upload and download files.
+    2. Detect file changes in the workspace folder.
+    3. Handle conflict due to offline or concurrent updates.
+  * Based on the above considerations, we can divide our client into following **four parts**:
+  * **Watcher:**
+    * gets **notified** when a **new file is added** to folder
+    * Watcher passes this info \(alog with the meta-data of changes\) to **chunker & indexer**
+  * **Chunker**
+    * breaks down the new file into chunks 
+    * calculate **hash of each chunk**
+    * uploads all the chunks to **Cloud\(S3\)**
+    * **passes** this info to **indexer**:
+      * **Url** it got after uploading to S3
+      * **hash** of each chunk
+  * **Indexer**
+    * **receives** this info from **chunker:**
+      * **Url** it got after uploading to S3
+      * **hash** of each chunk
+    * **updates** this info in **internal DB** against that file for which those **hash** belong to
+    * **indexer** also passes this info to **sync service** via **messaging queue** for:
+      * **conflict resolution\(** updates could happen from multiple **Clients**, no?**\)**
+      * store metadata if device is **offline**
+* **Sync Service:**
+  * sends back the updated info of this file to all the **clients**
+  * **Indexer** receives this info & updates corresponding files in the **folder**
+  * **=&gt; this is how files remain in sync across all devices ✅** 
+
+![](../.gitbook/assets/screenshot-2021-08-28-at-7.17.52-pm.png)
+
+![](../.gitbook/assets/screenshot-2021-08-28-at-7.17.59-pm.png)
+
+## 9. Google Docs 🐽
+
+* Video: [here](https://www.youtube.com/watch?v=2auwirNBvGg&ab_channel=TechDummiesNarendraL)
+* Part 2: [here](https://www.youtube.com/watch?v=U2lVmSlDJhg&ab_channel=TechDummiesNarendraL)
+  * this video's text in [this article](https://www.linkedin.com/pulse/system-design-google-docs-rahul-arram/)
+
+#### \#6. Detailed HLD ================================================
+
+* **Will Locking work?**
+  * **=&gt; NO,** as 100s of people use the doc at the same time
+  * =&gt; We've to use a **lock-free design**
+* **Optimistic Concurrency Control:**
+  * using 
+    1. Versioning
+    2. Conflict Resolution
+* **Sync Strategies**
+  1. **Event Passing**
+     * character-by-character sync
+     * keep track of full file for each user & sync it
+     * every change made by user: \(CRUD, font change etc\) has to be sent as **an event** to all the other people who are editing the doc
+     * **==&gt; Google doc uses this✅**
+  2. **Differential Sync**
+     * similar to `git diff`
+     * Just keep the diff's of users & keep sending it to all of them to maintain the sync 
+     * might be tedious if many people update the same file section
+* **Operational Transformation**
+
+## 10. Pastebin/gist
+
+* Code/file snipped sharing service
+* whimsical [link](https://whimsical.com/pastebin-4xky1h5bhCG2S9YL7VEB7k)
+
+#### \#1. Requirement Gathering ======================================
+
+#### 1.1 Functional Requirements
+
+* paste \(max file size allowed = 10MB\)
+* generate custom URL path for sharing
+* snippets expiry \(after 6 months/ customisable?\)
+* user login / Anonymous ; to see all his previous snippets
+
+#### 1.2 NonFunctional Requirements - Usage Patterns\(read heavy/CAP tradeoffs\)
+
+* Durability
+  * Once you write data; it will always be there
+  * irrespective of:
+    * High load
+    * server crashes
+    * DB full
+    * DB down
+* High availability 
+* Low latency
+  * user should be able to access the gist from url, as fast as possible
+
+#### 1.3 Out of Scope
+
+* Analytics
+* API Support
+
+#### \#2. Back-of-the-envelope estimation ============================
+
+#### 2.1 Scale of System
+
+* **100K** users **create** new snippets daily
+  * =&gt; 100K/\(24\*3600\) = **150 writes/sec**
+  * **=&gt; 30% buffer ===&gt; 200 reads/sec**
+* read:write = 10:1 =&gt; **100K reads**
+  * **=&gt;** reads = **1500 reads/sec** 
+  * **=&gt; 30%Buffer  ===&gt; 2K reads/sec**
+
+#### 2.2 Storage size estimation
+
+* **worst\_case:** max size of a snippet = 10MB
+  * =&gt; 10MB\*100K = **1000GB/day \(worst\_case\)**
+  * **=&gt;** 1000GB\*365 = **365 TB/year**
+* **avg\_case:** avg. size of snippet = 100KB
+  * =&gt; 100KB\*100K = **10 GB/day \(avg\_case\)**
+
+#### \#3. APIs =======================================================
+
+* `addPaste(api_dev_key, paste_data, custom_url=None user_name=None, paste_name=None, expire_date=None)`
+  * **Returns:** \(string\)
+* `getPaste(api_dev_key, api_paste_key)`
+  * Returns JSON blob
+* `deletePaste(api_dev_key, api_paste_key)`
+
+#### \#4. Models:Classes, DB Schema & ER diagrams=====================
+
+#### 4.1 Tables Schemas 
+
+* **User**
+  * id
+  * name
+  * createdAt
+  * metaData
+* **Snippet**
+  * id
+  * content\(10KB\)
+  * s3\_link
+  * createdAt
+  * expiresAt
+
+#### 4.2 DBs choices\(NoSQL/SQL\)
+
+* **Metadata DB**: SQL or NoSQL \( both are fine\)
+  * this has just the reference of snippet
+* **Blob/Object DB** : For storing the actual snippets
+  * **S3**
+* **\[Hybrid Approach\]For better UX:**
+  * store small chunk \(10KB\) of snippet in **Metadata DB** as well; 
+  * so that user doesnt have to wait for async req of Blob pull
+
+#### \#5. Draw 'Basic HLD'=============================================
+
+#### \#6. Detailed HLD ================================================
+
+* Go **severless/lamda** for APIs!!!
+* **Url creator :: Distributed Key Generation Service \(DKGS\)**
+
+  * have a separate Service for this
+  * This service has precomputed keys\(stored in **redis\)**; which we can fetch to generate unique url with **minimum SLA**
+    * Another approach was; to get row\_id from metadataDB itself & use it in url=&gt; but this will increase SLA
+  * Similar technique\(**DKGS\)** is used by **twitter as well!!**
+  * **ADDED\_BONUS: sprinkle** some **salt** of userID/fileName etc to make it uniquely hashed 
+
+![](../.gitbook/assets/screenshot-2021-08-28-at-8.50.24-pm.png)
+
+## 11. Typeahead Suggestion
+
+&gt;&gt;&gt; Use **Trie**
+
+* Whimsical [link](https://whimsical.com/typeahead-Rf18XgXGQ5bFU7wEgEGJds)
+* Video [link](https://www.youtube.com/watch?v=xrYTjaK5QVM&t=1s&ab_channel=TechDummiesNarendraL)
+
+#### \#1. Requirement Gathering ======================================
+
+#### 1.1 Functional Requirements
+
+* Response Time \(&lt;100ms\) =&gt; looks like real-time
+* Relevance & context of predictions
+* Sorted results
+* Top **K** results
+
+#### \#2. Back-of-the-envelope estimation ============================
+
+#### 2.1 Scale of System
+
+* Google gets **5B searches** every day:
+* **20%** of these searches are **unique**\(yes, there are lots of duplications\)
+* we want to index only **top 50% words** \(we can get rid of a lot of less frequently searched queries\)
+  * =&gt; will have **100 million unique terms** for which we want to build an **index**
+
+#### 2.2 Storage size estimation
+
+* query consists of **3 words**
+* average length of a word is **5 characters**
+  * =&gt; this will give us 
+* we need 2 bytes to store a character
+* total storage we will need = 100M \*\(15\*2byte\) =&gt; **3GB**
+
+#### 2.3 Bandwidth estimation\(read+write\)
+
+* 
+#### \#3. APIs =======================================================
+
+* 
+#### \#4. Models:Classes, DB Schema & ER diagrams=====================
+
+#### 4.1 Tables Schemas 
+
+* User
+* Trending Keywords
+* Prefix hash table:
+  * prefix
+  * `top_k_suggestions`
+
+#### 4.2 DBs choices\(NoSQL/SQL\)
+
+* 
+#### \#5. Draw 'Basic HLD'=============================================
+
+#### \#6. Detailed HLD ================================================
+
+* **Relevance/Context:**
+  * give rank to each word; based on 
+    * how many times user has searched
+    * trending keywords
+    * NLP based
+  * **Precompute** this rank to all the words
+* **Search Algo:**
+  * Normal Trie implementation:
+    * **Complexity: `O(L) + O(N)  + O(klogk)`**
+      *  L : length of the prefix typed 
+      * N: total number of childnodes under prefix node
+      * k: number of **sorted predictions** required by the system
+  * **How to make the algo Faster?**
+    * **=&gt; Precompute** top K words for each node😎
+      * ===&gt; no traversal required
+    * **Complexity Now**: **`O(L)`**
+
+![](../.gitbook/assets/screenshot-2021-08-28-at-9.27.31-pm.png)
+
+* **How to store Trie in DB?**
+  * **=&gt;** use **prefix hash table**
+* **How to update the Trie?**
+  * Updating trie is extremely **resource intensive**
+  * Do it **offline**, after certain interval, periodically
+  * Employ **Map/Reduce** here
+
+![](../.gitbook/assets/screenshot-2021-08-28-at-9.37.18-pm.png)
+
+## 12. Elastic Search \| Search Engine Indexing
+
+## 13. OTP Generation
+
+## 14. API Rate Limiter
+
+## 15. Uber Backend
 
 ## \#More From Leetcode
 
