@@ -2713,37 +2713,1688 @@ class SearchIndex(Search):
 {% endtab %}
 {% endtabs %}
 
-## 
-
-## 10. \[\] CrickInfo
-
-## 11. \[\] Facebook
-
-## 12.  \[\] Hotel Management System
-
-## 13.  \[\] Blackjack
-
-## 14.  \[\] Chess
 
 
+## 10. CrickInfo
+
+We have two main Actors in our system:
+
+* **Admin:** An Admin will be able to add/modify players, teams, tournaments, and matches, and will also record ball-by-ball details of each match.
+* **Commentator:** Commentators will be responsible for adding ball-by-ball commentary for matches.
+
+Here are the top use cases of our system:
+
+* **Add/modify teams and players:** An Admin will add players to teams and keeps up-to-date information about them in the system.
+* **Add tournaments and matches:** Admins will add tournaments and matches in the system.
+* Add ball: Admins will record ball-by-ball details of a match.
+* **Add stadium, umpire, and referee:** The system will keep track of stadiums as well as of the umpires and referees managing the matches.
+* **Add/update stats:** Admins will add stats about matches and tournaments. The system will generate certain stats.
+* **Add commentary:** Add ball-by-ball commentary of matches.
+
+{% tabs %}
+{% tab title="constants.py" %}
+```python
+from enum import Enum
+
+
+class Address:
+    def __init__(self, street, city, state, zip_code, country):
+        self.__street_address = street
+        self.__city = city
+        self.__state = state
+        self.__zip_code = zip_code
+        self.__country = country
+
+
+class Person():
+    def __init__(self, name, address, email, phone):
+        self.__name = name
+        self.__address = address
+        self.__email = email
+        self.__phone = phone
+
+
+class MatchFormat(Enum):
+    ODI, T20, TEST = 1, 2, 3
+
+
+class MatchResult(Enum):
+    LIVE, FINISHED, DRAWN, CANCELLED = 1, 2, 3, 4
+
+
+class UmpireType(Enum):
+    FIELD, RESERVED, TV = 1, 2, 3
+
+
+class WicketType(Enum):
+    BOLD, CAUGHT, STUMPED, RUN_OUT, LBW, RETIRED_HURT, HIT_WICKET, OBSTRUCTING = 1, 2, 3, 4, 5, 6, 7, 8
+
+
+class BallType(Enum):
+    NORMAL, WIDE, WICKET, NO_BALL = 1, 2, 3, 4
+
+
+class RunType(Enum):
+    NORMAL, FOUR, SIX, LEG_BYE, BYE, NO_BALL, OVERTHROW = 1, 2, 3, 4, 5, 6, 7
+
+```
+{% endtab %}
+
+{% tab title="acc\_type.py" %}
+```python
+# For simplicity, we are not defining getter and setter functions. The reader can
+# assume that all class attributes are private and accessed through their respective
+# public getter methods and modified only through their public methods function.
+
+class Player:
+    def __init__(self, person):
+        self.__person = person
+        self.__contracts = []
+
+    def add_contract(self, contract):
+        None
+
+
+class Admin:
+    def __init__(self, person):
+        self.__person = person
+
+    def add_match(self, match):
+        None
+
+    def add_team(self, team):
+        None
+
+    def add_tournament(self, tournament):
+        None
+
+
+class Umpire:
+    def __init__(self, person):
+        self.__person = person
+
+    def assign_match(self, match):
+        None
+
+
+class Referee:
+    def __init__(self, person):
+        self.__person = person
+
+    def assign_match(self, match):
+        None
+
+
+class Commentator:
+    def __init__(self, person):
+        self.__person = person
+
+    def assign_match(self, match):
+        None
+
+```
+{% endtab %}
+
+{% tab title="over.py" %}
+```python
+from datetime import datetime
+from abc import ABC
+from .constants import MatchResult
+
+
+class Over:
+    def __init__(self, number):
+        self.__number = number
+        self.__balls = []
+
+    def add_ball(self, ball):
+        None
+
+
+class Ball:
+    def __init__(self, balled_by, played_by, ball_type, wicket, runs, commentary):
+        self.__balled_by = balled_by
+        self.__played_by = played_by
+        self.__type = ball_type
+
+        self.__wicket = wicket
+        self.__runs = runs
+        self.__commentary = commentary
+
+
+class Wicket:
+    def __init__(self, wicket_type, player_out, caught_by, runout_by, stumped_by):
+        self.__wicket_type = wicket_type
+        self.__player_out = player_out
+        self.__caught_by = caught_by
+        self.__runout_by = runout_by
+        self.__stumped_by = stumped_by
+
+
+class Commentary:
+    def __init__(self, text, commentator):
+        self.__text = text
+        self.__created_at = datetime.date.today()
+        self.__created_by = commentator
+
+
+class Inning:
+    def __init__(self, number, start_time):
+        self.__number = number
+        self.__start_time = start_time
+        self.__overs = []
+
+    def add_over(self, over):
+        None
+
+
+# from abc import ABC, abstractmethod
+class Match(ABC):
+    def __init__(self, number, start_time, referee):
+        self.__number = number
+        self.__start_time = start_time
+        self.__result = MatchResult.LIVE
+
+        self.__teams = []
+        self.__innings = []
+        self.__umpires = []
+        self.__referee = referee
+        self.__commentators = []
+        self.__match_stats = []
+
+    def assign_stadium(self, stadium):
+        None
+
+    def assign_referee(self, referee):
+        None
+
+
+class ODI(Match):
+    # ...
+    pass
+
+
+class Test(Match):
+    # ...
+    pass
+
+```
+{% endtab %}
+
+{% tab title="team.py" %}
+```python
+class Team:
+    def __init__(self, name, coach):
+        self.__name = name
+        self.__players = []
+        self.__news = []
+        self.__coach = coach
+
+    def add_tournament_squad(self, tournament_squad):
+        None
+
+    def add_player(self, player):
+        None
+
+    def add_news(self, news):
+        None
+
+
+class TournamentSquad:
+    def __init__(self):
+        self.__players = []
+        self.__tournament_stats = []
+
+    def add_player(self, player):
+        None
+
+
+class Playing11:
+    def __init__(self):
+        self.__players = []
+        self.__twelfth_man = None
+
+    def add_player(self, player):
+        None
+
+```
+{% endtab %}
+{% endtabs %}
 
 
 
+## 11. Facebook
+
+We have three main Actors in our system:
+
+* **Member:** All members can search for other members, groups, pages, or posts, as well as send friend requests, create posts, etc.
+* **Admin:** Mainly responsible for admin functions like blocking and unblocking a member, etc.
+* **System:** Mainly responsible for sending notifications for new messages, friend requests, etc.
+
+Here are the top use cases of our system:
+
+* **Add/update profile:** Any member should be able to create their profile to reflect their work experiences, education, etc.
+* **Search:** Members can search for other members, groups or pages. Members can send a friend request to other members.
+* **Follow or Unfollow a member or a page:** Any member can follow or unfollow any other member or page.
+* **Send message:** Any member can send a message to any of their friends.
+* **Create post:** Any member can create a post to share with their friends, as well as like or add comments to any post visible to them.
+* **Send notification:** The system will be able to send notifications for new messages, friend requests, etc.
 
 
 
+* **Add commentary:** Add ball-by-ball commentary of matches.
+
+{% tabs %}
+{% tab title="constants.py" %}
+```python
+from enum import Enum
+
+
+class ConnectionInvitationStatus(Enum):
+    PENDING, ACCEPTED, REJECTED, CANCELED = 1, 2, 3, 4
+
+
+class AccountStatus(Enum):
+    ACTIVE, CLOSED, CANCELED, BLACKLISTED, DISABLED = 1, 2, 3, 4, 5
+
+```
+{% endtab %}
+
+{% tab title="acc\_type.py" %}
+```python
+from abc import ABC
+from datetime import datetime
+from .constants import AccountStatus, ConnectionInvitationStatus
+from .profile import Profile
+
+
+# For simplicity, we are not defining getter and setter functions. The reader can
+# assume that all class attributes are private and accessed through their respective
+# public getter methods and modified only through their public methods function.
+
+class Account:
+    def __init__(self, id, password, status=AccountStatus.Active):
+        self.__id = id
+        self.__password = password
+        self.__status = status
+
+    def reset_password(self):
+        None
+
+
+# from abc import ABC, abstractmethod
+class Person(ABC):
+    def __init__(self, name, address, email, phone, account):
+        self.__name = name
+        self.__address = address
+        self.__email = email
+        self.__phone = phone
+        self.__account = account
+
+
+class Member(Person):
+    def __init__(self, id, date_of_membership, name):
+        self.__member_id = id
+        self.__date_of_membership = date_of_membership
+        self.__name = name
+
+        self.__profile = Profile()
+        self.__member_follows = []
+        self.__member_connections = []
+        self.__page_follows = []
+        self.__member_suggestions = []
+        self.__connection_invitations = []
+        self.__group_follows = []
+
+    def send_message(self, message):
+        None
+
+    def create_post(self, post):
+        None
+
+    def send_connection_invitation(self, invitation):
+        None
+
+    def search_member_suggestions(self):
+        None
+
+
+class Admin(Person):
+    def block_user(self, customer):
+        None
+
+    def unblock_user(self, customer):
+        None
+
+    def enable_page(self, page):
+        None
+
+    def disable_page(self, page):
+        None
+
+
+class ConnectionInvitation:
+    def __init__(self, member_invited, name, status=ConnectionInvitationStatus.PENDING):
+        self.__member_invited = member_invited
+        self.__status = status
+        self.__date_created = datetime.date.today()
+        self.__date_updated = datetime.date.today()
+
+    def accept_connection(self):
+        None
+
+    def reject_connection(self):
+        None
+
+```
+{% endtab %}
+
+{% tab title="group.py" %}
+```python
+class Group:
+    def __init__(self, id, name, description, total_members):
+        self.__group_id = id
+        self.__name = name
+        self.__description = description
+        self.__total_members = total_members
+        self.__members = []
+
+    def add_member(self, member):
+        None
+
+    def update_description(self, description):
+        None
+
+
+class Post:
+    def __init__(self, id, text, total_likes, total_shares, owner):
+        self.__post_id = id
+        self.__text = text
+        self.__total_likes = total_likes
+        self.__total_shares = total_shares
+        self.__owner = owner
+
+
+class Message:
+    def __init__(self, id, sent_to, body, media):
+        self.__message_id = id
+        self.__sent_to = sent_to
+        self.__message_body = body
+        self.__media = media
+
+    def add_member(self, member):
+        None
+
+
+class Comment:
+    def __init__(self, id, text, total_likes, owner):
+        self.__comment_id = id
+        self.__text = text
+        self.__total_likes = total_likes
+        self.__owner = owner
+
+```
+{% endtab %}
+
+{% tab title="page.py" %}
+```python
+from datetime import datetime
+
+
+class Page:
+    def __init__(self, id, name, description, type, total_members):
+        self.__page_id = id
+        self.__name = name
+        self.__description = description
+        self.__type = type
+        self.__total_members = total_members
+        self.__recommendation = []
+
+    def get_recommendation(self):
+        return self.__recommendation
+
+
+class Recommendation:
+    def __init__(self, id, rating, description):
+        self.__recommendation_id = id
+        self.__rating = rating
+        self.__description = description
+        self.__created_at = datetime.date.today()
+
+```
+{% endtab %}
+
+{% tab title="profile" %}
+```python
+class Profile:
+    def __init__(self, profile_picture, cover_photo, gender):
+        self.__profile_picture = profile_picture
+        self.__cover_photo = cover_photo
+        self.__gender = gender
+
+        self.__work_experiences = []
+        self.__educations = []
+        self.__places = []
+        self.__stats = []
+
+    def add_work_experience(self, work):
+        None
+
+    def add_education(self, education):
+        None
+
+    def add_place(self, place):
+        None
+
+
+```
+{% endtab %}
+
+{% tab title="search.py" %}
+```python
+from abc import ABC
+
+
+class Search(ABC):
+    def search_member(self, name):
+        None
+
+    def search_group(self, name):
+        None
+
+    def search_page(self, name):
+        None
+
+    def search_post(self, word):
+        None
+
+
+class SearchIndex(Search):
+    def __init__(self):
+        self.__member_names = {}
+        self.__group_names = {}
+        self.__page_titles = {}
+        self.__posts = {}
+
+    def add_member(self, member):
+        if member.get_name() in self.__member_names:
+            self.__member_names.get(member.get_name()).add(member)
+        else:
+            self.__member_names[member.get_name()] = member
+
+    def add_group(self, group):
+        None
+
+    def add_page(self, page):
+        None
+
+    def add_post(self, post):
+        None
+
+    def search_member(self, name):
+        return self.__member_names.get(name)
+
+    def search_group(self, name):
+        return self.__group_names.get(name)
+
+    def search_page(self, name):
+        return self.__page_titles.get(name)
+
+    def search_post(self, word):
+        return self.__posts.get(word)
+
+```
+{% endtab %}
+{% endtabs %}
 
 
 
+## 12.  Hotel Management System
+
+Here are the main Actors in our system:
+
+* **Guest:** All guests can search the available rooms, as well as make a booking.
+* **Receptionist:** Mainly responsible for adding and modifying rooms, creating room bookings, check-in, and check-out customers.
+* **System:** Mainly responsible for sending notifications for room booking, cancellation, etc.
+* **Manager:** Mainly responsible for adding new workers.
+* **Housekeeper:** To add/modify housekeeping record of rooms.
+* **Server:** To add/modify room service record of rooms.
+
+Here are the top use cases of the Hotel Management System:
+
+* **Add/Remove/Edit room:** To add, remove, or modify a room in the system.
+* **Search room:** To search for rooms by type and availability.
+* **Register or cancel an account:** To add a new member or cancel the membership of an existing member.
+* **Book room:** To book a room.
+* **Check-in:** To let the guest check-in for their booking.
+* **Check-out:** To track the end of the booking and the return of the room keys.
+* **Add room charge:** To add a room service charge to the customer’s bill.
+* **Update housekeeping log:** To add or update the housekeeping entry of a room.
+* **Add commentary:** Add ball-by-ball commentary of matches.
+
+{% tabs %}
+{% tab title="constants.py" %}
+```python
+from enum import Enum
+
+
+class RoomStyle(Enum):
+    STANDARD, DELUXE, FAMILY_SUITE, BUSINESS_SUITE = 1, 2, 3, 4
+
+
+class RoomStatus(Enum):
+    AVAILABLE, RESERVED, OCCUPIED, NOT_AVAILABLE, BEING_SERVICED, OTHER = 1, 2, 3, 4, 5, 6
+
+
+class BookingStatus(Enum):
+    REQUESTED, PENDING, CONFIRMED, CHECKED_IN, CHECKED_OUT, CANCELLED, ABANDONED = 1, 2, 3, 4, 5, 6, 7
+
+
+class AccountStatus(Enum):
+    ACTIVE, CLOSED, CANCELED, BLACKLISTED, BLOCKED = 1, 2, 3, 4, 5
+
+
+class AccountType(Enum):
+    MEMBER, GUEST, MANAGER, RECEPTIONIST = 1, 2, 3, 4
+
+
+class PaymentStatus(Enum):
+    UNPAID, PENDING, COMPLETED, FILLED, DECLINED, CANCELLED, ABANDONED, SETTLING, SETTLED, REFUNDED = 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
+
+```
+{% endtab %}
+
+{% tab title="acc\_type.py" %}
+```python
+from abc import ABC
+from .constants import *
+
+
+# For simplicity, we are not defining getter and setter functions. The reader can
+# assume that all class attributes are private and accessed through their respective
+# public getter methods and modified only through their public methods function.
+
+class Account:
+    def __init__(self, id, password, status=AccountStatus.Active):
+        self.__id = id
+        self.__password = password
+        self.__status = status
+
+    def reset_password(self):
+        None
+
+
+# from abc import ABC, abstractmethod
+class Person(ABC):
+    def __init__(self, name, address, email, phone, account):
+        self.__name = name
+        self.__address = address
+        self.__email = email
+        self.__phone = phone
+        self.__account = account
+
+
+class Guest(Person):
+    def __init__(self):
+        self.__total_rooms_checked_in = 0
+
+    def get_bookings(self):
+        None
+
+
+class Receptionist(Person):
+    def search_member(self, name):
+        None
+
+    def create_booking(self):
+        None
+
+
+class Server(Person):
+    def add_room_charge(self, room, room_charge):
+        None
+
+```
+{% endtab %}
+
+{% tab title="hotel.py" %}
+```python
+class HotelLocation:
+    def __init__(self, name, address):
+        self.__name = name
+        self.__location = address
+
+    def get_rooms(self):
+        None
+
+
+class Hotel:
+    def __init__(self, name):
+        self.__name = name
+        self.__locations = []
+
+    def add_location(self, location):
+        None
+
+```
+{% endtab %}
+
+{% tab title="room.py" %}
+```python
+from datetime import datetime
+from abc import ABC
+
+
+class Search(ABC):
+    def search(self, style, start_date, duration):
+        None
+
+
+class Room(Search):
+    def __init__(self, room_number, room_style, status, price, is_smoking):
+        self.__room_number = room_number
+        self.__style = room_style
+        self.__status = status
+        self.__booking_price = price
+        self.__is_smoking = is_smoking
+
+        self.__keys = []
+        self.__house_keeping_log = []
+
+    def is_room_available(self):
+        None
+
+    def check_in(self):
+        None
+
+    def check_out(self):
+        None
+
+    def search(self, style, start_date, duration):
+        None
+
+
+# return all rooms with the given style and availability
+
+
+class RoomKey:
+    def __init__(self, key_id, barcode, is_active, is_master):
+        self.__key_id = key_id
+        self.__barcode = barcode
+        self.__issued_at = datetime.date.today()
+        self.__active = is_active
+        self.__is_master = is_master
+
+    def assign_room(self, room):
+        None
+
+    def is_active(self):
+        None
+
+
+class RoomHouseKeeping:
+    def __init__(self, description, duration, house_keeper):
+        self.__description = description
+        self.__start_datetime = datetime.date.today()
+        self.__duration = duration
+        self.__house_keeper = house_keeper
+
+    def add_house_keeping(self, room):
+        None
+
+```
+{% endtab %}
+
+{% tab title="room\_booking.py" %}
+```python
+from datetime import datetime
+from abc import ABC
+
+
+class RoomBooking:
+    def __init__(self, reservation_number, start_date, duration_in_days, booking_status):
+        self.__reservation_number = reservation_number
+        self.__start_date = start_date
+        self.__duration_in_days = duration_in_days
+        self.__status = booking_status
+        self.__checkin = None
+        self.__checkout = None
+
+        self.__guest_id = 0
+        self.__room = None
+        self.__invoice = None
+        self.__notifications = []
+
+    def fetch_details(self, reservation_number):
+        None
+
+
+# from abc import ABC, abstractmethod
+class RoomCharge(ABC):
+    def __init__(self):
+        self.__issue_at = datetime.date.today()
+
+    def add_invoice_item(self, invoice):
+        None
+
+
+class Amenity(RoomCharge):
+    def __init__(self, name, description):
+        self.__name = name
+        self.__description = description
+
+
+class RoomService(RoomCharge):
+    def __init__(self, is_chargeable, request_time):
+        self.__is_chargeable = is_chargeable
+        self.__request_time = request_time
+
+
+class KitchenService(RoomCharge):
+    def __init__(self, description):
+        self.__description = description
+
+```
+{% endtab %}
+{% endtabs %}
+
+## 13.  Blackjack
 
 
 
+We have two main Actors in our system:
+
+* **Dealer:** Mainly responsible for dealing cards and game resolution.
+* **Player:** Places the initial bets, accepts or declines additional bets - including insurance, and splits hands. Accepts or rejects the offered resolution, including even money. Chooses among hit, double and stand pat options.
+
+**Typical Blackjack Game Use cases**
+
+Here are the top use cases of the Blackjack game:
+
+* **Create Hands:** Initially both the player and the dealer are given two cards each. The player has both cards visible whereas only one card of the dealer’s hand is visible to the player.
+* **Place Bet:** To start the game, the player has to place a bet.
+* **Player plays the hand:** If the hand is under 21 points, the player has three options:
+  * Hit: The hand gets an additional card and this process repeats.
+  * Double Down: The player creates an additional bet, and the hand gets one more card and play is done.
+  * Stands Pat: If the hand is 21 points or over, or the player chooses to stand pat, the game is over.
+  * Resolve Bust: If a hand is over 21, it is resolved as a loser.
+* **Dealer plays the hand:** The dealer keeps getting a new card if the total point value of the hand is 16 or less, and stops dealing cards at the point value of 17 or more.
+  * Dealer Bust: If the dealer’s hand is over 21, the player’s wins the game. Player Hands with two cards totaling 21 \( “blackjack” \) are paid 3:2, all other hands are paid 1:1.
+* **Insurance:** If the dealer’s up card is an Ace, then the player is offered insurance:
+  * Offer Even Money: If the player’s hand totals to a soft 21, a blackjack; the player is offered an even money resolution. If the player accepts, the entire game is resolved at this point. The ante is paid at even money; there is no insurance bet.
+  * Offer Insurance: The player is offered insurance, which they can accept by creating a bet. For players with blackjack, this is the second offer after even money is declined. If the player declines, there are no further insurance considerations.
+  * Examine Hole Card: The dealer’s hole card is examined. If it has a 10-point value, the insurance bet is resolved as a winner, and the game is over. Otherwise, the insurance is resolved as a loser, the hole card is not revealed, and play continues.
+* **Split:** If the player’s hand has both cards of equal rank, the player is offered a split. The player accepts by creating an additional Bet. The original hand is removed; The two original cards are split and then the dealer deals two extra cards to create two new Hands. There will not be any further splitting.
+* **Game Resolution:** The Player’s Hand is compared against the Dealer’s Hand, and the hand with the higher point value wins. In the case of a tie, the bet is returned. When the player wins, a winning hand with two cards totaling 21 \(“blackjack”\) is paid 3:2, any other winning hand is paid 1:1.
+
+{% tabs %}
+{% tab title="constants.py" %}
+```python
+from enum import Enum
+
+class SUIT(Enum):
+    HEART, SPADE, CLUB, DIAMOND = 1, 2, 3, 4
+
+```
+{% endtab %}
+
+{% tab title="card.py" %}
+```python
+class Card:
+    def __init__(self, suit, face_value):
+        self.__suit = suit
+        self.__face_value = face_value
+
+    def get_suit(self):
+        return self.__suit
+
+    def get_face_value(self):
+        return self.__face_value
+
+```
+{% endtab %}
+
+{% tab title="blackjack\_card.py" %}
+```python
+from .card import *
+
+class BlackjackCard(Card):
+    def __init__(self, suit, face_value):
+        super().__init__(suit, face_value)
+        self.__game_value = face_value
+        if self.__game_value > 10:
+            self.__game_value = 10
+
+    def get_game_value(self):
+        return self.__game_value
+
+```
+{% endtab %}
+
+{% tab title="deck\_shoe.py" %}
+```python
+import random
+from datetime import datetime
+from .blackjack_card import *
+from .constants import *
 
 
+class Deck:
+    def __init__(self):
+        self.__cards = []
+        self.__creation_date = datetime.date.today()
+        for value in range(1, 14):
+            for suit in SUIT:
+                self.__cards.add(BlackjackCard(suit, value))
+
+    def get_cards(self):
+        self.__cards
 
 
+class Shoe:
+    def __init__(self, number_of_decks):
+        self.__cards = []
+        self.__number_of_decks = number_of_decks
+        self.create_shoe()
+        self.shuffle()
+
+    def create_shoe(self):
+        for decks in range(0, self.__number_of_decks):
+            self.__cards.add(Deck().get_cards())
+
+    def shuffle(self):
+        card_count = self.__cards.size()
+        for i in range(0, card_count):
+            j = random.randrange(0, card_count - i - 1, 1)
+            self.__cards[i], self.__cards[j] = self.__cards[j], self.__cards[i]
+
+    # Get the next card from the shoe
+    def deal_card(self):
+        if self.__cards.size() == 0:
+            self.create_shoe()
+        return self.__cards.remove(0)
 
 
+```
+{% endtab %}
+
+{% tab title="hand.py" %}
+```python
+class Hand:
+    def __init__(self, blackjack_card1, blackjack_card2):
+        self.__cards = [blackjack_card1, blackjack_card2]
+
+    def get_scores(self):
+        totals = [0]
+
+        for card in self.__cards:
+            new_totals = []
+            for score in totals:
+                new_totals.add(card.face_value() + score)
+                if card.face_value() == 1:
+                    new_totals.add(11 + score)
+
+            totals = new_totals
+
+        return totals
+
+    def add_card(self, card):
+        self.__cards.add(card)
+
+    # get highest score which is less than or equal to 21
+    def resolve_score(self):
+        scores = self.get_scores()
+        best_score = 0
+        for score in scores:
+            if score <= 21 and score > best_score:
+                best_score = score
+
+        return best_score
+
+
+```
+{% endtab %}
+
+{% tab title="player.py" %}
+```python
+from abc import ABC
+
+class BasePlayer(ABC):
+    def __init__(self, id, password, balance, status, person):
+        self.__id = id
+        self.__password = password
+        self.__balance = balance
+        self.__status = status
+        self.__person = person
+        self.__hands = []
+
+    def reset_password(self):
+        None
+
+    def get_hands(self):
+        return self.__hands
+
+    def add_hand(self, hand):
+        return self.__hands.add(hand)
+
+    def remove_hand(self, hand):
+        self.__hands.remove(hand)
+
+
+class Player(BasePlayer):
+    def __init__(self, id, password, balance, status, person):
+        super.__init__(id, password, balance, status, person)
+        self.__bet = 0
+        self.__total_cash = 0
+
+
+class Dealer(BasePlayer):
+    def __init__(self, id, password, balance, status, person):
+        super.__init__(id, password, balance, status, person)
+
+```
+{% endtab %}
+
+{% tab title="game.py" %}
+```python
+from .hand import  *
+from .player import *
+from .deck_shoe import *
+
+
+def get_bet_from_UI():
+    pass
+
+
+def get_user_action():
+    pass
+
+
+class Game:
+    def __init__(self, player, dealer):
+        self.__player = player
+        self.__dealer = dealer
+        self.__MAX_NUM_OF_DECKS = 3
+        self.__shoe = Shoe(self.__MAX_NUM_OF_DECKS)
+
+    def play_action(self, action, hand):
+        switcher = {
+            "hit": self.hit(hand),
+            "split": self.split(hand),
+            "stand pat": None,  # do nothing
+            "stand": self.stand()
+        }
+        switcher.get(action, 'Invalid move')
+
+    def hit(self, hand):
+        self.__hand.add_card(self.__shoe.deal_card())
+
+    def stand(self):
+        dealer_score = self.__dealer.get_total_score()
+        player_score = self.__player.get_total_score()
+        hands = self.__player.get_hands()
+        for hand in hands:
+            best_score = hand.resolve_score()
+            if player_score == 21:
+                # blackjack, pay 3: 2 of the bet
+                None
+            elif player_score > dealer_score:
+                # pay player equal to the bet
+                None
+            elif player_score < dealer_score:
+                # collect the bet from the player
+                None
+            else:  # tie
+                # bet goes back to player
+                None
+
+    def split(self, hand):
+        cards = hand.get_cards()
+        self.__player.add_hand(Hand(cards[0], self.__shoe.deal_card()))
+        self.__player.add_hand(Hand(cards[1], self.__shoe.deal_card()))
+        self.__player.remove_hand(hand)
+
+    def start(self):
+        self.__player.place_bet(get_bet_from_UI())
+
+        player_hand = Hand(self.__shoe.deal_card(), self.__shoe.deal_card())
+        self.__player.add_to_hand(player_hand)
+
+        dealer_hand = Hand(self.__shoe.deal_card(), self.__shoe.deal_card())
+        self.__dealer.add_to_hand(dealer_hand)
+
+        while True:
+            hands = self.__player.get_hands()
+            for hand in hands:
+                action = get_user_action(hand)
+                self.play_action(action, hand)
+                if action.equals("stand"):
+                    break
+
+
+def main():
+    player = Player()
+    dealer = Dealer()
+    game = Game(player, dealer)
+    game.start()
+
+
+```
+{% endtab %}
+{% endtabs %}
+
+## 14.  Chess
+
+We have two actors in our system:
+
+* **Player:** A registered account in the system, who will play the game. The player will play chess moves.
+* **Admin:** To ban/modify players.
+
+Here are the top use cases for chess:
+
+* **Player moves a piece:** To make a valid move of any chess piece.
+* **Resign or forfeit a game:** A player resigns from/forfeits the game.
+* **Register new account/Cancel membership:** To add a new member or cancel an existing member.
+* **Update game log:** To add a move to the game log.
+
+{% tabs %}
+{% tab title="constants.py" %}
+```python
+class PieceType:
+    ROOK = "rook"
+    KNIGHT = "knight"
+    BISHOP = "bishop"
+    QUEEN = "queen"
+    KING = "king"
+    PAWN = "pawn"
+
+
+CHESS_BOARD_SIZE = 8
+
+INITIAL_PIECE_SET_SINGLE = [
+    (PieceType.ROOK, 0, 0),
+    (PieceType.KNIGHT, 1, 0),
+    (PieceType.BISHOP, 2, 0),
+    (PieceType.QUEEN, 3, 0),
+    (PieceType.KING, 4, 0),
+    (PieceType.BISHOP, 5, 0),
+    (PieceType.KNIGHT, 6, 0),
+    (PieceType.ROOK, 7, 0),
+    (PieceType.PAWN, 0, 1),
+    (PieceType.PAWN, 1, 1),
+    (PieceType.PAWN, 2, 1),
+    (PieceType.PAWN, 3, 1),
+    (PieceType.PAWN, 4, 1),
+    (PieceType.PAWN, 5, 1),
+    (PieceType.PAWN, 6, 1),
+    (PieceType.PAWN, 7, 1)
+]
+
+```
+{% endtab %}
+
+{% tab title="king.py" %}
+```python
+from .pieces import Piece
+from .moves import ChessPosition
+
+
+class King(Piece):
+    SPOT_INCREMENTS = [(1, -1), (1, 0), (1, 1), (0, 1), (-1, 1), (-1, 0), (-1, -1), (0, -1)]
+
+    def __init__(self, position: ChessPosition, color: str):
+        super().__init__(position, color)
+        self._board_handle = None
+
+    def set_board_handle(self, board):
+        self._board_handle = board
+        self._board_handle.register_king_position(self.position, self.color)
+
+    def move(self, target_position: ChessPosition):
+        Piece.move(self, target_position)
+        self._board_handle.register_king_position(target_position, self.color)
+
+    def get_threatened_positions(self, board):
+        positions = []
+        for increment in King.SPOT_INCREMENTS:
+            positions.append(board.spot_search_threat(self._position, self._color, increment[0], increment[1]))
+        positions = [x for x in positions if x is not None]
+        return positions
+
+    def get_moveable_positions(self, board):
+        return self.get_threatened_positions(board)
+
+    def _symbol_impl(self):
+        return 'KI'
+
+```
+{% endtab %}
+
+{% tab title="queen.py" %}
+```python
+from .pieces import Piece
+
+
+class Queen(Piece):
+    BEAM_INCREMENTS = [(1, 1), (1, -1), (-1, 1), (-1, -1), (0, 1), (0, -1), (1, 0), (-1, 0)]
+
+    def get_threatened_positions(self, board):
+        positions = []
+        for increment in (Queen.BEAM_INCREMENTS):
+            positions += board.beam_search_threat(self._position, self._color, increment[0], increment[1])
+        return positions
+
+    def get_moveable_positions(self, board):
+        return self.get_threatened_positions(board)
+
+    def _symbol_impl(self):
+        return 'QU'
+
+```
+{% endtab %}
+
+{% tab title="knight.py" %}
+```python
+from .pieces import Piece
+
+
+class Knight(Piece):
+    SPOT_INCREMENTS = [(2, 1), (2, -1), (-2, 1), (-2, -1), (1, 2), (1, -2), (-1, 2), (-1, -2)]
+
+    def get_threatened_positions(self, board):
+        positions = []
+        for increment in Knight.SPOT_INCREMENTS:
+            positions.append(board.spot_search_threat(self._position, self._color, increment[0], increment[1]))
+        positions = [x for x in positions if x is not None]
+        return positions
+
+    def get_moveable_positions(self, board):
+        return self.get_threatened_positions(board)
+
+    def _symbol_impl(self):
+        return 'KN'
+
+```
+{% endtab %}
+
+{% tab title="pawn.py" %}
+```python
+from .pieces import Piece
+from .moves import ChessPosition
+
+
+class Pawn(Piece):
+    SPOT_INCREMENTS_MOVE = [(0, 1)]
+    SPOT_INCREMENTS_MOVE_FIRST = [(0, 1), (0, 2)]
+    SPOT_INCREMENTS_TAKE = [(-1, 1), (1, 1)]
+
+    def __init__(self, position: ChessPosition, color: str):
+        super().__init__(position, color)
+        self._moved = False
+
+    def get_threatened_positions(self, board):
+        positions = []
+        increments = Pawn.SPOT_INCREMENTS_TAKE
+        for increment in increments:
+            positions.append(board.spot_search_threat(self._position, self._color, increment[0], increment[1] if self.color == Piece.WHITE else (-1) * increment[1]))
+        positions = [x for x in positions if x is not None]
+        return positions
+
+    def get_moveable_positions(self, board):
+        positions = []
+        increments = Pawn.SPOT_INCREMENTS_MOVE if self._moved else Pawn.SPOT_INCREMENTS_MOVE_FIRST
+        for increment in increments:
+            positions.append(board.spot_search_threat(self._position, self._color, increment[0], increment[1] if self.color == Piece.WHITE else (-1) * increment[1], free_only=True))
+
+        increments = Pawn.SPOT_INCREMENTS_TAKE
+        for increment in increments:
+            positions.append(board.spot_search_threat(self._position, self._color, increment[0], increment[1] if self.color == Piece.WHITE else (-1) * increment[1], threat_only=True))
+
+        positions = [x for x in positions if x is not None]
+        return positions
+
+    def move(self, target_position):
+        self._moved = True
+        Piece.move(self, target_position)
+
+    def _symbol_impl(self):
+        return 'PA'
+
+```
+{% endtab %}
+
+{% tab title="rook.py" %}
+```python
+from .pieces import Piece
+
+
+class Rook(Piece):
+    BEAM_INCREMENTS = [(0, 1), (0, -1), (1, 0), (-1, 0)]
+
+    def get_threatened_positions(self, board):
+        positions = []
+        for increment in Rook.BEAM_INCREMENTS:
+            positions += board.beam_search_threat(self._position, self._color, increment[0], increment[1])
+        return positions
+
+    def get_moveable_positions(self, board):
+        return self.get_threatened_positions(board)
+
+    def _symbol_impl(self):
+        return 'RO'
+
+```
+{% endtab %}
+
+{% tab title="pieces.py" %}
+```python
+from .constants import PieceType
+from .moves import ChessPosition
+from .king import King
+from .queen import Queen
+from .knight import Knight
+from .rook import Rook
+from .bishop import Bishop
+from .pawn import Pawn
+
+
+class Piece:
+    BLACK = "black"
+    WHITE = "white"
+
+    def __init__(self, position: ChessPosition, color):
+        self._position = position
+        self._color = color
+
+    @property
+    def position(self):
+        return self._position
+
+    @property
+    def color(self):
+        return self._color
+
+    def move(self, target_position):
+        self._position = target_position
+
+    def get_threatened_positions(self, board):
+        raise NotImplementedError
+
+    def get_moveable_positions(self, board):
+        raise NotImplementedError
+
+    def symbol(self):
+        black_color_prefix = '\u001b[31;1m'
+        white_color_prefix = '\u001b[34;1m'
+        color_suffix = '\u001b[0m'
+        retval = self._symbol_impl()
+        if self.color == Piece.BLACK:
+            retval = black_color_prefix + retval + color_suffix
+        else:
+            retval = white_color_prefix + retval + color_suffix
+        return retval
+
+    def _symbol_impl(self):
+        raise NotImplementedError
+
+class PieceFactory:
+    @staticmethod
+    def create(piece_type: str, position: ChessPosition, color):
+        if piece_type == PieceType.KING:
+            return King(position, color)
+
+        if piece_type == PieceType.QUEEN:
+            return Queen(position, color)
+
+        if piece_type == PieceType.KNIGHT:
+            return Knight(position, color)
+
+        if piece_type == PieceType.ROOK:
+            return Rook(position, color)
+
+        if piece_type == PieceType.BISHOP:
+            return Bishop(position, color)
+
+        if piece_type == PieceType.PAWN:
+            return Pawn(position, color)
+
+```
+{% endtab %}
+
+{% tab title="moves.py" %}
+```python
+class ChessPosition:
+    def __init__(self, x_coord, y_coord):
+        self.x_coord = x_coord
+        self.y_coord = y_coord
+
+    def __str__(self):
+        return chr(ord("a") + self.x_coord) + str(self.y_coord + 1)
+
+    def __eq__(self, other):
+        return self.x_coord == other.x_coord and self.y_coord == other.y_coord
+
+    @staticmethod
+    def from_string(string: str):
+        return ChessPosition(ord(string[0]) - ord("a"), int(string[1:]) - 1)
+
+
+class MoveCommand:
+    def __init__(self, src: ChessPosition, dst: ChessPosition):
+        self.src = src
+        self.dst = dst
+
+    @staticmethod
+    def from_string(string: str):
+        tokens = string.split(" ")
+        if len(tokens) != 2:
+            return None
+        src = ChessPosition.from_string(tokens[0])
+        dst = ChessPosition.from_string(tokens[1])
+        if src is None or dst is None:
+            return None
+        return MoveCommand(src, dst)
+
+```
+{% endtab %}
+{% endtabs %}
+
+{% tabs %}
+{% tab title="board.py" %}
+```python
+from copy import deepcopy
+from .pieces import Piece, PieceFactory
+from .moves import ChessPosition, MoveCommand
+from .constants import CHESS_BOARD_SIZE, INITIAL_PIECE_SET_SINGLE, PieceType
+
+
+class ChessBoard:
+    def __init__(self, size=CHESS_BOARD_SIZE):
+        self._size = size
+        self._pieces = []
+        self._white_king_position = None
+        self._black_king_position = None
+        self._initialize_pieces(INITIAL_PIECE_SET_SINGLE)
+
+    def _initialize_pieces(self, pieces_setup: list):
+        for piece_tuple in pieces_setup:
+            type = piece_tuple[0]
+            x = piece_tuple[1]
+            y = piece_tuple[2]
+
+            piece_white = PieceFactory.create(type, ChessPosition(x, y), Piece.WHITE)
+            if type == PieceType.KING:
+                piece_white.set_board_handle(self)
+            self._pieces.append(piece_white)
+
+            piece_black = PieceFactory.create(type, ChessPosition(self._size - x - 1, self._size - y - 1), Piece.BLACK)
+            if type == PieceType.KING:
+                piece_black.set_board_handle(self)
+            self._pieces.append(piece_black)
+
+    def get_piece(self, position: ChessPosition) -> Piece:
+        for piece in self._pieces:
+            if piece.position == position:
+                return piece
+        return None
+
+    def beam_search_threat(self, start_position: ChessPosition, own_color, increment_x: int, increment_y: int):
+        threatened_positions = []
+        curr_x = start_position.x_coord
+        curr_y = start_position.y_coord
+        curr_x += increment_x
+        curr_y += increment_y
+        while curr_x >= 0 and curr_y >= 0 and curr_x < self._size and curr_y < self._size:
+            curr_position = ChessPosition(curr_x, curr_y)
+            curr_piece = self.get_piece(curr_position)
+            if curr_piece is not None:
+                if curr_piece.color != own_color:
+                    threatened_positions.append(curr_position)
+                break
+            threatened_positions.append(curr_position)
+            curr_x += increment_x
+            curr_y += increment_y
+        return threatened_positions
+
+    def spot_search_threat(self, start_position: ChessPosition, own_color, increment_x: int, increment_y: int,
+                           threat_only=False, free_only=False):
+        curr_x = start_position.x_coord + increment_x
+        curr_y = start_position.y_coord + increment_y
+
+        if curr_x >= self.size or curr_y >= self.size or curr_x < 0 or curr_y < 0:
+            return None
+
+        curr_position = ChessPosition(curr_x, curr_y)
+        curr_piece = self.get_piece(curr_position)
+        if curr_piece is not None:
+            if free_only:
+                return None
+            return curr_position if curr_piece.color != own_color else None
+        return curr_position if not threat_only else None
+
+    @property
+    def pieces(self):
+        return deepcopy(self._pieces)
+
+    @property
+    def size(self):
+        return self._size
+
+    @property
+    def white_king_position(self):
+        return self._white_king_position
+
+    @property
+    def black_king_position(self):
+        return self._black_king_position
+
+    def execute_move(self, command: MoveCommand):
+        source_piece = self.get_piece(command.src)
+        for idx, target_piece in enumerate(self._pieces):
+            if target_piece.position == command.dst:
+                del self._pieces[idx]
+                break
+        source_piece.move(command.dst)
+
+    def register_king_position(self, position: ChessPosition, color: str):
+        if color == Piece.WHITE:
+            self._white_king_position = position
+        elif color == Piece.BLACK:
+            self._black_king_position = position
+        else:
+            raise RuntimeError("Unknown color of the king piece")
+
+```
+{% endtab %}
+
+{% tab title="render.py" %}
+```python
+from .moves import ChessPosition
+
+
+class InputRender:
+    def render(self, game_state):
+        raise NotImplementedError
+
+    def print_line(self, string):
+        raise NotImplementedError
+
+
+class ConsoleRender(InputRender):
+    def render(self, game):
+        for i in reversed(range(0, game.board_size)):
+            self._draw_board_line(i, game.pieces, game.board_size)
+        self._draw_bottom_line(game.board_size)
+
+    def print_line(self, string):
+        print(string)
+
+    def _draw_time_line(self, countdown_white, countdown_black):
+        print("Time remaining: {}s W / B {}s".format(countdown_white, countdown_black))
+
+    def _draw_board_line(self, line_number, pieces, board_size):
+        empty_square = " "
+        white_square_prefix = "\u001b[47m"
+        black_square_prefix = "\u001b[40m"
+        reset_suffix = "\u001b[0m"
+        black_first_offset = line_number % 2
+
+        legend = "{:<2} ".format(line_number + 1)
+        print(legend, end='')
+        for i in range(0, board_size):
+            is_black = (i + black_first_offset) % 2
+            prefix = black_square_prefix if is_black else white_square_prefix
+            contents = empty_square
+            curr_position = ChessPosition(i, line_number)
+            for piece in pieces:
+                if curr_position == piece.position:
+                    contents = piece.symbol()
+            square_str = prefix + contents + reset_suffix
+            print(square_str, end='')
+        print()
+
+    def _draw_bottom_line(self, board_size):
+        vertical_legend_offset = 3
+        line = " " * vertical_legend_offset
+        for i in range(0, board_size):
+            line += chr(ord("a") + i)
+        print(line)
+
+```
+{% endtab %}
+
+{% tab title="player.py" %}
+```python
+from .moves import ChessPosition
+
+
+class InputRender:
+    def render(self, game_state):
+        raise NotImplementedError
+
+    def print_line(self, string):
+        raise NotImplementedError
+
+
+class ConsoleRender(InputRender):
+    def render(self, game):
+        for i in reversed(range(0, game.board_size)):
+            self._draw_board_line(i, game.pieces, game.board_size)
+        self._draw_bottom_line(game.board_size)
+
+    def print_line(self, string):
+        print(string)
+
+    def _draw_time_line(self, countdown_white, countdown_black):
+        print("Time remaining: {}s W / B {}s".format(countdown_white, countdown_black))
+
+    def _draw_board_line(self, line_number, pieces, board_size):
+        empty_square = " "
+        white_square_prefix = "\u001b[47m"
+        black_square_prefix = "\u001b[40m"
+        reset_suffix = "\u001b[0m"
+        black_first_offset = line_number % 2
+
+        legend = "{:<2} ".format(line_number + 1)
+        print(legend, end='')
+        for i in range(0, board_size):
+            is_black = (i + black_first_offset) % 2
+            prefix = black_square_prefix if is_black else white_square_prefix
+            contents = empty_square
+            curr_position = ChessPosition(i, line_number)
+            for piece in pieces:
+                if curr_position == piece.position:
+                    contents = piece.symbol()
+            square_str = prefix + contents + reset_suffix
+            print(square_str, end='')
+        print()
+
+    def _draw_bottom_line(self, board_size):
+        vertical_legend_offset = 3
+        line = " " * vertical_legend_offset
+        for i in range(0, board_size):
+            line += chr(ord("a") + i)
+        print(line)
+
+```
+{% endtab %}
+
+{% tab title="game.py" %}
+```python
+from copy import deepcopy
+from .pieces import Piece
+from .render import *
+from .moves import *
+from .board import ChessBoard
+
+
+class ChessGameState:
+    def __init__(self, pieces, board_size):
+        self.pieces = pieces
+        self.board_size = board_size
+
+
+class ChessGame:
+    STATUS_WHITE_MOVE = "white_move"
+    STATUS_BLACK_MOVE = "black_move"
+    STATUS_WHITE_VICTORY = "white_victory"
+    STATUS_BLACK_VICTORY = "black_victory"
+
+    def __init__(self, renderer: InputRender = None):
+        self._finished = False
+        self._board = ChessBoard()
+        self._renderer = renderer
+        self._status = ChessGame.STATUS_WHITE_MOVE
+
+    def run(self):
+        self._renderer.render(self.get_game_state())
+        while not self._finished:
+            command = self._parse_command()
+            if command is None and self._renderer is not None:
+                self._renderer.print_line("Invalid command, please re-enter.")
+                continue
+            if not self._try_move(command):
+                self._renderer.print_line("Invalid command, please re-enter.")
+                continue
+
+            self._board.execute_move(command)
+            if self._status == ChessGame.STATUS_WHITE_MOVE:
+                self._status = ChessGame.STATUS_BLACK_MOVE
+            elif self._status == ChessGame.STATUS_BLACK_MOVE:
+                self._status = ChessGame.STATUS_WHITE_MOVE
+            self._renderer.render(self.get_game_state())
+
+    def _try_move(self, command: MoveCommand):
+        board_copy = deepcopy(self._board)
+        src_piece = board_copy.get_piece(command.src)
+        if src_piece is None:
+            return False
+        if (self._status == ChessGame.STATUS_WHITE_MOVE and src_piece.color == Piece.BLACK) or \
+                (self._status == ChessGame.STATUS_BLACK_MOVE and src_piece.color == Piece.WHITE):
+            return False
+        if command.dst not in src_piece.get_moveable_positions(board_copy) and \
+                command.dst not in src_piece.get_threatened_positions(board_copy):
+            return False
+        board_copy.execute_move(command)
+        for piece in board_copy.pieces:
+            if self._status == ChessGame.STATUS_WHITE_MOVE and \
+                    board_copy.white_king_position in piece.get_threatened_positions(board_copy):
+                return False
+            elif self._status == ChessGame.STATUS_BLACK_MOVE and \
+                    board_copy.black_king_position in piece.get_threatened_positions(board_copy):
+                return False
+        return True
+
+    def _parse_command(self):
+        input_ = input()
+        return MoveCommand.from_string(input_)
+
+    def get_game_state(self):
+        return ChessGameState(self._board.pieces, self._board.size)
+
+```
+{% endtab %}
+{% endtabs %}
 
 ## 15. CardWars
 
@@ -3480,7 +5131,7 @@ if __name__ == '__main__':
 {% endtab %}
 {% endtabs %}
 
-## 5. Elevator
+## 18. Elevator
 
 {% tabs %}
 {% tab title="Design.md" %}
@@ -3807,7 +5458,376 @@ class Elevator:
 {% endtab %}
 {% endtabs %}
 
-## 18. Logger
+## 18. Snake & Ladder
+
+```python
+import random
+from collections import deque
+from enum import Enum
+from time import sleep
+
+class ShellType(Enum):
+	EMPTY = 1
+	SNAKE = 2
+	FOOD = 3
+
+
+class Direction(Enum):
+	LEFT = 1
+	RIGHT = -1
+	TOP = 2
+	DOWN = -2
+
+
+class Shell:
+	def __init__(self, row: int, column: int):
+		self.row = row
+		self.col = column
+		self.shell_type = ShellType.EMPTY
+
+	def get_row(self):
+		return self.row
+
+	def get_column(self):
+		return self.col
+
+	def set_shell_type(self, shell_type: ShellType):
+		self.shell_type = shell_type
+
+	def get_shell_tpe(self):
+		return self.shell_type
+
+
+class Snake:
+
+	def __init__(self, head: Shell):
+		self.head = head
+		self.head.set_shell_type(ShellType.SNAKE)
+		self.snake = deque([self.head])
+		self.direction = Direction.RIGHT
+
+	def move(self, new_shell: Shell):
+		print(f'Moving to {new_shell.row}-{new_shell.col}')
+		if new_shell.shell_type != ShellType.FOOD:
+			popped_shell = self.snake.pop()
+			popped_shell.set_shell_type(ShellType.EMPTY)
+		self.snake.append(new_shell)
+		new_shell.set_shell_type(ShellType.SNAKE)
+		self.head = new_shell
+
+	def get_score(self):
+		return len(self.snake)
+
+
+class Board:
+
+	def __init__(self, row_count, col_count):
+		self.row_count = row_count
+		self.col_count = col_count
+		self.board = [[Shell(i, j) for j in range(col_count)] for i in range(row_count)]
+
+	def already_have_food(self):
+		for i in range(self.row_count):
+			for j in range(self.col_count):
+				if self.board[i][j].shell_type == ShellType.FOOD:
+					return True
+		return False
+
+	def generate_food(self):
+		while True:
+			row = random.choice(range(self.row_count))
+			col = random.choice(range(self.col_count))
+			if self.board[row][col].shell_type == ShellType.EMPTY:
+				self.board[row][col].set_shell_type(ShellType.FOOD)
+				print(f'Food is at {row}-{col}')
+				break
+
+class Game:
+
+	def __init__(self, row_count, col_count):
+		self.board = Board(row_count, col_count)
+		self.snake = Snake(Shell(0, 0))
+		self.is_game_over = False
+
+	def get_is_game_over(self):
+		return self.is_game_over
+
+	def get_safe_row(self, row):
+		if row - 1 < 0:
+			self.change_direction(Direction.DOWN)
+			return row + 1
+		self.change_direction(Direction.TOP)
+		return row -1
+	def get_safe_col(self, col):
+		if col - 1 < 0:
+			self.change_direction(Direction.RIGHT)
+			return col + 1
+		self.change_direction(Direction.LEFT)
+		return col - 1
+
+	def save_from_boundry(self, row, col):
+		if row < 0:
+			row += 1
+			col = self.get_safe_col(col)
+		elif row == self.board.row_count:
+			row -= 1
+			col = self.get_safe_col(col)
+		elif col < 0:
+			col += 1
+			row = self.get_safe_row(row)
+		elif col == self.board.col_count:
+			col -= 1
+			row = self.get_safe_row(row)
+		return row, col
+
+	def get_next_shell_cordinate(self):
+		row = self.snake.head.row
+		col = self.snake.head.col
+		if self.snake.direction == Direction.RIGHT:
+			col += 1
+		elif self.snake.direction == Direction.LEFT:
+			col -= 1
+		if self.snake.direction == Direction.TOP:
+			row -= 1
+		elif self.snake.direction == Direction.DOWN:
+			row += 1
+		return self.save_from_boundry(row, col)
+
+	def is_shell_safe(self, row, col):
+		if row < 0 or row >= self.board.row_count or col < 0 or col >= self.board.col_count or self.board.board[row][col].shell_type == ShellType.SNAKE:
+			return False
+		return True
+
+	def mark_game_over(self):
+		self.is_game_over = True
+		print(f'Your Score is {len(self.snake.snake)}')
+
+	def play(self):
+		time_count = 0
+		while True:
+			sleep(.2)
+			time_count += 1
+			if time_count%2 == 0:
+				self.change_direction_random()
+				not self.board.already_have_food() and self.board.generate_food()
+			row, col = self.get_next_shell_cordinate()
+			if self.is_shell_safe(row, col):
+				self.snake.move(self.board.board[row][col])
+			else:
+				self.mark_game_over()
+				break
+	def change_direction_random(self):
+		if self.snake.direction == Direction.TOP:
+			self.change_direction(random.choice([Direction.TOP, Direction.LEFT, Direction.RIGHT]))
+		elif self.snake.direction == Direction.DOWN:
+			self.change_direction(random.choice([Direction.DOWN, Direction.LEFT, Direction.RIGHT]))
+		elif self.snake.direction == Direction.LEFT:
+			self.change_direction(random.choice([Direction.TOP, Direction.LEFT, Direction.DOWN]))
+		elif self.snake.direction == Direction.RIGHT:
+			self.change_direction(random.choice([Direction.TOP, Direction.RIGHT, Direction.RIGHT]))
+
+	def change_direction(self, direction: Direction):
+		print(f'Changing direction to {direction}')
+		self.snake.direction = direction
+
+
+game = Game(10, 10)
+game.play()
+```
+
+## 19. Logger Library 🔵 \| ChainOfResponsibility @Rippling
+
+#### Problem Stmt: [link](https://leetcode.com/discuss/interview-question/object-oriented-design/395160/Object-Oriented-design-for-Logger-Library-or-Flipkart-or-OA-2019)
+
+![](../.gitbook/assets/screenshot-2021-08-29-at-9.49.16-pm.png)
+
+#### \#\#\# &gt;&gt; Used pattern: [Chain of responsibility](https://www.tutorialspoint.com/design_pattern/chain_of_responsibility_pattern.htm)
+
+* **Chain of responsibility** pattern creates a **chain of receiver objects for a request**. This pattern decouples sender and receiver of a request based on type of request
+* In this pattern, normally each receiver contains reference to another receiver. 
+* If one object cannot handle the request then it passes the same to the next receiver and so on.
+
+![Chain of Responsibility Pattern for logger lib](../.gitbook/assets/screenshot-2021-08-29-at-9.52.26-pm.png)
+
+#### Solution
+
+{% tabs %}
+{% tab title="Classes" %}
+```text
+Enum Level:
+------Info
+------Warn
+------Error
+------Fatal
+
+Logger
+------level
+------writemessage(Level, namespace, message)
+
+FileLogger : Logger
+------------File
+------------FileSink(path)
+------------------openfile()
+-----------writemessage(Level , Namespace , message)
+------------------writetofile()
+
+ConsoleLogger : Logger
+------------Console
+------------ConsoleSink(addr)
+------------------openconsole()
+------------writemessage(Level , Namespace , message)
+------------------writetoconsole()
+
+DatabaseLogger : Logger
+------------DB
+------------DatabaseSink(session)
+------------------opendatabase()
+------------writemessage(Level , Namespace , message)
+------------------writetodb()
+
+LoggerConfig
+------------Hash<Level,ISink> mapping
+------------LogLevel 
+------------------getter()
+------------------setter()
+#------------mapLevelToSink(Level ,ISink)
+#------------------mapping(level,sink)
+------------getLogger(Level)
+------------------mapping[lebel]
+
+LoggerLib
+------LoggerConfig config
+------Level[] levels
+------Logger(LoggerConfig)
+------------config
+------Log(level, namespace, msg)
+------------if(level > config.loglevel
+------------while(level < Level.iterate)
+------------------config.get(level).writemessage(level,namespace,msg)
+------------level++
+```
+{% endtab %}
+
+{% tab title="constants.py" %}
+```python
+import enum
+
+class Level(enum):
+    INFO, WARN, ERROR, FATAL = 1,2,3,4
+```
+{% endtab %}
+
+{% tab title="logger.py" %}
+```python
+import sqlite3
+
+from abc import ABC, abstractmethod
+from .constants import *
+
+
+class Logger(ABC):
+    def __init__(self, level):
+        self.__level = level
+
+    @abstractmethod
+    def write_msg(self, level, namespace, msg):
+        pass
+
+
+class ConsoleLogger(Logger):
+    def __init__(self, level, console):
+        super().__init__(level)
+        self.__console = console  # console path
+
+    def write_msg(self, namespace, msg):
+        self.write_to_console(namespace, msg)
+
+    def write_to_console(self, namespace, msg):
+        pass
+
+
+class FileLogger(Logger):
+    def __init__(self, level, file):
+        super().__init__(level)
+        self._file = file
+
+    def write_msg(self, namespace, msg):
+        self.write_to_file(namespace, msg)
+
+    def write_to_file(self, namespace, msg):
+        f = open(self.__file, "a")
+        f.write(msg)
+        f.close()
+
+
+class DBLogger(Logger):
+    def __init__(self, level, db):
+        super().__init__(level)
+        self._db = db
+
+    def write_msg(self, namespace, msg):
+        self.write_to_db(namespace, msg)
+
+    def write_to_db(self, namespace, msg):
+        conn = sqlite3.connect(self.__db)
+        conn.execute(self.form_db_query(namespace, msg))
+        conn.close()
+
+    def form_db_query(self, namespace, msg):
+        pass
+
+```
+{% endtab %}
+
+{% tab title="logger\_config.py" %}
+```python
+from .constants import *
+from .logger import *
+
+class LoggerConfig:
+    def __init__(self, mapping, loglevel= Level.INFO):
+        self.__mapping = mapping
+        # mappings = set(lovlevel: logger)
+        self.__loglevel = loglevel
+        
+    @property
+    def loglevel(self):
+        return self.__loglevel
+    
+    @loglevel.setter
+    def loglevel(self, loglevel):
+        self.__loglevel = loglevel    
+        
+    def getLogger(self, level):
+        return self.__mappings[level]
+```
+{% endtab %}
+
+{% tab title="logger\_lib.py" %}
+```python
+from .logger_config import *
+
+class LoggerLib:
+    def __init__(self, config, levels = []):
+        self.__config = config
+        self.__levels = levels
+        
+    @property
+    def config(self):
+        return self.__config
+    
+    @property
+    def levels(self):
+        return self.__levels
+        
+    def log(self,level, namespace, msg):
+        if level > self.config.loglevel:
+            while level < self.levels:
+                self.config.getLogger(level).write_msg(namespace,msg)
+                level += 1
+```
+{% endtab %}
+{% endtabs %}
 
 ## 
 

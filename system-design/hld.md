@@ -557,7 +557,8 @@ Below steps to be taken\(as \#users increase\)
     * **I've implemented RedisStore for client @Supp 💪**
   * [RabbitMQ](https://www.rabbitmq.com/) is popular but requires you to adapt to the 'AMQP' protocol and manage your own nodes.
   * [Amazon SQS](https://aws.amazon.com/sqs/) is hosted but can have high latency and has the possibility of messages being delivered twice.
-  * Kafka
+  * **Kafka**
+    * Kafak has **Brokers**
 
 ## 11. Encryption
 

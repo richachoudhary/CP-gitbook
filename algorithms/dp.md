@@ -535,6 +535,7 @@ https://www.codechef.com/viewsolution/28505745
 * [x] [698.Partition to K Equal Sum Subsets](https://leetcode.com/problems/partition-to-k-equal-sum-subsets/) 💯💯
 * [ ] CSES: [Elevator Rides](https://cses.fi/problemset/task/1653/) 🐽✅
 * [ ] CSES: [Counting Tiles ](https://cses.fi/problemset/task/2181) \| [KartikArora](https://www.youtube.com/watch?v=lPLhmuWMRag&ab_channel=KartikArora) 🐽🐽
+* [ ] 1986.[Minimum Number of Work Sessions to Finish the Tasks](https://leetcode.com/problems/minimum-number-of-work-sessions-to-finish-the-tasks/) 🐽
 
 {% tabs %}
 {% tab title="464." %}
