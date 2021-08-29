@@ -523,6 +523,45 @@ if __name__ == "__main__":
     print(el.curr_direction)  #  # returns string 'DOWN' 
 ```
 
+## 11. Design Patterns
+
+### 1. SINGLETON
+
+* "There can only be one!"
+* i.e. **at one time; only one instance can exit**
+* **e.g.**
+  * 1 Moon \(anti `1Q84` hai, par real hai\)
+  * 1 Sun
+* **How:** each time you want to create a new instance
+  * check if an instance exists =&gt; dont create another; just return it
+  * if doesnt exit =&gt; create new
+* In this way; all our instances will **point to single instance.**
+* **@used:** ParkingLot
+
+{% tabs %}
+{% tab title="Singleton@ParkingLot.py" %}
+```python
+class ParkingLot:
+    # singleton ParkingLot to ensure only one object of ParkingLot in the system,
+    # all entrance panels will use this object to create new parking ticket: get_new_parking_ticket(),
+    instance = None
+
+    class __OnlyOne:
+        def __init__(self, name, address):
+            self.__name = name
+            self.__address = address
+            self.__parking_rate = ParkingRate()
+
+    def __init__(self, name, address):
+        if not ParkingLot.instance:
+            ParkingLot.instance = ParkingLot.__OnlyOne(name, address)
+        else:
+            ParkingLot.instance.__name = name
+            ParkingLot.instance.__address = address
+```
+{% endtab %}
+{% endtabs %}
+
 ## \#Things to do:
 
 * [x] Understand OOPs using Python

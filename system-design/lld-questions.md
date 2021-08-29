@@ -376,7 +376,655 @@ class Catalog(Search):
 {% endtab %}
 {% endtabs %}
 
-## 2. Parking Lot \| `Singleton🟢`
+## 3. Amazon
+
+#### System Requirements:
+
+1. **Add/update products catalog**; Users should be able to add new products to sell.
+2. **Search** for products by their name or category.
+3. **Add/remove** product items in the **shopping cart**.
+4. **Check-out to buy** product items in the **shopping cart**.
+5. **Make a payment** to place an order.
+6. **Add** a new **product category.**
+7. Send notifications to members with **shipment updates.**
+
+#### **Classes**
+
+**1.Constants ===============================================================**
+
+* **OrderStatus**: UNSHIPPED, PENDING, SHIPPED, COMPLETED, CANCELED, REFUND\_APPLIED
+* **ShipmentStatus**: PENDING, SHIPPED, DELIVERE
+* **PaymentStatus**: UNPAID, PENDING, COMPLETED, DECLINED, CANCELLED, REFUNDED
+
+**2.Acc\_Types ===============================================================**
+
+* **Account** - interface
+  * user\_name 
+  * password 
+  * name 
+  * email 
+  * phone 
+  * shipping\_address 
+  * status 
+  * add\_product\(self, product\)
+  * add\_productReview\(self, review\)
+  * reset\_password\(self\)
+* **Customer\(Account\)**
+  * get\_shopping\_cart\(self\)
+  * add\_item\_to\_cart\(self, item\)
+  * remove\_item\_from\_cart\(self, item\)
+  * place\_order\(self, order\)
+* **Guest\(Account\)**
+  * register\(\)
+
+**3.Products ===============================================================**
+
+* **ProductCategory**
+  * name
+  * description
+* **ProductReview**
+  * rating
+  * review
+    * reviewer
+* **Product**
+  * product\_id
+  * name
+  * description
+  * price
+  * category
+  * available\_item\_count
+  * seller
+  * get\_available\_count\(\)
+  * update\_price\(price\)
+
+**4.Search ===============================================================**
+
+* **Search** : parent
+  * search\_products\_by\_name\(self, name\)
+  * search\_products\_by\_category\(self, category\)
+* **Catalog\(Search\)**
+  * product\_names
+  * product\_categories
+  * search\_products\_by\_name\(self, name\)
+  * search\_products\_by\_category\(self, category\)
+
+**5.Shopping ===============================================================**
+
+* **Item**
+  * product\_id
+  * quantity
+  * price
+  * update\_quantity\(quantity\)
+* **ShoppingCart**
+  * items = \[\]
+  * add\_item\(self, item\)
+  * remove\_item\(self, item\)
+  * update\_item\_quantity\(self, item, quantity\)
+  * get\_items\(self\)
+  * checkout\(self\)
+* **Order**
+  * order\_number
+  * status
+  * order\_date
+  * order\_log = \[\]
+  * send\_for\_shipment\(self\)
+  * make\_payment\(self, payment\)
+  * add\_order\_log\(self, order\_log\)
+* **OrderLogs**
+  * order\_number
+  * creation\_date
+  * status
+
+**6.Shipment ===============================================================**
+
+* **Shipment**
+  * shipment\_number
+  * shipment\_date
+  * ETA
+  * shipmentLogs . = \[\]
+* **ShipmentLog**
+  * shipment\_number
+  * status
+  * creation\_date
+* **Notification**
+  * notification\_id
+  * created\_on
+  * content
+  * send\_notification\(account\)
+
+{% tabs %}
+{% tab title="constants.py" %}
+```python
+from enum import Enum
+
+class OrderStatus(Enum):
+    UNSHIPPED, PENDING, SHIPPED, COMPLETED, CANCELED, REFUND_APPLIED = 1, 2, 3, 4, 5, 6
+
+class ShipmentStatus(Enum):
+    PENDING, SHIPPED, DELIVERED = 1, 2, 3
+
+class PaymentStatus(Enum):
+    UNPAID, PENDING, COMPLETED, DECLINED, CANCELLED, REFUNDED = 1, 2, 3, 4, 5, 6
+
+```
+{% endtab %}
+
+{% tab title="account\_types.py" %}
+```python
+from abc import ABC
+from .constants import *
+
+
+# For simplicity, we are not defining getter and setter functions. The reader can
+# assume that all class attributes are private and accessed through their respective
+# public getter methods and modified only through their public methods function.
+
+class Account:
+    def __init__(self, user_name, password, name, email, phone, shipping_address, status=AccountStatus):
+        self.__user_name = user_name
+        self.__password = password
+        self.__name = name
+        self.__email = email
+        self.__phone = phone
+        self.__shipping_address = shipping_address
+
+    def add_product(self, product):
+        None
+
+    def add_productReview(self, review):
+        None
+
+    def reset_password(self):
+        None
+
+
+class Customer(ABC):
+    def __init__(self, cart, order):
+        self.__cart = cart
+        self.__order = order
+
+    def get_shopping_cart(self):
+        return self.__cart
+
+    def add_item_to_cart(self, item):
+        None
+
+    def remove_item_from_cart(self, item):
+        None
+    def place_order(self, order):
+        None
+
+
+class Guest(Customer):
+    def register_account(self):
+        None
+
+```
+{% endtab %}
+
+{% tab title="product.py" %}
+```python
+class ProductCategory:
+    def __init__(self, name, description):
+        self.__name = name
+        self.__description = description
+
+
+class ProductReview:
+    def __init__(self, rating, review, reviewer):
+        self.__rating = rating
+        self.__review = review
+        self.__reviewer = reviewer
+
+
+class Product:
+    def __init__(self, id, name, description, price, category, seller_account):
+        self.__product_id = id
+        self.__name = name
+        self.__description = description
+        self.__price = price
+        self.__category = category
+        self.__available_item_count = 0
+
+        self.__seller = seller_account
+
+    def get_available_count(self):
+        return self.__available_item_count
+
+    def update_price(self, new_price):
+        None
+```
+{% endtab %}
+
+{% tab title="search.py" %}
+```python
+from abc import ABC
+
+class Search(ABC):
+    def search_products_by_name(self, name):
+        None
+
+    def search_products_by_category(self, category):
+        None
+
+
+class Catalog(Search):
+    def __init__(self):
+        self.__product_names = {}
+        self.__product_categories = {}
+
+    def search_products_by_name(self, name):
+        return self.product_names.get(name)
+
+    def search_products_by_category(self, category):
+        return self.product_categories.get(category)
+```
+{% endtab %}
+
+{% tab title="shopping.py" %}
+```python
+from datetime import datetime
+from .constants import *
+
+class Item:
+    def __init__(self, id, quantity, price):
+        self.__product_id = id
+        self.__quantity = quantity
+        self.__price = price
+
+    def update_quantity(self, quantity):
+        None
+
+
+class ShoppingCart:
+    def __init__(self):
+        self.__items = []
+
+    def add_item(self, item):
+        None
+
+    def remove_item(self, item):
+        None
+
+    def update_item_quantity(self, item, quantity):
+        None
+
+    def get_items(self):
+        return self.__items
+
+    def checkout(self):
+        None
+
+class Order:
+    def __init__(self, order_number, status=OrderStatus.PENDING):
+        self.__order_number = 0
+        self.__status = status
+        self.__order_date = datetime.date.today()
+        self.__order_log = []
+
+    def send_for_shipment(self):
+        None
+
+    def make_payment(self, payment):
+        None
+
+    def add_order_log(self, order_log):
+        None
+
+class OrderLog:
+    def __init__(self, order_number, status=OrderStatus.PENDING):
+        self.__order_number = order_number
+        self.__creation_date = datetime.date.today()
+        self.__status = status
+```
+{% endtab %}
+
+{% tab title="shipment.py" %}
+```python
+from abc import ABC
+from datetime import datetime
+from .constants import *
+
+class Shipment:
+    def __init__(self, shipment_number, shipment_method):
+        self.__shipment_number = shipment_number
+        self.__shipment_date = datetime.date.today()
+        self.__estimated_arrival = datetime.date.today()
+        self.__shipment_method = shipment_method
+        self.__shipmentLogs = []
+
+    def add_shipment_log(self, shipment_log):
+        None
+
+class ShipmentLog:
+    def __init__(self, shipment_number, status=ShipmentStatus.PENDING):
+        self.__shipment_number = shipment_number
+        self.__status = status
+        self.__creation_date = datetime.date.today()
+
+class Notification(ABC):
+    def __init__(self, id, content):
+        self.__notification_id = id
+        self.__created_on = datetime.date.today()
+        self.__content = content
+
+    def send_notification(self, account):
+        None
+
+```
+{% endtab %}
+{% endtabs %}
+
+## 3. BookMyShow
+
+#### System Requirements:
+
+* **Search movies:** To search movies by title, genre, language, release date, and city name.
+* **Create/Modify/View booking:** To book a movie show ticket, cancel it or view details about the show.
+* **Make payment for booking:** To pay for the booking.
+* **Add a coupon to the payment:** To add a discount coupon to the payment.
+* **Assign Seat:** Customers will be shown a seat map to let them select seats for their booking.
+* **Refund payment:** Upon cancellation, customers will be refunded the payment amount as long as the cancellation occurs within the allowed time frame.
+
+#### **Classes**
+
+**1.Constants ===============================================================**
+
+* **BookingStatus**: PENDING, CONFIRMED, CHECKED\_IN, CANCELED
+* **SeatType**:REGULAR, PREMIUM
+* **PaymentStatus**: UNPAID, PENDING, COMPLETED, DECLINED, CANCELLED, REFUNDED
+
+**2.Acc\_Types ===============================================================**
+
+* **Account** - interface
+  * password 
+  * name 
+  * email 
+  * reset\_password\(self\)
+* **Customer\(Account\)**
+  * make\_booking\(self, booking\)
+  * get\_bookings\(\)
+* **Admin\(Account\)**
+  * add\_movie\(self, movie\) 
+  * add\_show\(self, show\)
+* **Guest\(Account\)**
+  * register\(\)
+
+**3.Shows ===============================================================**
+
+* **Show**
+  * show\_id 
+  * created\_on 
+  * start\_time 
+  * end\_time 
+  * played\_at 
+  * movie
+* **Movie**
+  * title 
+  * description 
+  * duration 
+  * language
+  * release\_date 
+  * country 
+  * genre 
+  * shows = \[\]
+  * get\_shows\(\)
+
+**4.Cinema ===============================================================**
+
+* **Search** : parent
+  * search\_products\_by\_name\(self, name\)
+  * search\_products\_by\_category\(self, category\)
+* **Catalog\(Search\)**
+  * product\_names
+  * product\_categories
+  * search\_products\_by\_name\(self, name\)
+  * search\_products\_by\_category\(self, category\)
+
+**5.Search ===============================================================**
+
+* **Search :** interface
+  * search\_by\_title\(self, title\)
+  * search\_by\_language\(self, language\)
+  * search\_by\_genre\(self, genre\)
+  * search\_by\_city\(self, city\_name\)
+* **Catalog**
+  * movie\_titles = {}
+  * movie\_languages = {}
+  * movie\_genres = {}
+  * movie\_release\_dates = {}
+  * movie\_cities = {}
+  * search\_by\_title\(self, title\) 
+  * search\_by\_language\(self, language\) 
+  * search\_by\_city\(self, city\_name\)
+
+**6.Booking ===============================================================**
+
+* **Booking**
+  * booking\_number
+  * number\_of\_seats
+  * created\_on
+  * status
+  * show
+  * seats
+  * payment
+  * make\_payment\(self, payment\)
+  * cancel\(self\)
+  * assign\_seats\(self, seats\)
+* **Payment**
+  * amount
+  * created\_on
+  * transaction\_id
+  * status
+
+{% tabs %}
+{% tab title="constants.py" %}
+```python
+from enum import Enum
+
+class BookingStatus(Enum):
+    PENDING, CONFIRMED, CHECKED_IN, CANCELED = 1, 2, 3, 4
+
+class SeatType(Enum):
+    REGULAR, PREMIUM = 1, 2
+
+class PaymentStatus(Enum):
+    UNPAID, PENDING, COMPLETED, DECLINED, CANCELLED, REFUNDED = 1, 2, 3, 4, 5, 6
+
+```
+{% endtab %}
+
+{% tab title="account\_types.py" %}
+```python
+from abc import ABC
+from .constants import AccountStatus
+
+
+# For simplicity, we are not defining getter and setter functions. The reader can
+# assume that all class attributes are private and accessed through their respective
+# public getter methods and modified only through their public methods function.
+
+
+class Account:
+    def __init__(self, id, password, status=AccountStatus.Active):
+        self.__id = id
+        self.__password = password
+        self.__status = status
+
+    def reset_password(self):
+        None
+
+
+# from abc import ABC, abstractmethod
+class Person(ABC):
+    def __init__(self, name, address, email, phone, account):
+        self.__name = name
+        self.__address = address
+        self.__email = email
+        self.__phone = phone
+        self.__account = account
+
+
+class Customer(Person):
+    def make_booking(self, booking):
+        None
+
+    def get_bookings(self):
+        None
+
+
+class Admin(Person):
+    def add_movie(self, movie):
+        None
+
+    def add_show(self, show):
+        None
+
+
+class Guest:
+    def register_account(self):
+        None
+```
+{% endtab %}
+
+{% tab title="show.py" %}
+```python
+from datetime import datetime
+
+class Show:
+    def __init__(self, id, played_at, movie, start_time, end_time):
+        self.__show_id = id
+        self.__created_on = datetime.date.today()
+        self.__start_time = start_time
+        self.__end_time = end_time
+        self.__played_at = played_at
+        self.__movie = movie
+
+
+class Movie:
+    def __init__(self, title, description, duration_in_mins, language, release_date, country, genre, added_by):
+        self.__title = title
+        self.__description = description
+        self.__duration_in_mins = duration_in_mins
+        self.__language = language
+        self.__release_date = release_date
+        self.__country = country
+        self.__genre = genre
+
+        self.__shows = []
+
+    def get_shows(self):
+        None
+```
+{% endtab %}
+
+{% tab title="cinema.py" %}
+```python
+class City:
+    def __init__(self, name, state, zip_code):
+        self.__name = name
+        self.__state = state
+        self.__zip_code = zip_code
+
+class Cinema:
+    def __init__(self, name, total_cinema_halls, address, halls):
+        self.__name = name
+        self.__location = address
+
+        self.__halls = halls
+
+
+class CinemaHall:
+    def __init__(self, name, total_seats, seats, shows):
+        self.__name = name
+        self.__total_seats = total_seats
+
+        self.__seats = seats
+        self.__shows = shows
+
+
+class CinemaHallSeat:
+    def __init__(self, id, seat_type):
+        self.__hall_seat_id = id
+        self.__seat_type = seat_type
+```
+{% endtab %}
+
+{% tab title="search.py" %}
+```python
+from abc import ABC
+
+class Search(ABC):
+    def search_by_title(self, title):
+        None
+
+    def search_by_language(self, language):
+        None
+
+    def search_by_genre(self, genre):
+        None
+
+    def search_by_city(self, city_name):
+        None
+
+
+class Catalog(Search):
+    def __init__(self):
+        self.__movie_titles = {}
+        self.__movie_languages = {}
+        self.__movie_genres = {}
+        self.__movie_release_dates = {}
+        self.__movie_cities = {}
+
+        def search_by_title(self, title):
+            return self.__movie_titles.get(title)
+
+        def search_by_language(self, language):
+            return self.__movie_languages.get(language)
+
+        def search_by_city(self, city_name):
+            return self.__movie_cities.get(city_name)
+```
+{% endtab %}
+
+{% tab title="booking.py" %}
+```python
+from datetime import datetime
+from .cinema import CinemaHallSeat
+
+
+class Booking:
+    def __init__(self, booking_number, number_of_seats, status, show, show_seats, payment):
+        self.__booking_number = booking_number
+        self.__number_of_seats = number_of_seats
+        self.__created_on = datetime.date.today()
+        self.__status = status
+        self.__show = show
+        self.__seats = show_seats
+        self.__payment = payment
+
+    def make_payment(self, payment):
+        None
+
+    def cancel(self):
+        None
+
+    def assign_seats(self, seats):
+        None
+
+
+class Payment:
+    def __init__(self, amount, transaction_id, payment_status):
+        self.__amount = amount
+        self.__created_on = datetime.date.today()
+        self.__transaction_id = transaction_id
+        self.__status = payment_status
+
+```
+{% endtab %}
+{% endtabs %}
+
+## 4. Parking Lot \| `Singleton🟢`
 
 #### System Requirements:
 
@@ -688,6 +1336,1394 @@ class ParkingLot:
 {% endtab %}
 {% endtabs %}
 
+## 5. ATM
+
+#### System Requirements:
+
+1. **Balance inquiry:** To see the amount of funds in each account.
+2. **Deposit cash:** To deposit cash.
+3. **Deposit check:** To deposit checks.
+4. **Withdraw cash:** To withdraw money from their checking account.
+5. **Transfer funds:** To transfer funds to another account.
+
+#### **Classes**
+
+**1.Constants ===============================================================**
+
+* **TransactionType**: BALANCE\_INQUIRY, DEPOSIT\_CASH, DEPOSIT\_CHECK, WITHDRAW, TRANSFER
+* **TransactionStatus**: SUCCESS, FAILURE, NONE
+* **CustomerStatus:ACTIVE**, BLOCKED, UNKNOWN
+
+**2.Customer ===============================================================**
+
+* **Customer** 
+  * name 
+  * address 
+  * email 
+  * phone 
+  * status 
+  * card
+  * account
+  * make\_transaction\(self, transaction\) 
+  * get\_billing\_address\(self\)
+* **Card**
+  * card\_number 
+  * customer\_name 
+  * card\_expiry 
+  * pin
+* **Account**
+  * account\_number 
+  * total\_balance = 0.0 
+  * available\_balance = 0.0
+
+**3.Bank ===============================================================**
+
+* **Bank**
+  * name
+  * ifsc
+  * install\_atm\(atm\)
+* **ATM**
+  * atm\_id 
+  * location
+  * cash\_dispenser
+  * cash\_deposit
+  * authenticate\_user\(self\) 
+  * make\_transaction\(self, customer, transaction\)
+* **CashDispenser**
+  * total\_amount
+  * is\_healthy\(\)
+  * dispense\_cash\(self, amount\)
+* **CashDeposit**
+  * total\_amount
+  * is\_healthy\(\)
+  * deposit\_cash\(self, amount\)
+
+**4.Transaction ===============================================================**
+
+* **Transaction :** interface
+  * transaction\_id 
+  * creation\_time 
+  * status
+  * make\_transation\(\)
+* **BalanceInquiry\(Transaction\)** 
+* **Deposit\(Transaction\)** 
+  * amount
+  * get\_amount\(\)
+* **CheckDeposit\(Deposit\)** 
+* **CashDeposit\(Deposit\)** 
+* **Transfer\(Transaction\)**
+  * destination\_account\_number
+  * get\_destination\_account\(\)
+
+{% tabs %}
+{% tab title="constants.py" %}
+```python
+from enum import Enum
+
+class TransactionType(Enum):
+    BALANCE_INQUIRY, DEPOSIT_CASH, DEPOSIT_CHECK, WITHDRAW, TRANSFER = 1, 2, 3, 4, 5
+
+class TransactionStatus(Enum):
+    SUCCESS, FAILURE, NONE = 1, 2, 3
+
+class CustomerStatus(Enum):
+    ACTIVE, BLOCKED, UNKNOWN = 1, 2, 3
+
+```
+{% endtab %}
+
+{% tab title="customer.py" %}
+```python
+class Customer:
+    def __init__(self, name, address, email, phone, status):
+        self.__name = name
+        self.__address = address
+        self.__email = email
+        self.__phone = phone
+        self.__status = status
+        self.__card = Card()
+        self.__account = Account
+
+    def make_transaction(self, transaction):
+        None
+
+    def get_billing_address(self):
+        None
+
+class Card:
+    def __init__(self, number, customer_name, expiry, pin):
+        self.__card_number = number
+        self.__customer_name = customer_name
+        self.__card_expiry = expiry
+        self.__pin = pin
+
+    def get_billing_address(self):
+        None
+
+class Account:
+    def __init__(self, account_number):
+        self.__account_number = account_number
+        self.__total_balance = 0.0
+        self.__available_balance = 0.0
+
+    def get_available_balance(self):
+        return self.__available_balance
+
+
+```
+{% endtab %}
+
+{% tab title="bank.py" %}
+```python
+from abc import ABC
+
+class Bank:
+  def __init__(self, name, bank_code):
+    self.__name = name
+    self.__bank_code = bank_code
+
+  def get_bank_code(self):
+    return self.__bank_code
+
+  def add_atm(self, atm):
+    None
+
+class ATM:
+  def __init__(self, id, location):
+    self.__atm_id = id
+    self.__location = location
+    self.__cash_dispenser = CashDispenser()
+    self.__cash_deposit = CashDeposit()
+
+
+  def authenticate_user(self):
+    None
+
+  def make_transaction(self, customer, transaction):
+    None
+  
+class CashDispenser:
+  def __init__(self):
+    self.__total_amount = 0.0
+
+  def dispense_cash(self, amount):
+    None
+
+  def is_healthy(self):
+    None
+    
+class CashDeposit:
+  def __init__(self):
+    self.__total_amount = 0.0
+
+  def deposit_cash(self):
+    None
+  def is_healthy(self):
+    None
+
+```
+{% endtab %}
+
+{% tab title="transactions.py" %}
+```python
+from abc import ABC
+
+
+class Transaction(ABC):
+    def __init__(self, id, creation_date, status):
+        self.__transaction_id = id
+        self.__creation_time = creation_date
+        self.__status = status
+
+    def make_transation(self):
+        None
+
+
+class BalanceInquiry(Transaction):
+    def __init__(self, account_id):
+        self.__account_id = account_id
+
+    def get_account_id(self):
+        return self.__account_id
+
+
+class Deposit(Transaction):
+    def __init__(self, amount):
+        self.__amount = amount
+
+    def get_amount(self):
+        return self.__amount
+
+
+class CheckDeposit(Deposit):
+    def __init__(self, check_number, bank_code):
+        self.__check_number = check_number
+        self.__bank_code = bank_code
+
+    def get_check_number(self):
+        return self.__check_number
+
+
+class CashDeposit(Deposit):
+    def __init__(self, cash_deposit_limit):
+        self.__cash_deposit_limit = cash_deposit_limit
+
+
+class Withdraw(Transaction):
+    def __init__(self, amount):
+        self.__amount = amount
+
+    def get_amount(self):
+        return self.__amount
+
+
+class Transfer(Transaction):
+    def __init__(self, destination_account_number):
+        self.__destination_account_number = destination_account_number
+
+    def get_destination_account(self):
+        return self.__destination_account_number
+
+```
+{% endtab %}
+{% endtabs %}
+
+## 6. Airline Management System
+
+#### System Requirements:
+
+* **Search Flights:** To search the flight schedule to find flights for a suitable date and time.
+* **Create/Modify/View reservation:** To reserve a ticket, cancel it, or view details about the flight or ticket.
+* **Assign seats to passengers:** To assign seats to passengers for a flight instance with their reservation.
+* **Make payment for a reservation:** To pay for the reservation.
+* **Update flight schedule:** To make changes in the flight schedule, and to add or remove any flight.
+* **Assign pilots and crew:** To assign pilots and crews to flights.
+
+#### **Classes**
+
+**1.Constants ===============================================================**
+
+* **FlightStatus**: PENDING, CONFIRMED, CHECKED\_IN, CANCELED
+* **PaymentStatus**  :REGULAR, PREMIUM
+* **ReservationStatus** : UNPAID, PENDING, COMPLETED, DECLINED, CANCELLED, REFUNDED
+* **SeatClass** : 
+* **SeatType** : 
+
+**2.Accounts ===============================================================**
+
+* **Account** - interface
+  * password 
+  * name 
+  * status 
+  * reset\_password\(self\)
+* **Customer**
+  * name 
+  * address 
+  * email 
+  * phone 
+  * account
+* **Admin\(Account\)**
+  * add\_movie\(self, movie\) 
+  * add\_show\(self, show\)
+* **Passenger\(Customer\)**
+  * passport\_number
+  * get\_passport\_number\(\)
+
+**3.Airport ===============================================================**
+
+* **Airport**
+  * name 
+  * address 
+  * code
+  * get\_flights\(\) 
+* **Aircraft**
+  * name 
+  * model 
+  * manufacturing\_year 
+  * seats = \[\]
+  * get\_flights\(\)
+* **Seat**
+  * seat\_number 
+  * type 
+  * seat\_class
+* **FlightSeat**
+  * fare
+
+**4.Airline Manager==============================================================**
+
+* **Flight** : 
+  * flight\_number 
+  * departure 
+  * arrival 
+  * schedule = \[\]
+* **FlightReservation**
+  * reservation\_number 
+  * flight 
+  * seat\_map 
+  * creation\_date 
+  * status
+  * fetch\_reservation\_details\(self, reservation\_number\) 
+  * get\_passengers\(self\)
+* **Itinerary**
+  * customer\_id 
+  * starting\_airport 
+  * final\_airport 
+  * creation\_date 
+  * reservations = \[\]
+  * get\_reservations\(self\) 
+  * make\_reservation\(self\) 
+  * make\_payment\(self\)
+
+{% tabs %}
+{% tab title="constants.py" %}
+```python
+from enum import Enum
+
+class FlightStatus(Enum):
+    ACTIVE, SCHEDULED, DELAYED, DEPARTED, LANDED, IN_AIR = 1, 2, 3, 4, 5, 6, 7
+
+
+class PaymentStatus(Enum):
+    UNPAID, PENDING, COMPLETED, CANCELLED, SETTLING, REFUNDED = 1, 2, 3, 4, 5, 6
+
+
+class ReservationStatus(Enum):
+    PENDING, CONFIRMED, CHECKED_IN, CANCELLED = 1, 2, 3, 4
+
+class SeatClass(Enum):
+    ECONOMY BUSINESS = 1, 2
+
+
+class SeatType(Enum):
+    REGULAR, EMERGENCY_EXIT, EXTRA_LEG_ROOM = 1, 2, 3
+```
+{% endtab %}
+
+{% tab title="account.py" %}
+```python
+from abc import ABC
+from .constants import *
+
+
+# For simplicity, we are not defining getter and setter functions. The reader can
+# assume that all class attributes are private and accessed through their respective
+# public getter methods and modified only through their public methods function.
+
+class Account:
+    def __init__(self, id, password, status=AccountStatus.Active):
+        self.__id = id
+        self.__password = password
+        self.__status = status
+
+    def reset_password(self):
+        None
+
+
+class Customer(ABC):
+    def __init__(self, name, address, email, phone, account):
+        self.__name = name
+        self.__address = address
+        self.__email = email
+        self.__phone = phone
+        self.__account = account
+
+class Passenger(Customer):
+    def __init__(self, name, passport_number):
+        self.__passport_number = passport_number
+
+    def get_passport_number(self):
+        return self.__passport_number
+```
+{% endtab %}
+
+{% tab title="airport.py" %}
+```python
+class Airport:
+    def __init__(self, name, address, code):
+        self.__name = name
+        self.__address = address
+        self.__code = code
+
+    def get_flights(self):
+        None
+
+
+class Aircraft:
+    def __init__(self, name, model, manufacturing_year):
+        self.__name = name
+        self.__model = model
+        self.__manufacturing_year = manufacturing_year
+        self.__seats = []
+
+    def get_flights(self):
+        None
+
+
+class Seat:
+    def __init__(self, seat_number, type, seat_class):
+        self.__seat_number = seat_number
+        self.__type = type
+        self.__seat_class = seat_class
+
+
+class FlightSeat(Seat):
+    def __init__(self, fare):
+        self.__fare = fare
+
+    def get_fare(self):
+        return self.__fare
+```
+{% endtab %}
+
+{% tab title="airline\_manager.py" %}
+```python
+class Flight:
+    def __init__(self, flight_number, departure, arrival, duration_in_minutes):
+        self.__flight_number = flight_number
+        self.__departure = departure
+        self.__arrival = arrival
+
+        self.__schedule = []
+
+class FlightReservation:
+    def __init__(self, reservation_number, flight, aircraft, creation_date, status):
+        self.__reservation_number = reservation_number
+        self.__flight = flight
+        self.__seat_map = {}
+        self.__creation_date = creation_date
+        self.__status = status
+
+    def fetch_reservation_details(self, reservation_number):
+        None
+
+    def get_passengers(self):
+        None
+
+
+class Itinerary:
+    def __init__(self, customer_id, starting_airport, final_airport, creation_date):
+        self.__customer_id = customer_id
+        self.__starting_airport = starting_airport
+        self.__final_airport = final_airport
+        self.__creation_date = creation_date
+        self.__reservations = []
+
+    def get_reservations(self):
+        None
+
+    def make_reservation(self):
+        None
+
+    def make_payment(self):
+        None
+
+```
+{% endtab %}
+{% endtabs %}
+
+## 7. Stocks Exchange \| `Singleton🟢`
+
+#### System Requirements:
+
+* **Register new account/Cancel membership:** To add a new member or cancel the membership of an existing member.
+* **Add/Remove/Edit watchlist:** To add, remove or modify a watchlist.
+* **Search stock inventory:** To search for stocks by their symbols.
+* **Place order:** To place a buy or sell order on the stock exchange.
+* **Cancel order:** Cancel an already placed order.
+* **Deposit/Withdraw money:** Members can deposit or withdraw money via check, wire or electronic bank transfer.
+
+**Classes:**
+
+**1.Constants =================================================================**
+
+* **ReturnStatus**: SUCCESS, FAIL, INSUFFICIENT\_FUNDS, NO\_STOCK\_AVAILABLE
+* **OrderStatus** :OPEN, FILLED, PARTIALLY\_FILLED, CANCELLED
+* **TimeBoundOrderType**  : GOOD\_TILL\_CANCELLED, IMMEDIATE\_OR\_CANCEL, ON\_MARKET\_OPEN, ON\_MARKET\_CLOSE
+* **AccountStatus** : ACTIVE, CLOSED, CANCELED, BLACKLISTED, NONE
+
+**2.Orders =================================================================**
+
+* **Order** : interface
+  * order\_id 
+  * is\_buy\_order 
+  * status 
+  * `time_bounder_order_type` 
+  * creation\_time
+  * set\_status\(self, status\) 
+  * save\_in\_DB\(self\) 
+  * add\_order\_parts\(self, parts\)
+  * cancel\_order\(\)
+  * ~~place\_order\(\)~~ =&gt; Not placed here\(placed in **stock\_exchang** as **SINGLETON**\)
+* **LimitOrder\(Order\)**
+  * price\_limit = 0.0
+
+#### 3.Stock Exchange ===================================================================
+
+* **StockExchange** : singleton🟢
+  * **`place_order()`** : the only place at which orders can be placed
+
+#### 4.Members ===============================================================
+
+* **Account:** interface
+  * id
+  * password 
+  * name 
+  * email 
+  * phone 
+  * status : AccountStatus.NONE
+  * reset\_password\(\)
+* **Member\(Account\)**
+  * available\_funds\_for\_trading = 0.0 
+  * date\_of\_membership 
+  * stock\_positions = {} 
+  * active\_orders = {}
+  * place\_sell\_limit\_order\(self, stock\_id, quantity, limit\_price, enforcement\_type\)
+  * callback\_stock\_exchange\(self, order\_id, order\_parts, status\)
+    * this function will be invoked whenever there is an update from stock exchange against an order
+
+{% tabs %}
+{% tab title="constants.py" %}
+```python
+from enum import Enum
+
+
+class ReturnStatus(Enum):
+    SUCCESS, FAIL, INSUFFICIENT_FUNDS, NO_STOCK_AVAILABLE = 1, 2, 3, 4
+
+
+class OrderStatus(Enum):
+    OPEN, FILLED, PARTIALLY_FILLED, CANCELLED = 1, 2, 3, 4
+
+
+class TimeBoundOrderType(Enum):
+    GOOD_TILL_CANCELLED, IMMEDIATE_OR_CANCEL, ON_THE_OPEN, ON_MARKET_CLOSE = 1, 2, 3, 4, 5
+
+
+class AccountStatus(Enum):
+    ACTIVE, CLOSED, CANCELED, BLACKLISTED, NONE = 1, 2, 3, 5
+```
+{% endtab %}
+
+{% tab title="order.py" %}
+```python
+from abc import ABC
+from datetime import datetime
+from .constants import OrderStatus, TimeBoundOrderType
+
+
+class Order(ABC):
+    def __init__(self, id):
+        self.__order_id = id
+        self.__is_buy_order = False
+        self.__status = OrderStatus.OPEN
+        self.__time_enforcement = TimeBoundOrderType.ON_THE_OPEN
+        self.__creation_time = datetime.now()
+
+        self.__parts = {}
+
+    def set_status(self, status):
+        self.status = status
+
+    def save_in_DB(self):
+        None
+
+    # save in the database
+
+    def add_order_parts(self, parts):
+        for part in parts:
+            self.parts[part.get_id()] = part
+
+
+class LimitOrder(Order):
+    def __init__(self):
+        self.__price_limit = 0.0from .order import Order
+
+
+class StockExchange:
+    # singleton, used for restricting to create only one instance
+    instance = None
+
+    class __OnlyOne:
+        def __init__(self):
+            None
+
+    def __init__(self):
+        if not StockExchange.instance:
+            StockExchange.instance = StockExchange.__OnlyOne()
+
+    def place_order(self, order):
+        return_status = self.get_instance().submit_order(Order)
+        return return_status
+
+```
+{% endtab %}
+
+{% tab title="stock\_exchange.py🟢" %}
+```python
+from .order import Order
+
+
+class StockExchange:
+    # singleton, used for restricting to create only one instance
+    instance = None
+
+    class __OnlyOne:
+        def __init__(self):
+            None
+
+    def __init__(self):
+        if not StockExchange.instance:
+            StockExchange.instance = StockExchange.__OnlyOne()
+
+    # the only place to place an order
+    def place_order(self, order):
+        return_status = self.get_instance().submit_order(Order)
+        return return_status
+
+```
+{% endtab %}
+
+{% tab title="members.py" %}
+```python
+from datetime import datetime
+from abc import ABC
+from .constants import OrderStatus, AccountStatus, ReturnStatus
+from .order import LimitOrder
+from .stock_exchange import StockExchange
+
+
+class Account(ABC):
+    def __init__(self, id, password, name, address, email, phone, status=AccountStatus.NONE):
+        self.__id = id
+        self.__password = password
+        self.__name = name
+        self.__address = address
+        self.__email = email
+        self.__phone = phone
+        self.__status = AccountStatus.NONE
+
+    def reset_password(self):
+        None
+
+
+class Member(Account):
+    def __init__(self):
+        self.__available_funds_for_trading = 0.0
+        self.__date_of_membership = datetime.date.today()
+        self.__stock_positions = {}
+        self.__active_orders = {}
+
+    def place_sell_limit_order(self, stock_id, quantity, limit_price, enforcement_type):
+        # check if member has this stock position
+        if stock_id not in self.__stock_positions:
+            return ReturnStatus.NO_STOCK_POSITION
+
+        stock_position = self.__stock_positions[stock_id]
+        # check if the member has enough quantity available to sell
+        if stock_position.get_quantity() < quantity:
+            return ReturnStatus.INSUFFICIENT_QUANTITY
+
+        order = LimitOrder(stock_id, quantity, limit_price, enforcement_type)
+        order.is_buy_order = False
+        order.save_in_DB()
+        success = StockExchange.place_order(order)
+        if not success:
+            order.set_status(OrderStatus.FAILED)
+            order.save_in_DB()
+        else:
+            self.active_orders.add(order.get_order_id(), order)
+        return success
+
+
+    # this function will be invoked whenever there is an update from
+    # stock exchange against an order
+    def callback_stock_exchange(self, order_id, order_parts, status):
+        order = self.active_orders[order_id]
+        order.add_order_parts(order_parts)
+        order.set_status(status)
+        order.update_in_DB()
+
+        if status == OrderStatus.FILLED or status == OrderStatus.CANCELLEd:
+            self.active_orders.remove(order_id)
+
+```
+{% endtab %}
+{% endtabs %}
+
+## 8. Car Rental System
+
+#### System Requirements:
+
+* **Add/Remove/Edit vehicle:** To add, remove or modify a vehicle.
+* **Search catalog:** To search for vehicles by type and availability.
+* **Register new account/Cancel membership:** To add a new member or cancel an existing membership.
+* **Reserve vehicle:** To reserve a vehicle.
+* **Check-out vehicle:** To rent a vehicle.
+* **Return a vehicle:** To return a vehicle which was checked-out to a member.
+* **Add equipment:** To add an equipment to a reservation like navigation, child seat, etc.
+* **Update car log:** To add or update a car log entry, such as refueling, cleaning, damage, etc.
+
+#### **Classes**
+
+**1.Constants ===============================================================**
+
+* **BillItemType**
+* **VehicleLogType**
+* **CarType**
+* **VehicleStatus**
+* **ReservationStatus**
+* **AccountStatus**
+* **PaymentStatus**
+* **Person**
+  * name 
+  * address 
+  * email 
+  * phone
+
+**2.Acc\_Types ===============================================================**
+
+* **Account** - interface
+  * password 
+  * name 
+  * email 
+  * reset\_password\(self\)
+* **Customer\(Account\)**
+  * total\_vehicles\_reserved
+  * get\_reservations\(\)
+
+**3.Car Rental System ===============================================================**
+
+* **CarRentalLocation** 
+  * name 
+  * location
+  * get\_location
+* **CarRentalSystem**
+  * name
+  * location
+  * add\_new\_location\(self, location\)
+
+**4.Vehicle ===============================================================**
+
+* **Vehicle** : parent
+  * license\_number
+  *  barcode status 
+  * model 
+  * manufacturing\_year 
+  * mileage
+  * reserve\_vehicle\(\)
+  * return\_vehicle\(\)
+* **Car\(Vehicle\)**
+* **Bike\(Vehicle\)**
+* **VehicleReservation**
+  * reservation\_number 
+  * creation\_date 
+  * status 
+  * due\_date 
+  * return\_date 
+  * pickup\_location\_name 
+  * return\_location\_name
+  * customer\_id 
+  * vehicle 
+  * bill 
+  * additional\_drivers
+  * insurances
+  * fetch\_reservation\_details\(reservation\_number\)
+
+**5.Search ===============================================================**
+
+* **Search :** interface
+  * search\_by\_type\(\) 
+  * search\_by\_model\(\)
+* **VehicleInventory**
+  * vehicle\_types 
+  * vehicle\_models
+  * search\_by\_type\(\) 
+  * search\_by\_model\(\)
+
+{% tabs %}
+{% tab title="constants.py" %}
+```python
+from enum import Enum
+
+
+class BillItemType(Enum):
+    BASE_CHARGE, ADDITIONAL_SERVICE, FINE, OTHER = 1, 2, 3, 4
+
+
+class VehicleLogType(Enum):
+    ACCIDENT, FUELING, CLEANING_SERVICE, OIL_CHANGE, REPAIR, OTHER = 1, 2, 3, 4, 5, 6
+
+class CarType(Enum):
+    ECONOMY, COMPACT, INTERMEDIATE, STANDARD, FULL_SIZE, PREMIUM, LUXURY = 1, 2, 3, 4, 5, 6, 7
+
+
+class VehicleStatus(Enum):
+    AVAILABLE, RESERVED, LOANED, LOST, BEING_SERVICED, OTHER = 1, 2, 3, 4, 5, 6
+
+
+class ReservationStatus(Enum):
+    ACTIVE, PENDING, CONFIRMED, COMPLETED, CANCELLED, NONE = 1, 2, 3, 4, 5, 6
+
+
+class AccountStatus(Enum):
+    ACTIVE, CLOSED, CANCELED, BLACKLISTED, BLOCKED = 1, 2, 3, 4, 5
+
+
+class PaymentStatus(Enum):
+    UNPAID, PENDING, COMPLETED, FILLED, DECLINED, CANCELLED, ABANDONED, SETTLING, SETTLED, REFUNDED = 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
+
+
+class Person():
+    def __init__(self, name, address, email, phone):
+        self.__name = name
+        self.__address = address
+        self.__email = email
+        self.__phone = phone
+
+```
+{% endtab %}
+
+{% tab title="account\_types.py" %}
+```python
+from abc import ABC
+from .constants import AccountStatus
+
+
+# For simplicity, we are not defining getter and setter functions. The reader can
+# assume that all class attributes are private and accessed through their respective
+# public getter methods and modified only through their public methods function.
+
+
+class Account:
+    def __init__(self, id, password, status=AccountStatus.Active):
+        self.__id = id
+        self.__password = password
+        self.__status = status
+
+    def reset_password(self):
+        None
+
+
+# from abc import ABC, abstractmethod
+class Person(ABC):
+    def __init__(self, name, address, email, phone, account):
+        self.__name = name
+        self.__address = address
+        self.__email = email
+        self.__phone = phone
+        self.__account = account
+
+
+class Customer(Person):
+    def make_booking(self, booking):
+        None
+
+    def get_bookings(self):
+        None
+
+
+class Admin(Person):
+    def add_movie(self, movie):
+        None
+
+    def add_show(self, show):
+        None
+
+
+class Guest:
+    def register_account(self):
+        None
+```
+{% endtab %}
+
+{% tab title="car\_rental.py" %}
+```python
+class CarRentalLocation:
+    def __init__(self, name, address):
+        self.__name = name
+        self.__location = address
+
+    def get_location(self):
+        return self.__location
+
+
+class CarRentalSystem:
+    def __init__(self, name):
+        self.__name = name
+        self.__locations = []
+
+    def add_new_location(self, location):
+        None
+
+```
+{% endtab %}
+
+{% tab title="vehicle.py" %}
+```python
+from abc import ABC
+from datetime import datetime
+from .constants import ReservationStatus
+
+
+class Vehicle(ABC):
+    def __init__(self, license_num, stock_num, capacity, barcode, has_sunroof, status, model, make, manufacturing_year,
+                 mileage):
+        self.__license_number = license_num
+        self.__barcode = barcode
+        self.__status = status
+        self.__model = model
+        self.__manufacturing_year = manufacturing_year
+        self.__mileage = mileage
+
+    def reserve_vehicle(self):
+        None
+
+    def return_vehicle(self):
+        None
+
+
+class Car(Vehicle):
+    def __init__(self, license_num, stock_num, capacity, barcode, has_sunroof, status, model, make, manufacturing_year,
+                 mileage, type):
+        super().__init__(license_num, stock_num, capacity, barcode,
+                         has_sunroof, status, model, make, manufacturing_year, mileage)
+        self.__type = type
+
+
+class Bike(Vehicle):
+    def __init__(self, license_num, stock_num, capacity, barcode, has_sunroof, status, model, make, manufacturing_year,
+                 mileage, type):
+        super().__init__(license_num, stock_num, capacity, barcode,
+                         has_sunroof, status, model, make, manufacturing_year, mileage)
+        self.__type = type
+
+
+class VehicleReservation:
+    def __init__(self, reservation_number):
+        self.__reservation_number = reservation_number
+        self.__creation_date = datetime.date.today()
+        self.__status = ReservationStatus.ACTIVE
+        self.__due_date = datetime.date.today()
+        self.__return_date = datetime.date.today()
+        self.__pickup_location_name = ""
+        self.__return_location_name = ""
+
+        self.__customer_id = 0
+        self.__vehicle = None
+        self.__bill = None
+        self.__additional_drivers = []
+        self.__insurances = []
+        self.__equipments = []
+        self.__services = []
+
+    def fetch_reservation_details(self, reservation_number):
+        None
+```
+{% endtab %}
+
+{% tab title="search.py" %}
+```python
+from abc import ABC
+
+
+class Search(ABC):
+    def search_by_type(self, type):
+        None
+
+    def search_by_model(self, model):
+        None
+
+
+class VehicleInventory(Search):
+    def __init__(self):
+        self.__vehicle_types = {}
+        self.__vehicle_models = {}
+
+    def search_by_type(self, query):
+        # return all vehicles of the given type.
+        return self.__vehicle_types.get(query)
+
+    def search_by_model(self, query):
+        # return all vehicles of the given model.
+        return self.__vehicle_models.get(query)
+
+```
+{% endtab %}
+
+{% tab title="booking.py" %}
+```python
+from datetime import datetime
+from .cinema import CinemaHallSeat
+
+
+class Booking:
+    def __init__(self, booking_number, number_of_seats, status, show, show_seats, payment):
+        self.__booking_number = booking_number
+        self.__number_of_seats = number_of_seats
+        self.__created_on = datetime.date.today()
+        self.__status = status
+        self.__show = show
+        self.__seats = show_seats
+        self.__payment = payment
+
+    def make_payment(self, payment):
+        None
+
+    def cancel(self):
+        None
+
+    def assign_seats(self, seats):
+        None
+
+
+class Payment:
+    def __init__(self, amount, transaction_id, payment_status):
+        self.__amount = amount
+        self.__created_on = datetime.date.today()
+        self.__transaction_id = transaction_id
+        self.__status = payment_status
+
+```
+{% endtab %}
+{% endtabs %}
+
+## 9. LinkedIn
+
+#### System Requirements:
+
+* **Add/update profile:** Any member should be able to create their profile to reflect their experiences, education, skills, and accomplishments.
+* **Search:** Members can search other members, companies or jobs. Members can send a connection request to other members.
+* **Follow or Unfollow member or company:** Any member can follow or unfollow any other member or a company.
+* **Send message:** Any member can send a message to any of their connections.
+* **Create post:** Any member can create a post to share with their connections, as well as like other posts or add comments to any post.
+* **Send notifications:** The system will be able to send notifications for new messages, connection invites, etc.
+
+#### **Classes**
+
+**1.Constants ===============================================================**
+
+* **ConnectionInvitationStatus**: PENDING, ACCEPTED, CONFIRMED, REJECTED, CANCELED
+* **AccountStatus**: ACTIVE, BLOCKED, UNKNOWN
+
+**2.Profile ===============================================================**
+
+* **Profile** 
+  * summary 
+  * experiences 
+  * educations 
+  * skills 
+  * accomplishments 
+  * recommendations
+  * add\_experience\(self, experience\) 
+  * add\_education\(self, education\) 
+  * add\_skill\(self, skill\) 
+  * add\_accomplishment\(self, accomplishment\)
+* **Experience**
+  * title 
+  * company 
+  * location 
+  * from 
+  * to 
+  * description
+
+**3.Acc\_Types ===============================================================**
+
+* **Account** 
+  * id 
+  * password 
+  * status
+  * reset\_password
+* **Person**
+  * name 
+  * address 
+  * email 
+  * phone account
+* **Member\(Person\)**
+  * date\_of\_membership
+  * headline
+  * photo
+  * member\_follows
+  * member\_connections
+  * company\_follows
+  * group\_follows
+  * profile
+  * send\_message\(self, message\)
+  * create\_post\(self, post\)
+  * send\_connection\_invitation\(self, connection\_invitation\)
+  * block\_user\(self, customer\)
+  * unblock\_user\(self, customer\)
+
+**4.Company ===============================================================**
+
+* **Company** : 
+  *  name
+  * description
+  * type
+  * company\_size
+  * active\_job\_postings
+* **JobPosting**
+  * date\_of\_posting
+  * description
+  * employment\_type
+  * location
+  * is\_fulfilled
+* **Bike\(Vehicle\)**
+* **VehicleReservation**
+  * reservation\_number 
+  * creation\_date 
+  * status 
+  * due\_date 
+  * return\_date 
+  * pickup\_location\_name 
+  * return\_location\_name
+  * customer\_id 
+  * vehicle 
+  * bill 
+  * additional\_drivers
+  * insurances
+  * fetch\_reservation\_details\(reservation\_number\)
+
+**5.Messagin & Posting=============================================================**
+
+* **Group :** 
+  * name
+  * description
+  * total\_members
+  * members = \[\]
+* **Post**
+  * text 
+  * total\_likes
+  * total\_shares 
+  * owner
+* **Message**
+  * sent\_to 
+  * message\_body 
+  * media
+
+**6.Searching =============================================================**
+
+* **Search :** 
+  * search\_member\(self, name\) 
+  * search\_company\(self, name\) 
+  * search\_job\(self, title\)
+* **SearchIndex\(Search\):**
+  * member\_names 
+  * company\_names 
+  * job\_titles
+  * search\_member\(self, name\) 
+  * search\_company\(self, name\) 
+  * search\_job\(self, title\)
+
+{% tabs %}
+{% tab title="constants.py" %}
+```python
+from enum import Enum
+
+class ConnectionInvitationStatus(Enum):
+    PENDING, ACCEPTED, CONFIRMED, REJECTED, CANCELED = 1, 2, 3, 4, 5
+
+class AccountStatus(Enum):
+    ACTIVE, BLOCKED, UNKNOWN = 1, 2, 3, 4, 5, 6
+```
+{% endtab %}
+
+{% tab title="profile.py" %}
+```python
+class Profile:
+    def __init__(self, summary, experiences, educations, skills, accomplishments, recommendations):
+        self.__summary = summary
+        self.__experiences = experiences
+        self.__educations = educations
+        self.__skills = skills
+        self.__accomplishments = accomplishments
+
+    def add_experience(self, experience):
+        None
+
+    def add_education(self, education):
+        None
+
+    def add_skill(self, skill):
+        None
+
+    def add_accomplishment(self, accomplishment):
+        None
+
+class Experience:
+    def __init__(self, title, company, location, date_from, date_to, description):
+        self.__title = title
+        self.__company = company
+        self.__location = location
+        self.__from = date_from
+        self.__to = date_to
+        self.__description = description
+
+```
+{% endtab %}
+
+{% tab title="acc\_type.py" %}
+```python
+from abc import ABC
+from datetime import datetime
+from .constants import AccountStatus
+from .profile import Profile
+
+
+# For simplicity, we are not defining getter and setter functions. The reader can
+# assume that all class attributes are private and accessed through their respective
+# public getter methods and modified only through their public methods function.
+
+
+class Account:
+    def __init__(self, id, password, status=AccountStatus.Active):
+        self.__id = id
+        self.__password = password
+        self.__status = status
+
+    def reset_password(self):
+        None
+
+
+class Person(ABC):
+    def __init__(self, name, address, email, phone, account):
+        self.__name = name
+        self.__address = address
+        self.__email = email
+        self.__phone = phone
+        self.__account = account
+
+
+class Member(Person):
+    def __init__(self):
+        self.__date_of_membership = datetime.date.today()
+        self.__headline = ""
+        self.__photo = []
+        self.__member_follows = []
+        self.__member_connections = []
+        self.__company_follows = []
+        self.__group_follows = []
+        self.__profile = Profile()
+
+    def send_message(self, message):
+        None
+
+    def create_post(self, post):
+        None
+
+    def send_connection_invitation(self, connection_invitation):
+        None
+
+
+class Admin(Person):
+    def block_user(self, customer):
+        None
+
+    def unblock_user(self, customer):
+        None
+
+```
+{% endtab %}
+
+{% tab title="comapny.py" %}
+```python
+from datetime import datetime
+
+
+class Company:
+    def __init__(self, name, description, type, company_size):
+        self.__name = name
+        self.__description = description
+        self.__type = type
+        self.__company_size = company_size
+        self.__active_job_postings = []
+
+
+class JobPosting:
+    def __init__(self, description, employment_type, location, is_fulfilled):
+        self.__date_of_posting = datetime.date.today()
+        self.__description = description
+        self.__employment_type = employment_type
+        self.__location = location
+        self.__is_fulfilled = is_fulfilled
+
+```
+{% endtab %}
+
+{% tab title="group\_post.py" %}
+```python
+class Group:
+    def __init__(self, name, description):
+        self.__name = name
+        self.__description = description
+        self.__total_members = 0
+        self.__members = []
+
+    def add_member(self, member):
+        None
+
+    def update_description(self, description):
+        None
+
+
+class Post:
+    def __init__(self, text, owner):
+        self.__text = text
+        self.__total_likes = 0
+        self.__total_shares = 0
+        self.__owner = owner
+
+
+class Message:
+    def __init__(self, sent_to, message_body, media):
+        self.__sent_to = sent_to
+        self.__message_body = message_body
+        self.__media = media
+```
+{% endtab %}
+
+{% tab title="search.py" %}
+```python
+class Search:
+    def search_member(self, name):
+        None
+
+    def search_company(self, name):
+        None
+
+    def search_job(self, title):
+        None
+
+
+class SearchIndex(Search):
+    def __init__(self):
+        self.__member_names = {}
+        self.__company_names = {}
+        self.__job_titles = {}
+
+    def search_member(self, name):
+        return self.__member_names.get(name)
+
+    def search_company(self, name):
+        return self.__company_names.get(name)
+
+    def search_job(self, title):
+        return self.__job_titles.get(title)
+
+```
+{% endtab %}
+{% endtabs %}
+
+## 
+
+## 10. CrickInfo
+
+## 11.Facebook
+
+## 12. Hotel Management System
+
+## 13. Blackjack
+
+## 14. Chess
 
 
 
@@ -709,8 +2745,7 @@ class ParkingLot:
 
 
 
-
-## 1. CardWars
+## 15. CardWars
 
 {% tabs %}
 {% tab title="main.py" %}
@@ -984,7 +3019,7 @@ class WarCardGame:
 {% endtab %}
 {% endtabs %}
 
-## 2. TicTacToe\(Naive\)
+## 16. TicTacToe\(Naive\)
 
 {% tabs %}
 {% tab title="main.py" %}
@@ -1211,7 +3246,7 @@ class Player:
 {% endtab %}
 {% endtabs %}
 
-## 3. Parking Lot ☑️
+## 17. Parking Lot ☑️
 
 {% tabs %}
 {% tab title="main.py" %}
@@ -1444,10 +3479,6 @@ if __name__ == '__main__':
 ```
 {% endtab %}
 {% endtabs %}
-
-## 4. BookMyShow \(ticket booking\)
-
-* Done in HLD
 
 ## 5. Elevator
 
@@ -1776,23 +3807,9 @@ class Elevator:
 {% endtab %}
 {% endtabs %}
 
-## 6. Logger
+## 18. Logger
 
-## 7. Stock Exchange
-
-## Chess
-
-## Snake & Ladder
-
-## Splitwise
-
-## ATM
-
-## Amazon
-
-## Facebook
-
-## LinkedIn
+## 
 
 
 
