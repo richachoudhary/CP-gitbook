@@ -562,6 +562,51 @@ class ParkingLot:
 {% endtab %}
 {% endtabs %}
 
+### 2. [BUILDER](https://www.tutorialspoint.com/design_pattern/builder_pattern.htm)
+
+* builds a complex object using simple objects and using a step by step approach.
+* **e.g.@Flipkart**:
+  * buildMnmFact 
+    * buildSupplyObj
+      * buildLaudaObj
+        * ...
+    * buildDemandObj 
+      * buildLassanObj
+        * ...
+
+### 3. [FACTORY](https://www.tutorialspoint.com/design_pattern/factory_pattern.htm)
+
+* we create object without exposing the creation logic to the client and refer to newly created object using a common interface
+
+![Factory Pattern](../.gitbook/assets/screenshot-2021-08-30-at-12.36.38-am.png)
+
+### 4. [PROTOTYPE](https://www.tutorialspoint.com/design_pattern/prototype_pattern.htm)
+
+* creating **duplicate** object **instead of a new one**, because creating a new obj is **costly** .
+* This pattern is used when creation of object directly is costly. 
+* For example, an object is to be created after a **costly database operation**. 
+* We can **cache** the object, returns its clone on next request and update the database as and when needed thus reducing database calls.
+
+### 5. [ADAPTER](https://www.tutorialspoint.com/design_pattern/adapter_pattern.htm)
+
+* a single class which is responsible to **join functionalities of independent or incompatible interfaces**. 
+* e.g.: **card reader** which acts as an adapter between **memory card** and a **laptop**
+
+### **6. BRIDGE**
+
+### 7. FACADE
+
+* Facade pattern hides the complexities of the system and provides an interface to the client using which the client can access the system
+* a single class which provides simplified methods required by client and delegates calls to methods of existing system classes.
+
+### 8. DECORATOR
+
+* Decorator pattern allows a user to add new functionality to an existing object without altering its structure
+
+### 9. OBSERVER
+
+* Observer pattern is used when there is **one-to-many** relationship between objects such as **if one object is modified, its depenedent objects are to be notified automatically**.
+
 ## \#Things to do:
 
 * [x] Understand OOPs using Python
