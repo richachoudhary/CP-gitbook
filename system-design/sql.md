@@ -10,17 +10,15 @@
     FROM Customers
     GROUP BY Country;
     ```
-
-    * 
 * **Wildcards** in Mysql
 
 | Symbol | Description | Example |
 | :--- | :--- | :--- |
-| % | Represents zero or more characters | bl% finds bl, black, blue, and blob |
-| \_ | Represents a single character | h\_t finds hot, hat, and hit |
-| \[\] | Represents any single character within the brackets | h\[oa\]t finds hot and hat, but not hit |
-| ^ | Represents any character not in the brackets | h\[^oa\]t finds hit, but not hot and hat |
-| - | Represents a range of characters | c\[a-b\]t finds cat and cbt |
+| % | Represents zero or more characters | **bl%** finds **bl, black, blue, and blob** |
+| \_ | Represents a single character | **h\_t** finds **hot, hat**, and **hit** |
+| \[\] | Represents any single character within the brackets | **h\[oa\]t** finds **hot** and **hat**, but not hit |
+| ^ | Represents any character not in the brackets | **h\[^oa\]t** finds **hit**, but not hot and hat |
+| - | Represents a range of characters | **c\[a-b\]t** finds **cat** and **cbt** |
 
 * **Like** Operator with wildcards
 
@@ -132,8 +130,8 @@ ORDER BY COUNT(OCCUPATION);
 
   ```sql
   SELECT SUM(CITY.POPULATION)
-  FROM CITY
-  JOIN COUNTRY ON CITY.COUNTRYCODE = COUNTRY.CODE
+  FROM CITY JOIN COUNTRY 
+  ON CITY.COUNTRYCODE = COUNTRY.CODE
   WHERE COUNTRY.CONTINENT = 'Asia';
   ```
 

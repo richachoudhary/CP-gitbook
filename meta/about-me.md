@@ -14,7 +14,7 @@
 
 * Post that, I joined Razorpay.
 * **&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;** Razorpay is basically **payment gateway as a service**.
-* Here, I closely worked with various **banks & 3rd parties directly**; as they were **integrating** with more & more banks to **increase** the market reach.
+* Here, I worked with various **banks & 3rd parties directly**; as they were **integrating** with more & more banks to **increase** the market reach.
 * I was also a part of **Razorpay Capital-** their new initiative for providing short-term loans to small merchants & facilitate **instant refunds.**
 
  
@@ -23,11 +23,11 @@
 
 * For about past 1.5 years, I've been in Flipkart.
 * Here, my team is a part of Flipkart's overall **Real-time advertisement** business.
-* **&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; As you have seen** on Flipkart's site; there are so many discounts, offers, sales & other ad campaigns running all the time.
-* My team, in particularly, handles the **processing** of data related to the **tracking & reporting** the **performance** of these advertisement campaigns running of Flipkart **ecosystem**.
+* **&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; As you have seen** on Flipkart's site; there are so many discounts, sales & other ad campaigns running all the time.
+* My team, in particularly, handles the **processing** of data related to the **tracking & reporting** the **performance** of these advertisement campaigns.
 * \(opt\)....................
 * \(opt\)The job involves developing & maintaining various pipelines for data **ingestion**, **processing** & eventually **serving** it to multiple dashboards, where the advertisers can view their ads' **performance**.
-* \(opt\) I have majorly worked on the **optimisation** & **performance improvement** for these pipelines
+* \(opt\) I majorly on the **optimisation** & **performance improvement** for these pipelines.
 
 #### Finisher
 
@@ -66,7 +66,9 @@
 * **Major tracks worked:**
   * Keyword Targeting
   * Sampling
-  * Winning Bid Pricing Recommendation
+    * computation reduced by 80%
+    * real impact during **independence day sale 2021.**
+  * Bidding Price Recommendation System
 
 ## @Rzp
 
