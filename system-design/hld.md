@@ -1,8 +1,5 @@
 # HLD
 
-* **Encrypt** with **public** key
-* **Decrypt** with **private** key
-
 ## 1. **Scalability Trade-offs**
 
 * There’s no free lunch i.e. everything is a trade-off:
@@ -560,7 +557,133 @@ Below steps to be taken\(as \#users increase\)
   * **Kafka**
     * Kafak has **Brokers**
 
-## 11. Encryption
+## 11. Microservices: Application layer scaling
+
+### 11.0 Microservices
+
+* Architecture build with group of **loosely coupled** individual services.
+* Usually communicate with each other with **REST/RPC** protocol
+* all services have their **own database =&gt; POLYGLOT ARCHITECTURE\(SQL+NoSQL\)**
+  * **Disadv.** =&gt; lots of joins on DB queries
+  * **Adv.** =&gt; service based horizontal scaling
+
+### 11.1 API Gateway
+
+* **WHY USE?** =&gt; N separate calls to N microservices to get result of 1 query ❌
+  * So, use this & make a single call to it
+  * API gateway has logic to call which N calls to make.
+* **Advantages:**
+  * It can make **parallel calls** too, if reqd
+  * takes case of auth & filtering etc
+  * **SSL termination**
+    * verify HTTPS only on call from client to API gateway
+    * all internal calls are HTTP/RPC etc
+  * **Load Balancing**
+  * **Insulation** \(sanitation of 3P requests\)
+
+![](../.gitbook/assets/screenshot-2021-08-28-at-6.09.29-am.png)
+
+### 11.2 Service Discovery
+
+* **WHAT?** =&gt; its a pattern to **identify** the **network addresses** of all of the microservices' instances
+* It has a **Service Register.**
+  * Give me the list of all network addresses of **Inventory** service's instances\(see above ss\)
+* **Service Discovery =&gt;**  simply the service which **reads** the **Service Register**
+  * **TYPE1 : Client Side Service Discovery:**
+    * client talks to **Service Discovery** -&gt; asks the latest addresses of microservices -&gt; use this address to redirected there
+  * **TYPE2: Server Side Service Discovery:**
+    * client talks to **API Gateway** -&gt; API Gateway asks Service Discovery about the  latest addresses of microservices -&gt; use this address to redirected there
+* **used@ServiceDiscoveryTool =&gt;** Zookeeper
+
+### 11.3 Misc
+
+* **Varnish**
+  * **@ distributed\_cache**
+  * Front-end Caching system
+  * batching together similar requests from cache to DB
+* **Hysterix**
+  * **@ api\_management**
+  * =&gt; **usedTo:** avoid **Cascading Failures**
+    * graceful degradation
+  * circuit breaking 
+  * health check
+  * redirect
+
+## 12. Cryptography
+
+* **Src**: [video1](https://www.youtube.com/watch?v=q9vu6_2r0o4&ab_channel=PaulTurner) , [video2](https://www.youtube.com/watch?v=r1nJT63BFQ0&ab_channel=HusseinNasser)
+
+#### Two types of Encryption: [SourceVideo](https://www.youtube.com/watch?v=q9vu6_2r0o4&ab_channel=PaulTurner)
+
+1. **Symmetric Encryption**
+   * Have **one key** & exchange it **securely** to other party once
+   * After exchanging; you encrypt the msg with this key & send it **unsecurely** to other party & they decrypt it with the same key on their side.
+   * DISADV:
+     * key rotation is difficult
+     * single time exchange is prone to error
+     * every connection to a new client required generating & maintaining a new key =&gt; **Lots of keys to keep track of**
+2. **Asymmetric Encryption**
+   * Mathematician discovered a set of 2 keys - **{A, B}**; such that:
+     * if you encrypt with **A** =&gt; you **can** decrypt with **B**
+     * if you encrypt with **B** =&gt; you **can** decrypt with **A**
+     * if you encrypt with **A** =&gt; you **CANNOT** decrypt with **A**
+     * if you encrypt with **B** =&gt; you **CANNOT** decrypt with **B**
+   * Call **A: public\_key** and **B:private\_key**
+   * Keep **private\_key with you** & **share** ur **public\_key with all your clients\(**or publish it on site**\)**
+   * **Now:** the client will encrypt the msg with your **public\_key** and will send you.
+   * Nobody in the world can understand this msg; because it can only be decrypted by your **private\_key**\(which lies safe in your pocket\)
+   * **decrypt** the clients's msg with your **private\_key** and voila! 
+   * **ISSUE**: **Man in the middle attack**
+     * How to solve =&gt; use **certificate authority \(CA\)**
+
+![PKI. Source: https://www.youtube.com/watch?v=q9vu6\_2r0o4&amp;ab\_channel=PaulTurner](../.gitbook/assets/screenshot-2021-08-30-at-4.02.27-am.png)
+
+* **Certificates :** to avoid Man in the Middle Attaack in **PKI**\(public key infrastructure\)
+  * **What is Man in the Middle Attack?**
+    * Somebody sits b/w the sender & receiver; hearing all the conversation happening
+  * **How can Man in the Middle Attack can happen?**
+    * **middle\_man** provides their **public\_key** to the **sender**
+    * **sender** encrypts data with this middle\_man's public\_key
+    * **middle\_man** decrypts data with his **private\_key** 
+    * **middle\_man** stores a **copy** of this data with him \(the bastard!\)
+    * now he encrypt's data with the original receiver's **public\_key**
+    * the original receiver gets the data & decrypts with his **private\_key**
+    * to the original receiver; the **data looks the same** \(& there is **no way of him knowing that the call was breached!**\)
+  * **certificate binds a public\_key to a name**
+    * it takes a **public\_key**; **validates** if the key's **owner** is **authenticated** =&gt; then **signs it** & adds a **signature** to it
+    * has expiration date, issuing authority
+  * **How** does certification avoids Man in middle attack**? =&gt; using SSL/TLS HANDSHAKE**
+    * **Before starting** any **communication** with a client; the **sender** **sends his certificate** to the **client**.
+    * The **client verifies this certificate** of the sender \(using the **signature** attached to certificate\)
+      * `sign(certificate, private_key) = signature`
+      * `verify(certificate, signatrue, public_key) = True/False`
+    * After the client is done verification\(also called **Handshake**\); the **communication starts**.
+  * There are 2 types of handshake protocols:
+    * **SSL : Secure Socket Layer** 
+    * **TLS** : Transport Layer Security
+      * its the **successor** to SSL
+      * its the **latest industry standard** in cryptography
+
+![Certification in PKI](../.gitbook/assets/screenshot-2021-08-30-at-4.22.55-am.png)
+
+### 12.2 Cryptocurrency \| Blockchain
+
+* Resources\(Noob level\): 
+  * Nice video: [But how does bitcoin actually work?](https://www.youtube.com/watch?v=bBC-nXj3Ng4&ab_channel=3Blue1Brown)
+  * John Oliver chacha: [Last Week Tonight](https://www.youtube.com/watch?v=g6iDZspbRMg&ab_channel=LastWeekTonight)
+* **Main concepts for Noob:**
+  * Digital Signature
+  * **The ledger is the currency**
+  * Decentralize
+  * **Proof of Work**
+  * **Blockchain**
+* **Advance Concepts:**
+  * Merkle Trees
+  * Alternative to Proof of Work
+  * Scripting
+  * ............
+
+## 13. Encryption
 
 ### 1. MD5
 
@@ -577,7 +700,12 @@ Below steps to be taken\(as \#users increase\)
 * **Usage:**
   * **encode\(\) :** Converts the string into bytes to be acceptable by hash function.
   * **hexdigest\(\) :** Returns the encoded data in hexadecimal format.
-  * 
+* **WOAH!!!!!!!!!!!**
+  * SHA256 is not any common hash\_function, but a fucking **cryptographic hash function**
+  * i.e. if `sha256(x) = y`
+  * **there is no way to get `x` from `y`** i.e. any function g s.t. `g(y) =x` **doesnt exist!!!!**
+  * the only way you can get x from given y is by guessing....probability of guessing =`1/pow(2,256)`
+    * Chances of guessing = 1 in 4 Billion for a 40 times olduniverse worth of  **1Kilo Google** computers for every fully occupied planet of earth's size 🤣[src: video](https://www.youtube.com/watch?v=S9JGmA5_unY&ab_channel=3Blue1Brown)
 
 ```python
 import hashlib
@@ -610,72 +738,22 @@ s = b'GeeksForGeeks'
 gfg = b64encode(s)    #  b’R2Vla3NGb3JHZWVrcw==’
 ```
 
-## 12. Microservices: Application layer scaling
 
-### 12.0 Microservices
 
-* Architecture build with group of **loosely coupled** individual services.
-* Usually communicate with each other with **REST/RPC** protocol
-* all services have their **own database =&gt; POLYGLOT ARCHITECTURE\(SQL+NoSQL\)**
-  * **Disadv.** =&gt; lots of joins on DB queries
-  * **Adv.** =&gt; service based horizontal scaling
-
-### 12.1 API Gateway
-
-* **WHY USE?** =&gt; N separate calls to N microservices to get result of 1 query ❌
-  * So, use this & make a single call to it
-  * API gateway has logic to call which N calls to make.
-* **Advantages:**
-  * It can make **parallel calls** too, if reqd
-  * takes case of auth & filtering etc
-  * **SSL termination**
-    * verify HTTPS only on call from client to API gateway
-    * all internal calls are HTTP/RPC etc
-  * **Load Balancing**
-  * **Insulation** \(sanitation of 3P requests\)
-
-![](../.gitbook/assets/screenshot-2021-08-28-at-6.09.29-am.png)
-
-### 12.2 Service Discovery
-
-* **WHAT?** =&gt; its a pattern to **identify** the **network addresses** of all of the microservices' instances
-* It has a **Service Register.**
-  * Give me the list of all network addresses of **Inventory** service's instances\(see above ss\)
-* **Service Discovery =&gt;**  simply the service which **reads** the **Service Register**
-  * **TYPE1 : Client Side Service Discovery:**
-    * client talks to **Service Discovery** -&gt; asks the latest addresses of microservices -&gt; use this address to redirected there
-  * **TYPE2: Server Side Service Discovery:**
-    * client talks to **API Gateway** -&gt; API Gateway asks Service Discovery about the  latest addresses of microservices -&gt; use this address to redirected there
-* **used@ServiceDiscoveryTool =&gt;** Zookeeper
-
-## 13.Other Terms
-
-* **Varnish**
-  * **@ distributed\_cache**
-  * Front-end Caching system
-  * batching together similar requests from cache to DB
-* **Hysterix**
-  * **@ api\_management**
-  * =&gt; **usedTo:** avoid **Cascading Failures**
-    * graceful degradation
-  * circuit breaking 
-  * health check
-  * redirect
+\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*
 
 ## Resources:
 
 * Whimsical board: [HLDs](https://whimsical.com/hlds-n52ahnNWNwnC99fzGKJQ4)
 * **NOTE:** [**SYSTEM DESIGN TEMPLATE ON LEETCODE**](https://leetcode.com/discuss/career/229177/My-System-Design-Template)\*\*\*\*
 
-
-
 ## TODOs:
 
 * [x] Learn concepts from Grokking the SysD interview\(Part-2\)
 * [x] Finish System Design Primer in-depth
-* [ ] Start doing questions: 
-  * [ ] Grokking SysD Part I 
-  * [ ] Youtube
+* [x] Start doing questions: 
+  * [x] Grokking SysD Part I 
+  * [x] Youtube
   * [ ] Leetcode
 * [x] Revise all the things learnt during React & NextJS
 * [ ] Learn all about Big Data Techs using currently @fk
@@ -684,8 +762,8 @@ gfg = b64encode(s)    #  b’R2Vla3NGb3JHZWVrcw==’
 * [x] Concurrency - with code\(py/java\) : https://tutorialedge.net/course/python/
 * [x] Consistent Hashing
 * [ ] OSI Model
-* [ ] HTTPS
-* [x] SSL + encryption\(pub key vs priv key\)
+* [x] HTTPS
+* [x] SSL + encryption\(pub key vs private key\)
 * [x] Hash algos: SHA-256, RSA 
-* [ ] cryptography **@CoinBase** 💲
+* [x] cryptography **@CoinBase** 💲
 
