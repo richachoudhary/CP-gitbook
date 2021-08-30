@@ -17,7 +17,9 @@
 ### 1.2 Latency vs Throughput :Tradeoff
 
 * **Latency** is the time to perform some action or to produce some result.
-* **Throughput** is the number of such actions or results per unit of time.
+* **Throughput** : how many such actions can you perform in 1 unit of time
+  * i.e how many people can you serve **simultaneously**
+  * **NOTE**: `throughput != 1/latency` 
 * Generally, you should aim for **maximal throughput** with **acceptable latency**.
 
 ### 1.3 Availability vs Consistency : Tradeoff
@@ -46,7 +48,7 @@
       * Waiting for a response from the partitioned node might result in a timeout error. 
       * **CP** is a good choice **if your business needs require atomic reads and writes**.
     * 2. **AP**
-      * Responses return the most readily available version of the data available on any node, which might not be the latest.
+      * Responses return the most readily available version of the data available on any node, **which might not be the latest**.
       * Writes might take some time to propagate when the partition is resolved.
       * **AP** is a good choice **if the business needs allow for** [**eventual consistency**](https://github.com/donnemartin/system-design-primer#eventual-consistency) ****or when the system needs to continue working despite external errors.
 * ...there is only one choice to make. In case of a network partition, what do you sacrifice? 
@@ -71,12 +73,12 @@
 
 * After a write, reads will eventually see it \(typically within milliseconds\).
 * Data is **replicated asynchronously**.
-* This approach is seen in systems such as DNS and email. 
+* This approach is seen in systems such as **DNS** and **email**. 
 * **Eventual consistency works well in highly available systems**.
 
 ### **2.3 Strong consistency**
 
-* After a write, reads will see it. Data is replicated synchronously.
+* After a write, reads will see it. Data is **replicated synchronously.**
 * This approach is seen in file systems and **RDBMSes**. 
 * Strong consistency works well in **systems that need transactions**.
 
@@ -84,7 +86,7 @@
 
 ###     3.1 What \| How of Availability
 
-* Availability is often quantified by uptime \(or downtime\) as a percentage of time the service is available.
+* Availability is often quantified by **uptime** \(or downtime\) **as a percentage of time the service is available**.
 * Availability is generally measured in number of 9s--a service with 99.99% availability is described as having **four 9s.**
 * **99.9% availability - three 9s**
 
@@ -109,7 +111,7 @@
   * **Availability in Parallel: Increases**
     * `Availability (Total) = 1 - (1 - Availability (Foo)) * (1 - Availability (Bar))`
 
-###   3.2 Availability Patterns&gt;&gt;
+###   3.2 Availability Patterns
 
 * There are two complementary patterns to support high availability: 
   1. **fail-over** 
@@ -121,12 +123,12 @@
 * **Fail Back** =&gt; Restoring the failed node back
 * fail-over is not always this simple
 * **1. Active-passive Fail-over**
-  * With active-passive fail-over, **heartbeats** are sent **between the active and the passive server** on standby. If the heartbeat is interrupted, the passive server takes over the active's IP address and resumes service.
-  * The length of downtime is determined by whether the passive server is already running in 'hot' standby or whether it needs to start up from 'cold' standby. Only the active server handles traffic.
+  * With active-passive fail-over, **heartbeats** are sent **between the active and the passive server** on standby. If the heartbeat is interrupted, the **passive server takes over the active's IP address and resumes** service.
+  * The **length of downtime** is determined by whether the **passive server** is already running in **'hot' standb**y or whether it needs to start up from **'cold' standby.** Only the active server handles traffic.
   * Active-passive failover can also be referred to as **master-slave** failover.
 * **2.Active-active Fail-over**
   * In active-active, both servers are managing traffic, **spreading the load** between them.
-  * If the servers are public-facing, the DNS would need to know about the public IPs of both servers. If the servers are internal-facing, application logic would need to know about both servers.
+  * If the servers are **public-facing**, the DNS would need to know about the public IPs of both servers. If the servers are **internal-facing**, application logic would need to know about both servers.
   * Active-active failover can also be referred to as **master-master** failover.
 * **Disadvantage\(s\): failover**
   * Fail-over adds more hardware and additional **complexity**.
@@ -159,14 +161,14 @@
 
 * Top DNS service providers:
   * **Akamai**
-  * CloudFlare
+  * **CloudFlare**
   * OpenDNS
   * Oracle
   * **Google Open Domains**
   * Microsoft Azure
 * Some DNS services can route traffic through various methods:
   * \*\*\*\*[**Weighted round robin**](https://www.g33kinfo.com/info/round-robin-vs-weighted-round-robin-lb)\*\*\*\*
-    * Weighted round-robin provides a clean and effective way of focusing on fairly distributing the load amongst available resources, verses attempting to equally distribute the requests. 
+    * Weighted round-robin provides a clean and effective way of focusing on **fairly** distributing the load amongst available resources, **verses** attempting to **equally** distribute the requests. 
     * In a weighted round-robin algorithm, each destination \(in this case, server\) is assigned a value that signifies, relative to the other servers in the pool, how that server performs. 
     * This “weight” determines how many more \(or fewer\) requests are sent that server’s way; compared to the other servers on the pool.
     * Prevent traffic from going to servers under maintenance
@@ -178,8 +180,6 @@
   * Accessing a DNS server introduces a slight delay, although mitigated by caching described above.
   * DNS server management could be complex and is generally managed by [governments, ISPs, and large companies](http://superuser.com/questions/472695/who-controls-the-dns-servers/472729).
   * DNS services have recently come under [DDoS attack](http://dyn.com/blog/dyn-analysis-summary-of-friday-october-21-attack/), preventing users from accessing websites such as Twitter without knowing Twitter's IP address\(es\).
-
-
 
 ## **5.CDN**
 
@@ -197,10 +197,10 @@
     * **Sites with a small amount of traffic or sites with content that isn't often updated work well with push CDNs.**
     *  Content is placed on the CDNs once, instead of being re-pulled at regular intervals.
 * **Top CDNs:**
-  * CloudFlare
+  * **CloudFlare**
     * Cloudflare’s CDN has a network capacity **15 times bigger than the largest DDoS attack ever** recorded and handles modern DDoS to ensure your website stays online.
   * Google Cloud CDN
-  * Amazon CloudFront
+  * Amazon **CloudFront**
     * Popular with S3 caching
     * Can be used for EC2 Load Balancing
     * Protection against DDoS
@@ -215,7 +215,7 @@
   * Helping to eliminate a single point of failure
   * **SSL termination** - **Decrypt incoming requests** and **encrypt server responses** so backend servers do not have to perform these potentially expensive operations
     * Removes the need to install [X.509 certificates](https://en.wikipedia.org/wiki/X.509) on each server
-  * **Session persistence** - Issue cookies and route a specific client's requests to same instance if the web apps do not keep track of sessions
+  * **Session persistence**\(**sticky sessions**\)- Issue cookies and route a specific client's requests to same instance if the web apps do not keep track of sessions
 * Techniques of Failure Protection: it's common to set up multiple load balancers, either in [active-passive](https://github.com/donnemartin/system-design-primer#active-passive) or [active-active](https://github.com/donnemartin/system-design-primer#active-active) mode.
 * Amazon's **ELB:**
   * 2 level LB: 
@@ -223,7 +223,7 @@
     * 2.secondary array of  LBs\(**LB1,LB2,...**\)
   * hence more optimization
 
-![](../.gitbook/assets/screenshot-2021-08-26-at-2.16.55-am.png)
+![Elastic Load Balancer\(ELB\)](../.gitbook/assets/screenshot-2021-08-26-at-2.16.55-am.png)
 
 ### Routing Techniques
 
@@ -253,7 +253,6 @@
 
 * The load balancer can become a **performance bottleneck** if it does not have enough resources or if it is not configured properly.
 * Introducing a load balancer to help eliminate a **single point of failure** results in increased **complexity**.
-* A single load balancer is a single point of failure, configuring multiple load balancers further increases complexity.
 * **On Amazon’s ELB:**
   * Elastic Load Balancing supports the following protocols:
     * HTTP
@@ -261,12 +260,10 @@
     * TCP
     * SSL \(secure TCP\)
 
-
-
 ## **7. Proxy \| Reverse Proxy**
 
 * **Proxy**: -&gt; Server doesnt know the client
-* FORCED me to buy a new laptop!!!
+* **FORCED me to buy a new laptop!!!**
 * **Proxy Use Cases:**
   * Caching
   * Anonymity
@@ -308,8 +305,8 @@
 
 * Load balancer is **just an instance of reverse proxy**
 * **Deploying a load balancer is useful when you have multiple servers**. Often, load balancers route traffic to a set of servers serving the same function.
-* **Reverse proxies can be useful even with just one web server or application server**, opening up the benefits described in the previous section.
-* Solutions such as NGINX and HAProxy can support both layer 7 reverse proxying and load balancing.
+* **Reverse proxies can be useful even with just one application server**, opening up the benefits described in the previous section.
+* Solutions such as **NGINX** and **HAProxy** can support both layer 7 reverse proxying and load balancing.
 
 ## 8.**Scalability Patterns - DB**
 
@@ -326,10 +323,10 @@ Below steps to be taken\(as \#users increase\)
 * **NOSQL** 
   * Types
     * Key-Value databases \(Voldemort, Dynomite\) 
-    * Column databases \(Cassandra, Vertica, Sybase IQ\) 
-    * Document databases \(MongoDB, CouchDB\) 
-    * Graph databases \(Neo4J, AllegroGraph\) 
-    * Datastructure databases \(Redis, Hazelcast\)
+    * Column databases \(Cassandra, **HBase, Druid, Clickhouse**\) 
+    * Document databases \(**MongoDB**, CouchDB\) 
+    * Graph databases \(**Neo4J**, AllegroGraph\) 
+    * Datastructure databases \(**Redis**, Hazelcast\)
   * NOSQL in the world:
     * Google: Bigtable 
     * Amazon: Dynamo 
@@ -343,12 +340,12 @@ Below steps to be taken\(as \#users increase\)
 ## **8.1 RDBMS**
 
 * **ACID** is a set of properties of relational database [transactions](https://en.wikipedia.org/wiki/Database_transaction).
-  * **Atomicity** - Each transaction is all or nothing
-  * **Consistency** - Any transaction will bring the database from one valid state to another
-  * **Isolation** - Executing transactions concurrently has the same results as if the transactions were executed serially
-  * **Durability** - Once a transaction has been committed, it will remain so
+  * **Atomicity** - Each transaction is **all or nothing**
+  * **Consistency** - Any transaction will bring the database from **one valid state to another**
+  * **Isolation** - Executing transactions concurrently has the same results **as if the transactions were executed serially**
+  * **Durability** - Once a transaction has been **committed, it will remain so**
 
-### **Scaling Up a RDBMS**
+#### **Scaling Up a RDBMS**
 
 * Techniques:
   * master-slave replication \|\| master-master replication
@@ -357,11 +354,11 @@ Below steps to be taken\(as \#users increase\)
   * denormalization
   * SQL tuning
 
-### **1.Master-Master \|\| Master-Slave** :
+#### **1.Master-Master \|\| Master-Slave** :
 
 * already covered up
 
-### **2.Federation**
+#### **2.Federation**
 
 ![](https://lh6.googleusercontent.com/UwKEprPiFrT1KqBz21cF-M3bEgWRf8lW3Qa4TqCYLV_PtQY_-FfVYFj_OWMPC2bhFdPWA0adFuvAYkIsyWfnMmFCxT7d0DdMxxHCM4rz1w69kDbz5TtUZmWz2xAoIQ7P1J4yvxae=s0)
 
@@ -374,13 +371,13 @@ Below steps to be taken\(as \#users increase\)
   * **Joining data** from two databases is more complex with a [server link](http://stackoverflow.com/questions/5145637/querying-data-by-joining-two-tables-in-two-database-on-different-servers).
   * Federation adds **more hardware** and additional **complexity**.
 
-### **3.Sharding**
+#### **3.Sharding**
 
 ![](https://lh3.googleusercontent.com/3wxMhrFfn_K1Lzm1D4oV_sD55WlVPbMcNWEmuogB4WYVjmwD4IGSfaRjfj-ZOVDqNygpcxImGoRSttKOu1E90FPqwk-IShuCVvx8mAJgjPIH96BDZPAIsNZV3egUYFopeJICpB5T=s0)
 
 * Sharding **distributes data across different databases** such that each database can only manage a **subset of the data.**
 * Taking a users database as an example, as the number of users increases, more shards are added to the cluster
-* **@fk: partitioned on date ranges**
+* ~~**@fk: partitioned on date ranges**~~
 * **Disadvantage\(s\): sharding**
   * You'll need to update your application logic to work with shards, which could result in complex SQL queries.
   * **Data distribution can become lopsided** in a shard. For example, a set of power users on a shard could result in increased load to that shard compared to others.
@@ -388,7 +385,7 @@ Below steps to be taken\(as \#users increase\)
   * **Joining data from multiple shards is more complex.**
   * Sharding adds more hardware and additional complexity.
 
-### 4. Denormalization:
+#### 4. Denormalization:
 
 * Denormalization attempts to **improve read performance at the expense of some write performance**.
 * **Redundant copies** of the data are written in multiple tables to avoid expensive joins. 
@@ -400,7 +397,7 @@ Below steps to be taken\(as \#users increase\)
   * Constraints can help redundant copies of information stay in sync, which increases complexity of the database design.
   * A denormalized database under heavy write load might perform worse than its normalized counterpart.
 
-### 5. SQL Tuning
+#### 5. SQL Tuning
 
 * It's important to benchmark and profile to simulate and uncover bottlenecks.
 * **Benchmark** - Simulate high-load situations with tools such as [ab](http://httpd.apache.org/docs/2.2/programs/ab.html).
@@ -408,16 +405,16 @@ Below steps to be taken\(as \#users increase\)
 
 ## **8.2 NoSQL**
 
-* Data is **denormalized**, and joins are generally done in the application code.
+* Data is **denormalized**, and **joins are generally done in the application code.**
 * **Lack true ACID** transactions and have **BASE**:
   * **Basically available** - the system guarantees availability.
-  * **Soft state** - the state of the system may change over time, even without input.
+  * **Soft state** - the **state of the system may change over time, even without input.**
   * **Eventual consistency** - the system will become consistent over a period of time, given that the system doesn't receive input during that period.
 * **Why Use NoSQ**L:
   * WE ARE STORING MORE DATA NOW THAN WE EVER HAVE BEFORE
   * CONNECTIONS BETWEEN OUR DATA ARE GROWING ALL THE TIME
   * WE DON’T MAKE THINGS KNOWING THE STRUCTURE FROM DAY 1
-  * SERVER ARCHITECTURE IS NOW AT A STAGE WHERE WE CAN TAKE ADVANTAGE OF IT
+  * **SERVER ARCHITECTURE IS NOW AT A STAGE WHERE WE CAN TAKE ADVANTAGE OF IT**
 
 ![](https://lh4.googleusercontent.com/rNGrp1iB1-DqvA84NOXM2WQfUMaBDkERIkrJfPfX4XkY5pp0yBtxlztTnD7M9J2SPlF1CfPw019gQeV9H9crEnGf4syl3oE_BLg83WaQGl8LJ8oxNay7Aow2F1Qc_eucODsfnBLc=s0)
 
@@ -438,7 +435,7 @@ Below steps to be taken\(as \#users increase\)
   * NOT STANDARDISED \(PORTABILITY MAY BE AN ISSUE\) 
   * STILL A DEVELOPING TECHNOLOGY
 
-### Types of NoSQL
+#### Types of NoSQL
 
 * Determine which type of NoSQL database best fits your use case out of these:
 
@@ -446,7 +443,7 @@ Below steps to be taken\(as \#users increase\)
 
 ![](https://lh4.googleusercontent.com/LLth0aAtNlkt_8wzz5n2Vyy15w2xMm2cGdZjlb6ZneZy2Tut7BNe5Es8dRXlaIVKucBf0UGJXhEiJ-ShwvgUX0YSDFjW8zU2Ffduk5ikTkgd5q3CW--P2m-d3P6mbMETGc3KGqho=s0)
 
-### 1.Key-value store 
+#### 1.Key-value store 
 
 * **\(Abstraction: hash table\)**
 * generally allows for O\(1\) reads and writes; hence provide high performance
@@ -455,8 +452,22 @@ Below steps to be taken\(as \#users increase\)
   * [Redis](http://qnimate.com/overview-of-redis-architecture/)
   * Memcached
   * [DynamoDB](http://www.read.seas.harvard.edu/~kohler/class/cs239-w08/decandia07dynamo.pdf) supports both key-values and documents
+* **For redis:** all the data is stored in **RAM**. this:
+  * makes the **access very fast**
+  * But, **limits DB capacity** \(RAMs are wayyy smaller in size than SSDs\)
+  * **No support for queries** =&gt; limits the data modeling operations
+* **Redis is best for**: 
+  * Cache
+  * Pub/sub
+  * Leaderboards 
+* **Redis is used at:**
+  * Twitter
+  * Github
+  * Snapchat
 
-### 2.Document store 
+![Redis Queries via terminal](../.gitbook/assets/screenshot-2021-08-30-at-6.48.46-am.png)
+
+#### 2.Document store 
 
 * **\(Abstraction: key-value store with documents stored as values\)**
 * A document store is centered around documents \(XML, JSON, binary, etc\), where a document stores all information for a given object. 
@@ -468,37 +479,76 @@ Below steps to be taken\(as \#users increase\)
   * **mongoDb**
   * CouchDB
   * DynamoDb
+  * **Firestore😎**
+* **Tradeoffs**:
+  * schema-less ✅
+  * relation-ish queires ✅
+  * without joins ❌
+* **Best for:**
+  * very general purpose 💫 i.e. if you're not sure which DB to choose; choose it!
+  * most apps
+  * IOT
+  * gaming
 
-### 3.Wide column store 
+#### 3.Wide column store \| Column DBs
 
 *  **\(Abstraction: nested map ColumnFamily&lt;RowKey, Columns&lt;ColKey, Value, Timestamp&gt;&gt;\)**
+* **Why better that row DBs?**
+  * Coulmn DBs are good for **analytics queries:** e.g.how many sales today?
+  * Row DBs are good for **transaction queries:** 
+  * i.e. if DB size increases & you've to do analytics; go column DB
 * A column can be grouped in column families \(analogous to a SQL table\).
-* You can access each column independently with a row key, and columns with the same row key form a row.
 * Each value contains a timestamp for versioning and for conflict resolution.
 * maintain keys in lexicographic order, allowing efficient retrieval of selective key ranges.
+* **QUERYING:** can be done with **CQL\(Contextual Query Language\)** , which is very similar to **SQL** 
+  * Schema-less
+  * less features than SQL
+  * cant do Joins
+  * **Got hands on @fk 😎**
 * **used@dbs:**
-  * [Cassandra](http://docs.datastax.com/en/cassandra/3.0/cassandra/architecture/archIntro.html) from Facebook
-  * **HBase:** open-source [**HBase**](https://www.edureka.co/blog/hbase-architecture/) ****often-used in the **Hadoop ecosystem**
-    * Data is stored in **Big table.** 
-    * Table consist rows and **each rows has arbitrary number of columns**. 
-    * Every cell value gets assigned by **timestamp** and it plays an important role during operations. 
-    * **Row keys are lexicographically sorted** and stored in **Bytes** \[\]. 
-    * Column name and values are also stored in **Bytes** \[\]. 
-    * Columns are **grouped on the basis of properties as a column family**
+  * Column DBs:
+    * **Druid@fk😎**
+    * **Clickhouse@fk😎**
+  * **Wide Column DBs:** 
+    * [Cassandra](http://docs.datastax.com/en/cassandra/3.0/cassandra/architecture/archIntro.html) from Facebook
+    * **HBase:** open-source [**HBase**](https://www.edureka.co/blog/hbase-architecture/) ****often-used in the **Hadoop ecosystem**
+      * Data is stored in **Big table.** 
+      * Table consist rows and **each rows has arbitrary number of columns**. 
+      * Every cell value gets assigned by **timestamp** and it plays an important role during operations. 
+      * **Row keys are lexicographically sorted** and stored in **Bytes** \[\]. 
+      * Column name and values are also stored in **Bytes** \[\]. 
+      * Columns are **grouped on the basis of properties as a column family**
+* **best for:** 
+  * time-series data
+  * historical records =&gt; **@netflix**: history of shows people watched
+  * high-write, low-read
 
-![](https://lh4.googleusercontent.com/eJeX4oefA2bpsmgLGV-Zx5SgR7VuMoQRLF7CwLu18dQYBPM24W0JjbG9u2YvdDJs0sidL3rWgifpZ75Ve1_k0Kuz0W-GGcMdWMM4jmAO6gkweJr0bFs6DumPF4sebXsqZWKFum4J=s0)
+![A Wide Column DB \(HBase/Cassandra\)](https://lh4.googleusercontent.com/eJeX4oefA2bpsmgLGV-Zx5SgR7VuMoQRLF7CwLu18dQYBPM24W0JjbG9u2YvdDJs0sidL3rWgifpZ75Ve1_k0Kuz0W-GGcMdWMM4jmAO6gkweJr0bFs6DumPF4sebXsqZWKFum4J=s0)
 
-### 4.GraphDB \(Abstraction: graph\)
+#### 4.GraphDB \(Abstraction: graph\)
 
 * **Note**: its **not** related to graphQL at all.**GraphQL is an advancement on REST; not a DB**
 * each node is a record and each arc is a **relationship** between two nodes.
 * Graph databases are optimized to represent complex relationships with many foreign keys or many-to-many relationships
-* used@systems: Graphs databases offer high performance for data models with complex relationships, such as a social network.
-* used@dbs:
-  * [Neo4j](https://neo4j.com/)
+* used@systems: Graphs databases offer high performance for data models with complex relationships, such as a **social network.**
+* **used@dbs:**
+  * \*\*\*\*[**Neo4j**](https://neo4j.com/)\*\*\*\*
   * [FlockDB](https://blog.twitter.com/2010/introducing-flockdb)
-* 
-![](https://lh5.googleusercontent.com/Jh_okeUMJIscTWvil46jX2ayCgJeeQv2h_Ilr53xlyL7KRDYNjWMYuQKuciUR4olMIkvpjPooJn-Pj8UbyMDgZrXS2szchNfwx2IG6WfXLwxpH02R5zKfD671fSorsf4UwBU6Bvk=s0)
+* are queried using **Cypher** \(a query language\).
+* Graph DBs are a **greate alternative to SQL dbs**; especially when there are lots of **1-to-many** relations across tables i.e. **lots of joins**.
+* **BEST FOR:**
+  * graphs
+  * knowledge graphs
+  * social network
+  * fraud detection
+  * recommendation engine
+* **USED AT:** 
+  * FB
+  * Airbnb -&gt; for its recommendation engine
+
+![Graph DB vs RDMNS: lots of 1-many relations](../.gitbook/assets/screenshot-2021-08-30-at-7.02.15-am.png)
+
+![GraphDB vs RDBMS: lots of joins](../.gitbook/assets/screenshot-2021-08-30-at-7.02.24-am.png)
 
 ## 8.3 SQL vs NoSQL
 

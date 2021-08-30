@@ -61,7 +61,7 @@
   * Hadoop, HDFS
   * Hive
   * Apache Spark
-  * Mysql, Druid, Clickhouse
+  * Mysql, **Druid, Clickhouse**
   * Java 
 * **Major tracks worked:**
   * Keyword Targeting
