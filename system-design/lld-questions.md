@@ -40,7 +40,549 @@
 
 
 
-## 1. Library Management System
+## 4. Parking Lot \| `🟢Singleton| OpenClose | Builder`
+
+#### System Requirements:
+
+* **Take ticket:** To provide customers with a new parking ticket when entering the parking lot.
+* **Scan ticket:** To scan a ticket to find out the total charge.
+* **Make payment:** To pay the ticket fee with credit card
+* **Add/Modify parking rate:** To allow admin to add or modify the hourly parking rate.
+
+#### Out of Scope
+
+* Termnial 
+* ------------------------EntryTerminal : Terminal  \(multiple entry points per floor\)
+* ------------------------ExitTerminal : Terminal \(multiple exit points per floor\)
+* ParkingAssignmentStrategy \# consider **multiple entries on each floor** - **nearest dist**/**closest elevators** on floors etc 
+* Logger \# uses **Observer Pattern**
+
+{% tabs %}
+{% tab title="schema.txt" %}
+```python
+Enum TicketStatus
+-------- ACTIVE
+-------- COMPLETE
+
+Ticket
+--------id : generateID() # uuid
+--------vehicle_type
+--------status : TicketStatus
+--------inTime : getCurrTime()
+--------outTime
+--------payment : Payment
+--------spot    : Spot
+--------generateID()
+
+Enum VehicleType
+--------CAR
+--------BIKE
+
+Enum SpotType
+--------FREE
+--------TAKEN
+--------RESERVED (?)
+
+Vehicle     # Open Close Priciple(S-O-LID)
+--------id
+--------license
+--------generateID() # uuid
+
+Car : Vehicle
+--------type : VehicleType.CAR
+
+Bike : Vehicle
+--------type : VehicleType.BIKE
+
+Spot
+--------id = generateID()
+--------type : SpotType
+--------generateID()
+
+Payment
+--------mode
+--------type : VehicleType
+--------inTime
+--------outTime
+--------rate : { VehicleType : float} #map of key-val pair
+--------amount = calculateAmount(inTime,outTime,vehicle_type)
+--------getRate(type)
+--------setRate(type)
+--------calculateAmount(inTime,outTime,vehicle_type)
+
+DisplayBoard
+--------show(ParkingLot)
+
+ParkingLot
+--------id = generateID()
+--------name
+--------address
+--------generateID()    # uuid
+--------levels : [ParkingLevel]
+--------addLevel(level)
+--------processEntry(ticket)
+--------processExit(ticket)
+
+ParkingLevel
+--------name
+--------spots = {VehicleType.CAR: {SpotType.FREE: [], SpotType.TAKEN: []}
+--------addSpot(VehicleType, number_of_spots) # create new spots on floor
+--------assignSpot(ticket)
+--------unassignSpot(ticket)
+
+# Out of Scope:
+Termial
+EntryTerminal : Termial
+ExitTerminal : Termial
+ParkingAssignmentStrategy   # consider multiple entries on each floor - nearest dist/closes elevators on floors etc
+Logger # uses Observer Pattern
+
+# Notes:
+
+* If you choose to make diff parking slots using some `enums` ; it'll voilate the **OPEN CLOSE PRICIPLE**
+* => Hence; make an `interface` `Vehicle` & extend each type of new parking spot from it
+    * `Car(Vehicle)`
+    * `Bike(Vehicle)`
+```
+{% endtab %}
+
+{% tab title="parking\_lot.py" %}
+```python
+import time
+import uuid
+from enum import Enum
+
+
+class TicketStatus(Enum):
+    ACTIVE = 1
+    COMPLETE = 2
+
+
+class Ticket:
+    def __init__(self, vehicle_type):
+        self.id = self.generateID()
+        self.vehicle_type = vehicle_type
+        self.status = TicketStatus.ACTIVE
+        self.inTime = time.time()
+        self.outTime = None
+        self.payment = None
+        self.spot = None
+
+    def generateID(self):
+        # some ID generation mechanism
+        # yield range(100)
+        return uuid.uuid4()
+
+
+class VehicleType(Enum):
+    CAR = 1
+    BIKE = 2
+
+
+class SpotType(Enum):
+    FREE = 1
+    TAKEN = 2
+
+
+class Vehicle:
+    def __init__(self, license):
+        self.id = self.generateID()
+        self.license = license
+
+    def generateID(self):
+        yield range(100)
+
+
+class Car(Vehicle):
+    def __init__(self, license):
+        super().__init__(license)
+        self.type = VehicleType.CAR
+
+
+class Bike(Vehicle):
+    def __init__(self, license):
+        super().__init__(license)
+        self.type = VehicleType.CAR
+
+
+class Spot:
+    def __init__(self, type):
+        self.id = self.generateID()
+        self.type = type
+
+    def generateID(self):
+        # yield range(100)
+        return uuid.uuid4()
+
+
+class Payment:
+    def __init__(self, inTime, outTime, vehicle_type):
+        self.mode = None
+        self.rate = [30, 20, 10]  # assume same tarrif for all vehicles for now
+        self.amount = self.calculateAmount(inTime, outTime, vehicle_type)
+
+    def getRate(self):
+        return self.rate
+
+    def setRate(self, rate):
+        self.rate = rate
+
+    def calculateAmount(self, inTime, outTime, vehicle_type):
+        amount = (outTime - inTime) * self.getRate()[0]
+        amount += (
+            (outTime - inTime - 60) * self.getRate()[1]
+            if outTime - inTime - 60 > 0
+            else 0
+        )
+        amount += (
+            (outTime - inTime - 120) * self.getRate()[2]
+            if outTime - inTime - 120 > 0
+            else 0
+        )
+        return amount
+
+
+class DisplayBoard:
+    def show(self, P):
+        for eachlevel in P.levels:
+            print(P.name, "-", eachlevel.name, "- Available Parking Spots")
+            print("Car  : ", len(eachlevel.spots[VehicleType.CAR][SpotType.FREE]))
+            print("Bike : ", len(eachlevel.spots[VehicleType.BIKE][SpotType.FREE]))
+
+
+class ParkingLot:
+    def __init__(self, name, address):
+        self.id = self.generateID()
+        self.name = name
+        self.address = address
+        self.levels = []
+
+    def generateID(self):
+        # yield range(100)
+        return uuid.uuid4()
+
+    def addLevel(self, level):
+        self.levels.append(level)
+
+    def processEntry(self, ticket):
+        for eachlevel in self.levels:
+            if eachlevel.spots[ticket.vehicle_type.type][SpotType.FREE]:
+                ticket.spot = eachlevel.assignSpot(ticket)
+                print("Entry Completed For : ", ticket.vehicle_type.license)
+                break
+
+    def processExit(self, ticket):
+        for eachlevel in self.levels:
+            if ticket.spot in eachlevel.spots[ticket.vehicle_type.type][SpotType.TAKEN]:
+                eachlevel.unassignSpot(ticket)
+                break
+        ticket.outTime = time.time()
+        ticket.spots = None
+        ticket.status = TicketStatus.COMPLETE
+        ticket.payment = Payment(ticket.inTime, ticket.outTime, ticket.vehicle_type)
+        print(
+            "Exit Completed For  : ",
+            ticket.vehicle_type.license,
+            " Pay : ",
+            int(ticket.payment.amount),
+        )
+
+
+class ParkingLevel:
+    def __init__(self, name):
+        self.name = name
+        self.spots = {
+            VehicleType.CAR: {SpotType.FREE: [], SpotType.TAKEN: []},
+            VehicleType.BIKE: {SpotType.FREE: [], SpotType.TAKEN: []},
+        }
+
+    def assignSpot(self, ticket):
+        if self.spots[ticket.vehicle_type.type][SpotType.FREE] != []:
+            spot = self.spots[ticket.vehicle_type.type][SpotType.FREE].pop()
+            ticket.spot = spot
+            self.spots[ticket.vehicle_type.type][SpotType.TAKEN].append(spot)
+            return ticket.spot
+        return False
+
+    def unassignSpot(self, ticket):
+        self.spots[ticket.vehicle_type.type][SpotType.FREE].append(ticket.spot)
+        self.spots[ticket.vehicle_type.type][SpotType.TAKEN].remove(ticket.spot)
+
+    def addSpot(self, type, license):
+        for eachnum in range(license):
+            spot = Spot(type)
+            self.spots[type][SpotType.FREE].append(spot)
+
+# ----------------------- RUNNING ---------------------- #
+
+P = ParkingLot("Nathuram Parking Spot", "Great India Mall, New Delhi")
+F1 = ParkingLevel("F1")
+F1.addSpot(VehicleType.CAR, 3)
+F1.addSpot(VehicleType.BIKE, 3)
+P.addLevel(F1)
+
+Board = DisplayBoard()
+Board.show(P)
+
+T1 = Ticket(Car("BH05 AB 5454"))
+P.processEntry(T1)
+
+T2 = Ticket(Bike("BH05 AB 9000"))
+P.processEntry(T2)
+
+time.sleep(2)
+P.processExit(T2)
+
+Board = DisplayBoard()
+Board.show(P)
+```
+{% endtab %}
+{% endtabs %}
+
+#### 5.ParkingLot \(main system class\) ================================================
+
+* **ParkingLot**
+  * name
+  * rates = \[\]
+  * `curr_vehicle_counts`
+  * `curr_active_tickets = []`
+  * `generate_new_parking_ticket()`
+  * **NOTE!!!!** Our system will have only **one object of this class**. This can be enforced by using the [**Singleton**](https://en.wikipedia.org/wiki/Singleton_pattern) **pattern**. 💫🟢🟢🟢🟢
+    * **WHAT IS SINGLETON PATTERN:** is a software design pattern that **restricts the instantiation of a class to only one object**.
+    * Everywhere: entry/exit \|\| checkin/checkout: **ONLY this object CAN create new parking ticket**: using method `get_new_parking_ticket()`
+* Code from Grokking - old ....... **DONT USE**❌
+
+{% tabs %}
+{% tab title="constants.py" %}
+```python
+from enum import Enum
+
+class VehicleType(Enum):
+    CAR, BIKE, TRUCK, BUS  = 1, 2, 3,4
+
+class ParkingSpotType(Enum):
+    HANDICAPPED, COMPACT, REGULAR, LARGE = 1, 2, 3, 4
+
+class ParkingTicketStatus(Enum):
+    ACTIVE, PAID, LOST = 1, 2, 3
+    # ELECTRIC -> ??
+
+class Person():
+    def __init__(self, name, address, email, phone):
+        self.__name = name
+        self.__address = address
+        self.__email = email
+        self.__phone = phone
+```
+{% endtab %}
+
+{% tab title="account\_types.py" %}
+```python
+from .constants import *
+
+class Account:
+    def __init__(self, user_name, password, person):
+        self.__user_name = user_name
+        self.__password = password
+        self.__person = person
+
+    def reset_password(self):
+        None
+
+
+class Admin(Account):
+    def __init__(self, user_name, password, person):
+        super().__init__(user_name, password, person)
+
+    def add_parking_spot(self, floor_name, spot):
+        None
+
+class ParkingAttendant(Account):
+    def __init__(self, user_name, password, person):
+        super().__init__(user_name, password, person)
+
+    def process_ticket(self, ticket_number):
+        None
+
+```
+{% endtab %}
+
+{% tab title="vehicles.py" %}
+```python
+from abc import ABC
+from .constants import  *
+
+class Vehicle(ABC):
+    def __init__(self, license_number, vehicle_type, ticket=None):
+        self.__license_number = license_number
+        self.__type = vehicle_type
+        self.__ticket = ticket
+
+    def assign_ticket(self, ticket):
+        self.__ticket = ticket
+
+
+class Car(Vehicle):
+    def __init__(self, license_number, ticket=None):
+        super().__init__(license_number, VehicleType.CAR, ticket)
+
+
+class Bike(Vehicle):
+    def __init__(self, license_number, ticket=None):
+        super().__init__(license_number, VehicleType.BIKE, ticket)
+
+
+class Truck(Vehicle):
+    def __init__(self, license_number, ticket=None):
+        super().__init__(license_number, VehicleType.TRUCK, ticket)
+
+
+```
+{% endtab %}
+
+{% tab title="parking\_spot.py" %}
+```python
+from abc import ABC
+from .constants import  *
+
+class ParkingSpot(ABC):
+    def __init__(self, number, parking_spot_type):
+        self.__number = number
+        self.__free = True
+        self.__vehicle = None
+        self.__parking_spot_type = parking_spot_type
+
+    def is_free(self):
+        return self.__free
+
+    def assign_vehicle(self, vehicle):
+        self.__vehicle = vehicle
+        free = False
+
+    def remove_vehicle(self):
+        self.__vehicle = None
+        free = True
+
+
+class HandicappedSpot(ParkingSpot):
+    def __init__(self, number):
+        super().__init__(number, ParkingSpotType.HANDICAPPED)
+
+
+class CompactSpot(ParkingSpot):
+    def __init__(self, number):
+        super().__init__(number, ParkingSpotType.COMPACT)
+
+
+class RegularSpot(ParkingSpot):
+    def __init__(self, number):
+        super().__init__(number, ParkingSpotType.REGULAR)
+        
+class LargeSpot(ParkingSpot):
+    def __init__(self, number):
+        super().__init__(number, ParkingSpotType.LARGE)
+
+```
+{% endtab %}
+
+{% tab title="parking\_lot.py🟢" %}
+```python
+import threading
+from .constants import *
+
+class ParkingLot:
+    # singleton ParkingLot to ensure only one object of ParkingLot in the system,
+    # all entrance panels will use this object to create new parking ticket: get_new_parking_ticket(),
+    # similarly exit panels will also use this object to close parking tickets
+    instance = None
+
+    class __OnlyOne:
+        def __init__(self, name, address):
+        # 1. initialize variables: read name, address and parking_rate from database
+        # 2. initialize parking floors: read the parking floor map from database,
+        #    this map should tell how many parking spots are there on each floor. This
+        #    should also initialize max spot counts too.
+        # 3. initialize parking spot counts by reading all active tickets from database
+
+            self.__name = name
+            self.__address = address
+            self.__parking_rate = ParkingRate()
+
+            self.__compact_spot_count = 0
+            self.__regular_spot_count = 0
+            self.__large_spot_count = 0
+
+            self.__max_compact_count = 0
+            self.__max_regular_count = 0
+            self.__max_large_count = 0
+
+            # all active parking tickets, identified by their ticket_number
+            self.__active_tickets = {}
+
+            self.__lock = threading.Lock()
+
+    def __init__(self, name, address):
+        if not ParkingLot.instance:
+            ParkingLot.instance = ParkingLot.__OnlyOne(name, address)
+        else:
+            ParkingLot.instance.__name = name
+            ParkingLot.instance.__address = addres
+
+    def get_new_parking_ticket(self, vehicle):
+        if self.is_full(vehicle.get_type()):
+            raise Exception('Parking full!')
+            
+    # synchronizing to allow multiple entrances panels to issue a new
+    # parking ticket without interfering with each other
+    
+        self.__lock.acquire()
+        
+        ticket = ParkingTicket()
+        vehicle.assign_ticket(ticket)
+        ticket.save_in_DB()
+        # if the ticket is successfully saved in the database, we can increment the parking spot count
+        self.__increment_spot_count(vehicle.get_type())
+        self.__active_tickets.put(ticket.get_ticket_number(), ticket)
+        
+        self.__lock.release()
+        return ticket
+
+    def is_full(self, type):
+        # trucks and bus can only be parked in LargeSpot
+        if type == VehicleType.Truck or type == VehicleType.Bus:
+            return self.__large_spot_count >= self.__max_large_count
+
+        # cars can be parked at compact or large spots
+        if type == VehicleType.Car:
+            return (self.__compact_spot_count + self.__large_spot_count) >= (self.__max_compact_count + self.__max_large_count)
+
+        # bikes car can be parked at compact, regular or large spots
+        return (self.__compact_spot_count + self.__regular_spot_count + self.__large_spot_count) >= (self.__max_compact_count + self.__max_regular_count
+                                                                                                  + self.__max_large_count)
+
+    # increment the parking spot count based on the vehicle type
+    def increment_spot_count(self, type):
+        large_spot_count = 0
+        motorbike_spot_count = 0
+        compact_spot_count = 0
+        electric_spot_count = 0
+        if type == VehicleType.Truck or type == VehicleType.Bus:
+            large_spot_count += 1
+        elif type == VehicleType.Car:
+            regular_spot_count += 1
+        else:  # bike
+            if self.__compact_spot_count < self.__max_compact_count:
+                compact_spot_count += 1
+            elif self.__regular_spot_count < self.__max_regular_count:
+                regular_spot_count += 1
+            else:
+                large_spot_count += 1
+
+```
+{% endtab %}
+{% endtabs %}
+
+## 2. Library Management System
 
 #### System Requirements:
 
@@ -371,6 +913,315 @@ class Catalog(Search):
     def search_by_author(self, query):
         # return all books containing the string query in their author's name.
         return self.__book_authors.get(query)   #NOTE: assume DB connection 
+
+```
+{% endtab %}
+{% endtabs %}
+
+## 3. BookMyShow
+
+#### System Requirements:
+
+* **Search movies:** To search movies by title, genre, language, release date, and city name.
+* **Create/Modify/View booking:** To book a movie show ticket, cancel it or view details about the show.
+* **Make payment for booking:** To pay for the booking.
+* **Add a coupon to the payment:** To add a discount coupon to the payment.
+* **Assign Seat:** Customers will be shown a seat map to let them select seats for their booking.
+* **Refund payment:** Upon cancellation, customers will be refunded the payment amount as long as the cancellation occurs within the allowed time frame.
+
+#### **Classes**
+
+**1.Constants ===============================================================**
+
+* **BookingStatus**: PENDING, CONFIRMED, CHECKED\_IN, CANCELED
+* **SeatType**:REGULAR, PREMIUM
+* **PaymentStatus**: UNPAID, PENDING, COMPLETED, DECLINED, CANCELLED, REFUNDED
+
+**2.Acc\_Types ===============================================================**
+
+* **Account** - interface
+  * password 
+  * name 
+  * email 
+  * reset\_password\(self\)
+* **Customer\(Account\)**
+  * make\_booking\(self, booking\)
+  * get\_bookings\(\)
+* **Admin\(Account\)**
+  * add\_movie\(self, movie\) 
+  * add\_show\(self, show\)
+* **Guest\(Account\)**
+  * register\(\)
+
+**3.Shows ===============================================================**
+
+* **Show**
+  * show\_id 
+  * created\_on 
+  * start\_time 
+  * end\_time 
+  * played\_at 
+  * movie
+* **Movie**
+  * title 
+  * description 
+  * duration 
+  * language
+  * release\_date 
+  * country 
+  * genre 
+  * shows = \[\]
+  * get\_shows\(\)
+
+**4.Cinema ===============================================================**
+
+* **Search** : parent
+  * search\_products\_by\_name\(self, name\)
+  * search\_products\_by\_category\(self, category\)
+* **Catalog\(Search\)**
+  * product\_names
+  * product\_categories
+  * search\_products\_by\_name\(self, name\)
+  * search\_products\_by\_category\(self, category\)
+
+**5.Search ===============================================================**
+
+* **Search :** interface
+  * search\_by\_title\(self, title\)
+  * search\_by\_language\(self, language\)
+  * search\_by\_genre\(self, genre\)
+  * search\_by\_city\(self, city\_name\)
+* **Catalog**
+  * movie\_titles = {}
+  * movie\_languages = {}
+  * movie\_genres = {}
+  * movie\_release\_dates = {}
+  * movie\_cities = {}
+  * search\_by\_title\(self, title\) 
+  * search\_by\_language\(self, language\) 
+  * search\_by\_city\(self, city\_name\)
+
+**6.Booking ===============================================================**
+
+* **Booking**
+  * booking\_number
+  * number\_of\_seats
+  * created\_on
+  * status
+  * show
+  * seats
+  * payment
+  * make\_payment\(self, payment\)
+  * cancel\(self\)
+  * assign\_seats\(self, seats\)
+* **Payment**
+  * amount
+  * created\_on
+  * transaction\_id
+  * status
+
+{% tabs %}
+{% tab title="constants.py" %}
+```python
+from enum import Enum
+
+class BookingStatus(Enum):
+    PENDING, CONFIRMED, CHECKED_IN, CANCELED = 1, 2, 3, 4
+
+class SeatType(Enum):
+    REGULAR, PREMIUM = 1, 2
+
+class PaymentStatus(Enum):
+    UNPAID, PENDING, COMPLETED, DECLINED, CANCELLED, REFUNDED = 1, 2, 3, 4, 5, 6
+
+```
+{% endtab %}
+
+{% tab title="account\_types.py" %}
+```python
+from abc import ABC
+from .constants import AccountStatus
+
+
+# For simplicity, we are not defining getter and setter functions. The reader can
+# assume that all class attributes are private and accessed through their respective
+# public getter methods and modified only through their public methods function.
+
+
+class Account:
+    def __init__(self, id, password, status=AccountStatus.Active):
+        self.__id = id
+        self.__password = password
+        self.__status = status
+
+    def reset_password(self):
+        None
+
+
+# from abc import ABC, abstractmethod
+class Person(ABC):
+    def __init__(self, name, address, email, phone, account):
+        self.__name = name
+        self.__address = address
+        self.__email = email
+        self.__phone = phone
+        self.__account = account
+
+
+class Customer(Person):
+    def make_booking(self, booking):
+        None
+
+    def get_bookings(self):
+        None
+
+
+class Admin(Person):
+    def add_movie(self, movie):
+        None
+
+    def add_show(self, show):
+        None
+
+
+class Guest:
+    def register_account(self):
+        None
+```
+{% endtab %}
+
+{% tab title="show.py" %}
+```python
+from datetime import datetime
+
+class Show:
+    def __init__(self, id, played_at, movie, start_time, end_time):
+        self.__show_id = id
+        self.__created_on = datetime.date.today()
+        self.__start_time = start_time
+        self.__end_time = end_time
+        self.__played_at = played_at
+        self.__movie = movie
+
+
+class Movie:
+    def __init__(self, title, description, duration_in_mins, language, release_date, country, genre, added_by):
+        self.__title = title
+        self.__description = description
+        self.__duration_in_mins = duration_in_mins
+        self.__language = language
+        self.__release_date = release_date
+        self.__country = country
+        self.__genre = genre
+
+        self.__shows = []
+
+    def get_shows(self):
+        None
+```
+{% endtab %}
+
+{% tab title="cinema.py" %}
+```python
+class City:
+    def __init__(self, name, state, zip_code):
+        self.__name = name
+        self.__state = state
+        self.__zip_code = zip_code
+
+class Cinema:
+    def __init__(self, name, total_cinema_halls, address, halls):
+        self.__name = name
+        self.__location = address
+
+        self.__halls = halls
+
+
+class CinemaHall:
+    def __init__(self, name, total_seats, seats, shows):
+        self.__name = name
+        self.__total_seats = total_seats
+
+        self.__seats = seats
+        self.__shows = shows
+
+
+class CinemaHallSeat:
+    def __init__(self, id, seat_type):
+        self.__hall_seat_id = id
+        self.__seat_type = seat_type
+```
+{% endtab %}
+
+{% tab title="search.py" %}
+```python
+from abc import ABC
+
+class Search(ABC):
+    def search_by_title(self, title):
+        None
+
+    def search_by_language(self, language):
+        None
+
+    def search_by_genre(self, genre):
+        None
+
+    def search_by_city(self, city_name):
+        None
+
+
+class Catalog(Search):
+    def __init__(self):
+        self.__movie_titles = {}
+        self.__movie_languages = {}
+        self.__movie_genres = {}
+        self.__movie_release_dates = {}
+        self.__movie_cities = {}
+
+        def search_by_title(self, title):
+            return self.__movie_titles.get(title)
+
+        def search_by_language(self, language):
+            return self.__movie_languages.get(language)
+
+        def search_by_city(self, city_name):
+            return self.__movie_cities.get(city_name)
+```
+{% endtab %}
+
+{% tab title="booking.py" %}
+```python
+from datetime import datetime
+from .cinema import CinemaHallSeat
+
+
+class Booking:
+    def __init__(self, booking_number, number_of_seats, status, show, show_seats, payment):
+        self.__booking_number = booking_number
+        self.__number_of_seats = number_of_seats
+        self.__created_on = datetime.date.today()
+        self.__status = status
+        self.__show = show
+        self.__seats = show_seats
+        self.__payment = payment
+
+    def make_payment(self, payment):
+        None
+
+    def cancel(self):
+        None
+
+    def assign_seats(self, seats):
+        None
+
+
+class Payment:
+    def __init__(self, amount, transaction_id, payment_status):
+        self.__amount = amount
+        self.__created_on = datetime.date.today()
+        self.__transaction_id = transaction_id
+        self.__status = payment_status
 
 ```
 {% endtab %}
@@ -715,626 +1566,7 @@ class Notification(ABC):
 {% endtab %}
 {% endtabs %}
 
-## 3. BookMyShow
-
-#### System Requirements:
-
-* **Search movies:** To search movies by title, genre, language, release date, and city name.
-* **Create/Modify/View booking:** To book a movie show ticket, cancel it or view details about the show.
-* **Make payment for booking:** To pay for the booking.
-* **Add a coupon to the payment:** To add a discount coupon to the payment.
-* **Assign Seat:** Customers will be shown a seat map to let them select seats for their booking.
-* **Refund payment:** Upon cancellation, customers will be refunded the payment amount as long as the cancellation occurs within the allowed time frame.
-
-#### **Classes**
-
-**1.Constants ===============================================================**
-
-* **BookingStatus**: PENDING, CONFIRMED, CHECKED\_IN, CANCELED
-* **SeatType**:REGULAR, PREMIUM
-* **PaymentStatus**: UNPAID, PENDING, COMPLETED, DECLINED, CANCELLED, REFUNDED
-
-**2.Acc\_Types ===============================================================**
-
-* **Account** - interface
-  * password 
-  * name 
-  * email 
-  * reset\_password\(self\)
-* **Customer\(Account\)**
-  * make\_booking\(self, booking\)
-  * get\_bookings\(\)
-* **Admin\(Account\)**
-  * add\_movie\(self, movie\) 
-  * add\_show\(self, show\)
-* **Guest\(Account\)**
-  * register\(\)
-
-**3.Shows ===============================================================**
-
-* **Show**
-  * show\_id 
-  * created\_on 
-  * start\_time 
-  * end\_time 
-  * played\_at 
-  * movie
-* **Movie**
-  * title 
-  * description 
-  * duration 
-  * language
-  * release\_date 
-  * country 
-  * genre 
-  * shows = \[\]
-  * get\_shows\(\)
-
-**4.Cinema ===============================================================**
-
-* **Search** : parent
-  * search\_products\_by\_name\(self, name\)
-  * search\_products\_by\_category\(self, category\)
-* **Catalog\(Search\)**
-  * product\_names
-  * product\_categories
-  * search\_products\_by\_name\(self, name\)
-  * search\_products\_by\_category\(self, category\)
-
-**5.Search ===============================================================**
-
-* **Search :** interface
-  * search\_by\_title\(self, title\)
-  * search\_by\_language\(self, language\)
-  * search\_by\_genre\(self, genre\)
-  * search\_by\_city\(self, city\_name\)
-* **Catalog**
-  * movie\_titles = {}
-  * movie\_languages = {}
-  * movie\_genres = {}
-  * movie\_release\_dates = {}
-  * movie\_cities = {}
-  * search\_by\_title\(self, title\) 
-  * search\_by\_language\(self, language\) 
-  * search\_by\_city\(self, city\_name\)
-
-**6.Booking ===============================================================**
-
-* **Booking**
-  * booking\_number
-  * number\_of\_seats
-  * created\_on
-  * status
-  * show
-  * seats
-  * payment
-  * make\_payment\(self, payment\)
-  * cancel\(self\)
-  * assign\_seats\(self, seats\)
-* **Payment**
-  * amount
-  * created\_on
-  * transaction\_id
-  * status
-
-{% tabs %}
-{% tab title="constants.py" %}
-```python
-from enum import Enum
-
-class BookingStatus(Enum):
-    PENDING, CONFIRMED, CHECKED_IN, CANCELED = 1, 2, 3, 4
-
-class SeatType(Enum):
-    REGULAR, PREMIUM = 1, 2
-
-class PaymentStatus(Enum):
-    UNPAID, PENDING, COMPLETED, DECLINED, CANCELLED, REFUNDED = 1, 2, 3, 4, 5, 6
-
-```
-{% endtab %}
-
-{% tab title="account\_types.py" %}
-```python
-from abc import ABC
-from .constants import AccountStatus
-
-
-# For simplicity, we are not defining getter and setter functions. The reader can
-# assume that all class attributes are private and accessed through their respective
-# public getter methods and modified only through their public methods function.
-
-
-class Account:
-    def __init__(self, id, password, status=AccountStatus.Active):
-        self.__id = id
-        self.__password = password
-        self.__status = status
-
-    def reset_password(self):
-        None
-
-
-# from abc import ABC, abstractmethod
-class Person(ABC):
-    def __init__(self, name, address, email, phone, account):
-        self.__name = name
-        self.__address = address
-        self.__email = email
-        self.__phone = phone
-        self.__account = account
-
-
-class Customer(Person):
-    def make_booking(self, booking):
-        None
-
-    def get_bookings(self):
-        None
-
-
-class Admin(Person):
-    def add_movie(self, movie):
-        None
-
-    def add_show(self, show):
-        None
-
-
-class Guest:
-    def register_account(self):
-        None
-```
-{% endtab %}
-
-{% tab title="show.py" %}
-```python
-from datetime import datetime
-
-class Show:
-    def __init__(self, id, played_at, movie, start_time, end_time):
-        self.__show_id = id
-        self.__created_on = datetime.date.today()
-        self.__start_time = start_time
-        self.__end_time = end_time
-        self.__played_at = played_at
-        self.__movie = movie
-
-
-class Movie:
-    def __init__(self, title, description, duration_in_mins, language, release_date, country, genre, added_by):
-        self.__title = title
-        self.__description = description
-        self.__duration_in_mins = duration_in_mins
-        self.__language = language
-        self.__release_date = release_date
-        self.__country = country
-        self.__genre = genre
-
-        self.__shows = []
-
-    def get_shows(self):
-        None
-```
-{% endtab %}
-
-{% tab title="cinema.py" %}
-```python
-class City:
-    def __init__(self, name, state, zip_code):
-        self.__name = name
-        self.__state = state
-        self.__zip_code = zip_code
-
-class Cinema:
-    def __init__(self, name, total_cinema_halls, address, halls):
-        self.__name = name
-        self.__location = address
-
-        self.__halls = halls
-
-
-class CinemaHall:
-    def __init__(self, name, total_seats, seats, shows):
-        self.__name = name
-        self.__total_seats = total_seats
-
-        self.__seats = seats
-        self.__shows = shows
-
-
-class CinemaHallSeat:
-    def __init__(self, id, seat_type):
-        self.__hall_seat_id = id
-        self.__seat_type = seat_type
-```
-{% endtab %}
-
-{% tab title="search.py" %}
-```python
-from abc import ABC
-
-class Search(ABC):
-    def search_by_title(self, title):
-        None
-
-    def search_by_language(self, language):
-        None
-
-    def search_by_genre(self, genre):
-        None
-
-    def search_by_city(self, city_name):
-        None
-
-
-class Catalog(Search):
-    def __init__(self):
-        self.__movie_titles = {}
-        self.__movie_languages = {}
-        self.__movie_genres = {}
-        self.__movie_release_dates = {}
-        self.__movie_cities = {}
-
-        def search_by_title(self, title):
-            return self.__movie_titles.get(title)
-
-        def search_by_language(self, language):
-            return self.__movie_languages.get(language)
-
-        def search_by_city(self, city_name):
-            return self.__movie_cities.get(city_name)
-```
-{% endtab %}
-
-{% tab title="booking.py" %}
-```python
-from datetime import datetime
-from .cinema import CinemaHallSeat
-
-
-class Booking:
-    def __init__(self, booking_number, number_of_seats, status, show, show_seats, payment):
-        self.__booking_number = booking_number
-        self.__number_of_seats = number_of_seats
-        self.__created_on = datetime.date.today()
-        self.__status = status
-        self.__show = show
-        self.__seats = show_seats
-        self.__payment = payment
-
-    def make_payment(self, payment):
-        None
-
-    def cancel(self):
-        None
-
-    def assign_seats(self, seats):
-        None
-
-
-class Payment:
-    def __init__(self, amount, transaction_id, payment_status):
-        self.__amount = amount
-        self.__created_on = datetime.date.today()
-        self.__transaction_id = transaction_id
-        self.__status = payment_status
-
-```
-{% endtab %}
-{% endtabs %}
-
-## 4. Parking Lot \| `Singleton🟢`
-
-#### System Requirements:
-
-* **Take ticket:** To provide customers with a new parking ticket when entering the parking lot.
-* **Scan ticket:** To scan a ticket to find out the total charge.
-* **Make payment:** To pay the ticket fee with credit card
-* **Add/Modify parking rate:** To allow admin to add or modify the hourly parking rate.
-
-#### Out of Scope
-
-* **Add/Remove/Edit parking floor:** To add, remove or modify a parking floor from the system. Each floor can have its own display board to show free parking spots.
-* **Add/Remove/Edit parking spot:** To add, remove or modify a parking spot on a parking floor.
-* **Add/Remove a parking attendant:** To add or remove a parking attendant from the system.
-* **3rd party payment integration**
-
-**Classes:**
-
-**1.Constants =================================================================**
-
-* **VehicleTypes**: CAR, BIKE, TRUCK
-* **ParkingSpotType:HANDICAPPED**, COMPACT, REGULAR, LARGE
-* **ParkingTicketStatus**: ACTIVE, PAID, LOST
-* **Person**
-  * name
-  * address
-  * email
-  * phone
-
-**2.Acc Types =================================================================**
-
-* **Account** : interface
-  * name
-  * password
-  * person 
-  * reset\_pwd\(\)
-* **Admin\(Account\)**
-  * `add`\_`parking_spot(spot)`
-* **ParkingAttendent\(Account\)**
-  * `process_ticket(ticket_number )`
-* **User\(Account\)**
-
-#### 3.Vehicles ===================================================================
-
-* **Vehicle** : interface
-  * id
-  * type
-  * ticket
-  * license\_number
-  * assign\_ticket\(\)
-* **Car\(Vehicle\)**
-* **Bike\(Vehicle\)**
-* **Truck\(Vehicle\)**
-
-#### 4.ParkingSpots ===============================================================
-
-* **ParkingSpot :** interface
-  * number
-  * free:bool
-  * vehicle: Vehicle
-  * type
-  * is\_free\(\)
-  * assign\_vehicle\(\)
-  * remove\_vehicle\(\)
-* **HandicappedSpot\(ParkingSpot\)**
-* **CompactSpot\(ParkingSpot\)**
-* **RegularSpot\(ParkingSpot\)**
-* **LargeSpot\(ParkingSpot\)**
-
-#### 5.ParkingLot \(main system class\) ================================================
-
-* **ParkingLot**
-  * name
-  * rates = \[\]
-  * `curr_vehicle_counts`
-  * `curr_active_tickets = []`
-  * `generate_new_parking_ticket()`
-  * **NOTE!!!!** Our system will have only **one object of this class**. This can be enforced by using the [**Singleton**](https://en.wikipedia.org/wiki/Singleton_pattern) **pattern**. 💫🟢🟢🟢🟢
-    * **WHAT IS SINGLETON PATTERN:** is a software design pattern that **restricts the instantiation of a class to only one object**.
-    * Everywhere: entry/exit \|\| checkin/checkout: **ONLY this object CAN create new parking ticket**: using method `get_new_parking_ticket()`
-
-{% tabs %}
-{% tab title="constants.py" %}
-```python
-from enum import Enum
-
-
-class VehicleType(Enum):
-    CAR, BIKE, TRUCK, BUS  = 1, 2, 3,4
-
-class ParkingSpotType(Enum):
-    HANDICAPPED, COMPACT, REGULAR, LARGE = 1, 2, 3, 4
-
-class ParkingTicketStatus(Enum):
-    ACTIVE, PAID, LOST = 1, 2, 3
-    # ELECTRIC -> ??
-
-class Person():
-    def __init__(self, name, address, email, phone):
-        self.__name = name
-        self.__address = address
-        self.__email = email
-        self.__phone = phone
-```
-{% endtab %}
-
-{% tab title="account\_types.py" %}
-```python
-from .constants import *
-
-class Account:
-    def __init__(self, user_name, password, person):
-        self.__user_name = user_name
-        self.__password = password
-        self.__person = person
-
-    def reset_password(self):
-        None
-
-
-class Admin(Account):
-    def __init__(self, user_name, password, person):
-        super().__init__(user_name, password, person)
-
-    def add_parking_spot(self, floor_name, spot):
-        None
-
-class ParkingAttendant(Account):
-    def __init__(self, user_name, password, person):
-        super().__init__(user_name, password, person)
-
-    def process_ticket(self, ticket_number):
-        None
-
-```
-{% endtab %}
-
-{% tab title="vehicles.py" %}
-```python
-from abc import ABC
-from .constants import  *
-
-class Vehicle(ABC):
-    def __init__(self, license_number, vehicle_type, ticket=None):
-        self.__license_number = license_number
-        self.__type = vehicle_type
-        self.__ticket = ticket
-
-    def assign_ticket(self, ticket):
-        self.__ticket = ticket
-
-
-class Car(Vehicle):
-    def __init__(self, license_number, ticket=None):
-        super().__init__(license_number, VehicleType.CAR, ticket)
-
-
-class Bike(Vehicle):
-    def __init__(self, license_number, ticket=None):
-        super().__init__(license_number, VehicleType.BIKE, ticket)
-
-
-class Truck(Vehicle):
-    def __init__(self, license_number, ticket=None):
-        super().__init__(license_number, VehicleType.TRUCK, ticket)
-
-
-```
-{% endtab %}
-
-{% tab title="parking\_spot.py" %}
-```python
-from abc import ABC
-from .constants import  *
-
-class ParkingSpot(ABC):
-    def __init__(self, number, parking_spot_type):
-        self.__number = number
-        self.__free = True
-        self.__vehicle = None
-        self.__parking_spot_type = parking_spot_type
-
-    def is_free(self):
-        return self.__free
-
-    def assign_vehicle(self, vehicle):
-        self.__vehicle = vehicle
-        free = False
-
-    def remove_vehicle(self):
-        self.__vehicle = None
-        free = True
-
-
-class HandicappedSpot(ParkingSpot):
-    def __init__(self, number):
-        super().__init__(number, ParkingSpotType.HANDICAPPED)
-
-
-class CompactSpot(ParkingSpot):
-    def __init__(self, number):
-        super().__init__(number, ParkingSpotType.COMPACT)
-
-
-class RegularSpot(ParkingSpot):
-    def __init__(self, number):
-        super().__init__(number, ParkingSpotType.REGULAR)
-        
-class LargeSpot(ParkingSpot):
-    def __init__(self, number):
-        super().__init__(number, ParkingSpotType.LARGE)
-
-```
-{% endtab %}
-
-{% tab title="parking\_lot.py🟢" %}
-```python
-import threading
-from .constants import *
-
-class ParkingLot:
-    # singleton ParkingLot to ensure only one object of ParkingLot in the system,
-    # all entrance panels will use this object to create new parking ticket: get_new_parking_ticket(),
-    # similarly exit panels will also use this object to close parking tickets
-    instance = None
-
-    class __OnlyOne:
-        def __init__(self, name, address):
-        # 1. initialize variables: read name, address and parking_rate from database
-        # 2. initialize parking floors: read the parking floor map from database,
-        #    this map should tell how many parking spots are there on each floor. This
-        #    should also initialize max spot counts too.
-        # 3. initialize parking spot counts by reading all active tickets from database
-
-            self.__name = name
-            self.__address = address
-            self.__parking_rate = ParkingRate()
-
-            self.__compact_spot_count = 0
-            self.__regular_spot_count = 0
-            self.__large_spot_count = 0
-
-            self.__max_compact_count = 0
-            self.__max_regular_count = 0
-            self.__max_large_count = 0
-
-            # all active parking tickets, identified by their ticket_number
-            self.__active_tickets = {}
-
-            self.__lock = threading.Lock()
-
-    def __init__(self, name, address):
-        if not ParkingLot.instance:
-            ParkingLot.instance = ParkingLot.__OnlyOne(name, address)
-        else:
-            ParkingLot.instance.__name = name
-            ParkingLot.instance.__address = addres
-
-    def get_new_parking_ticket(self, vehicle):
-        if self.is_full(vehicle.get_type()):
-            raise Exception('Parking full!')
-            
-    # synchronizing to allow multiple entrances panels to issue a new
-    # parking ticket without interfering with each other
-    
-        self.__lock.acquire()
-        
-        ticket = ParkingTicket()
-        vehicle.assign_ticket(ticket)
-        ticket.save_in_DB()
-        # if the ticket is successfully saved in the database, we can increment the parking spot count
-        self.__increment_spot_count(vehicle.get_type())
-        self.__active_tickets.put(ticket.get_ticket_number(), ticket)
-        
-        self.__lock.release()
-        return ticket
-
-    def is_full(self, type):
-        # trucks and bus can only be parked in LargeSpot
-        if type == VehicleType.Truck or type == VehicleType.Bus:
-            return self.__large_spot_count >= self.__max_large_count
-
-        # cars can be parked at compact or large spots
-        if type == VehicleType.Car:
-            return (self.__compact_spot_count + self.__large_spot_count) >= (self.__max_compact_count + self.__max_large_count)
-
-        # bikes car can be parked at compact, regular or large spots
-        return (self.__compact_spot_count + self.__regular_spot_count + self.__large_spot_count) >= (self.__max_compact_count + self.__max_regular_count
-                                                                                                  + self.__max_large_count)
-
-    # increment the parking spot count based on the vehicle type
-    def increment_spot_count(self, type):
-        large_spot_count = 0
-        motorbike_spot_count = 0
-        compact_spot_count = 0
-        electric_spot_count = 0
-        if type == VehicleType.Truck or type == VehicleType.Bus:
-            large_spot_count += 1
-        elif type == VehicleType.Car:
-            regular_spot_count += 1
-        else:  # bike
-            if self.__compact_spot_count < self.__max_compact_count:
-                compact_spot_count += 1
-            elif self.__regular_spot_count < self.__max_regular_count:
-                regular_spot_count += 1
-            else:
-                large_spot_count += 1
-
-```
-{% endtab %}
-{% endtabs %}
+## 
 
 ## 5. ATM
 
@@ -4893,240 +5125,6 @@ class Player:
 *The game ends when there is a tie (full board) or when the user or the computer player wins.
 
 * The program shall assume that the user input will be in a correct format. 
-```
-{% endtab %}
-{% endtabs %}
-
-## 17. Parking Lot ☑️
-
-{% tabs %}
-{% tab title="main.py" %}
-```python
-from parking_lot import ParkingLot, Car, Bike, Bus
-
-if __name__ == '__main__':
-    parkingLotObj = ParkingLot(3, 10)
-    
-    parkingLotObj.parkVehicle(Car(10, "Google"))
-    parkingLotObj.companyParked("Google"), [Car(10, "Google")]
-    parkingLotObj.leaveOperation(Car(10, "Google"))
-    parkingLotObj.companyParked("Google"), []
-    
-```
-{% endtab %}
-
-{% tab title="parking\_lot.py" %}
-```python
-from enum import Enum
-
-
-# Vehicle type class for what all type of vehicles can come for parking
-class VehicleType(Enum):
-    CAR = 1
-    BIKE = 2
-    BUS = 3
-
-
-# Vehicle class for license plate, company name and their type
-class Vehicle:
-    def __init__(self, licensePlate, companyName, type_of_vehicle):
-        self.licensePlate = licensePlate
-        self.companyName = companyName
-        self.type_of_vehicle = type_of_vehicle
-
-    def getType(self):
-        return self.type_of_vehicle
-
-    """overwrite __eq__ methods to correctly check if two vehicle objects are same. Otherwise, they will be 
-    checked at hashcode level not at content level."""
-
-    def __eq__(self, other):
-        if other is None:
-            return False
-        if self.licensePlate != other.licensePlate:
-            return False
-        if self.companyName != other.companyName:
-            return False
-        if self.type_of_vehicle != other.type_of_vehicle:
-            return False
-        return True
-
-
-# Car class inherited from Vehicle class for license plate, company name and their type
-class Car(Vehicle):
-    def __init__(self, licensePlate, companyName):
-        Vehicle.__init__(self, licensePlate, companyName, VehicleType.CAR)
-
-
-# Bike class inherited from Vehicle class for license plate, company name and their type
-class Bike(Vehicle):
-    def __init__(self, licensePlate, companyName):
-        Vehicle.__init__(self, licensePlate, companyName, VehicleType.BIKE)
-
-
-# Bus class inherited from Vehicle class for license plate, company name and their type
-class Bus(Vehicle):
-    def __init__(self, licensePlate, companyName):
-        Vehicle.__init__(self, licensePlate, companyName, VehicleType.BUS)
-
-
-class Slots:
-    def __init__(self, lane, spotNumber, type_of_vehicle):
-        # self.level = level
-        self.lane = lane
-        self.spotNumber = spotNumber
-        self.vehicle = None
-        self.type_of_vehicle = type_of_vehicle
-
-    def isAvailable(self):
-        return self.vehicle == None
-
-    def park(self, vehicle):
-        if vehicle.type_of_vehicle == self.type_of_vehicle:
-            self.vehicle = vehicle
-            return True
-        else:
-            return False
-
-    def removeVehicle(self):
-        self.vehicle = None
-        return self.vehicle
-
-    def getVehicle(self):
-        return self.vehicle
-
-
-"""Level class - Each level is an independent entity with a floor number, its lanes and the slots within it. 
-The number of lanes are designed based on the number of slots. 10 slots make one lane"""
-
-
-class Levels:
-    def __init__(self, floorNumber, no_of_slots):
-        self.floorNumber = floorNumber
-        self.spots_per_lane = 10
-        self.lanes = no_of_slots / self.spots_per_lane
-        self.parkingSlots = set()
-        self.availableSpots = []
-
-        # Check available spots in a lane
-        for lane in range(int(self.lanes)):
-            for i in range(self.spots_per_lane):
-                import random
-
-                # We will randomly assign a type to each slot.
-                self.availableSpots.append(
-                    Slots(lane, i, random.choice(list(VehicleType)))
-                )
-                # self.availableSpots.append(Slots(lane, i, type_of_vehicle))
-
-    # Park vehicle is spot is available
-    def park(self, vehicle):
-        for slot in self.availableSpots:
-            if slot.park(vehicle):
-                return True
-        return False
-
-    # Remove vehicle from a spot
-    def remove(self, vehicle):
-        for spot in self.availableSpots:
-            if spot.getVehicle() == vehicle:
-                spot.removeVehicle()
-                return True
-        return False
-
-    # Company name for the vehicle parked at the available spots
-    def companyParked(self, companyName):
-        all_vehicles = []
-        for spot in self.availableSpots:
-            vehicle = spot.getVehicle()
-            if (vehicle is not None) and (vehicle.companyName == companyName):
-                all_vehicles.append(vehicle)
-                # print(all_vehicles)
-        return all_vehicles
-
-
-# A parking lot is made up of 'n' number of levels/floors and 'm' number of slots per floor.
-class ParkingLot:
-    def __init__(self, no_of_floor, no_of_slot):
-        self.levels = []
-        for i in range(no_of_floor):
-            self.levels.append(Levels(i, no_of_slot))
-
-    # This operation inserts a vehicle accordingly, also takes care of what company vehicle it is.
-    def parkVehicle(self, vehicle):
-        for level in self.levels:
-            if level.park(vehicle):
-                return True
-        return False
-
-    # This operation exits a vehicle 'C' in a level 'm'.
-    def leaveOperation(self, vehicle):
-        for level in self.levels:
-            if level.remove(vehicle):
-                return True
-
-    # This operation allows the user to view the list of vehicles parked for a particular company.
-    def companyParked(self, companyName):
-        all_vehicles = []
-        for level in self.levels:
-            all_vehicles.extend(level.companyParked(companyName))
-        return all_vehicles
-
-```
-{% endtab %}
-
-{% tab title="test\_parking\_lot.py" %}
-```python
-import unittest
-from parking_lot import ParkingLot, Car, Bike, Bus
-
-
-class TestParkingLot(unittest.TestCase):
-
-    def test_park(self):
-        parkingLotObj = ParkingLot(6, 30)
-        res2 = parkingLotObj.parkVehicle(Car(10, "Amazon"))
-        res3 = parkingLotObj.parkVehicle(Bike(20, "Amazon"))
-        res4 = parkingLotObj.parkVehicle(Bus(30, "Microsoft"))
-
-        self.assertEqual(res2, True)
-        self.assertEqual(res3, True)
-        self.assertEqual(res4, True)
-
-
-    def test_leave_operation(self):
-        parkingLotObj = ParkingLot(6, 30)
-        self.assertTrue(parkingLotObj.parkVehicle(Car(20, "Google")))
-        #self.assertTrue(parkingLotObj.leaveOperation(Car(10, "Google")))
-        self.assertTrue(parkingLotObj.leaveOperation(Car(20, "Google")))
-        self.assertEqual(parkingLotObj.leaveOperation(Car(20, "Google")), None)
-
-
-    def test_companyParked(self):
-        parkingLotObj = ParkingLot(6, 30)
-        # res1 = parkingLotObj.parkVehicle(Car(20, "Google"))
-        # res2 = parkingLotObj.companyParked("Google")
-        self.assertTrue(parkingLotObj.parkVehicle(Car(20, "Google")))
-        self.assertEqual(parkingLotObj.companyParked("Google"), [Car(20, "Google")])
-        #self.assertEqual(parkingLotObj.companyParked("Google"), Car(10, "Google"))
-        print(parkingLotObj.companyParked("Google"))
-
-        
-    def test_all(self):
-        parkingLotObj = ParkingLot(3, 10)
-        # Atleast 1 parking spot for car.
-        # First park a car, it should return True.
-        self.assertTrue(parkingLotObj.parkVehicle(Car(10, "Google")))
-        # Get the list of cars, it should give one car we parked.
-        self.assertEqual(parkingLotObj.companyParked("Google"), [Car(10, "Google")])
-        # Remove that car successfully.
-        self.assertTrue(parkingLotObj.leaveOperation(Car(10, "Google")))
-        # Now the list of cars should be empty.
-        self.assertEqual(parkingLotObj.companyParked("Google"), [])
-
-
-if __name__ == '__main__':
-    unittest.main()
 ```
 {% endtab %}
 {% endtabs %}
