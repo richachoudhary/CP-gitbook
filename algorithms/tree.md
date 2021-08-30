@@ -26,6 +26,7 @@ root = TreeNode(x)
 
 * [x] \*\*\*\*[**Inorder Successor in Binary Search Tree**](https://www.geeksforgeeks.org/inorder-successor-in-binary-search-tree/) ✅💪
 * [x] 501. [Find Mode in Binary Search Tree](https://leetcode.com/problems/find-mode-in-binary-search-tree/) \| MindTickle!
+* [x] 236. [Find LCA in Binary Tree](https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/) \| **DnQ** \| Standard ✅✅
 
 {% tabs %}
 {% tab title="InO\_Succ✅" %}
@@ -158,6 +159,29 @@ def minValue(node):
             inorder(root.right)
     inorder(root)
     return(ans)
+```
+{% endtab %}
+
+{% tab title="236.lca✅" %}
+```python
+def lca(root,p,q) -> 'TreeNode':
+        # found p and q?
+        if not root or root == p or root == q:
+            return root
+    
+        left = lca(root.left,p,q)
+        right = lca(root.right,p,q)
+        
+        # p and q appears in left and right respectively, then their ancestor is root
+        if left is not None and right is not None:
+            return root
+        
+        # p and q not in left, then it must be in right, otherwise left
+        if left is None:
+            return right
+        
+        if right is None:
+            return left
 ```
 {% endtab %}
 {% endtabs %}

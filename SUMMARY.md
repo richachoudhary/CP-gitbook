@@ -6,6 +6,7 @@
 
 * [About@me](meta/about-me.md)
 * [HM Round](meta/hm-round.md)
+* [Karat@Coinbase](meta/karat-coinbase.md)
 
 ## Algorithms
 

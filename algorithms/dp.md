@@ -975,9 +975,9 @@ def wordBreak(self, s: str, wordDict: List[str]) -> List[str]:
 
 ### 10.2 LCS
 
+* [ ] 718. [Maximum Length of Repeated Subarray](https://leetcode.com/problems/maximum-length-of-repeated-subarray/) \| Now find this LCS 😎🤯😎
 * [ ] [https://leetcode.com/problems/longest-palindromic-substring/](https://leetcode.com/problems/longest-palindromic-substring/)
 * [ ] [https://leetcode.com/problems/longest-palindromic-subsequence/](https://leetcode.com/problems/longest-palindromic-subsequence/)
-* [ ] [https://leetcode.com/problems/maximum-length-of-repeated-subarray/](https://leetcode.com/problems/maximum-length-of-repeated-subarray/)[**=**](https://leetcode.com/problems/longest-common-subsequence/)
 * [ ] [https://leetcode.com/problems/longest-common-subsequence/](https://leetcode.com/problems/longest-common-subsequence/)
 * [ ] [https://leetcode.com/problems/regular-expression-matching/](https://leetcode.com/problems/regular-expression-matching/)
 * [ ] [https://leetcode.com/problems/wildcard-matching/](https://leetcode.com/problems/wildcard-matching/)
@@ -986,6 +986,29 @@ def wordBreak(self, s: str, wordDict: List[str]) -> List[str]:
 * [ ] [https://leetcode.com/problems/shortest-common-supersequence/](https://leetcode.com/problems/shortest-common-supersequence/)
 * [ ] [https://leetcode.com/problems/minimum-insertion-steps-to-make-a-string-palindrome/](https://leetcode.com/problems/minimum-insertion-steps-to-make-a-string-palindrome/)
 * [ ] [https://leetcode.com/problems/max-dot-product-of-two-subsequences/](https://leetcode.com/problems/max-dot-product-of-two-subsequences/)
+
+{% tabs %}
+{% tab title="718.\| print the LCS🤯😎" %}
+```python
+def lcs(h1,h2) -> int:
+    n,m = len(h1), len(h2)
+
+    dp = [[0 for _ in range(m+1)] for _ in range(n+1)]
+    max_cnt = 0
+    res = []
+
+    for i in range(1,n+1):
+        for j in range(1,m+1):
+            if h1[i-1] == h2[j-1]:
+                dp[i][j] = 1 + dp[i-1][j-1]
+            if max_cnt < dp[i][j]:
+                max_cnt = dp[i][j]
+                res = h1[i-max_cnt:i]   #WOAHHHHHH 😎😎😎😎😎😎😎😎😎😎😎😎
+    print(res)        #------------------------------> print the actual LCS 
+    return max_cnt
+```
+{% endtab %}
+{% endtabs %}
 
 ### 10.3 LIS
 

@@ -255,8 +255,9 @@
                 * customer Login
                 * Given a URL; generte a shorter & unique alias of it: www.short.ly/abc123
                         * [?] length of short url
+                * Expiry/TTL for each short URL                        
                 * getLongUrl(short_url)
-                * Expiry/TTL for each short URL
+                
         1.2 NonFunctional Requirements - Usage Patterns(read heavy/CAP tradeoffs)
                 * High Availability (for reads to work)
                 * High consistency (to avoid duplicate writes)
@@ -284,7 +285,7 @@
                                 * cache these 20% hot URLs
                                 * cache size per second = 20K*(500bit) = 10MB
                                 * => cache size per day = 10MB*24*3600 = 100GB
-        2.3 Bandwidht Estimate
+        2.3 Bandwidth Estimate
                 * Incoming(write) req = 200 * 500 bytes = 100 KB/s
                 * Outgoing(read) req  = 20K * 500 bytes = 10 MB/s 
                 
@@ -320,7 +321,7 @@
         2. base62 ([A-Z, a-z, 0-9]) 
         3. Base64 (if we add ‘+’ and ‘/’)
         4. MD5/ SHA256
-* [? ]what should be the length of the short key? 6, 8, or 10 characters?
+* [?]what should be the length of the short key? 6, 8, or 10 characters?
         * Using base64 encoding, a 6 letters long key would result in 64^6 = ~68.7 billion possible strings
         * Using base64 encoding, an 8 letters long key would result in 64^8 = ~281 trillion possible strings
         * ASSUME(len = 6) With 68.7B unique strings, let’s assume six letter keys would suffice for our system.
@@ -354,7 +355,7 @@
 
 {% tabs %}
 {% tab title="requirements.md" %}
-```python
+```text
 # 1. Requirement Gathering ======================================
         1.1 Functional Requirements
             
@@ -371,7 +372,6 @@
             * Customers can see booked/free tickets
             * Payments - 3P
             * Show movie info
-            * Payments - 3P
             * Ensure No two customers can reserve the same seat.
 
         1.2 NonFunctional Requirements - Usage Patterns(read heavy/CAP tradeoffs)
@@ -800,7 +800,7 @@ city() # it calls the function city
 
         1.1 Functional Requirements
                 * upload videos.
-                * iew videos.
+                * view videos.
                 * perform searches based on video titles.
                 * record stats of videos, e.g., likes/dislikes, total number of views, etc.
                 * add and view comments on videos.
@@ -846,10 +846,9 @@ city() # it calls the function city
                          
         * streamVideo(api_dev_key, video_id, offset, codec, resolution)
                 => Returns A media stream (a video chunk) from the given offset
+                
 #4. Models:Classes, DB Schema & ER diagrams=====================
 #5. Draw Basic HLD =============================================
-
-
 #6. EVOLVE HLD to scale & indepth discussion of components =====
 
 ```
@@ -1009,7 +1008,7 @@ city() # it calls the function city
     * text
     * photo
     * video
-  * trends 
+  * **trends** 
     * see all the tending topics/hastags
   * follow others
   * timeline
@@ -1149,7 +1148,7 @@ city() # it calls the function city
     4. **DO NOT FAN OUT**
   * **Fan Side:**
 
-  1. Every fan has a list of celebirties he follows
+  1. Every fan has a list of celebrities he follows
   2. When the fan opens his 'Home Timeline':
      * Go to all the celebrities he follows & check their latet tweets
      * =&gt; All these operations are Redis operations =&gt; wont take much time
@@ -1190,7 +1189,7 @@ city() # it calls the function city
   * **Caching**
   * **Ranking** by popularity
 
-## 7. Whatsapp/FB Messenger
+## 7. WhatsApp/FB Messenger
 
 * Whimsical [link](https://whimsical.com/whatsapp-PTxBKeAFpZyHk3WNT2kzpi)
 * Video: [link](https://www.youtube.com/watch?v=L7LtmfFYjc4&ab_channel=TechDummiesNarendraL)
@@ -1201,7 +1200,7 @@ city() # it calls the function city
 
 * one-to-one chat
 * Send media
-* keep track of the online/offline statuses of its users
+* keep track of the online/**last\_seen** statuses of its users
 * support the persistent storage of chat history
 * Group Chats
 * Push Notifications : to offline users
@@ -1257,10 +1256,10 @@ city() # it calls the function city
 
 #### \#6. Detailed HLD ================================================
 
-* Whatsapp is e.g. of **Duplex Connection \(**implemented with **HTTP long polling\)**
+* Whatsapp is e.g. of **Duplex Connection \(**implemented with **HTTP long polling❌\)WebSocket✅**
   * i.e. connection can start from any client end
   * i.i.e chatting can be initiated from anyone to the other person
-  * Other type of connections: **TCP, UDP, Websocket**
+  * Other type of connections: **TCP, UDP, WebSocket✅**
 * **How sending & receiving of msg takes place:**
   * A wants to send msg to B
   * **WHAT DOESNT WORK:**
@@ -1508,6 +1507,7 @@ city() # it calls the function city
   * s3\_link
   * createdAt
   * expiresAt
+  * userID
 
 #### 4.2 DBs choices\(NoSQL/SQL\)
 
