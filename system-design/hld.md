@@ -548,41 +548,6 @@ Below steps to be taken\(as \#users increase\)
 
 ![Graph DB vs RDMNS: lots of 1-many relations](../.gitbook/assets/screenshot-2021-08-30-at-7.02.15-am.png)
 
-![GraphDB vs RDBMS: lots of joins](../.gitbook/assets/screenshot-2021-08-30-at-7.02.24-am.png)
-
-## 8.3 SQL vs NoSQL
-
-* **SQL: the GOOD:**
-  * High performance for transactions. Think ACID 
-  * Highly structured, very portable 
-  * **Small amounts of data \(SMALL IS LESS THAN 500GB\)** 
-  * Supports many tables with different types of data 
-  * Can fetch ordered data 
-  * Compatible with lots of tools
-* **SQL : the BAD:**
-  * **Complex queries** take a long time 
-  * The relational model takes a long time to learn
-  * **Not really scalable** 
-  * **Not suited for rapid development**
-* **NoSQL: the GOOD:**
-  * Fits well for volatile data 
-  * High read and write throughput 
-  * In general it’s faster than SQL
-  * Scales really well 
-  * Rapid development is possible 
-  * Store many TB \(or PB\) of data
-* **NoSQL: the BAD:**
-  * **Key/Value pairs need to be packed/unpacked all the time** 
-  * **Still working on getting security** for these working as well as SQL 
-* **Sample data well-suited for NoSQL:**
-  * Rapid ingest of clickstream and log data
-  * Leaderboard or scoring data
-  * Temporary data, such as a shopping cart
-  * Frequently accessed \('hot'\) tables
-  * Metadata/lookup tables
-
-
-
 ## **9. Consistent Hashing**
 
 * **IDEA:Keys & nodes map to the same space**
@@ -607,9 +572,95 @@ Below steps to be taken\(as \#users increase\)
   * **Kafka**
     * Kafak has **Brokers**
 
-## 11. Microservices: Application layer scaling
+## 11. APIs
 
-### 11.0 Microservices
+### 11.1 Request-Response API Paradigms
+
+* REST
+* RPC
+* GraphQL
+
+![cases where REST strugges](../.gitbook/assets/screenshot-2021-08-30-at-7.31.31-am.png)
+
+![](../.gitbook/assets/screenshot-2021-08-30-at-7.32.50-am.png)
+
+![](../.gitbook/assets/screenshot-2021-08-30-at-7.34.18-am.png)
+
+![](../.gitbook/assets/screenshot-2021-08-30-at-7.35.10-am.png)
+
+### 11.2 Event Driven API Paradigms
+
+#### **Why do we need Event Driven Architecture?**
+
+* **Use case:** have I got any new msg or not **\(@whatsapp\)**
+* If done with **LONG** **POLLING**\(i.e. keep pinging server to check\)
+  * it'll be huge loss of resources ❌
+* **So,** build your APIs in **Event driven way**
+
+#### There are 3 well known standards for building Pure Event Driven APIs
+
+1. WebHooks
+2. WebSockets
+3. HTTP Streaming
+
+#### 1.WebHooks:
+
+* the client needs to do **one time registration** with the webhook-provider:
+  * Client provides the **interested events** & **callback URL**
+    * **Callback URL:** =&gt; "hey, when there's an update; send it to me @here"
+* When there's a new msg/update; the webhook provider sends the data\(usually **POST\)**
+* **E.G: @Stripe** webHooks **😎**
+* **ISSUES:**
+  * Have to handle failures with **retires** 
+  * Callback URL has to be public =&gt; **security** concerns
+  * webhooks can be **super noisy**
+* **USE CASE:**
+  * payments
+  * acknowledgements
+  * mails
+
+![WebHook : SendGrid](../.gitbook/assets/screenshot-2021-08-30-at-8.01.58-am.png)
+
+#### 2.WebSockets
+
+* **USE CASE:** chatting **@whatsapp**
+* In the beginning; a **Handshake** connection\(usually **HTTP**\) is established b/w client & server
+* After this; the client & server communicate through a **bi-directional long-lived TCP connection**
+* **PROS:**
+  * bidirecional low latency communication
+  * Reduced overhead of HTTP requests
+* **CONS:**
+  * Clients are responsible for connections
+  * Scalability challanges
+* **USE CASES:**
+  * chats
+  * videocall
+  * gaming
+
+![WebSocket](../.gitbook/assets/screenshot-2021-08-30-at-7.58.00-am.png)
+
+#### 3.HTTP Streaming
+
+* In a normal HTTP response; the server sends a finite, one-time response; right?
+* But in here; 
+  * **client** sends **single request**
+  * **server** continues to push data in a **single long lived connection**
+* There are 2 ways in which server can do this:
+  * **Chunked**: set the response **encoding header to chunked**
+    * Good for back-end servers to communicate with each other
+  * **Server-sent-events**
+    * **ReactJS** 😎
+    * **@twitter :** uses this to push new tweets
+* **PROS:**
+  * Can be done over simple HTTP protocol\(no other fancy protocol is reqd\)
+  * Native browser support
+* **CONS:**
+  * Bidirectional communication is challenging
+  * Buffering
+
+## 12. Microservices: Application layer scaling
+
+### 12.0 Microservices
 
 * Architecture build with group of **loosely coupled** individual services.
 * Usually communicate with each other with **REST/RPC** protocol
@@ -617,7 +668,7 @@ Below steps to be taken\(as \#users increase\)
   * **Disadv.** =&gt; lots of joins on DB queries
   * **Adv.** =&gt; service based horizontal scaling
 
-### 11.1 API Gateway
+### 12.1 API Gateway
 
 * **WHY USE?** =&gt; N separate calls to N microservices to get result of 1 query ❌
   * So, use this & make a single call to it
@@ -633,7 +684,7 @@ Below steps to be taken\(as \#users increase\)
 
 ![](../.gitbook/assets/screenshot-2021-08-28-at-6.09.29-am.png)
 
-### 11.2 Service Discovery
+### 12.2 Service Discovery
 
 * **WHAT?** =&gt; its a pattern to **identify** the **network addresses** of all of the microservices' instances
 * It has a **Service Register.**
@@ -643,9 +694,10 @@ Below steps to be taken\(as \#users increase\)
     * client talks to **Service Discovery** -&gt; asks the latest addresses of microservices -&gt; use this address to redirected there
   * **TYPE2: Server Side Service Discovery:**
     * client talks to **API Gateway** -&gt; API Gateway asks Service Discovery about the  latest addresses of microservices -&gt; use this address to redirected there
-* **used@ServiceDiscoveryTool =&gt;** Zookeeper
+* **TOOL:** 
+  * **@Zookeeper** 😎
 
-### 11.3 Misc
+### 12.3 Misc
 
 * **Varnish**
   * **@ distributed\_cache**
@@ -659,7 +711,7 @@ Below steps to be taken\(as \#users increase\)
   * health check
   * redirect
 
-## 12. Cryptography
+## 13. Cryptography
 
 * **Src**: [video1](https://www.youtube.com/watch?v=q9vu6_2r0o4&ab_channel=PaulTurner) , [video2](https://www.youtube.com/watch?v=r1nJT63BFQ0&ab_channel=HusseinNasser)
 
@@ -733,7 +785,7 @@ Below steps to be taken\(as \#users increase\)
   * Scripting
   * ............
 
-## 13. Encryption
+## 14. Encryption
 
 ### 1. MD5
 
