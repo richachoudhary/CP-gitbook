@@ -29,15 +29,89 @@ def solve().....
 
 ## 1. Linear DP
 
+* [x] 198.[ House Robber](https://leetcode.com/problems/house-robber/) 
+* [x] 213.[ House Robber II](https://leetcode.com/problems/house-robber-ii/) \| circular 💪
+* [x] 337. [House Robber III](https://leetcode.com/problems/house-robber-iii/) \| Tree
 * [x] CSES: [Projects](https://cses.fi/problemset/task/1140) \| [Kartik Arora](https://www.youtube.com/watch?v=MJn3ogwsUbo&ab_channel=KartikArora) ✅🐽🚀
+
   * Binary Search!!!! Dont skip!
   * Dekhke lagta nhi ki DP lagegi!!!
+
+{% tabs %}
+{% tab title="198" %}
+```python
+MEMO = {}
+        
+def dp(i,nums):
+    if i>len(nums)-1:
+        return 0
+    if i == len(nums)-1:
+        return nums[i]
+    
+    if i in MEMO:
+        return MEMO[i]
+    opt1 = nums[i] + dp(i+2,nums)
+    opt2 = dp(i+1,nums)
+    MEMO[i] = max(opt1, opt2)
+    return MEMO[i]
+return dp(0,nums)
+```
+{% endtab %}
+
+{% tab title="213" %}
+```python
+MEMO = {}
+def dp(l,r):
+    if l >= r:
+        return 0
+    if (l,r) in MEMO:
+        return MEMO[(l,r)]
+    opt1 = nums[l]+dp(l+2,r)
+    opt2 = dp(l+1,r)
+    MEMO[(l,r)] = max(opt1, opt2)
+    return MEMO[(l,r)]
+n = len(nums)
+if n == 0:
+    return 0
+if n == 1:
+    return nums[0]
+if n == 2:
+    return max(nums[0], nums[1])
+return max(dp(0,n-1), dp(1,n))
+```
+{% endtab %}
+
+{% tab title="337" %}
+```python
+MEMO = {}
+def dp(x):
+    if not x:
+        return 0
+    if not x.left and not x.right:
+        return x.val
+    if x in MEMO:
+        return MEMO[x]
+    opt1 = dp(x.left) + dp(x.right) # do not rob this node
+    
+    #rob this node
+    opt2 = x.val 
+    if x.left:
+        opt2 += dp(x.left.left) + dp(x.left.right)
+    if x.right:
+        opt2 += dp(x.right.left) + dp(x.right.right) 
+    MEMO[x] = max(opt1, opt2)
+    return MEMO[x]
+    
+return dp(root)
+```
+{% endtab %}
+{% endtabs %}
+
 * [ ] [https://leetcode.com/problems/climbing-stairs/](https://leetcode.com/problems/climbing-stairs/)
 * [ ] [https://leetcode.com/problems/best-time-to-buy-and-sell-stock/](https://leetcode.com/problems/best-time-to-buy-and-sell-stock/)
 * [ ] [https://leetcode.com/problems/min-cost-climbing-stairs/](https://leetcode.com/problems/min-cost-climbing-stairs/)
 * [ ] [https://leetcode.com/problems/divisor-game/](https://leetcode.com/problems/divisor-game/)
 * [ ] [https://leetcode.com/problems/unique-binary-search-trees/](https://leetcode.com/problems/unique-binary-search-trees/)
-* [ ] [https://leetcode.com/problems/house-robber/](https://leetcode.com/problems/house-robber/)
 * [ ] [https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-cooldown/](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-cooldown/)
 * [ ] [https://leetcode.com/problems/counting-bits/](https://leetcode.com/problems/counting-bits/)
 * [ ] [https://leetcode.com/problems/integer-break/](https://leetcode.com/problems/integer-break/)
@@ -197,7 +271,6 @@ if(sum&1){
 
 #### 2.1.2  Problems: 0/1 Knapsack 
 
-* [ ] [https://leetcode.com/problems/house-robber-ii/](https://leetcode.com/problems/house-robber-ii/)
 * [ ] [https://leetcode.com/problems/ones-and-zeroes/](https://leetcode.com/problems/ones-and-zeroes/)
 * [ ] [https://leetcode.com/problems/target-sum/](https://leetcode.com/problems/target-sum/)
 * [ ] [https://leetcode.com/problems/shopping-offers/](https://leetcode.com/problems/shopping-offers/)
