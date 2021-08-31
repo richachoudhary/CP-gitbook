@@ -1,5 +1,512 @@
 # Karat@Coinbase
 
+## DSA
+
+* LC 588. [Design In-Memory File System](https://leetfree.com/problems/design-in-memory-file-system)
+* [339. Evaluate Division](https://leetcode.com/problems/evaluate-division/) 
+* **Textbook Buy Sell**
+* \*\*\*\*[**CurrencyConversion**](https://leetcode.com/discuss/interview-question/483660/google-phone-currency-conversion)\*\*\*\*
+* **Currency Arbitrage**: Now given any two currencies x and y. Find the best conversion rate. Basically a graph problem you will have to traverse all paths from x to y because you want the best conversion rate.
+  * **follow up** - Rather than hardcoding the data use two apis - 1.\) [https://api.pro.coinbase.com/products](https://api.pro.coinbase.com/products) to get the id like USD-EUR aka currency pair and 2.\) [https://api.pro.coinbase.com/products/](https://api.pro.coinbase.com/products/)" + id + "/book to fetch the ask and bid price for each one of them. response = request.get\(url\) is enough to handle the GET calls + response.json\(\) is enough to parse the response.
+
+{% tabs %}
+{% tab title="588.MyFileSys" %}
+```python
+# l is the path length, 
+# k is the number of entries in the last level directory(max_possible_path_len)
+# =====================================
+# Time:  ls: O(l + klogk), 
+#        mkdir: O(l)
+#        addContentToFile: O(l + c), c is the content size
+#        readContentFromFile: O(l + c)
+# Space: O(n + s), n is the number of dir/file nodes, s is the total content size.
+
+
+class TrieNode:
+    def __init__(self):
+        self.is_file = False
+        self.children = {}
+        self.content = ""
+
+
+class FileSystem:
+    def __init__(self):
+        self.__root = TrieNode()
+
+    def ls(self, path):
+        """
+        :type path: str
+        :rtype: List[str]
+        """
+        curr = self.__root
+        subdirs = path.split("/")[1:]
+        if path == '/':
+            subdirs = []
+        for s in subdirs:
+            curr = curr.children[s]
+
+        #if its a file_path; return a list which only has this file's name
+        # => lexicographical order
+        if curr.is_file:
+             return [subdirs[-1]]
+
+        #if its a directory path: return lsit of file+directory names
+        # in this directory 
+        # => lexicographical order
+        return sorted(curr.children.keys())
+
+    # mkdir: O(l) ; l = path length
+    def mkdir(self, path):
+        """
+        :type path: str
+        :rtype: void
+        """
+        curr = self.__root
+        subdirs = path.split('/')[1:]  # because every path starts with extra '/
+        for s in subdirs:
+            if s not in curr.children:
+                curr.children[s] = TrieNode()
+            curr = curr.children[s]
+        curr.is_file = False
+        return curr
+
+    def readContentFromFile(self, filePath):
+        """ 
+        :type filePath: str
+        :rtype: str
+        """
+        curr = self.__root
+        subdirs = filePath.split('/')[1:]  # because every path starts with extra '/
+        for s in subdirs:
+            if s not in curr.children:
+                curr.children[s] = TrieNode()
+            curr = curr.children[s]
+        return curr.content
+    
+    def addContentToFile(self, filePath, content):
+        """
+        :type filePath: str
+        :type content: str
+        :rtype: void
+        """
+        curr = self.__root
+        subdirs = filePath.split('/')[1:]  # because every path starts with extra '/
+        for s in subdirs:
+            if s not in curr.children:
+                curr.children[s] = TrieNode()
+            curr = curr.children[s]
+        curr.is_file = True
+        curr.content += content
+
+if __name__ == "__main__":
+    fs = FileSystem()
+    print(fs.ls("/"))
+    fs.mkdir('/a/b/c')
+    fs.addContentToFile('/a/b/c/d', 'hello')
+    print(fs.ls("/"))
+    print(fs.readContentFromFile('/a/b/c/d'))
+    print(fs.ls("/a/b/c/d"))
+```
+{% endtab %}
+
+{% tab title="\(posh\)588.FileSys" %}
+```python
+# l is the path length, 
+# k is the number of entries in the last level directory
+# =====================================
+# Time:  ls: O(l + klogk), 
+#        mkdir: O(l)
+#        addContentToFile: O(l + c), c is the content size
+#        readContentFromFile: O(l + c)
+# Space: O(n + s), n is the number of dir/file nodes, s is the total content size.
+
+
+class TrieNode:
+    def __init__(self):
+        self.is_file = False
+        self.children = {}
+        self.content = ""
+
+
+class FileSystem:
+    def __init__(self):
+        self.__root = TrieNode()
+
+    def ls(self, path):
+        """
+        :type path: str
+        :rtype: List[str]
+        """
+        curr = self.__getNode(path)
+
+        if curr.is_file:
+            return [self.__split(path, "/")[-1]]
+
+        return sorted(curr.children.keys())
+
+    def mkdir(self, path):
+        """
+        :type path: str
+        :rtype: void
+        """
+        curr = self.__putNode(path)
+        curr.is_file = False
+
+    def addContentToFile(self, filePath, content):
+        """
+        :type filePath: str
+        :type content: str
+        :rtype: void
+        """
+        curr = self.__putNode(filePath)
+        curr.is_file = True
+        curr.content += content
+
+    def readContentFromFile(self, filePath):
+        """
+        :type filePath: str
+        :rtype: str
+        """
+        return self.__getNode(filePath).content
+
+    def __getNode(self, path):
+        curr = self.__root
+        for s in self.__split(path, "/"):
+            curr = curr.children[s]
+        return curr
+
+    def __putNode(self, path):
+        curr = self.__root
+        for s in self.__split(path, "/"):
+            if s not in curr.children:
+                curr.children[s] = TrieNode()
+            curr = curr.children[s]
+        return curr
+
+    def __split(self, path, delim):
+        if path == "/":
+            return []
+        return path.split("/")[1:]
+
+
+if __name__ == "__main__":
+    fs = FileSystem()
+    print(fs.ls("/"))
+    fs.mkdir('/a/b/c')
+    fs.addContentToFile('/a/b/c/d', 'hello')
+    print(fs.ls("/"))
+    print(fs.readContentFromFile('/a/b/c/d'))
+    print(fs.ls("/a/b/c/d"))
+```
+{% endtab %}
+
+{% tab title="TextbookBuySell" %}
+```python
+"""
+You operate a market place for buying & selling used textbooks For a giventext book eg“TheoryofCryptography”
+there are people who want to buy this textbook and people who want to sell
+
+Offers to BUY: $100 $100 $99 $99 $97 $90
+Offers to SELL: $109 $110 $110 $114 $115 $119
+
+A match occurs when two people agree on a price 
+Some new offers do not  match. These offers should be added to the active set of offers.
+
+For example : Tim offers to SELL at $150 This will not match No one is willing to buy at that price so we save the offer
+
+Offers to SELL::$109 $110 $110 $114 $115 $119 $150
+
+When matching we want to give the customer the “best price”
+
+Example matches : If Jane offers to BUY at $120
+
+she will match and buy a book for $109 (the lowest offer)
+
+
+
+====================== [APPROACH] ==================
+Use two heaps. 
+1. Max Heap : buy orders
+2. Min Heap : sell orders
+
+>>> Processing:
+1. Buy Order Req comes(p):
+    * we want to lowest sell price in list i.e. top of sell minH
+    Case#1: (p > max_sell) there's a match => process order
+    Case#2: (p <= max_sell)  not a match => add this in buy's heap for future
+
+2. Sell Order req comes(p):
+    * get top_val_from_buy_max_heap
+    Case#1: (p < max_buy) match => process
+    Case#2: (p >= max_buy): store in sell order's list
+
+TC: O(n logn) --> because we put everything in the heaps which are O(log n) per offer/poll operations.
+SC: O(n) --> we're putting the entire input lists in the heaps
+
+"""
+from heapq import heappush, heappop
+
+
+class TextBookMarket():
+    def __init__(self,buy_requests, sell_requests):
+        self.__buy_requests = buy_requests
+        self.__sell_requests = sell_requests
+        self.__sell_min_heap = []
+        self.__buy_max_heap = []
+        self.__initialize_marketplace()
+    
+    def __initialize_marketplace(self):
+        for sell in self.__sell_requests:
+            heappush(self.__sell_min_heap, sell)
+            
+        # implement max heap
+        for buy in self.__buy_requests:
+            heappush(self.__buy_max_heap, -buy)
+
+        print(self.__sell_min_heap)
+        print(self.__buy_max_heap)
+    
+    def process_buy(self, buy):
+        max_sell = heappop(self.__sell_min_heap)
+        if buy > max_sell:
+            profit =  buy - max_sell
+            print(f'\tPROFIT = {profit}')
+            return profit
+        print('your order has been stored.Please wait for better opportunity')
+        heappush(self.__buy_max_heap,-buy)
+        print(self.__sell_min_heap)
+        print(self.__buy_max_heap)
+        return None
+    
+    def process_sell(self,sell):
+        max_buy = (-1)*heappop(self.__buy_max_heap)
+        
+        if sell > max_buy:
+            profit = sell - max_buy
+            print(f'\tPROFIT = {profit}')
+            return profit
+        print('your order has been stored.Please wait for better opportunity')
+        heappush(self.__sell_min_heap,sell)
+        print(self.__sell_min_heap)
+        print(self.__buy_max_heap)
+        return None
+
+buys = [100, 100, 99, 99, 97, 90]
+sells = [109, 110, 110, 114, 115, 119]
+
+market = TextBookMarket(buys,sells)
+market.process_buy(120)
+market.process_buy(113)
+market.process_buy(90)
+```
+{% endtab %}
+
+{% tab title="339" %}
+```python
+def calcEquation(self, equations: List[List[str]], values: List[float], queries: List[List[str]]) -> List[float]:
+    G = collections.defaultdict(dict)
+    for (x, y), v in zip(equations, values):
+        G[x][y] = v
+        G[y][x] = 1/v
+        
+    def bfs(src, dst):
+        if not (src in G and dst in G): return -1.0
+        q, seen = [(src, 1.0)], set()
+        for x, v in q:
+            if x == dst: 
+                return v
+            seen.add(x)
+            for y in G[x]:
+                if y not in seen: 
+                    q.append((y, v*G[x][y]))
+        return -1.0
+    return [bfs(s, d) for s, d in queries]
+```
+{% endtab %}
+
+{% tab title="CurrencyConversion" %}
+```python
+from collections import defaultdict
+from collections import deque
+
+def getRatio(start, end, data):
+    adj = defaultdict(list)
+    vis = dict()
+    for node in data:
+        adj[node[0]].append([node[1], node[2]])
+        adj[node[1]].append([node[0], 1.0 / node[2]])
+        vis[node[0]] = False
+        vis[node[1]] = False
+    
+    # start BFS
+    queue = deque()
+    queue.append((start, 1.0))
+    
+    while queue:
+        curr, num = queue.popleft()
+        if vis[curr]:
+            continue
+        vis[curr] = True
+         
+        if curr in adj:
+            values = adj[curr]
+            neighbors = {}
+            for val in values:
+                neighbors[val[0]] = val[1]
+            for key in neighbors:
+                if not vis[key]:
+                    if key == end:
+                        res = num * neighbors[key]
+                        return round(res,2)
+                    queue.append((key, num * neighbors[key]))
+    return -1
+
+
+data = [("USD", "JPY", 110), ("USD", "AUD", 1.45), ("JPY", "GBP", 0.0070)]
+print(getRatio("GBP", "AUD", data))
+
+''' ================= APIs =================='''
+import requests, json
+resp =  requests.get('http://api.pro.coinbase.com/products').json()
+print(resp[0]['id'])
+```
+{% endtab %}
+
+{% tab title="Currency Arbitrage" %}
+```python
+from math import log
+
+def arbitrage(graph):
+    transformed_graph = [[-log(edge) for edge in row] for row in graph]
+
+    # Pick any source vertex -- we can run Bellman-Ford from any vertex and
+    # get the right result
+    source = 0
+    n = len(transformed_graph)
+    min_dist = [float("inf")] * n
+
+    min_dist[source] = 0
+
+    # Relax edges |V - 1| times
+    for i in range(n - 1):
+        for v in range(n):
+            for w in range(n):
+                if min_dist[w] > min_dist[v] + transformed_graph[v][w]:
+                    min_dist[w] = min_dist[v] + transformed_graph[v][w]
+
+    print(min_dist)
+    # If we can still relax edges, then we have a negative cycle
+    for v in range(n):
+        for w in range(n):
+            if min_dist[w] > min_dist[v] + transformed_graph[v][w]:
+                return True
+
+    return False
+
+
+rates = [
+    [1, 0.23, 0.25, 16.43, 18.21, 4.94],
+    [4.34, 1, 1.11, 71.40, 79.09, 21.44],
+    [3.93, 0.90, 1, 64.52, 71.48, 19.37],
+    [0.061, 0.014, 0.015, 1, 1.11, 0.30],
+    [0.055, 0.013, 0.014, 0.90, 1, 0.27],
+    [0.20, 0.047, 0.052, 3.33, 3.69, 1],
+]
+print(arbitrage(rates))
+
+'''
+
+TC: O(N^3)
+SC: O(N^2)
+
+For example, say we have a weighted edge path a -> b -> c -> d. 
+Since we want to see if a * b * c * d > 1, we’ll take the negative log of each edge:
+
+-log(a) -> -log(b) -> -log(c) -> -log(d).
+
+The total cost of this path will then be
+
+-(log(a) + log(b) + log(c) + log(d)) = -log(a * b * c * d).
+
+-log(x) < 0 if x is greater than 1, so that’s why if we have a negative cost cycle, if means that the product of the weighted edges is bigger than 1.
+
+The Bellman-Ford algorithm can detect negative cycles. So if we run Bellman-Ford on our graph and discover one, then that means its corresponding edge weights multiply out to more than 1, and thus we can perform an arbitrage.
+
+'''
+```
+{% endtab %}
+{% endtabs %}
+
+
+
+## HLD:
+
+* **Slack**
+  * how will you mark the message read. 
+  * API + storage layer \(main focus\), 
+  * how will you push notifications. 
+  * How will you show "someone is typing.." kinda feature
+    * =&gt; Mostly like whoever is typing send updates to cache with the timestamp and then UI can fetch cache data. Not a very efficient approach because later the interviewer told me that Spotify actually open Websockets for each client. It doesn't depend on long polling method. I didn't verify the interviewer's claim. Actually, in all the notification services based interviews, I have seen the crux is how do you send the data from server to the client. Usually, the interviewers are happy with long polling strategy or fixed interval-based check.
+* **Stock Exchange**
+  * Design a ordering system for stocks. Users will place orders and cancel orders. Think about race conditions when trying to cancel an order before executed. Users can also schedule orders in the future.
+
+
+
+1st technical screen was an LC medium, nothing too crazy, I think most people could do it here if they know about arrays. It is very important to display 'clear communication' during these rounds as it is one of Coinbase's core values.
+
+Onsite: 2 pair programming and 1 system design.
+
+First pair programming was an OOP related question with some minor algorithms. The focus here is on getting a working solution and communicating clearly.
+
+Second pair programming was actually pretty heavily algorithm involved although you also needed some OOP principles. \(I signed an NDA so I can't disclose Coinbase questions\)
+
+The system design was very generic and I think watching enough Youtube videos would be enough help here.I can't disclose exactly but on a high-level it was essentially like designing a system that periodically fetches data from an API and uses it in the system.
+
+I received an offer only 2 days after!
+
+
+
+_3rd round \(1 hour\):_  
+This was a coding interview. The question was given a list of buy and sell orders, try to find the maximum profit a trader can make?  
+After solving the question, I was given few practical real world problems a cryptocurrency exchange faces and was asked how I would solve it.  
+After a week I got a reject.
+
+On-site Round 1: System Design. Design Slack. Question regarding how will you mark the message read. API + storage layer \(main focus\), how will you push notifications. How will you show "someone is typing.." kinda feature.
+
+
+
+**Phone Screen**
+
+* a way for users to buy and sell stocks
+* match buyers with the lowest seler \(&lt;= buyer's price\)
+* match sellers with the highest buyer \(&gt;= seller's price\)
+
+**Onsite**  
+Currency Exchange
+
+* a list of currency relationships with exchange values. \(BTC - USD\)
+* find the best exchange rate from currency1 to currency2
+
+Game
+
+* connect 4
+* OOP design
+
+System Design
+
+* design slack and slack related features \(show "some one is typing" etc\)
+
+Behavioral
+
+* cross team collaboration
+* career aspiration etc.
+
+
+
+## Pair Programing\#2
+
+### 
+
 ## Question Bank:
 
 * [Chinese doc1](https://juejin.cn/post/6844904085913600008)

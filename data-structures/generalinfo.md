@@ -4,6 +4,14 @@ description: Python is about 2-4x slower than C++
 
 # generalInfo
 
+* Python hit an API
+
+```python
+import requests, json
+resp =  requests.get('http://api.pro.coinbase.com/products').json()
+print(resp[0]['id'])
+```
+
 * **Constraints during Contests:**
   * If n ≤ 12          ===&gt; O\(n!\).
   * If n ≤ 25          ===&gt; O\(2^n\).

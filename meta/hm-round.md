@@ -1,6 +1,6 @@
 # HM Round
 
-## Everything should be in STAR framework
+## DONT LIE  .......\|......... Everything should be in STAR framework
 
 ### 1.Situation
 
@@ -16,6 +16,7 @@
   * =&gt; 
 * Challenge with manager when you had to disagree with your manager and manager agreed with your point.
   * **=&gt; Run-books**
+  * **RCAs**
 * Challenge with manager when you had to agree with manager even though he was wrong.
   * **=&gt; Tech deb**
   * **=&gt; UT coverage for old code \(similarity molten lava\)**
@@ -23,10 +24,11 @@
 * What is your biggest **strength** and **weakness**?
   * **Strength:**
     * Being **collaborative**. I always prefer to work in groups. In my current project I did xyz which required collaborations with multiple teams. I drove this change. Got exceeds in team work.
-    * Side-projects
+    * Side-projects \| Keep on learning New Tech
+    * Reading blogs/posts/exp of industry seniors
   * **Weakness:**
     * Not enough experience in Machine learning or any other topic. 
-    * Still improving in **deligating** the tasks. 
+    * Still improving in **delegating** the tasks. 
     * Still improving in **task estimations**.
 * Situation when you had to agree with your junior.
 * Recent improvements which helped your in professional and personal life.
@@ -44,7 +46,8 @@
 * Give examples of situations where you have shown effectiveness, empathy, adaptability, and humbleness.
   * **=&gt; Ads Merch Separation \(@**Me= what I was expecting vikas to be; **\)**
 * Why do you want to change jobs? Why now?
-  * job is becoming more into data-engg.
+  * job is becoming more into data-engg & **feel like the job has become too stagnant.**  
+  * **Work-Culture bad??** blame-game/too much oncall-nightouts/ bad-old code..........
 * Share an example of how you were able to motivate employees or co-workers.
 * What do you do when the requirement from the stakeholder is vague?
 * How do you make a case for your vision and opinion?
@@ -115,10 +118,42 @@
 * **products:**
   * coinbase app
   * coinbase wallet
+
+#### **values✅✅✅✅✅**
+
+* **Clear communication :** We share information efficiently, improving collaboration and productivity. We practice active listening.
+* **Act like an owner \( NO 'Not My Problem'\) :** We take 100% responsibility for achieving the mission. We seek to improve all aspects of our company even in ways that are not explicitly part of our job.
+* **Customer focus**
+
+  We are deeply focused on solving our customers' problems with technology, by enabling them to acquire, store and use crypto. We strive to be the easiest to use, most trusted and most secure platform. In every decision we make, we ask, **"How does this create more value for our customers?"**
+
+* **Positive energy**
+
+  We are optimistic about the future and determined to get there. We co-create solutions instead of choosing blame and criticism. We create moments of play at work.
+
+* **Efficient execution**
+
+  We have a bias for action. We complete high quality work quickly. We focus on the **20% of work that will get us 80%** of the impact.
+
+* **Continuous learning**
+
+  We're humble, and value learning over being right. We embrace delivering and receiving candid feedback, and see every setback as an opportunity to learn.
+
+* **Championship team**
+
+  We are a winning team, not a family, and have high expectations for performance and delivering results. We have an intense work culture, and are regularly pushed out of our comfort zones.
+
+* **Repeatable innovation**
+
+  We are builders, leveraging technology to improve the world, constantly shipping ideas vs. just discussing them. We know that **companies must continually reinvent themselves to avoid stagnation**. We have a high tolerance for failure, investing 10% of our resources in venture bets that are **uncomfortably ambitious**.
+
+* **Top talent :** We take extraordinary measures to have exceptional people in every seat. We ask whether each candidate will raise the average on the team before making an offer
+* ------------------------------------------------\[@HR\]
 * open culture
-* **values**:
-  * we hire only good Communicators
-  * leaning
-  * efficiency
-  * help each other grow
-* 
+* we hire only good Communicators
+* leaning
+* efficiency
+* help each other grow
+
+
+
