@@ -303,8 +303,32 @@ print("NO")
 
 ```
 {% endtab %}
+
+{% tab title="339." %}
+```python
+def calcEquation(self, equations: List[List[str]], values: List[float], queries: List[List[str]]) -> List[float]:
+    G = collections.defaultdict(dict)
+    for (x, y), v in zip(equations, values):
+        G[x][y] = v
+        G[y][x] = 1/v
+        
+    def bfs(src, dst):
+        if not (src in G and dst in G): return -1.0
+        q, seen = [(src, 1.0)], set()
+        for x, v in q:
+            if x == dst: 
+                return v
+            seen.add(x)
+            for y in G[x]:
+                if y not in seen: 
+                    q.append((y, v*G[x][y]))
+        return -1.0
+    return [bfs(s, d) for s, d in queries]
+```
+{% endtab %}
 {% endtabs %}
 
+* [x] [339. Evaluate Division](https://leetcode.com/problems/evaluate-division/) **@coinbase**
 * [x] CSES: [Message Route](https://cses.fi/problemset/task/1667/) \| BFS+backtrack ✅✅
 * [x] [The Maze](https://leetfree.com/problems/the-maze)
 * [x] [130. Surrounded Regions](https://leetcode.com/problems/surrounded-regions/)
@@ -663,6 +687,70 @@ cout << cost << endl;
 return 0;
 ```
 {% endtab %}
+
+{% tab title="currency\_arbitrage" %}
+```python
+from math import log
+
+def arbitrage(graph):
+    transformed_graph = [[-log(edge) for edge in row] for row in graph]
+
+    # Pick any source vertex -- we can run Bellman-Ford from any vertex and
+    # get the right result
+    source = 0
+    n = len(transformed_graph)
+    min_dist = [float("inf")] * n
+
+    min_dist[source] = 0
+
+    # Relax edges |V - 1| times
+    for i in range(n - 1):
+        for v in range(n):
+            for w in range(n):
+                if min_dist[w] > min_dist[v] + transformed_graph[v][w]:
+                    min_dist[w] = min_dist[v] + transformed_graph[v][w]
+
+    print(min_dist)
+    # If we can still relax edges, then we have a negative cycle
+    for v in range(n):
+        for w in range(n):
+            if min_dist[w] > min_dist[v] + transformed_graph[v][w]:
+                return True
+
+    return False
+
+
+rates = [
+    [1, 0.23, 0.25, 16.43, 18.21, 4.94],
+    [4.34, 1, 1.11, 71.40, 79.09, 21.44],
+    [3.93, 0.90, 1, 64.52, 71.48, 19.37],
+    [0.061, 0.014, 0.015, 1, 1.11, 0.30],
+    [0.055, 0.013, 0.014, 0.90, 1, 0.27],
+    [0.20, 0.047, 0.052, 3.33, 3.69, 1],
+]
+print(arbitrage(rates))
+
+'''
+
+TC: O(N^3)
+SC: O(N^2)
+
+For example, say we have a weighted edge path a -> b -> c -> d. 
+Since we want to see if a * b * c * d > 1, we’ll take the negative log of each edge:
+
+-log(a) -> -log(b) -> -log(c) -> -log(d).
+
+The total cost of this path will then be
+
+-(log(a) + log(b) + log(c) + log(d)) = -log(a * b * c * d).
+
+-log(x) < 0 if x is greater than 1, so that’s why if we have a negative cost cycle, if means that the product of the weighted edges is bigger than 1.
+
+The Bellman-Ford algorithm can detect negative cycles. So if we run Bellman-Ford on our graph and discover one, then that means its corresponding edge weights multiply out to more than 1, and thus we can perform an arbitrage.
+
+'''
+```
+{% endtab %}
 {% endtabs %}
 
 ### 1.x Problems: **SSSP/SSLP** 
@@ -685,7 +773,8 @@ return 0;
 * [x] CSES: [High Score](https://cses.fi/problemset/task/1673/) \| **`Bellman-Ford`** `with Negative Cycle Detection`  \| &lt;standardQ&gt; \| must do  🔖🍪🚀🔖
 * [x] CSES: [Cycle Finding](https://cses.fi/problemset/task/1197/) ✅🐽
 * [x] CSES:  [Flight Routes](https://cses.fi/problemset/task/1196) \|  ✅✅ \| [approach](https://www.youtube.com/watch?v=009PBKHXtyA&ab_channel=Dardev) \| 2-D dijkstra's
-* [x]  CSES: [Flight Discount](https://cses.fi/problemset/result/2664805/) \| reversed dij: \| [approach](https://usaco.guide/problems/cses-1195-flight-discount/solution) ✅✅ aise hi questions toh dekhne mei impossible lagte hai BC!!!!............so damn ea
+* [x]  CSES: [Flight Discount](https://cses.fi/problemset/result/2664805/) \| reversed dij: \| [approach](https://usaco.guide/problems/cses-1195-flight-discount/solution) ✅✅ aise hi questions toh dekhne mei impossible lagte hai BC!!!!............so damn easy
+* [x] [Currency Arbitrage](https://www.dailycodingproblem.com/blog/how-to-find-arbitrage-opportunities-in-python/) \| @coinbase
 
 
 

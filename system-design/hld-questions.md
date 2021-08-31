@@ -1805,5 +1805,9 @@ city() # it calls the function city
 
 ![](../.gitbook/assets/screenshot-2021-08-29-at-8.24.50-pm.png)
 
+## 19. Stocks Exchange
+
+![](../.gitbook/assets/screenshot-2021-08-31-at-7.00.38-pm.png)
+
 ## \#More From Leetcode
 
