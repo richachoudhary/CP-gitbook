@@ -3,6 +3,25 @@
 ## 0.Template
 
 ```text
+* Multiple Instance of each service
+* API Gateway(LB+Proxy)
+* Zookeeper
+* CDN
+* Varnish
+* Cache(write back)-Redis
+* SQL
+    * Read replicas
+* NoSQL
+    * Replicas/Distributed
+* Kafka/worker
+* Stateless Microservices
+* Hystrix
+* HDFS/S3
+* local cache : last 50 msgs
+
+```
+
+```text
 #1. Requirement Gathering ======================================
         1.1 Functional Requirements
         1.2 NonFunctional Requirements - Usage Patterns(read heavy/CAP tradeoffs)
