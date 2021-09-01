@@ -1805,7 +1805,176 @@ city() # it calls the function city
 
 ![](../.gitbook/assets/screenshot-2021-08-29-at-8.24.50-pm.png)
 
-## 19. Stocks Exchange
+
+
+## 19. Slack @coinbase
+
+* [Whimsical](https://whimsical.com/slack-NTe7cDhHvX3AWfF7k9quyw) 
+
+#### \#1. Requirement Gathering ======================================
+
+#### 1.1 Functional Requirements
+
+* Use should be able to send & receive chat messages from his/her contacts who are also on slack
+* Group chat \(upto 250 members\) ??
+* Track messages status: sent/delivered/read ??
+  * =&gt; Slack shows notification if msg was unable to send
+* Account registration using mail/phone 
+* Push Notifications: when the user is offline- send notifications for new msgs 
+* When the use comes online; he should be able to see all new msgs
+* Adding support for media files\(img.video.audio\)
+* E2E encryption
+
+#### 1.2 NonFunctional Requirements - Usage Patterns\(read heavy/CAP tradeoffs\)
+
+* High availability
+* Fault Taularent
+* Consistency
+* Scalable
+* Minimum latency \(real-time chat experience\)
+* Durability\(keep chat history\)
+
+#### 1.3 Out of Scope
+
+* Suppor for Slack-web ?
+* Analytics/Monitoring
+
+#### \#2. Back-of-the-envelope estimation ============================
+
+#### 2.1 Scale of System
+
+* DAU = 500M
+* 1 user sends 100 msgs daily
+* ==&gt; 50B msgs per day 
+
+#### 2.2 Storage size estimation
+
+* size of 1 msg = 100bytes
+  * =&gt; total size  = 20B\*100 byte = 2TB/day
+    * =&gt; 5PB for 5 years
+
+#### 2.3 Bandwidth estimation\(read+write\)
+
+* incoming & outgoing data = 2TB/\(24\*3600\) = 25MB/s 
+
+#### \#3. APIs =======================================================
+
+* **1-to-1 Chat**
+  * `createAccount(API_key, use_id, name, email...)`
+  * `validateAccount(API_key, user_id, validation_code)`
+  * `initiateDirectChatSession(API_key, sender_id, receiver_id, handshake_info)`
+    * =&gt; for initial handshake
+  * `sendMessage(API_key, session_id, msg_type, msg)`
+    * `Returns msg_id`
+  * `getMessageStatus(API_key, message_id)`
+  * `readNewMessage(API_key,session_id, last_msg_id)`
+    * `last_msg_id`to be used as **pointer** to separate b/w read & not-read msgs
+* **Group chats**
+* * `createGrop(API_key, group_id, group_name,` **`admin, [members]`**`)`
+  * `addUserToGroup(API_Key, group_id, user_id,admin_id)`
+  * `removeUserFromGroup(API_Key, group_id, user_id,admin_id)`
+  * `promoteMemberToGroup(API_key,group_id,user_id)`
+
+#### \#4. Models:Classes, DB Schema & ER diagrams=====================
+
+#### 4.1 Tables Schemas 
+
+* **User**
+  * user\_id: PK
+  * name
+  * email
+  * ...
+* **Group**
+  * groupID: PK
+  * name
+  * created\_time
+  * member\_count
+* **GroupMembership**
+  * groupID: **PK**
+  * userID: **SK\(Secondary Key\)**
+  * creation\_time : datetime
+  * user\_type: ADMIN,MEMBER
+* **Sessions**
+  * session\_id : PK
+  * user\_id
+  * appserver\_id
+  * last\_activity
+  * timestamp
+
+#### 4.2 DBs choices\(NoSQL/SQL\)
+
+* **How to shard GroupMembership table**
+  * **Option\#1:** Shard by groupID =&gt; Called **Local Index**
+    * =&gt; then membership info will be spread across all the shards to which user belongs
+  * **Option\#2:** Shard by userID\(**SK**\)=&gt; Called **Global Index**
+    * =&gt; group info will be spread 
+  * **WHich one to choose:**
+    * it seems to me that **creating groups and updating their membership is potentially less frequent** than the ongoing msgs posted into the group chats by users. 
+    * So the Session and Fanout service benefits **more from a global index on GroupID**. 
+    * Users who create/update a group will necessarily have to wait for scatter/gather across partitions but this is less frequent than the msg posts occurring within the group chats.
+
+#### \#5. Draw 'Basic HLD'=============================================
+
+#### 1. Gateway Service
+
+* Responsible for creating **websocket connection** b/w app server & user
+* Makes all the API calls to other services as per the user's request
+
+#### 2. Sessions Service
+
+* stores info: which client is connected to which server
+* When clientA sends a msg to clientB:
+  * clientA sends msg to geteway\_service
+  * gateway\_service is pretty dumb\(doesnt have inofo on usr's session\)
+  * gateway\_service passes this req to sessionService
+  * session services returns with the details of clientB
+  * then gateway service sends that msg to client B
+* **+--&gt; Enters WebSockets**
+
+#### 3. UserActivity Service
+
+* takes care of last seen/typing....
+* polling/webSockets
+
+#### 4. Group Service
+
+* How does group msging work?
+* Fanout sevies asks group srervice for all group data
+* then it fans out msgs to all the members
+* **DO: batch\_processing /limit the number of users**
+
+#### **5. Someone's typing...**
+
+* typing indicator was triggered on the first keystroke and repeated as more keystrokes occurred. 
+* If no keystrokes were registered after 10 seconds, the indicator would no longer be displayed. Either you were typing, or you weren’t.
+* **If a user stops typing for five seconds, Slack removes the “person is typing” indicator.**
+* So when user starts typing update your database and set isTyping true. 
+* Dont forget to check if isTyping set to true so it will not update every time user presses the key
+* **EVENT  is** Implement using a **pub/sub** trigger
+
+  ```text
+  {
+    "isTyping":true,
+    "fromDeviceToken": "xxxx",
+    "timestamp": 12345
+  }
+  ```
+
+* **ISSUE:** If user A **connection is lost during typin**g then the status will be always remain true until he resumes the connection. To solve this problem you can have one DateTime field in your firebase object
+
+#### \#6. Detailed HLD ================================================
+
+![](../.gitbook/assets/screenshot-2021-09-01-at-5.55.40-pm.png)
+
+![](../.gitbook/assets/screenshot-2021-09-01-at-5.10.18-pm.png)
+
+## 20. Stocks Exchange
+
+![](../.gitbook/assets/screenshot-2021-09-01-at-5.57.17-pm.png)
+
+![](../.gitbook/assets/screenshot-2021-09-01-at-6.10.25-pm.png)
+
+![](../.gitbook/assets/screenshot-2021-09-01-at-6.05.36-pm.png)
 
 ![](../.gitbook/assets/screenshot-2021-08-31-at-7.00.38-pm.png)
 
