@@ -1828,7 +1828,7 @@ city() # it calls the function city
 #### 1.2 NonFunctional Requirements - Usage Patterns\(read heavy/CAP tradeoffs\)
 
 * High availability
-* Fault Taularent
+* Fault Tolerant
 * Consistency
 * Scalable
 * Minimum latency \(real-time chat experience\)
@@ -1910,10 +1910,32 @@ city() # it calls the function city
     * =&gt; group info will be spread 
   * **WHich one to choose:**
     * it seems to me that **creating groups and updating their membership is potentially less frequent** than the ongoing msgs posted into the group chats by users. 
-    * So the Session and Fanout service benefits **more from a global index on GroupID**. 
+    * So the Session and Fanout service benefits **more from a global index on userID**. 
     * Users who create/update a group will necessarily have to wait for scatter/gather across partitions but this is less frequent than the msg posts occurring within the group chats.
 
 #### \#5. Draw 'Basic HLD'=============================================
+
+### \#WebSockets
+
+* **USE CASE:** chatting **@whatsapp**
+* In the beginning; a **Handshake** connection\(usually **HTTP**\) is established b/w client & server
+* After this; the client & server communicate through a **bi-directional long-lived TCP connection**
+* **PROS:**
+  * bidirecional low latency communication
+  * Reduced overhead of HTTP requests
+* **CONS:**
+  * Clients are responsible for connections
+  * Scalability challanges
+
+**Hystrix:**
+
+* =&gt; Hystrix is a **latency and fault tolerance library** designed to isolate points of access to remote systems, services and 3rd party libraries
+* Advantages:
+  * Stop cascading failures i.e. reject the request if it cant be handled
+  * Realtime **monitoring** of configurations changes
+  * Concurrency aware request caching
+  * Automated batching through request collapsing
+* IE. If a micro service is failing then return the default response and wait until it recovers.
 
 #### 1. Gateway Service
 
@@ -1964,7 +1986,7 @@ city() # it calls the function city
 
 #### \#6. Detailed HLD ================================================
 
-![](../.gitbook/assets/screenshot-2021-09-01-at-5.55.40-pm.png)
+![](../.gitbook/assets/screenshot-2021-09-01-at-7.24.13-pm.png)
 
 ![](../.gitbook/assets/screenshot-2021-09-01-at-5.10.18-pm.png)
 

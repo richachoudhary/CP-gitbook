@@ -322,7 +322,7 @@ Below steps to be taken\(as \#users increase\)
     * **Replication**
 * **NOSQL** 
   * Types
-    * Key-Value databases \(Voldemort, Dynomite\) 
+    * Key-Value databases \(Voldemort, Dynomite, **Firestore**\) 
     * Column databases \(Cassandra, **HBase, Druid, Clickhouse**\) 
     * Document databases \(**MongoDB**, CouchDB\) 
     * Graph databases \(**Neo4J**, AllegroGraph\) 
@@ -711,6 +711,14 @@ Below steps to be taken\(as \#users increase\)
   * health check
   * redirect
 
+1. * =&gt; Hystrix is a **latency and fault tolerance library** designed to isolate points of access to remote systems, services and 3rd party libraries
+   * Advantages:
+     * Stop cascading failures i.e. reject the request if it cant be handled
+     * Realtime **monitoring** of configurations changes
+     * Concurrency aware request caching
+     * Automated batching through request collapsing
+   * IE. If a micro service is failing then return the default response and wait until it recovers.
+
 ## 13. Cryptography
 
 * **Src**: [video1](https://www.youtube.com/watch?v=q9vu6_2r0o4&ab_channel=PaulTurner) , [video2](https://www.youtube.com/watch?v=r1nJT63BFQ0&ab_channel=HusseinNasser)
@@ -732,7 +740,7 @@ Below steps to be taken\(as \#users increase\)
      * if you encrypt with **B** =&gt; you **CANNOT** decrypt with **B**
    * Call **A: public\_key** and **B:private\_key**
    * Keep **private\_key with you** & **share** ur **public\_key with all your clients\(**or publish it on site**\)**
-   * **Now:** the client will encrypt the msg with your **public\_key** and will send you.
+   * **Now:** the client will **encrypt the msg** with your **public\_key** and will send you.
    * Nobody in the world can understand this msg; because it can only be decrypted by your **private\_key**\(which lies safe in your pocket\)
    * **decrypt** the clients's msg with your **private\_key** and voila! 
    * **ISSUE**: **Man in the middle attack**
