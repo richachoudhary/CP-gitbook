@@ -270,6 +270,48 @@ def mergeKLists(self, lists: List[ListNode]) -> ListNode:
     return head.next
 ```
 {% endtab %}
+
+{% tab title="287💪 \| ShareChat" %}
+```python
+def findDuplicate(self, nums):
+        
+        # 1. Rabbit-Tortoise method ==========================================================
+        # TC:O(N) , SC:(1)
+        slow, fast = nums[0], nums[0]
+        while True:
+            slow, fast = nums[slow], nums[nums[fast]]
+            if slow == fast: break
+           
+        slow = nums[0];
+        while slow != fast:
+            slow, fast = nums[slow], nums[fast]
+        return slow
+    
+    
+        #2. Binary Search ==========================================================================
+        '''
+        Let us choose middle element m = n//2 and count number of elements in list, 
+        which are less or equal than m. 
+        If we have m+1 of them it means we need to search for duplicate in [1,m] range, else in [m+1,n] range
+        '''
+        #TC: O(NlogN) , SC: O(1)
+        
+        low = 0
+        high = len(nums) - 1
+        mid = (high + low) / 2
+        while high - low > 1:
+            count = 0
+            for k in nums:
+                if mid < k <= high:
+                    count += 1
+            if count > high - mid:
+                low = mid
+            else:
+                high = mid
+            mid = (high + low) / 2
+        return high
+```
+{% endtab %}
 {% endtabs %}
 
 * [x] [234.Palindrome Linked List](https://leetcode.com/problems/palindrome-linked-list/) ✅
@@ -279,6 +321,7 @@ def mergeKLists(self, lists: List[ListNode]) -> ListNode:
 * [ ] [142.Linked List Cycle II](https://leetcode.com/problems/linked-list-cycle-ii/)
 * [x] [138.Copy List with Random Pointer](https://leetcode.com/problems/copy-list-with-random-pointer/) \| Deep copy \| chillar
 * [x] 23. [Merge k Sorted Lists](https://leetcode.com/problems/merge-k-sorted-lists/) 🍪🍪🍪✅
+* [x] LC [287. Find the Duplicate Number](https://leetcode.com/problems/find-the-duplicate-number/) \| **Rabbit-Tortoise** method on array \| had me failed @ShareChat back then 💪 \| also see in `BinarySearch`
 
 ## 2. All Problems
 

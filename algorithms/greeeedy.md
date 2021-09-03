@@ -1232,6 +1232,7 @@ So for this question, you **HAVE TO GO WITH C++**
 
 * [x] CSES: [Factory Machines ](https://cses.fi/problemset/task/1620)✅
 * [x] CSES: [Array Division](https://cses.fi/problemset/task/1085/) ✅✅
+* [x] LC [287: Find the Duplicate Number](https://leetcode.com/problems/find-the-duplicate-number/) \| @ShareChat \| also see in `LinkedLIst` 💪
 
 {% tabs %}
 {% tab title="FactoryMachines" %}
@@ -1278,6 +1279,48 @@ while lo<hi:
     else:
         hi = mid
 print(lo)
+```
+{% endtab %}
+
+{% tab title="287.💪" %}
+```python
+def findDuplicate(self, nums: List[int]) -> int:
+        
+        # 1. Rabbit-Tortoise method ==========================================================
+        # TC:O(N) , SC:(1)
+        slow, fast = nums[0], nums[0]
+        while True:
+            slow, fast = nums[slow], nums[nums[fast]]
+            if slow == fast: break
+           
+        slow = nums[0];
+        while slow != fast:
+            slow, fast = nums[slow], nums[fast]
+        return slow
+    
+    
+        #2. Binary Search ==========================================================================
+        '''
+        Let us choose middle element m = n//2 and count number of elements in list, 
+        which are less or equal than m. 
+        If we have m+1 of them it means we need to search for duplicate in [1,m] range, else in [m+1,n] range
+        '''
+        #TC: O(NlogN) , SC: O(1)
+        
+        low = 0
+        high = len(nums) - 1
+        mid = (high + low) / 2
+        while high - low > 1:
+            count = 0
+            for k in nums:
+                if mid < k <= high:
+                    count += 1
+            if count > high - mid:
+                low = mid
+            else:
+                high = mid
+            mid = (high + low) / 2
+        return high
 ```
 {% endtab %}
 {% endtabs %}
