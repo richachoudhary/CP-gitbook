@@ -33,9 +33,9 @@ def solve().....
 * [x] 213.[ House Robber II](https://leetcode.com/problems/house-robber-ii/) \| circular 💪
 * [x] 337. [House Robber III](https://leetcode.com/problems/house-robber-iii/) \| Tree
 * [x] CSES: [Projects](https://cses.fi/problemset/task/1140) \| [Kartik Arora](https://www.youtube.com/watch?v=MJn3ogwsUbo&ab_channel=KartikArora) ✅🐽🚀
-
   * Binary Search!!!! Dont skip!
   * Dekhke lagta nhi ki DP lagegi!!!
+* [x] LC: [1340.Jump Game V](https://leetcode.com/problems/jump-game-v/)
 
 {% tabs %}
 {% tab title="198" %}
@@ -103,6 +103,37 @@ def dp(x):
     return MEMO[x]
     
 return dp(root)
+```
+{% endtab %}
+
+{% tab title="1340" %}
+```python
+from functools import lru_cache
+
+class Solution:
+    def maxJumps(self, arr: List[int], d: int) -> int:
+        n = len(arr)
+
+        @lru_cache(None)
+        def jumps(start: int) -> int:
+            height = arr[start]
+            max_jumps = 0
+            
+            for index in range(start - 1, max(0, start - d) - 1, -1):
+                if arr[index] >= height:
+                    break
+                
+                max_jumps = max(max_jumps, jumps(index))
+            
+            for index in range(start + 1, min(n, start + d + 1)):
+                if arr[index] >= height:
+                    break
+                
+                max_jumps = max(max_jumps, jumps(index))
+            
+            return max_jumps + 1
+        
+        return max(jumps(start) for start in range(n))
 ```
 {% endtab %}
 {% endtabs %}

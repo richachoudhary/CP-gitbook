@@ -96,3 +96,40 @@ class LRUCache:
 * LC [1912. Design Movie Rental System](https://leetcode.com/problems/design-movie-rental-system/)
 * Sol: [https://leetcode.com/problems/design-movie-rental-system/discuss/1298440/Python-SortedList-solution-explained](https://leetcode.com/problems/design-movie-rental-system/discuss/1298440/Python-SortedList-solution-explained)
 
+## From LC:
+
+* [x] LC [1600. Throne Inheritance](https://leetcode.com/problems/throne-inheritance/)
+
+{% tabs %}
+{% tab title="1600" %}
+```python
+from collections import defaultdict
+class ThroneInheritance:
+    
+    def __init__(self, kingName: str):
+        self.dead = set()
+        self.kingdom = defaultdict(list)
+        self.root = kingName
+        
+    def birth(self, parentName: str, childName: str) -> None:
+        self.kingdom[parentName].append(childName)
+        
+    def death(self, name: str) -> None:
+        self.dead.add(name)
+        
+    def getInheritanceOrder(self) -> List[str]:
+        res = []
+        def dfs(root):
+            if root not in self.dead:
+                res.append(root)
+            for nxt in self.kingdom[root]:
+                dfs(nxt)
+        dfs(self.root)
+        return res
+    
+# TC:
+# birth() -> O(1) || death -> O(1) || getInheritance -> O(N)
+```
+{% endtab %}
+{% endtabs %}
+

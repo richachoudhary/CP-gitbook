@@ -352,6 +352,7 @@ def calcEquation(self, equations: List[List[str]], values: List[float], queries:
 * [x] CSES: [Labyrinth](https://cses.fi/problemset/task/1193) ==&gt; **DFS** fails, **ALWAYS USE BFS for SHORTEST PATH ✅✅**
 * [x] **CSES:** [Monsters](https://cses.fi/problemset/task/1194) \| `Lava Flow Problem✅✅✅🔥🔥` \| [video](https://www.youtube.com/watch?v=hB59dxdDLII&ab_channel=Dardev)
 * [x] LC 127. [Word Ladder](https://leetcode.com/problems/word-ladder/)
+* [ ] CSES: [Swap Game](https://cses.fi/problemset/task/1670)
 
 ## **1. Single Source Shortest/Longest Path - SSSP/SSLP** 
 
