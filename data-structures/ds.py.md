@@ -46,6 +46,27 @@ l.sort(key = lambda x: (x[0], -x[1]) )      # [(2, 4), (2, 3), (3, 4)]
 
 
 
+## `SortedList`
+
+* Sorted list is a sorted mutable sequence in which the values are maintained in sorted order.
+* **Heap vs SortedList:**
+  * Deletion by key is verryyyyyy expensive in Heaps
+* **Complexity:**
+  * SortedList.add\(x\) .       =&gt; **O\(logN\)**
+  * SortedList.remove\(x\)  =&gt; **O\(logN\)** 
+* Usage:
+
+```python
+from sortedcontainers import SortedList, SortedSet, SortedDict
+  
+# initializing a sorted list with parameters
+sorted_list = SortedList([1, 2, 3, 4])
+sorted_list.add(1)     # O(logN)
+sorted_list.remove(2)  # O(logN)
+```
+
+* Used in [LC 218.The Skyline Problem](https://leetcode.com/problems/the-skyline-problem/) 🌇
+
 ## `string`
 
 * **str-&gt;list**  **:** split a string by char: `s = txt.split("#")`
@@ -226,27 +247,6 @@ hp[0]
 
 * **MAX\_HEAP**, converting list to `(-1)*list` helps:
   * e.g. [1046. Last Stone Weight](https://leetcode.com/problems/last-stone-weight/)
-
-## `SortedList`
-
-* Sorted list is a sorted mutable sequence in which the values are maintained in sorted order.
-* **Heap vs SortedList:**
-  * Deletion by key is verryyyyyy expensive in Heaps
-* **Complexity:**
-  * SortedList.add\(x\) .       =&gt; **O\(logN\)**
-  * SortedList.remove\(x\)  =&gt; **O\(logN\)** 
-* Usage:
-
-```python
-from sortedcontainers import SortedList, SortedSet, SortedDict
-  
-# initializing a sorted list with parameters
-sorted_list = SortedList([1, 2, 3, 4])
-sorted_list.add(1)     # O(logN)
-sorted_list.remove(2)  # O(logN)
-```
-
-* Used in [LC 218.The Skyline Problem](https://leetcode.com/problems/the-skyline-problem/) 🌇
 
 ## `deque`
 

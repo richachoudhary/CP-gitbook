@@ -1432,7 +1432,28 @@ def findAnagrams(self, s: str, p: str) -> List[int]:
 ```python
 from heapq import heappush, heappop
 def maxSlidingWindow(self, nums: List[int], k: int) -> List[int]:
-    # sliding window + max_heap
+    
+    #1. sliding_window + deque ===================================
+    #IDEA: keep the deque sorted in decreasing order
+    n = len(a)
+    Q = deque()
+    res = []
+    for i in range(k):
+        while Q and Q[-1]<a[i]:
+            Q.pop()
+        Q.append(a[i])
+    res.append(Q[0])
+    
+    for i in range(k,n):
+        if Q and Q[0] == a[i-k]:
+            Q.popleft()
+        while Q and Q[-1]<a[i]:
+            Q.pop()
+        Q.append(a[i])
+        res.append(Q[0])
+    return res
+    
+    #2. sliding window + max_heap==================================
     # TRICK: keep discarding the non-important numbers
     heap = []   
     for i in range(k):
@@ -1468,6 +1489,7 @@ def maxSlidingWindow(self, nums: List[int], k: int) -> List[int]:
 * [x] GfG\#1: [Longest substring with k unique characters](https://www.geeksforgeeks.org/find-the-longest-substring-with-k-unique-characters-in-a-given-string/) ❤️
   * [x] SIMILAR: [904.Fruit Into Baskets](https://leetcode.com/problems/fruit-into-baskets/submissions/)
 * [x] [424.Longest Repeating Character Replacement ](https://leetcode.com/problems/longest-repeating-character-replacement/)\(similar to \#1\) 🚀🚀
+* [x] CSES: [Shortest Subsequence](https://cses.fi/problemset/task/1087/) \| DNA \| eee naa hora bina [theory](https://codeforces.com/blog/entry/82174) padhe.Karlo betta💪
 
 {% tabs %}
 {% tab title="Playlist" %}
@@ -1563,6 +1585,62 @@ def characterReplacement(self, s: str, k: int) -> int:
         if foo <= k:    # as 'ATMOST'
             res = max(res,r-l+1)
     return res
+```
+{% endtab %}
+
+{% tab title="ShortestSubsequence" %}
+```python
+'''
+Taken from CF: https://codeforces.com/blog/entry/82174
+Suppose we partition the string into 𝑘 contiguous subsegments such that the letters GCAT all appear at least once each in each partition. Then, it is clear that all 𝑘-character strings appear as subsequences.
+
+We can construct such a partition greedily. Find the shortest prefix of the string that contains all characters GCAT, make that one subsegment, then recurse on the remaining string. Note that this might actually partition it into 𝑘+1 subsegments, where the last subsegment is ``incomplete''. The last character in each subsegment (besides the incomplete subsegment) also appears exactly once in that subsegment; greedily, if it appeared earlier in the subsegment, then we could have ended this partition earlier.
+
+If 𝑘 is maximal, then we can show that there exists a 𝑘+1 length string that is not a subsequence. How? We can explicitly construct it as the last character in each of the partitions, plus some character not in the incomplete subsegment (or any character, if there is no incomplete subsegment).
+'''
+import collections
+from typing import Counter
+
+
+def solve():
+    dna_chars = ['A','C','G','T']
+    
+    dna = str(input())
+    start = 0
+    partitions = []
+    
+    counter = dict()
+    for i in range(len(dna)):
+        if dna[i] in counter:
+            counter[dna[i]] += 1
+        else:
+            counter[dna[i]] = 1
+        if len(counter) == len(dna_chars):
+            partitions.append(dna[start:i+1])
+            start = i+1
+            counter = dict()
+    extra = ''
+    if start != len(dna):
+        extra = dna[start:]
+        
+    # print(partitions)
+    res = ''
+    for part in partitions:
+        res += part[-1]
+        
+    if len(extra) == 0:
+        res += 'A'
+    else:
+        diffs = list(set(dna_chars) - set([c for c in extra]))
+        # print('diffs = ',diffs)
+        res += str(diffs[0])
+    print(res)
+    
+
+
+if __name__ == "__main__":
+    solve()
+
 ```
 {% endtab %}
 {% endtabs %}

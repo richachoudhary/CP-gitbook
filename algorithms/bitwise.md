@@ -88,7 +88,7 @@
       <td style="text-align:left">
         <p><b><code>while(x):</code></b>
         </p>
-        <p><b><code>      x = x and (x-1)</code></b>
+        <p><b><code>      x = x &amp; (x-1)</code></b>
         </p>
         <p><b><code>      cnt += 1</code></b>
         </p>
