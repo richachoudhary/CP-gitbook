@@ -11,6 +11,7 @@
 * Cache(write back)-Redis
 * SQL
     * Read replicas
+    * sharding(user_id/location)
 * NoSQL
     * Replicas/Distributed
 * Kafka/worker
