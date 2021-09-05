@@ -1,4 +1,4 @@
-# LLD:Theory \(OOPs\)
+# LLD:Theory
 
 ## \#Notes
 
@@ -331,60 +331,411 @@ class Button(Rectangle, GUIElement):
   * `Superclass.__init__(self)`
 * What's the Object Oriented way to get rich? =&gt; Inheritance 🤣
 
-## 7. Concurrency in Python
+## 7. Concurrency \(py\)
 
+* **GIL**\(Global Interpreter Lock\) =&gt;
+  * is a part of **CPython** \(a typical, mainline Python implementation\) 
+  * its function: **No multithreading is allowed**
+    * Nevertheless; ****you **can use multithreading in python** due to **fast context switching**
+* A **thread** is just a block of code that gets executed.
+* **1.Multithreading**: Using threads is like running multiple programs at once. Threads take turn while getting executed. And while one is getting executed; the other sleeps\(until its his turn for execution\)
+* **2.Multiprocessing:** In multiprocessing you leverage **multiple CPUs cores** to distribute your calculations. 
+  * Since each of the CPUs runs in parallel, you're effectively able to run multiple tasks simultaneously.
+* **`3.asyncio`**: asyncio is a library to write **concurrent** code using the **async/await** syntax.
+  * is essentially **threading** where **not the CPU but you, as a programmer \(or actually your application\), decide where and when does the context switch happen**.
+  *  In Python you use an `await` keyword to suspend the execution of your coroutine \(defined using `async` keyword\).
+  * asyncio provides a set of **high-level** APIs to:
+    * run Python **coroutines** concurrently and have full control over their execution;
+    * perform network IO and IPC;
+    * control subprocesses;
+    * distribute tasks via **queues**;
+    * synchronize concurrent code;
+  * **issues with asyncio during HTTP calls:**
+    * the `request` module is blocking in nature, i.e. it runs **synchronously**.
+    * so even if you use asyncio; the complete process remains synchronous
+    * **===&gt;** use **`aiohttp`** instead of `requests` , its smart enough to figure out when to await
+    * \`\`
+* **Which one to choose:**
+  * is it CPU Bound ?  ------------------------------------------------------------------------&gt; USE `multiprocessing`
+  * **I/O** Bound, **Fast I/O**, **Limited** Number of Connections ? --------------&gt; USE **`multihreading`** 
+  * **I/O** Bound, **Slow** I/O, **Many** connections? ------------------------------------&gt; USE `asyncio`
+
+{% tabs %}
+{% tab title="makeHTTPReq\[threading\|processing\|asycnio\].py" %}
 ```python
+# 0. ====================== Normal Synchronous way ============================
+import requests
+import time
+
+from timer import timer
+
+URL = 'https://httpbin.org/uuid'
+
+def fetch(session, url):
+    with session.get(url) as response:
+        print(response.json()['uuid'])
+
+
+@timer(1, 1)
+def main():
+    start_time = time.time()
+    with requests.Session() as session:
+        for _ in range(100):
+            fetch(session, URL)
+    total_time = time.time() - start_time
+            
+# timer.py
+import timeit
+
+def timer(number, repeat):
+    def wrapper(func):
+        runs = timeit.repeat(func, number=number, repeat=repeat)
+        print(sum(runs) / len(runs))
+
+    return wrapper
+    
+# 1. ====================== Using Multiprocessing ============================
+from multiprocessing.pool import Pool
+
+import requests
+import time
+
+from timer import timer
+
+URL = 'https://httpbin.org/uuid'
+
+def fetch(session, url):
+    with session.get(url) as response:
+        print(response.json()['uuid'])
+
+
+@timer(1, 1)
+def main():
+    start_time = time.time()
+    with Pool() as pool:
+        with requests.Session() as session:
+            pool.starmap(fetch, [(session, URL) for _ in range(100)])
+    total_time = time.time() - start_time
+
+
+# 2. ====================== Using Multithreading ============================
+
+from concurrent.futures import ThreadPoolExecutor
+
+import requests
+
+from timer import timer
+
+URL = 'https://httpbin.org/uuid'
+
+def fetch(session, url):
+    with session.get(url) as response:
+        print(response.json()['uuid'])
+
+
+@timer(1, 5)
+def main():
+    with ThreadPoolExecutor(max_workers=100) as executor:
+        with requests.Session() as session:
+            executor.map(fetch, [session] * 100, [URL] * 100)
+            executor.shutdown(wait=True)
+
+
+# 3. ====================== Using Asycio(aiohttp) ============================
+
 import asyncio
+import aiohttp
+
+from timer import timer
+
+URL = 'https://httpbin.org/uuid'
+
+
+async def fetch(session, url):
+    async with session.get(url) as response:
+        json_response = await response.json()
+        print(json_response['uuid'])
+
+
+async def main():
+    async with aiohttp.ClientSession() as session:
+        tasks = [fetch(session, URL) for _ in range(100)]
+        await asyncio.gather(*tasks)
+
+
+@timer(1, 5)
+def func():
+    asyncio.run(main())
+```
+{% endtab %}
+
+{% tab title="threading.py" %}
+```python
+import threading
+import time
 import random
 
-# 1 . Basic Implementation =============================================
-async def my_coroutine_noob():
-    print("hello")
+def executeThread(i):
+    # Print when the thread went to sleep
+    print("Thread {} sleeps at {}".format(i, time.strftime("%H:%M:%S", time.gmtime())))
+
+    # Generate a random sleep period of between 1 and  5 seconds
+    randSleepTime = random.randint(1, 5)
+
+    # Pauses execution of code in this function for a few seconds
+    time.sleep(randSleepTime)   #NOTE: this is where the next thread can KICK IN
+
+    # Print out info after the sleep time
+    print("Thread {} stops sleeping at {}".format(i, time.strftime("%H:%M:%S", time.gmtime())))
+
+for i in range(5):
+
+    # create a new Thread object here: 
+    
+    # WHY THE COMMA?: The arguments passed must be a sequence which
+    # is why we need the comma with 1 argument
+    thread = threading.Thread(target=executeThread, args=(i,))
+    thread.start()
+
+    # Display active threads The extra 1 is this for loop executing in the main thread
+    print("Active Threads :", threading.activeCount())
+
+    # Returns a list of all active thread objects
+    print("Thread Objects :", threading.enumerate())
+    
+'''
+# Output =============================================================
+Thread 0 sleeps at 17:07:56
+Active Threads : 2
+Thread Objects : [<_MainThread(MainThread, started 4370300224)>, <Thread(Thread-1, started 6114996224)>]
+Thread 1 sleeps at 17:07:56
+Active Threads : 3
+Thread Objects : [<_MainThread(MainThread, started 4370300224)>, <Thread(Thread-1, started 6114996224)>, <Thread(Thread-2, started 6131822592)>]
+Thread 2 sleeps at 17:07:56
+Active Threads : 4
+Thread Objects : [<_MainThread(MainThread, started 4370300224)>, <Thread(Thread-1, started 6114996224)>, <Thread(Thread-2, started 6131822592)>, <Thread(Thread-3, started 6148648960)>]
+Thread 3 sleeps at 17:07:56
+Active Threads : 5
+Thread Objects : [<_MainThread(MainThread, started 4370300224)>, <Thread(Thread-1, started 6114996224)>, <Thread(Thread-2, started 6131822592)>, <Thread(Thread-3, started 6148648960)>, <Thread(Thread-4, started 6165475328)>]
+Thread 4 sleeps at 17:07:56
+Active Threads : 6
+Thread Objects : [<_MainThread(MainThread, started 4370300224)>, <Thread(Thread-1, started 6114996224)>, <Thread(Thread-2, started 6131822592)>, <Thread(Thread-3, started 6148648960)>, <Thread(Thread-4, started 6165475328)>, <Thread(Thread-5, started 6182301696)>]
+Thread 3 stops sleeping at 17:07:57
+Thread 2 stops sleeping at 17:07:58
+Thread 0 stops sleeping at 17:07:59
+Thread 4 stops sleeping at 17:07:59
+Thread 1 stops sleeping at 17:08:01
+'''
+# =========================== [Using threading Class] =========================
+
+class CustThread(threading.Thread):
+    def __init__(self, name):
+        threading.Thread.__init__(self)
+        self.name = name
+
+    def run(self):
+        getTime(self.name)
+        print("Thread", self.name, "Execution Ends")
 
 
-def my_concurrency_noob():
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(my_coroutine_noob())
-    loop.close()
+def getTime(name):
+    print(
+        "Thread {} sleeps at {}".format(name, time.strftime("%H:%M:%S", time.gmtime()))
+    )
+    randSleepTime = random.randint(1, 5)
+    time.sleep(randSleepTime)
 
 
-# 2. See the actual working =============================================
+# Create thread objects
+thread1 = CustThread("1")
+thread2 = CustThread("2")
+
+# Start thread execution of run()
+thread1.start()
+thread2.start()
+
+# Check if thread is alive
+print("Thread 1 Alive :", thread1.is_alive())
+print("Thread 2 Alive :", thread2.is_alive())
+
+# Get thread name
+# You can change it with setName()
+print("Thread 1 Name :", thread1.getName())
+print("Thread 2 Name :", thread2.getName())
+
+# Wait for threads to exit
+thread1.join()
+thread2.join()
+
+print("Execution Ends")
+'''
+Output ============================
+Thread 1 sleeps at 17:12:00
+Thread 2 sleeps at 17:12:00
+Thread 1 Alive : True
+Thread 2 Alive : True
+Thread 1 Name : 1
+Thread 2 Name : 2
+Thread 1 Execution Ends
+Thread 2 Execution Ends
+Execution Ends
+'''
+```
+{% endtab %}
+
+{% tab title="threadingDemo-BankAcc.py" %}
+```python
+# ---------- SYNCHRONIZING THREADS ----------
+# You can lock other threads from executing
+
+# If we try to model a bank account we have to make sure
+# the account is locked down during a transaction so
+# that if more then 1 person tries to withdrawal money at
+# once we don't give out more money then is in the account
 
 
-async def my_coroutine2(id):
-    rand_process_time = random.randint(1, 5)
-    await asyncio.sleep(rand_process_time)
-    print(f"Process {id} got completed after {rand_process_time} seconds.")
+class BankAccount(threading.Thread):
+
+    acctBalance = 100
+
+    def __init__(self, name, moneyRequest):
+        threading.Thread.__init__(self)
+        self.name = name
+        self.moneyRequest = moneyRequest
+
+    def run(self):
+        # Get lock to keep other threads from accessing the account
+        threadLock.acquire()
+
+        # Call the static method
+        BankAccount.getMoney(self)
+
+        # Release lock so other thread can access the account
+        threadLock.release()
+
+    @staticmethod   # method that is bound to the class and not the object of the class. A static method can't access or modify the class state
+    def getMoney(customer):
+        print(
+            "{} tries to withdrawal ${} at {}".format(
+                customer.name,
+                customer.moneyRequest,
+                time.strftime("%H:%M:%S", time.gmtime()),
+            )
+        )
+
+        if BankAccount.acctBalance - customer.moneyRequest > 0:
+            BankAccount.acctBalance -= customer.moneyRequest
+            print("New account balance is : ${}".format(BankAccount.acctBalance))
+        else:
+            print("Not enough money in the account")
+            print("Current balance : ${}".format(BankAccount.acctBalance))
+
+        time.sleep(3)
 
 
-async def run():
-    tasks = []
-    for i in range(10):
-        tasks.append(asyncio.ensure_future(my_coroutine2(i)))
-    await asyncio.gather(*tasks)
+# Create a lock to be used by threads
+threadLock = threading.Lock()
+
+# Create new threads
+doug = BankAccount("Doug", 1)
+paul = BankAccount("Paul", 100)
+sally = BankAccount("Sally", 50)
+
+# Start new Threads
+doug.start()
+paul.start()
+sally.start()
+
+# Have threads wait for previous threads to terminate
+doug.join()
+paul.join()
+sally.join()
+
+print("Execution Ends")
+
+'''
+OUTPUT : =================================================
+
+Doug tries to withdrawal $1 at 17:21:16
+New account balance is : $99
+Paul tries to withdrawal $100 at 17:21:19
+Not enough money in the account
+Current balance : $99
+Sally tries to withdrawal $50 at 17:21:22
+New account balance is : $49
+Execution Ends
+'''
+```
+{% endtab %}
+
+{% tab title="asyncio.py" %}
+```python
+import asyncio
+
+async def find_divisibles(inrange, div_by):
+    print("finding nums in range {} divisible by {}".format(inrange, div_by))
+    located = []
+    for i in range(inrange):
+        if i % div_by == 0:
+            located.append(i)
+
+        if i % 500000 == 0:
+            await asyncio.sleep(0.0001) # stop this and switch to next task in queue
+    print("Done w/ nums in range {} divisible by {}".format(inrange, div_by))
+    return located
+
+
+async def main():
+    divs1 = loop.create_task(find_divisibles(50800, 34113))
+    divs2 = loop.create_task(find_divisibles(100052, 3210))
+    divs3 = loop.create_task(find_divisibles(500, 3))
+    await asyncio.wait([divs1, divs2, divs3])
+    return divs1, divs2, divs3
 
 
 if __name__ == "__main__":
-    # my_concurrency_noob()
-    loop = asyncio.get_event_loop()
     try:
-        loop.run_until_complete(run())
+        loop = asyncio.get_event_loop()
+        loop.set_debug(1)
+        d1, d2, d3 = loop.run_until_complete(main())  # get rerturn values
+        print(d1.result())  # => [0, 34113]
+    except Exception as e:
+        # logging...etc
+        pass
     finally:
         loop.close()
-
 '''
-Process 0 got completed after 1 seconds.
-Process 7 got completed after 1 seconds.
-Process 8 got completed after 1 seconds.
-Process 9 got completed after 1 seconds.
-Process 1 got completed after 3 seconds.
-Process 3 got completed after 3 seconds.
-Process 6 got completed after 3 seconds.
-Process 2 got completed after 4 seconds.
-Process 4 got completed after 4 seconds.
-Process 5 got completed after 4 seconds.
+finding nums in range 50800 divisible by 34113
+finding nums in range 100052 divisible by 3210
+finding nums in range 500 divisible by 3
+Done w/ nums in range 50800 divisible by 34113
+Done w/ nums in range 100052 divisible by 3210
+Done w/ nums in range 500 divisible by 3
+[0, 34113]
 '''
 ```
+{% endtab %}
+{% endtabs %}
+
+* **Amdahl's Law**
+
+![](../.gitbook/assets/screenshot-2021-09-06-at-1.54.09-am.png)
+
+* **Moore's law**
+
+![](../.gitbook/assets/screenshot-2021-09-06-at-1.55.50-am.png)
+
+* **Resources**: 
+  * eduvative.io : [Python Concurrency for Senior Engineering Interviews](https://www.educative.io/courses/python-concurrency-for-senior-engineering-interviews) : couldn't find on torrent!
+  * concurrency in Python \(videos\): taken from [git:coding-interview-university](https://github.com/jwasham/coding-interview-university)
+
+    *  [Short series on threads](https://www.youtube.com/playlist?list=PL1H1sBF1VAKVMONJWJkmUh6_p8g4F2oy1)
+    *  [Python Threads](https://www.youtube.com/watch?v=Bs7vPNbB9JM)
+    *  [Understanding the Python GIL \(2010\)](https://www.youtube.com/watch?v=Obt-vMVdM8s)
+      * [reference](http://www.dabeaz.com/GIL)
+    *  [David Beazley - Python Concurrency From the Ground Up: LIVE! - PyCon 2015](https://www.youtube.com/watch?v=MCs5OvhV9S4)
+    *  [Keynote David Beazley - Topics of Interest \(Python Asyncio\)](https://www.youtube.com/watch?v=ZzfHjytDceU)
+    *  [Mutex in Python](https://www.youtube.com/watch?v=0zaPs8OtyKY)
 
 ## 8. SOLID Design Patterns
 
@@ -497,6 +848,76 @@ class TestParkingLot(unittest.TestCase):
 if __name__ == '__main__':
     unittest.main()    # runs all
 ```
+
+## 10. Loggin in Python
+
+* **Logging Levels:**
+  * **DEBUG**: Detailed information, typically of interest only when diagnosing problems.
+  * **INFO**: Confirmation that things are working as expected.
+  * **WARNING**: An indication that something unexpected happened, or indicative of some problem in the near future \(e.g. ‘disk space low’\). The software is still working as expected.
+  * **ERROR**: Due to a more serious problem, the software has not been able to perform some function.
+  * **CRITICAL**: A serious error, indicating that the program itself may be unable to continue running.
+* **IMPLEMENTATION:** use python's `logging` lib
+  * logging levels\(after which level we should print the logs\) can be configured in beginning
+
+{% tabs %}
+{% tab title="logging.py" %}
+```python
+import logging
+
+
+#setup logging cofig in beginning
+# -------------> which file to print logs in(instead of console)
+# -------------> minimum level, >= which logs should be printed
+# -------------> log format (copy from the docs)
+logging.basicConfig(filename='mylogs.log', level=logging.DEBUG,
+                    format='%(asctime)s:%(levelname)s:%(message)s')
+
+def add(x, y):
+    """Add Function"""
+    return x + y
+
+
+def subtract(x, y):
+    """Subtract Function"""
+    return x - y
+
+
+def multiply(x, y):
+    """Multiply Function"""
+    return x * y
+
+
+def divide(x, y):
+    """Divide Function"""
+    return x / y
+
+
+num_1 = 20
+num_2 = 10
+
+add_result = add(num_1, num_2)
+logging.debug('Add: {} + {} = {}'.format(num_1, num_2, add_result))
+
+sub_result = subtract(num_1, num_2)
+logging.debug('Sub: {} - {} = {}'.format(num_1, num_2, sub_result))
+
+mul_result = multiply(num_1, num_2)
+logging.debug('Mul: {} * {} = {}'.format(num_1, num_2, mul_result))
+
+div_result = divide(num_1, num_2)
+logging.debug('Div: {} / {} = {}'.format(num_1, num_2, div_result))
+
+'''
+# @mylogs.log
+2021-09-06 01:33:31,397:DEBUG:Add: 20 + 10 = 30
+2021-09-06 01:33:31,397:DEBUG:Sub: 20 - 10 = 10
+2021-09-06 01:33:31,397:DEBUG:Mul: 20 * 10 = 200
+2021-09-06 01:33:31,397:DEBUG:Div: 20 / 10 = 2.0
+'''
+```
+{% endtab %}
+{% endtabs %}
 
 ## 10. Enums in Python OOP
 

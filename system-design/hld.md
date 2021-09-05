@@ -800,6 +800,7 @@ Below steps to be taken\(as \#users increase\)
 * Faster than SHA256
 * Produces **128 bit**
 * **More Secure**
+* its also a fucking **cryptographic hash function** \(see SHA-256 below for details\)
 
 ### 2. SHA-256
 
@@ -848,9 +849,15 @@ s = b'GeeksForGeeks'
 gfg = b64encode(s)    #  b’R2Vla3NGb3JHZWVrcw==’
 ```
 
+## Access Time Comparison
 
+scale is no the actual time taken, but to make humans understand the diff in times
+
+![](../.gitbook/assets/screenshot-2021-09-05-at-5.11.49-pm.png)
 
 \*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*
+
+
 
 ## Resources:
 

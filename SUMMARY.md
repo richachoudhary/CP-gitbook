@@ -29,7 +29,7 @@
 ## System Design
 
 * [SQL](system-design/sql.md)
-* [LLD:Theory \(OOPs\)](system-design/lld.md)
+* [LLD:Theory](system-design/lld.md)
 * [LLD:Questions](system-design/lld-questions.md)
 * [HLD](system-design/hld.md)
 * [HLD:Questions](system-design/hld-questions.md)

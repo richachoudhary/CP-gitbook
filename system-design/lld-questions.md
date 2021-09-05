@@ -40,6 +40,20 @@
 
 
 
+## 20. Meeting Scheduler
+
+* [Code\(JAVA\)](https://github.com/prabhakerau/lowlevelsystemdesgin/tree/main/MeetingScheduler/src/com/company)
+
+![](../.gitbook/assets/screenshot-2021-09-05-at-2.44.20-pm.png)
+
+## 21. Vending Machine
+
+* [Code\(JAVA\)](https://github.com/prabhakerau/lowlevelsystemdesgin/tree/main/VendingMachine/src/com/lld/questions/vendingmachine)
+
+![](../.gitbook/assets/screenshot-2021-09-05-at-2.49.43-pm.png)
+
+
+
 ## 1. Parking Lot \| `🟢Singleton| OpenClose | Builder`
 
 #### System Requirements:
@@ -586,6 +600,10 @@ class ParkingLot:
 
 ## 2. Elevator
 
+* [Code\(JAVA\)](https://github.com/prabhakerau/lowlevelsystemdesgin/tree/main/ElevatorSystem/src/com/lld/questions)
+
+![](../.gitbook/assets/screenshot-2021-09-05-at-2.56.17-pm.png)
+
 {% tabs %}
 {% tab title="Design.md" %}
 ```text
@@ -950,7 +968,7 @@ class Elevator:
 {% endtab %}
 {% endtabs %}
 
-## 
+
 
 ## 2. Library Management System
 
@@ -6003,7 +6021,17 @@ class LoggerLib:
 {% endtab %}
 {% endtabs %}
 
-## 
+## 20. **Multithreaded Queue like Kafka**
+
+* Link to [video](https://www.youtube.com/watch?v=4BEzgPlLKTo&ab_channel=UditAgarwal) & [code](https://leetcode.com/discuss/interview-question/1091960/uber-l5a-interview-machine-coding-multithreaded-queue-like-kafka)
+
+## 21. InMemory Task scheduler Library
+
+* [Link to question & code](https://leetcode.com/discuss/interview-question/891551/uber-experienced-2020-machine-coding-round)
+
+## 22. Locker
+
+* [link](https://www.youtube.com/watch?v=O_oLtUHlrXM&ab_channel=UditAgarwal)
 
 
 
