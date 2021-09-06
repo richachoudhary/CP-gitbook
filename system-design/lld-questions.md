@@ -46,6 +46,81 @@
 
 ![](../.gitbook/assets/screenshot-2021-09-05-at-2.44.20-pm.png)
 
+{% tabs %}
+{% tab title="ClassDiag" %}
+```text
+# Meeting Room Scheduler
+
+# Statement
+Design Meeting Scheduler. Here there are n given meeting rooms. Book a meeting in any meeting room at given interval(starting time, end time). Also send notifications to all person who are invited for meeting.
+You should use calender for tracking date and time. And also history of all the meetings which are booked and meeting room.
+write an API for client who will give date and time and API should return meeting room with booked scheduled time. client should also query for history of last 20 booked meetings.
+Is meeting room available? etc
+
+
+
+# ========================================
+
+Meeting
+-------------meeting_id: PK,int    
+-------------agenda: str
+-------------start_time : datetime
+-------------end_time   : datetime
+-------------admin_id
+-------------email_list: []
+
+MeetingRoom
+-------------room_id : PK,int
+-------------room_name : int
+-------------meetings [] : Meetings[]
+-------------is_available(start_time,end_time,emailList, [?]admin_id) : bool
+-------------book_meeting(Meeting)
+-------------[?]cancel_meeting(meeting_id)
+-------------[?]capacity  : int
+
+
+MeetingScheduler    #books meetings & calls emailservice when done
+-------------meeting_rooms[MeetingRoom]
+-------------history[Meetings]
+-------------MAX_HISTORY_COUNT
+-------------emailServiceClient : setup client here
+-------------book_meeting(start_time,end_time,emailList, [?]admin_id) 
+----------------->#iterate on all rooms, NOTE: meeting is created in Meeting room
+-------------add_room(Room)
+-------------remove_room(Room)
+-------------get_history(number_of_days)
+
+EmailService
+-------------send_email(email: str,meeting: Meeting)
+-------------send_bullk_email(emailList: List[str], meeting: Meeting)
+
+User
+-------------uid
+-------------name
+-------------emp_id
+-------------email_id   #for sending notif
+
+# Admin : User
+# -------------book_meeting(room_id, meeting_id)
+# -------------cancel_meeting(Meeting)
+
+# Attendee
+# -------------mark_attendance(uid,meeting_id)
+
+# Response : Enum
+# ACCEPT, DECLINE, MAYBE
+
+
+```
+{% endtab %}
+
+{% tab title="<code>" %}
+```python
+
+```
+{% endtab %}
+{% endtabs %}
+
 ## 21. Vending Machine
 
 * [Code\(JAVA\)](https://github.com/prabhakerau/lowlevelsystemdesgin/tree/main/VendingMachine/src/com/lld/questions/vendingmachine)
@@ -97,7 +172,7 @@ Enum SpotType
 --------TAKEN
 --------RESERVED (?)
 
-Vehicle     # Open Close Priciple(S-O-LID)
+Vehicle                        # Open Close Priciple(S-O-LID)
 --------id
 --------license
 --------generateID() # uuid
@@ -5878,7 +5953,7 @@ DatabaseLogger : Logger
 ------------------writetodb()
 
 LoggerConfig
-------------Hash<Level,ISink> mapping
+------------Hash<Level,Logger> mapping
 ------------LogLevel 
 ------------------getter()
 ------------------setter()
