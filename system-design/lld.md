@@ -806,7 +806,7 @@ with open(file) as fh:
 
 ### 8.2. OCP =&gt; Open Close Principle
 
-* **IDEA** =&gt; classes should be OPEN for Extension, but CLOSED for Modification
+* **IDEA** =&gt; classes should be **OPEN for Extension, but CLOSED for Modification**
   * i.e. after you've written a class; if a new business requirement comes =&gt; you should not modify it. You should ONLY extend it
 
 ### 8.3. LSP =&gt; Liskov Substituion Principle
