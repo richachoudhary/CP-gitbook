@@ -43,6 +43,7 @@
 ## 20. Meeting Scheduler
 
 * [Code\(JAVA\)](https://github.com/prabhakerau/lowlevelsystemdesgin/tree/main/MeetingScheduler/src/com/company)
+* this **diag is not exactly correct**. See **ClassDiag** below for accurate
 
 ![](../.gitbook/assets/screenshot-2021-09-05-at-2.44.20-pm.png)
 
