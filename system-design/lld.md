@@ -946,6 +946,178 @@ if __name__ == "__main__":
 
 ## 11. Design Patterns
 
+### 1. Strategy
+
+* create separate class for each logic of "strategies"
+* e.g.: for class **`Queue`**; create separate class: **`FIFO`**, **`LIFO`**, **`RANDOM`** etc
+* e.g. for class **`Elevator`**; create separate class for each elevator algo
+
+{% tabs %}
+{% tab title="after\_applying\_strategy\_pattern.py" %}
+```python
+import string
+import random
+from typing import List
+from abc import ABC, abstractmethod
+
+
+def generate_id(length=8):
+    # helper function for generating an id
+    return ''.join(random.choices(string.ascii_uppercase, k=length))
+
+
+class SupportTicket:
+
+    def __init__(self, customer, issue):
+        self.id = generate_id()
+        self.customer = customer
+        self.issue = issue
+
+
+class TicketOrderingStrategy(ABC):
+    @abstractmethod
+    def create_ordering(self, list: List[SupportTicket]) -> List[SupportTicket]:
+        pass
+
+
+class FIFOOrderingStrategy(TicketOrderingStrategy):
+    def create_ordering(self, list: List[SupportTicket]) -> List[SupportTicket]:
+        return list.copy()
+
+
+class FILOOrderingStrategy(TicketOrderingStrategy):
+    def create_ordering(self, list: List[SupportTicket]) -> List[SupportTicket]:
+        list_copy = list.copy()
+        list_copy.reverse()
+        return list_copy
+
+
+class RandomOrderingStrategy(TicketOrderingStrategy):
+    def create_ordering(self, list: List[SupportTicket]) -> List[SupportTicket]:
+        list_copy = list.copy()
+        random.shuffle(list_copy)
+        return list_copy
+
+
+class BlackHoleStrategy(TicketOrderingStrategy):
+    def create_ordering(self, list: List[SupportTicket]) -> List[SupportTicket]:
+        return []
+
+
+class CustomerSupport:
+
+    def __init__(self, processing_strategy: TicketOrderingStrategy):
+        self.tickets = []
+        self.processing_strategy = processing_strategy
+
+    def create_ticket(self, customer, issue):
+        self.tickets.append(SupportTicket(customer, issue))
+
+    def process_tickets(self):
+        # create the ordered list
+        ticket_list = self.processing_strategy.create_ordering(self.tickets)
+
+        # if it's empty, don't do anything
+        if len(ticket_list) == 0:
+            print("There are no tickets to process. Well done!")
+            return
+
+        # go through the tickets in the list
+        for ticket in ticket_list:
+            self.process_ticket(ticket)
+
+    def process_ticket(self, ticket: SupportTicket):
+        print("==================================")
+        print(f"Processing ticket id: {ticket.id}")
+        print(f"Customer: {ticket.customer}")
+        print(f"Issue: {ticket.issue}")
+        print("==================================")
+
+
+# create the application
+app = CustomerSupport(RandomOrderingStrategy())
+
+# register a few tickets
+app.create_ticket("John Smith", "My computer makes strange sounds!")
+app.create_ticket("Linus Sebastian", "I can't upload any videos, please help.")
+app.create_ticket("Arjan Egges", "VSCode doesn't automatically solve my bugs.")
+
+# process the tickets
+app.process_tickets()
+
+```
+{% endtab %}
+
+{% tab title="before\_applying\_strategy\_pattern.py" %}
+```python
+import string
+import random
+from typing import List
+
+
+def generate_id(length=8):
+    # helper function for generating an id
+    return ''.join(random.choices(string.ascii_uppercase, k=length))
+
+
+class SupportTicket:
+
+    def __init__(self, customer, issue):
+        self.id = generate_id()
+        self.customer = customer
+        self.issue = issue
+
+
+class CustomerSupport:
+
+    def __init__(self, processing_strategy: str = "fifo"):
+        self.tickets = []
+        self.processing_strategy = processing_strategy
+
+    def create_ticket(self, customer, issue):
+        self.tickets.append(SupportTicket(customer, issue))
+
+    def process_tickets(self):
+        # if it's empty, don't do anything
+        if len(self.tickets) == 0:
+            print("There are no tickets to process. Well done!")
+            return
+
+        if self.processing_strategy == "fifo":
+            for ticket in self.tickets:
+                self.process_ticket(ticket)
+        elif self.processing_strategy == "filo":
+            for ticket in reversed(self.tickets):
+                self.process_ticket(ticket)
+        elif self.processing_strategy == "random":
+            list_copy = self.tickets.copy()
+            random.shuffle(list_copy)
+            for ticket in list_copy:
+                self.process_ticket(ticket)
+
+    def process_ticket(self, ticket: SupportTicket):
+        print("==================================")
+        print(f"Processing ticket id: {ticket.id}")
+        print(f"Customer: {ticket.customer}")
+        print(f"Issue: {ticket.issue}")
+        print("==================================")
+
+
+# create the application
+app = CustomerSupport("filo")
+
+# register a few tickets
+app.create_ticket("John Smith", "My computer makes strange sounds!")
+app.create_ticket("Linus Sebastian", "I can't upload any videos, please help.")
+app.create_ticket("Arjan Egges", "VSCode doesn't automatically solve my bugs.")
+
+# process the tickets
+app.process_tickets()
+
+```
+{% endtab %}
+{% endtabs %}
+
 ### 1. SINGLETON
 
 * "There can only be one!"
@@ -1026,7 +1198,11 @@ class ParkingLot:
 
 ### 9. OBSERVER
 
-* Observer pattern is used when there is **one-to-many** relationship between objects such as **if one object is modified, its depenedent objects are to be notified automatically**.
+* it consists of 2 things: **Subject** & **Observer**
+  * **subject**: does things/changes things
+  * after doing things, the **subject notifies the observer** about the changes
+* Observer pattern is used when there is **one-to-many** relationship between objects such as **if one object is modified, its dependent objects are to be notified automatically**.
+* **NOTE:** this is used in **Even Management Systems** i.e.**API calls/ UI handling /events handling etc**
 
 ## \#Things to do:
 
