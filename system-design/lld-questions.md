@@ -74,7 +74,7 @@ MeetingRoom
 -------------room_id : PK,int
 -------------room_name : int
 -------------meetings [] : Meetings[]
--------------is_available(start_time,end_time,emailList, [?]admin_id) : bool
+-------------is_available(start_time,end_time) : bool
 -------------book_meeting(Meeting)
 -------------[?]cancel_meeting(meeting_id)
 -------------[?]capacity  : int
@@ -85,8 +85,7 @@ MeetingScheduler    #books meetings & calls emailservice when done
 -------------history[Meetings]
 -------------MAX_HISTORY_COUNT
 -------------emailServiceClient : setup client here
--------------book_meeting(start_time,end_time,emailList, [?]admin_id) 
------------------>#iterate on all rooms, NOTE: meeting is created in Meeting room
+-------------book_meeting(start_time,end_time,emailList, admin_id) #iterate on all rooms, NOTE: meeting is created in Meeting room
 -------------add_room(Room)
 -------------remove_room(Room)
 -------------get_history(number_of_days)
@@ -98,7 +97,7 @@ EmailService
 User
 -------------uid
 -------------name
--------------emp_id
+-------------emp_id 
 -------------email_id   #for sending notif
 
 # Admin : User
@@ -115,9 +114,103 @@ User
 ```
 {% endtab %}
 
-{% tab title="<code>" %}
+{% tab title="code.py" %}
 ```python
+import uuid
+from datetime import datetime
 
+class Meeting:
+    def __init__(
+        self, agenda: str, start_time: str, end_time: str, email_list: list[str]
+    ):
+        self.id = self.generateMeetingID()
+        self.agenda = agenda
+        self.start_time = datetime.strptime(start_time, '%b %d %Y %I:%M%p')
+        self.end_time = datetime.strptime(end_time, '%b %d %Y %I:%M%p')
+        self.email_list = email_list
+
+    def generateMeetingID(self) -> uuid.UUID:
+        return uuid.uuid4()
+
+
+class MeetingRoom:
+    def __init__(self, room_name: str):
+        self.id = self.generateRoomID()
+        self.room_name = room_name
+        self.meetings = []
+
+    def generateRoomID(self) -> uuid.UUID:
+        return uuid.uuid4()
+
+    def is_available(self,start_time: str, end_time: str) -> bool:
+        for m in self.meetings:
+            if (m.start_time <= start_time and m.end_time <= end_time) or (m.start_time <= end_time and m.end_time >= end_time) or (m.start_time >= start_time and m.end_time <= end_time):
+               return False
+        return True 
+    
+    def add_meeting(self, meeting: Meeting) -> None:
+        if self.is_available(meeting.start_time, meeting.end_time):
+            self.meetings.append(meeting)
+
+
+class MeetingScheduler:
+    MAX_HISTORY_LIMIT = 10
+    
+    def __init__(self,meeting_rooms: list[MeetingRoom] ):
+        self.meeting_rooms = meeting_rooms
+        self.history = []
+        self.email_service = self.init_email_client()
+        
+    def init_email_client(self):
+        print('\n=============== Email Client Initiated for the app ==================\n')
+        pass
+    
+    def book_meeting(self,meeting: Meeting)-> bool:
+        for room in self.meeting_rooms:
+            if room.is_available(meeting.start_time, meeting.end_time):
+                room.add_meeting(meeting)
+                self.update_history(room, meeting)
+                print('============ Meeting Booked =================')
+                return True
+        return False
+            
+    
+    def add_room(self, room: MeetingRoom):
+        self.meeting_rooms.append(room)
+    
+    def remove_room(self,room: MeetingRoom):
+         self.meeting_rooms.remove(room)
+    
+    def update_history(self,room: MeetingRoom, meeting: Meeting):
+        self.history.append({'meeting':meeting , 'room': room})
+        if len(self.history) > MeetingScheduler.MAX_HISTORY_LIMIT:
+            self.history.pop(0)
+    
+    def get_history(self, number_of_days: int=5):
+        for entry in self.history[-number_of_days:]:
+            print(f'Entry: meeting : {entry["meeting"].id} [Agenda = {entry["meeting"].agenda}] booked in room {entry["room"].room_name} for {entry["meeting"].start_time} to {entry["meeting"].end_time}')
+
+
+class EmailService:
+    pass
+
+
+class User:
+    pass
+
+
+
+meet = Meeting('onboarding', 'Aug 1 2021  1:00PM','Aug 1 2021  2:00PM',['user1@gmail.com','user2@gmail.com'])
+room1 = MeetingRoom('105')
+room2 = MeetingRoom('105')
+
+controller = MeetingScheduler([])
+controller.add_room(room1)
+controller.add_room(room2)
+
+controller.get_history()
+controller.book_meeting(meet)
+controller.get_history()
 ```
 {% endtab %}
 {% endtabs %}
