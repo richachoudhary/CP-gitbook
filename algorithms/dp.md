@@ -1240,7 +1240,7 @@ print(len(tails))
 ## 16. Geometrical DP \(blocks, rectangles etc\)
 
 * [x] CSES: [Counting Towers](https://cses.fi/problemset/task/2413) \| [KartikArora](https://www.youtube.com/watch?v=pMEYMYTX-r0&ab_channel=KartikArora) ✅
-* [x] CSES: [Rectangle Cutting](https://cses.fi/problemset/task/1744) \| [Kartik Arora](https://www.youtube.com/watch?v=LdynQjWsO5Q&ab_channel=KartikArora) ✅
+* [x] CSES: Rectangle Cutting \| [Kartik Arora](https://www.youtube.com/watch?v=LdynQjWsO5Q&ab_channel=KartikArora) ✅
 
 {% tabs %}
 {% tab title="CountingTowers" %}
@@ -1325,14 +1325,6 @@ def f():
 ```
 {% endtab %}
 {% endtabs %}
-
-
-
-
-
-
-
-
 
 
 
