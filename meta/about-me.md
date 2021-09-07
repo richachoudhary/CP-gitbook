@@ -3,6 +3,7 @@
 ## \#Links
 
 * SHEET: [SeekAfterFlipkart@me: Interviews](https://docs.google.com/spreadsheets/d/1ukY4tJwG0tesZvy0WNjkhBH0n-n9yPut4axQHoHP4ns/edit#gid=0)
+* [How to get international calls from India](https://leetcode.com/discuss/career/1448733/how-to-get-international-calls-from-india)
 
 ## @ShortIntro
 
