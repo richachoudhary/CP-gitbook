@@ -1230,12 +1230,35 @@ So for this question, you **HAVE TO GO WITH C++**
 
 ### 7.2 Linear Function based problems \(find min x for f\(x\)\)
 
+* [x] LC: [875 Koko Eating Bananas](https://leetcode.com/problems/koko-eating-bananas/) \| ✅✅✅🍌\| kinda bible for this type of question
 * [x] CSES: [Factory Machines ](https://cses.fi/problemset/task/1620)✅
 * [x] CSES: [Array Division](https://cses.fi/problemset/task/1085/) ✅✅
 * [x] LC [287: Find the Duplicate Number](https://leetcode.com/problems/find-the-duplicate-number/) \| @ShareChat \| also see in `LinkedLIst` 💪
 * [ ] LC [1201. Ugly Number III](https://leetcode.com/problems/ugly-number-iii/) \| Some weird lcm formula
 
 {% tabs %}
+{% tab title="875. Koko" %}
+```python
+def is_possible(k):
+    hrs = 0
+    for x in a:
+        hrs += math.ceil(x/k)
+    return hrs <= h
+
+lo,hi = 1,max(a)
+ans = hi
+while lo<hi:
+    mid = (lo+hi)//2
+    if is_possible(mid):
+        hi = mid
+        ans = mid
+    else:
+        lo = mid+1
+        
+return ans
+```
+{% endtab %}
+
 {% tab title="FactoryMachines" %}
 ```python
 lb, ub = 0,10**18

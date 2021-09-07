@@ -1274,16 +1274,121 @@ print(len(tails))
 
 ## 13. Memoization
 
-* [ ] [https://leetcode.com/problems/minimum-jumps-to-reach-home/](https://leetcode.com/problems/minimum-jumps-to-reach-home/)
+* [x] [1340. Jump Game V](https://leetcode.com/problems/jump-game-v/) ✅
+* [x] [1533.Minimum Number of Days to Eat N Oranges](https://leetcode.com/problems/minimum-number-of-days-to-eat-n-oranges/) ✅💪\| DP or BFS
 * [ ] [https://leetcode.com/problems/scramble-string/](https://leetcode.com/problems/scramble-string/)
 * [ ] [https://leetcode.com/problems/tiling-a-rectangle-with-the-fewest-squares/](https://leetcode.com/problems/tiling-a-rectangle-with-the-fewest-squares/)
 * [ ] [https://leetcode.com/problems/number-of-ways-to-stay-in-the-same-place-after-some-steps/](https://leetcode.com/problems/number-of-ways-to-stay-in-the-same-place-after-some-steps/)
-* [ ] [https://leetcode.com/problems/jump-game-v/](https://leetcode.com/problems/jump-game-v/)
-* [ ] [https://leetcode.com/problems/minimum-number-of-days-to-eat-n-oranges/](https://leetcode.com/problems/minimum-number-of-days-to-eat-n-oranges/)
+
+{% tabs %}
+{% tab title="1340" %}
+```python
+from functools import lru_cache
+
+class Solution:
+    def maxJumps(self, arr: List[int], d: int) -> int:
+        n = len(arr)
+
+        @lru_cache(None)
+        def jumps(start: int) -> int:
+            height = arr[start]
+            max_jumps = 0
+            
+            for index in range(start - 1, max(0, start - d) - 1, -1):
+                if arr[index] >= height:
+                    break
+                
+                max_jumps = max(max_jumps, jumps(index))
+            
+            for index in range(start + 1, min(n, start + d + 1)):
+                if arr[index] >= height:
+                    break
+                
+                max_jumps = max(max_jumps, jumps(index))
+            
+            return max_jumps + 1
+        
+        return max(jumps(start) for start in range(n))
+```
+{% endtab %}
+
+{% tab title="1533" %}
+```python
+from collections import deque
+def minDays(self, n: int) -> int:
+    #1. DP ===================================================
+    MEMO = {}
+    def dp(n):
+        if n <= 1:
+            return n
+        
+        if n in MEMO: return MEMO[n]
+        
+        op1 = n%2 + dp(n//2)
+        op2 = n%3 + dp(n//3)
+        
+        MEMO[n] = 1 + min(op1,op2)
+        return MEMO[n]
+
+    return dp(n)
+    
+    #So, the choice we have is to 
+    #      1. eat n % 2 oranges one-by-one and then swallow n / 2, 
+    #      2. or eat n % 3 oranges so that we can gobble 2 * n / 3
+
+    # BFS ========================================================
+    
+    def bfs(n):
+        Q = deque()
+        vis = set()
+        Q.append((n,0))
+        
+        while Q:
+            # implement for this level
+            for _ in range(len(Q)):
+                x,move = Q.popleft()
+                if x == 0:
+                    return move
+                if (x-1) not in vis:
+                    Q.append((x-1,move+1))
+                    vis.add(x-1)
+                if x%2 == 0 and x//2 not in vis:
+                    Q.append((x//2,move+1))
+                    vis.add(x//2)
+                if x%3 == 0 and x//3 not in vis:
+                    Q.append((x//3,move+1))
+                    vis.add(x//3)
+
+    return bfs(n)
+```
+{% endtab %}
+{% endtabs %}
 
 ## 14. Binary Lifting
 
-* [ ] [https://leetcode.com/problems/kth-ancestor-of-a-tree-node/](https://leetcode.com/problems/kth-ancestor-of-a-tree-node/)
+* [x] 1483.[ Kth Ancestor of a Tree Node](https://leetcode.com/problems/kth-ancestor-of-a-tree-node/) \| Standard Binary lifting ✅✅\| [KartikArora](https://www.youtube.com/watch?v=FAfSArGC8KY&t=892s&ab_channel=KartikArora)
+
+{% tabs %}
+{% tab title="1483" %}
+```python
+class TreeAncestor:
+    def __init__(self, n: int, parent: List[int]):
+        self.parent = parent
+                   
+    @functools.lru_cache(None)
+    def getKthAncestor(self, node: int, k: int) -> int:
+        if node == -1:
+            return -1
+        elif k == 1:
+            return self.parent[node]
+        elif not (k & k-1):     # k is power of 2
+            return self.getKthAncestor(self.getKthAncestor(node, k >> 1), k >> 1)
+        else:
+            msb = 1 << (k.bit_length()-1)
+            return self.getKthAncestor(self.getKthAncestor(node, k-msb), msb)
+```
+{% endtab %}
+{% endtabs %}
 
 ## 15. Math
 
@@ -1327,7 +1432,6 @@ return nums[-1]
 {% endtabs %}
 
 * [ ] [https://leetcode.com/problems/count-sorted-vowel-strings/](https://leetcode.com/problems/count-sorted-vowel-strings/)
-* [ ] [https://leetcode.com/problems/race-car/](https://leetcode.com/problems/race-car/)
 * [ ] [https://leetcode.com/problems/super-egg-drop/](https://leetcode.com/problems/super-egg-drop/)
 * [ ] [https://leetcode.com/problems/least-operators-to-express-number/](https://leetcode.com/problems/least-operators-to-express-number/)
 * [ ] [https://leetcode.com/problems/minimum-one-bit-operations-to-make-integers-zero/](https://leetcode.com/problems/minimum-one-bit-operations-to-make-integers-zero/)

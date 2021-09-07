@@ -353,6 +353,111 @@ def calcEquation(self, equations: List[List[str]], values: List[float], queries:
 * [x] **CSES:** [Monsters](https://cses.fi/problemset/task/1194) \| `Lava Flow Problem✅✅✅🔥🔥` \| [video](https://www.youtube.com/watch?v=hB59dxdDLII&ab_channel=Dardev)
 * [x] LC 127. [Word Ladder](https://leetcode.com/problems/word-ladder/)
 * [ ] CSES: [Swap Game](https://cses.fi/problemset/task/1670)
+* [x] LC [818. Race Car](https://leetcode.com/problems/race-car/) 😎✅✅
+  * [x] Similar: LC [1654.Minimum Jumps to Reach Home](https://leetcode.com/problems/minimum-jumps-to-reach-home/) ✅\| must do\| DP se nhi honge aise Questions
+  * [x] LC [1533.Minimum Number of Days to Eat N Oranges](https://leetcode.com/problems/minimum-number-of-days-to-eat-n-oranges/) \| BFS or DP 💪✅
+
+{% tabs %}
+{% tab title="818" %}
+```python
+def bfs(pos, vel):
+    Q = deque()
+    Q.append((0,pos,vel))   # (move,pos,vel)
+    res = float('inf')
+    while Q:
+        m,p,v = Q.popleft()
+        
+        if p == target:
+            res = min(res,m)
+        if m >= res:
+            continue
+        
+        # keep moving forward
+        Q.append((m+1,p+v,v*2))
+        
+        #3. Only consider changing the direction of the car if one of the following conditions is true
+        #   i.  The car is driving away from the target.
+        #   ii. The car will pass the target in the next move.  
+        if (p+v>target and v>0) or (p+v<target and v<0):
+            Q.append((m+1, p, -1 if v > 0 else 1))
+
+    return res
+
+return bfs(0,1)
+```
+{% endtab %}
+
+{% tab title="1654" %}
+```python
+def minimumJumps(self, forbidden: List[int], a: int, b: int, x: int) -> int:
+    forbidden = set(forbidden)
+    visited = set()
+    limit = max(x, max(forbidden)) + a + b
+    queue = [(0, 0, False)]
+    while queue:
+        pos, step, back = queue.pop(0)
+        if pos > limit or pos < 0 or pos in forbidden or (pos, back) in visited:
+            continue
+        if pos == x:
+            return step
+        queue.append((pos+a, step+1, False))
+        if not back: queue.append((pos-b, step+1, True))
+        visited.add((pos, back))
+    return -1
+```
+{% endtab %}
+
+{% tab title="1533" %}
+```python
+from collections import deque
+def minDays(self, n: int) -> int:
+    #1. DP ===================================================
+    MEMO = {}
+    def dp(n):
+        if n <= 1:
+            return n
+        
+        if n in MEMO: return MEMO[n]
+        
+        op1 = n%2 + dp(n//2)
+        op2 = n%3 + dp(n//3)
+        
+        MEMO[n] = 1 + min(op1,op2)
+        return MEMO[n]
+
+    return dp(n)
+    
+    #So, the choice we have is to 
+    #      1. eat n % 2 oranges one-by-one and then swallow n / 2, 
+    #      2. or eat n % 3 oranges so that we can gobble 2 * n / 3
+
+    # BFS ========================================================
+    
+    def bfs(n):
+        Q = deque()
+        vis = set()
+        Q.append((n,0))
+        
+        while Q:
+            # implement for this level
+            for _ in range(len(Q)):
+                x,move = Q.popleft()
+                if x == 0:
+                    return move
+                if (x-1) not in vis:
+                    Q.append((x-1,move+1))
+                    vis.add(x-1)
+                if x%2 == 0 and x//2 not in vis:
+                    Q.append((x//2,move+1))
+                    vis.add(x//2)
+                if x%3 == 0 and x//3 not in vis:
+                    Q.append((x//3,move+1))
+                    vis.add(x//3)
+
+    return bfs(n)
+```
+{% endtab %}
+{% endtabs %}
 
 ## **1. Single Source Shortest/Longest Path - SSSP/SSLP** 
 
