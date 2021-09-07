@@ -713,20 +713,6 @@ class VendingMachine:
 {% tabs %}
 {% tab title="schema.txt" %}
 ```text
-Enum TicketStatus
--------- ACTIVE
--------- COMPLETE
-
-Ticket
---------id : generateID() # uuid
---------vehicle_type
---------status : TicketStatus
---------inTime : getCurrTime()
---------outTime
---------payment : Payment
---------spot    : Spot
---------generateID()
-
 Enum VehicleType
 --------CAR
 --------BIKE
@@ -762,6 +748,20 @@ Payment
 --------getRate(type)
 --------setRate(type)
 --------calculateAmount(inTime,outTime,vehicle_type)
+
+Enum TicketStatus
+-------- ACTIVE
+-------- COMPLETE
+
+Ticket
+--------id : generateID() # uuid
+--------vehicle_type
+--------status : TicketStatus
+--------inTime : getCurrTime()
+--------outTime
+--------payment : Payment
+--------spot    : Spot
+--------generateID(
 
 DisplayBoard
 --------show(ParkingLot)
