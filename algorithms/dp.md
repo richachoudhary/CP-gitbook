@@ -29,6 +29,8 @@ def solve().....
 
 ## 1. Linear DP
 
+* [x] 70. [Climbing Stairs](https://leetcode.com/problems/climbing-stairs/) \| easy \| `standard`
+  * [x] Similar: LC [1269.Number of Ways to Stay in the Same Place After Some Steps](https://leetcode.com/problems/number-of-ways-to-stay-in-the-same-place-after-some-steps/) 🍪🍪
 * [x] 198.[ House Robber](https://leetcode.com/problems/house-robber/) 
 * [x] 213.[ House Robber II](https://leetcode.com/problems/house-robber-ii/) \| circular 💪
 * [x] 337. [House Robber III](https://leetcode.com/problems/house-robber-iii/) \| Tree
@@ -38,6 +40,48 @@ def solve().....
 * [x] LC: [1340.Jump Game V](https://leetcode.com/problems/jump-game-v/)
 
 {% tabs %}
+{% tab title="70" %}
+```python
+MEMO = {}
+def dp(x):
+    if x == n:
+        return 1
+    if x > n:
+        return 0
+    if x in MEMO: return MEMO[x]
+    op1 = dp(x+1)
+    op2 = dp(x+2)
+    MEMO[x] = op1+op2
+    return MEMO[x]
+
+return dp(0)
+```
+{% endtab %}
+
+{% tab title="1269" %}
+```python
+MEMO = {}
+def dp(x,k):
+    if x < 0 or x >= arrLen:
+        return 0
+    if k == 0:
+        if x == 0:
+            return 1
+        else:
+            return 0
+    if (x,k) in MEMO: return MEMO[(x,k)]
+    op1 = dp(x-1,k-1)%MOD   #move from left
+    op2 = dp(x+1,k-1)%MOD   #move from right
+    op3 = dp(x,k-1)%MOD     #stay there         
+
+    MEMO[(x,k)] = ((op1+op2)%MOD+op3)%MOD
+    return MEMO[(x,k)]
+
+
+return dp(0,steps)
+```
+{% endtab %}
+
 {% tab title="198" %}
 ```python
 MEMO = {}
@@ -900,6 +944,8 @@ return solve(r,len(r),5,1) - solve(l,len(l),5,1)
 * [x] CSES: [Forest Queries](https://cses.fi/problemset/result/2670872/) \| **`classic`**
 * [ ] [https://leetcode.com/problems/cheapest-flights-within-k-stops/](https://leetcode.com/problems/cheapest-flights-within-k-stops/)
 * [ ] [https://leetcode.com/problems/find-the-shortest-superstring/](https://leetcode.com/problems/find-the-shortest-superstring/)
+* [x] [1340. Jump Game V](https://leetcode.com/problems/jump-game-v/) ✅
+* [x] [1533.Minimum Number of Days to Eat N Oranges](https://leetcode.com/problems/minimum-number-of-days-to-eat-n-oranges/) ✅💪\| DP or BFS
 
 {% tabs %}
 {% tab title="ForestQueries" %}
@@ -925,6 +971,88 @@ for _ in range(q):
 
 ```
 {% endtab %}
+
+{% tab title="1340" %}
+```python
+from functools import lru_cache
+
+class Solution:
+    def maxJumps(self, arr: List[int], d: int) -> int:
+        n = len(arr)
+
+        @lru_cache(None)
+        def jumps(start: int) -> int:
+            height = arr[start]
+            max_jumps = 0
+            
+            for index in range(start - 1, max(0, start - d) - 1, -1):
+                if arr[index] >= height:
+                    break
+                
+                max_jumps = max(max_jumps, jumps(index))
+            
+            for index in range(start + 1, min(n, start + d + 1)):
+                if arr[index] >= height:
+                    break
+                
+                max_jumps = max(max_jumps, jumps(index))
+            
+            return max_jumps + 1
+        
+        return max(jumps(start) for start in range(n))
+```
+{% endtab %}
+
+{% tab title="1533" %}
+```python
+from collections import deque
+def minDays(self, n: int) -> int:
+    #1. DP ===================================================
+    MEMO = {}
+    def dp(n):
+        if n <= 1:
+            return n
+        
+        if n in MEMO: return MEMO[n]
+        
+        op1 = n%2 + dp(n//2)
+        op2 = n%3 + dp(n//3)
+        
+        MEMO[n] = 1 + min(op1,op2)
+        return MEMO[n]
+
+    return dp(n)
+    
+    #So, the choice we have is to 
+    #      1. eat n % 2 oranges one-by-one and then swallow n / 2, 
+    #      2. or eat n % 3 oranges so that we can gobble 2 * n / 3
+
+    # BFS ========================================================
+    
+    def bfs(n):
+        Q = deque()
+        vis = set()
+        Q.append((n,0))
+        
+        while Q:
+            # implement for this level
+            for _ in range(len(Q)):
+                x,move = Q.popleft()
+                if x == 0:
+                    return move
+                if (x-1) not in vis:
+                    Q.append((x-1,move+1))
+                    vis.add(x-1)
+                if x%2 == 0 and x//2 not in vis:
+                    Q.append((x//2,move+1))
+                    vis.add(x//2)
+                if x%3 == 0 and x//3 not in vis:
+                    Q.append((x//3,move+1))
+                    vis.add(x//3)
+
+    return bfs(n)
+```
+{% endtab %}
 {% endtabs %}
 
 ## 9. String DP
@@ -935,6 +1063,8 @@ for _ in range(q):
 * [x] LC 90: [Decode Ways](https://leetcode.com/problems/decode-ways/)
 * [x] LC [140. Word Break II](https://leetcode.com/problems/word-break-ii/) 🚀 \| **`startswith`**
   * [x] LC: [139.Word Break](https://leetcode.com/problems/word-break/)
+* [x] LC [87. Scramble String](https://leetcode.com/problems/scramble-string/) 🤯💪😎✅\| must\_do
+* [x] 97.[Interleaving String](https://leetcode.com/problems/interleaving-string/) \| standarddddddddddddddddddd \| Do it nowwwwwwwwwww ✅✅✅💪💪
 * [ ] [https://leetcode.com/problems/is-subsequence/](https://leetcode.com/problems/is-subsequence/)
 * [ ] [https://leetcode.com/problems/palindrome-partitioning/](https://leetcode.com/problems/palindrome-partitioning/)
 * [ ] [https://leetcode.com/problems/palindrome-partitioning-ii/](https://leetcode.com/problems/palindrome-partitioning-ii/)
@@ -1113,6 +1243,57 @@ def wordBreak(self, s: str, wordDict: List[str]) -> List[str]:
 
 ```
 {% endtab %}
+
+{% tab title="87." %}
+```python
+MEMO = {}
+def recur(s,t):
+    if s == t:
+        return True
+    if len(s) <= 1:
+        return False
+    if (s,t) in MEMO: return MEMO[(s,t)]
+    res = False
+    for i in range(1,len(s)):
+        op1 = recur(s[:i],t[:i]) and recur(s[i:],t[i:]) #straight match
+        op2 = recur(s[:i],t[len(s)-i:]) and recur(s[i:],t[:len(s)-i]) #swapped matches
+        
+        res = op1 or op2
+        if res:
+            break
+        
+    MEMO[(s,t)]= res
+    return MEMO[(s,t)]
+
+# base checks
+if len(s1)!=len(s2): return False
+if s1==s2: return True
+return recur(s1,s2)
+    
+```
+{% endtab %}
+
+{% tab title="97.✅💪Interleaved string" %}
+```python
+def dp(a,b,c): # not O(N^3) but O(N^2) since 'c' is dependent -> 'a'+'b'
+            
+    # base cases
+    if c == len(s3) and b == len(s2) and a==len(s1): return True
+    elif c==len(s3): return False
+    
+    # took from `A`; move the head pointers 
+    if a<len(s1) and s1[a] == s3[c] and dp(a+1,b,c+1): 
+        return True
+    
+    # took from `B`; move the head pointers 
+    if b< len(s2) and s2[b] == s3[c] and dp(a,b+1,c+1): 
+        return True
+    
+    return False
+
+return dp(0,0,0)
+```
+{% endtab %}
 {% endtabs %}
 
 ## 9. Probability DP
@@ -1125,31 +1306,148 @@ def wordBreak(self, s: str, wordDict: List[str]) -> List[str]:
 
 ### 10.1 Cadane's Algorithm
 
-* [x] CSES: [Maximum Subarray Sum](https://cses.fi/problemset/task/1643)
-* [ ] [https://leetcode.com/problems/maximum-subarray/](https://leetcode.com/problems/maximum-subarray/)
-* [ ] [https://leetcode.com/problems/maximum-product-subarray/](https://leetcode.com/problems/maximum-product-subarray/)
+* [x] CSES: [Maximum Subarray Sum](https://cses.fi/problemset/task/1643) \| LC [53. Maximum Subarray](https://leetcode.com/problems/maximum-subarray/) 
+* [x] 152.[ Maximum Product Subarray](https://leetcode.com/problems/maximum-product-subarray/) ✅\| remember the swap
+* [x] 873. [Length of Longest Fibonacci Subsequence](https://leetcode.com/problems/length-of-longest-fibonacci-subsequence/) 🍪🍪✅💪
+* [x] 1186.[Maximum Subarray Sum with One Deletion](https://leetcode.com/problems/maximum-subarray-sum-with-one-deletion/) \| so similar to Kaden's; yet the so simple approach is unthinkable \| [approach\_with\_diag](https://leetcode.com/problems/maximum-subarray-sum-with-one-deletion/discuss/377522/C%2B%2B-forward-and-backward-solution-with-explanation-and-picture) \| must do baby ✅💪
+* [x] 368. [Largest Divisible Subset](https://leetcode.com/problems/largest-divisible-subset/submissions/) 🐽
 * [ ] [https://leetcode.com/problems/bitwise-ors-of-subarrays/](https://leetcode.com/problems/bitwise-ors-of-subarrays/)
 * [ ] [https://leetcode.com/problems/longest-turbulent-subarray/](https://leetcode.com/problems/longest-turbulent-subarray/)
 * [ ] [https://leetcode.com/problems/maximum-subarray-sum-with-one-deletion/](https://leetcode.com/problems/maximum-subarray-sum-with-one-deletion/)
 * [ ] [https://leetcode.com/problems/k-concatenation-maximum-sum/](https://leetcode.com/problems/k-concatenation-maximum-sum/)
-* [ ] [https://leetcode.com/problems/largest-divisible-subset/](https://leetcode.com/problems/largest-divisible-subset/)
-* [ ] [https://leetcode.com/problems/length-of-longest-fibonacci-subsequence/](https://leetcode.com/problems/length-of-longest-fibonacci-subsequence/)
+
+{% tabs %}
+{% tab title="53.\(Kaden\'s Algo\)" %}
+```python
+if n == 0:
+    return 0
+
+res = curr = a[0]
+for x in a[1:]:
+    curr = max(x,curr+x)
+    res = max(res,curr)
+return res
+```
+{% endtab %}
+
+{% tab title="152" %}
+```python
+n = len(a)
+if n == 0:
+    return 0
+curr = a[0]
+maxp, minp,res = curr, curr,curr
+
+for i in range(1,n):
+    if a[i]< 0:
+        maxp,minp = minp,maxp
+    maxp = max(maxp*a[i], a[i])
+    minp = min(minp*a[i],a[i])
+    
+    res = max(res,maxp)
+return res
+```
+{% endtab %}
+
+{% tab title="873" %}
+```python
+'''
+dp[a, b] represents the length of fibo sequence ends up with (a, b)
+Then we have dp[a, b] = (dp[b - a, a] + 1 ) or 2
+'''
+dp = collections.defaultdict(int)
+s = set(A)
+for i in range(len(A)):
+    for j in range(i):
+        if A[i] -A[j]< A[j] and A[i] - A[j] in s:
+            dp[A[j], A[i]] = dp.get((A[i] - A[j], A[j]), 2) + 1
+return max(dp.values() or [0])
+```
+{% endtab %}
+
+{% tab title="1186.✅" %}
+```python
+n = len(a)  
+max_forward,max_backward,excluding_me = [a[0]]*n, [a[0]]*n, [a[0]]*n
+
+# calculate max_forward:
+curr = a[0]
+max_forward[0] = curr
+for i in range(1,n):
+    curr = max(curr+a[i],a[i])
+    max_forward[i] = curr
+
+# calculate max_backward
+curr = a[-1]
+max_backward[-1] = curr
+for i in range(n-2,-1,-1):
+    curr = max(curr+a[i],a[i])
+    max_backward[i] = curr
+
+# calculate excluding_me
+for i in range(1,n-1):
+    excluding_me[i] = max_forward[i-1]+max_backward[i+1]
+    
+# print(max_forward)
+# print(max_backward)
+# print(excluding_me)
+
+return max(max(max_forward),max(max_backward),max(excluding_me))
+```
+{% endtab %}
+
+{% tab title="368" %}
+```python
+def largestDivisibleSubset(self, nums: List[int]) -> List[int]:
+    if len(nums) == 0: return []
+    nums.sort()
+    sol = [[num] for num in nums]
+    for i in range(len(nums)):
+        for j in range(i):
+            if nums[i] % nums[j] == 0 and len(sol[i]) < len(sol[j]) + 1:
+                sol[i] = sol[j] + [nums[i]]
+    return max(sol, key=len)
+```
+{% endtab %}
+{% endtabs %}
 
 ### 10.2 LCS
 
-* [ ] 718. [Maximum Length of Repeated Subarray](https://leetcode.com/problems/maximum-length-of-repeated-subarray/) \| Now find this LCS 😎🤯😎
-* [ ] [https://leetcode.com/problems/longest-palindromic-substring/](https://leetcode.com/problems/longest-palindromic-substring/)
-* [ ] [https://leetcode.com/problems/longest-palindromic-subsequence/](https://leetcode.com/problems/longest-palindromic-subsequence/)
-* [ ] [https://leetcode.com/problems/longest-common-subsequence/](https://leetcode.com/problems/longest-common-subsequence/)
-* [ ] [https://leetcode.com/problems/regular-expression-matching/](https://leetcode.com/problems/regular-expression-matching/)
-* [ ] [https://leetcode.com/problems/wildcard-matching/](https://leetcode.com/problems/wildcard-matching/)
-* [ ] [https://leetcode.com/problems/edit-distance/](https://leetcode.com/problems/edit-distance/)
-* [ ] [https://leetcode.com/problems/interleaving-string/](https://leetcode.com/problems/interleaving-string/)
-* [ ] [https://leetcode.com/problems/shortest-common-supersequence/](https://leetcode.com/problems/shortest-common-supersequence/)
-* [ ] [https://leetcode.com/problems/minimum-insertion-steps-to-make-a-string-palindrome/](https://leetcode.com/problems/minimum-insertion-steps-to-make-a-string-palindrome/)
+* [x] 72. Edit Distance \| ✅✅\| aata hai; par fir bhi dekh lo ek baar \| _**the R-C initialization**_
+* [x] 718. [Maximum Length of Repeated Subarray](https://leetcode.com/problems/maximum-length-of-repeated-subarray/) \| Now find this LCS 😎🤯😎
+* [x] 5.[ Longest Palindromic Substring](https://leetcode.com/problems/longest-palindromic-substring/) \| **`LPS`** \| not a DP question
+* [x] 516.[ Longest Palindromic Subsequence](https://leetcode.com/problems/longest-palindromic-subsequence/) \| **`LPS`** \| this is a DP question \| `LCS on reversed self` ✅
+* [x] 10. [Regular Expression Matching](https://leetcode.com/problems/regular-expression-matching/) \| Regex Match 🐽✅✅
+* [x] 44. [Wildcard Matching](https://leetcode.com/problems/wildcard-matching/) \| Wildcard Match 🐽✅✅
+* [x] 97.[Interleaving String](https://leetcode.com/problems/interleaving-string/) \| standarddddddddddddddddddd \| Do it nowwwwwwwwwww ✅✅✅💪💪
+* [ ] 1092. [Shortest Common Supersequence](https://leetcode.com/problems/shortest-common-supersequence/) \| shortest-CS 🐽
+* [x] 1312.[Minimum Insertion Steps to Make a String Palindrome](https://leetcode.com/problems/minimum-insertion-steps-to-make-a-string-palindrome/) 😎
+  * just return **`len(s) - LPS`** \(see \#[516.LPS](https://leetcode.com/problems/longest-palindromic-subsequence/)\)
 * [ ] [https://leetcode.com/problems/max-dot-product-of-two-subsequences/](https://leetcode.com/problems/max-dot-product-of-two-subsequences/)
 
 {% tabs %}
+{% tab title="72.EditDist" %}
+```python
+def minDistance(self, s: str, t: str) -> int:
+    n,m = len(s), len(t)
+    dp = [[0 for _ in range(m+1)] for _ in range(n+1)]
+    
+    for i in range(n+1):
+        dp[i][0] = i
+    
+    for j in range(m+1):
+        dp[0][j] = j
+    
+    for i in range(1,n+1):
+        for j in range(1,m+1):
+            if s[i-1]==t[j-1]:
+                dp[i][j]=dp[i-1][j-1]
+            else:
+                dp[i][j] = 1+min(dp[i-1][j],dp[i][j-1],dp[i-1][j-1])
+    return dp[-1][-1]
+```
+{% endtab %}
+
 {% tab title="718.\| print the LCS🤯😎" %}
 ```python
 def lcs(h1,h2) -> int:
@@ -1163,6 +1461,8 @@ def lcs(h1,h2) -> int:
         for j in range(1,m+1):
             if h1[i-1] == h2[j-1]:
                 dp[i][j] = 1 + dp[i-1][j-1]
+            else:
+                dp[i][j] = max(dp[i-1][j],dp[i][j-1])
             if max_cnt < dp[i][j]:
                 max_cnt = dp[i][j]
                 res = h1[i-max_cnt:i]   #WOAHHHHHH 😎😎😎😎😎😎😎😎😎😎😎😎
@@ -1170,11 +1470,123 @@ def lcs(h1,h2) -> int:
     return max_cnt
 ```
 {% endtab %}
+
+{% tab title="516. LPS" %}
+```python
+t = s[::-1]
+
+dp = [[0 for _ in range(n+1)] for _ in range(n+1)]
+max_cnt = 0
+res = []
+
+for i in range(1,n+1):
+    for j in range(1,n+1):
+        if s[i-1] == t[j-1]:
+            dp[i][j] = 1 + dp[i-1][j-1]
+        else:
+            dp[i][j] = max(dp[i-1][j],dp[i][j-1])
+        if max_cnt < dp[i][j]:
+            max_cnt = dp[i][j]
+return max_cnt
+```
+{% endtab %}
+
+{% tab title="10🐽✅" %}
+```python
+s, p = ' '+ s, ' '+ p
+lenS, lenP = len(s), len(p)
+dp = [[0]*(lenP) for i in range(lenS)]
+dp[0][0] = 1
+
+for j in range(1, lenP):
+    if p[j] == '*':
+        dp[0][j] = dp[0][j-2]
+
+for i in range(1, lenS):
+    for j in range(1, lenP):
+        if p[j] in {s[i], '.'}:
+            dp[i][j] = dp[i-1][j-1]
+        elif p[j] == "*":
+            dp[i][j] = dp[i][j-2] or int(dp[i-1][j] and p[j-1] in {s[i], '.'})
+
+return bool(dp[-1][-1])
+```
+{% endtab %}
+
+{% tab title="44.🐽✅" %}
+```python
+n,m = len(s), len(p)
+        
+dp = [[False for _ in range(m+1)] for _ in range(n+1)]
+dp[0][0] = True
+
+# we set values to true until a non "*" character is found : for s = "adceb", p = "*a*b"
+for j in range(1, len(p)+1):
+    if p[j-1] != '*':
+        break
+    dp[0][j] = True
+
+for i in range(1,n+1):
+    for j in range(1,m+1):
+        if s[i-1] == p[j-1] or p[j-1]=='?':
+            dp[i][j] = dp[i-1][j-1]
+        elif p[j-1] == '*':
+            dp[i][j] = dp[i][j-1] or dp[i-1][j] or dp[i-1][j-1]
+
+return dp[n][m]
+```
+{% endtab %}
+
+{% tab title="97" %}
+```python
+def dp(a,b,c): # not O(N^3) but O(N^2) since 'c' is dependent -> 'a'+'b'         
+    # base cases
+    if c == len(s3) and b == len(s2) and a==len(s1): return True
+    elif c==len(s3): return False
+    
+    # took from `A`; move the head pointers 
+    if a<len(s1) and s1[a] == s3[c] and dp(a+1,b,c+1): 
+        return True
+    
+    # took from `B`; move the head pointers 
+    if b< len(s2) and s2[b] == s3[c] and dp(a,b+1,c+1): 
+        return True
+    
+    return False
+
+return dp(0,0,0)
+```
+{% endtab %}
+
+{% tab title="1092" %}
+```python
+def lcs(A, B):
+    n, m = len(A), len(B)
+    dp = [["" for _ in range(m + 1)] for _ in range(n + 1)]
+    for i in range(n):
+        for j in range(m):
+            if A[i] == B[j]:
+                dp[i + 1][j + 1] = dp[i][j] + A[i]
+            else:
+                dp[i + 1][j + 1] = max(dp[i + 1][j], dp[i][j + 1], key=len)
+    return dp[-1][-1]
+
+res, i, j = "", 0, 0
+for c in lcs(A, B):
+    while A[i] != c:
+        res += A[i]
+        i += 1
+    while B[j] != c:
+        res += B[j]
+        j += 1
+    res += c
+    i, j = i + 1, j + 1
+return res + A[i:] + B[j:]
+```
+{% endtab %}
 {% endtabs %}
 
 ### 10.3 LIS
-
-#### 
 
 *  **LIS in O\(NlogN\)** : [KartikArora](https://www.youtube.com/watch?v=66w10xKzbRM&ab_channel=KartikArora) \| [Leetcode Post](https://leetcode.com/problems/longest-increasing-subsequence/discuss/74824/JavaPython-Binary-search-O%28nlogn%29-time-with-explanation) =&gt; Maintain Tails arr
   * `Tails` arr contains all the **starting** points of all **LISs**\(aptly named\)=&gt; use `bisect_left` for LIS
@@ -1272,96 +1684,7 @@ print(len(tails))
 
 * [ ] [https://leetcode.com/problems/k-inverse-pairs-array/](https://leetcode.com/problems/k-inverse-pairs-array/)
 
-## 13. Memoization
 
-* [x] [1340. Jump Game V](https://leetcode.com/problems/jump-game-v/) ✅
-* [x] [1533.Minimum Number of Days to Eat N Oranges](https://leetcode.com/problems/minimum-number-of-days-to-eat-n-oranges/) ✅💪\| DP or BFS
-* [ ] [https://leetcode.com/problems/scramble-string/](https://leetcode.com/problems/scramble-string/)
-* [ ] [https://leetcode.com/problems/number-of-ways-to-stay-in-the-same-place-after-some-steps/](https://leetcode.com/problems/number-of-ways-to-stay-in-the-same-place-after-some-steps/)
-
-{% tabs %}
-{% tab title="1340" %}
-```python
-from functools import lru_cache
-
-class Solution:
-    def maxJumps(self, arr: List[int], d: int) -> int:
-        n = len(arr)
-
-        @lru_cache(None)
-        def jumps(start: int) -> int:
-            height = arr[start]
-            max_jumps = 0
-            
-            for index in range(start - 1, max(0, start - d) - 1, -1):
-                if arr[index] >= height:
-                    break
-                
-                max_jumps = max(max_jumps, jumps(index))
-            
-            for index in range(start + 1, min(n, start + d + 1)):
-                if arr[index] >= height:
-                    break
-                
-                max_jumps = max(max_jumps, jumps(index))
-            
-            return max_jumps + 1
-        
-        return max(jumps(start) for start in range(n))
-```
-{% endtab %}
-
-{% tab title="1533" %}
-```python
-from collections import deque
-def minDays(self, n: int) -> int:
-    #1. DP ===================================================
-    MEMO = {}
-    def dp(n):
-        if n <= 1:
-            return n
-        
-        if n in MEMO: return MEMO[n]
-        
-        op1 = n%2 + dp(n//2)
-        op2 = n%3 + dp(n//3)
-        
-        MEMO[n] = 1 + min(op1,op2)
-        return MEMO[n]
-
-    return dp(n)
-    
-    #So, the choice we have is to 
-    #      1. eat n % 2 oranges one-by-one and then swallow n / 2, 
-    #      2. or eat n % 3 oranges so that we can gobble 2 * n / 3
-
-    # BFS ========================================================
-    
-    def bfs(n):
-        Q = deque()
-        vis = set()
-        Q.append((n,0))
-        
-        while Q:
-            # implement for this level
-            for _ in range(len(Q)):
-                x,move = Q.popleft()
-                if x == 0:
-                    return move
-                if (x-1) not in vis:
-                    Q.append((x-1,move+1))
-                    vis.add(x-1)
-                if x%2 == 0 and x//2 not in vis:
-                    Q.append((x//2,move+1))
-                    vis.add(x//2)
-                if x%3 == 0 and x//3 not in vis:
-                    Q.append((x//3,move+1))
-                    vis.add(x//3)
-
-    return bfs(n)
-```
-{% endtab %}
-{% endtabs %}
 
 ## 14. Binary Lifting
 
@@ -1458,10 +1781,10 @@ def dp(n,m):
         return MEMO[(n,m)]
     v_cut, h_cut = mxn,mxn
 
-    for i in range(1,m):
+    for i in range(1,(m//2)+1):
         v_cut = min(v_cut, 1+dp(n,i)+dp(n,m-i))
 
-    for i in range(1,n):
+    for i in range(1,(n//2)+1):
         h_cut = min(h_cut, 1+dp(i,m)+dp(n-i,m))
     
     MEMO[(n,m)] = min(v_cut,h_cut)
