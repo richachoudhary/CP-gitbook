@@ -251,6 +251,15 @@ int modularExponentiation(int x,int n,int M){    //get (x^n % M)
 math.pow(x,n,M)
 ```
 
+* Euclidean GCD
+
+```python
+def gcd(a,b):
+    if (b == 0):              # Everything divides 0
+         return a
+    return gcd(b, a%b)
+```
+
 * Sieve of Eratosthenes
 
 ```cpp
@@ -282,6 +291,32 @@ return sum(x for x in primes if x)
 * [x] LC [1980.Find Unique Binary String](https://leetcode.com/problems/find-unique-binary-string/) \| **Cantor's Diagonalization** \| [Video@veritassium](https://www.youtube.com/watch?v=OxGsU8oIWjY) 
   * **Some infinities\(Uncountable Infinity-** party bus people**\) are BIGGER than other infinities\(Countable Infinities-** hotel rooms 1...inf\) 
   * Just watch the video; so fucking mind-blowing
+* [x] LC [1363.Largest Multiple of Three](https://leetcode.com/problems/largest-multiple-of-three/) ✅\| fucking amazing question & elegant solution 🍪🍪🍪
+
+{% tabs %}
+{% tab title="1363" %}
+```python
+d1 = sorted([i for i in d if i%3 ==1])
+d2 = sorted([i for i in d if i%3 ==2])
+d3 = [i for i in d if i%3 ==0]
+if sum(d) % 3 == 1:
+    if len(d1) != 0:
+        res = d1[1:] + d2 + d3
+    else:
+        res = d2[2:]+ d3
+elif sum(d) % 3 == 2:
+    if len(d2) != 0:
+        res = d1 + d2[1:] + d3
+    else:
+        res = d1[2:] +d3
+else:
+    res = d
+res.sort(reverse = True)
+if not res: return ''
+return str(int(''.join([str(i) for i in res])))
+```
+{% endtab %}
+{% endtabs %}
 
 ## 3. Combinatorics
 

@@ -410,6 +410,7 @@ cout << dp[x] << '\n';
 
 * [x] CSES: [Grid Paths](https://cses.fi/problemset/task/1638/)
 * [ ] CSES: [Array Description](https://cses.fi/problemset/task/1746) \| [KartikArora](https://www.youtube.com/watch?v=d1H5JylYG4I&ab_channel=KartikArora) .🐽✅🐽 
+* [ ] Egg Dropping puzzle: [gfg](https://www.geeksforgeeks.org/egg-dropping-puzzle-dp-11/) 🥚🏣✅
 * [ ] [https://leetcode.com/problems/triangle/](https://leetcode.com/problems/triangle/)
 * [ ] [https://leetcode.com/problems/combination-sum-iv/](https://leetcode.com/problems/combination-sum-iv/)
 * [ ] [https://leetcode.com/problems/out-of-boundary-paths/](https://leetcode.com/problems/out-of-boundary-paths/)
@@ -465,6 +466,63 @@ for(int i=0;i<n;i++){
 		}
 	}
 }
+```
+{% endtab %}
+
+{% tab title="EggDropping" %}
+```python
+def dp(e,f): # f-> #floors, e-> #eggs
+    if f == 1 or f == 0: # no floor/1 floor means 0/1 trials respectively
+        return f
+    if e == 1:  # we need f trials for 1 egg
+        return f
+    
+    res = float('inf')
+    for i in range(1,f+1):
+        res = min(res, max(dp(e-1,i-1), dp(e,f-i)))
+    return 1 + res
+    
+# TC: O(ef^2) -------> very bad ======================================
+
+
+# 2. @lee215's ====================================[Turn the problem around ]
+
+'''
+He has turned the problem around from
+"How many moves do you need to check N floors if you have K eggs"
+to:
+"How many floors can you check given M moves available and K eggs".
+
+If you can solve this second problem than you can just increase the moves M one by one until you are able to check a number of floors larger or equal to the number N which the problem requires.
+He then defined
+dp[M][K] as the maximum number of floors that you can check within M moves given K eggs
+
+A move essentially is dropping an egg and it either breaks or doesn't break.
+Case A: The egg breaks and now you have spent 1 move (M=M-1) and also lost 1 egg (K=K-1). You can still check dp[M-1][K-1] floors, with your remaining eggs and moves.
+Case B: The egg remains and you only loose one move (M=M-1). You can still check dp[M-1][K] floors.
+Additionally you just checked a floor by dropping the egg from it.
+Therefore dp[M][K] = dp[M - 1][k - 1] + dp[M - 1][K] + 1
+
+The dp equation is:
+dp[m][k] = dp[m - 1][k - 1] + dp[m - 1][k] + 1,
+which means we take 1 move to a floor,
+if egg breaks, then we can check dp[m - 1][k - 1] floors.
+if egg doesn't breaks, then we can check dp[m - 1][k] floors.
+
+dp[m][k] is the number of combinations and it increase exponentially to N
+
+
+Complexity
+For time, O(NK) decalre the space, O(KlogN) running,
+For space, O(NK).
+'''
+
+def superEggDrop(self, K, N):
+    dp = [[0] * (K + 1) for i in range(N + 1)]
+    for m in range(1, N + 1):
+        for k in range(1, K + 1):
+            dp[m][k] = dp[m - 1][k - 1] + dp[m - 1][k] + 1
+        if dp[m][K] >= N: return m
 ```
 {% endtab %}
 {% endtabs %}
@@ -1229,12 +1287,49 @@ print(len(tails))
 
 ## 15. Math
 
-* [ ] [https://leetcode.com/problems/ugly-number-ii/](https://leetcode.com/problems/ugly-number-ii/)
+* [x] LC [264. Ugly Number II](https://leetcode.com/problems/ugly-number-ii/) ✅
+* [x] LC [313. Super Ugly Number](https://leetcode.com/problems/super-ugly-number/)
+
+{% tabs %}
+{% tab title="264" %}
+```python
+k = [0] * n
+t1 = t2 = t3 = 0
+k[0] = 1
+for i in range(1,n):
+    k[i] = min(k[t1]*2,k[t2]*3,k[t3]*5)
+    if(k[i] == k[t1]*2): t1 += 1
+    if(k[i] == k[t2]*3): t2 += 1
+    if(k[i] == k[t3]*5): t3 += 1
+return k[n-1]
+```
+{% endtab %}
+
+{% tab title="313." %}
+```python
+nums=[]
+heap=[]
+seen={1,}
+heappush(heap,1)
+
+for _ in range(n):
+    curr_ugly=heappop(heap)
+    nums.append(curr_ugly)
+    for prime in primes:
+        new_ugly=curr_ugly*prime
+        if new_ugly not in seen:
+            seen.add(new_ugly)
+            heappush(heap,new_ugly)
+
+return nums[-1]
+```
+{% endtab %}
+{% endtabs %}
+
 * [ ] [https://leetcode.com/problems/count-sorted-vowel-strings/](https://leetcode.com/problems/count-sorted-vowel-strings/)
 * [ ] [https://leetcode.com/problems/race-car/](https://leetcode.com/problems/race-car/)
 * [ ] [https://leetcode.com/problems/super-egg-drop/](https://leetcode.com/problems/super-egg-drop/)
 * [ ] [https://leetcode.com/problems/least-operators-to-express-number/](https://leetcode.com/problems/least-operators-to-express-number/)
-* [ ] [https://leetcode.com/problems/largest-multiple-of-three/](https://leetcode.com/problems/largest-multiple-of-three/)
 * [ ] [https://leetcode.com/problems/minimum-one-bit-operations-to-make-integers-zero/](https://leetcode.com/problems/minimum-one-bit-operations-to-make-integers-zero/)
 
 ## 16. Geometrical DP \(blocks, rectangles etc\)

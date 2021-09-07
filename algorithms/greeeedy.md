@@ -1233,6 +1233,7 @@ So for this question, you **HAVE TO GO WITH C++**
 * [x] CSES: [Factory Machines ](https://cses.fi/problemset/task/1620)✅
 * [x] CSES: [Array Division](https://cses.fi/problemset/task/1085/) ✅✅
 * [x] LC [287: Find the Duplicate Number](https://leetcode.com/problems/find-the-duplicate-number/) \| @ShareChat \| also see in `LinkedLIst` 💪
+* [ ] LC [1201. Ugly Number III](https://leetcode.com/problems/ugly-number-iii/) \| Some weird lcm formula
 
 {% tabs %}
 {% tab title="FactoryMachines" %}
