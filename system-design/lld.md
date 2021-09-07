@@ -1204,6 +1204,10 @@ class ParkingLot:
 * Observer pattern is used when there is **one-to-many** relationship between objects such as **if one object is modified, its dependent objects are to be notified automatically**.
 * **NOTE:** this is used in **Even Management Systems** i.e.**API calls/ UI handling /events handling etc**
 
+### 10. STATE
+
+* used in Vending Machine
+
 ## \#Things to do:
 
 * [x] Understand OOPs using Python
