@@ -761,7 +761,14 @@ Ticket
 --------outTime
 --------payment : Payment
 --------spot    : Spot
---------generateID(
+--------generateID()
+
+ParkingLevel
+--------name
+--------spots = {VehicleType.CAR: {SpotType.FREE: [], SpotType.TAKEN: []}
+--------addSpot(VehicleType, number_of_spots) # create new spots on floor
+--------assignSpot(ticket)
+--------unassignSpot(ticket)
 
 DisplayBoard
 --------show(ParkingLot)
@@ -775,13 +782,6 @@ ParkingLot
 --------addLevel(level)
 --------processEntry(ticket)
 --------processExit(ticket)
-
-ParkingLevel
---------name
---------spots = {VehicleType.CAR: {SpotType.FREE: [], SpotType.TAKEN: []}
---------addSpot(VehicleType, number_of_spots) # create new spots on floor
---------assignSpot(ticket)
---------unassignSpot(ticket)
 
 
 # Out of Scope:
@@ -806,28 +806,6 @@ Logger # uses Observer Pattern
 import time
 import uuid
 from enum import Enum
-
-
-class TicketStatus(Enum):
-    ACTIVE = 1
-    COMPLETE = 2
-
-
-class Ticket:
-    def __init__(self, vehicle_type):
-        self.id = self.generateID()
-        self.vehicle_type = vehicle_type
-        self.status = TicketStatus.ACTIVE
-        self.inTime = time.time()
-        self.outTime = None
-        self.payment = None
-        self.spot = None
-
-    def generateID(self):
-        # some ID generation mechanism
-        # yield range(100)
-        return uuid.uuid4()
-
 
 class VehicleType(Enum):
     CAR = 1
@@ -897,13 +875,57 @@ class Payment:
         return amount
 
 
+class TicketStatus(Enum):
+    ACTIVE = 1
+    COMPLETE = 2
+
+
+class Ticket:
+    def __init__(self, vehicle_type):
+        self.id = self.generateID()
+        self.vehicle_type = vehicle_type
+        self.status = TicketStatus.ACTIVE
+        self.inTime = time.time()
+        self.outTime = None
+        self.payment = None
+        self.spot = None
+
+    def generateID(self):
+        # some ID generation mechanism
+        # yield range(100)
+        return uuid.uuid4()
+
+class ParkingLevel:
+    def __init__(self, name):
+        self.name = name
+        self.spots = {
+            VehicleType.CAR: {SpotType.FREE: [], SpotType.TAKEN: []},
+            VehicleType.BIKE: {SpotType.FREE: [], SpotType.TAKEN: []},
+        }
+
+    def assignSpot(self, ticket):
+        if self.spots[ticket.vehicle_type.type][SpotType.FREE] != []:
+            spot = self.spots[ticket.vehicle_type.type][SpotType.FREE].pop()
+            ticket.spot = spot
+            self.spots[ticket.vehicle_type.type][SpotType.TAKEN].append(spot)
+            return ticket.spot
+        return False
+
+    def unassignSpot(self, ticket):
+        self.spots[ticket.vehicle_type.type][SpotType.FREE].append(ticket.spot)
+        self.spots[ticket.vehicle_type.type][SpotType.TAKEN].remove(ticket.spot)
+
+    def addSpot(self, type, license):
+        for eachnum in range(license):
+            spot = Spot(type)
+            self.spots[type][SpotType.FREE].append(spot)
+
 class DisplayBoard:
     def show(self, P):
         for eachlevel in P.levels:
             print(P.name, "-", eachlevel.name, "- Available Parking Spots")
             print("Car  : ", len(eachlevel.spots[VehicleType.CAR][SpotType.FREE]))
             print("Bike : ", len(eachlevel.spots[VehicleType.BIKE][SpotType.FREE]))
-
 
 class ParkingLot:
     def __init__(self, name, address):
@@ -942,31 +964,6 @@ class ParkingLot:
             int(ticket.payment.amount),
         )
 
-
-class ParkingLevel:
-    def __init__(self, name):
-        self.name = name
-        self.spots = {
-            VehicleType.CAR: {SpotType.FREE: [], SpotType.TAKEN: []},
-            VehicleType.BIKE: {SpotType.FREE: [], SpotType.TAKEN: []},
-        }
-
-    def assignSpot(self, ticket):
-        if self.spots[ticket.vehicle_type.type][SpotType.FREE] != []:
-            spot = self.spots[ticket.vehicle_type.type][SpotType.FREE].pop()
-            ticket.spot = spot
-            self.spots[ticket.vehicle_type.type][SpotType.TAKEN].append(spot)
-            return ticket.spot
-        return False
-
-    def unassignSpot(self, ticket):
-        self.spots[ticket.vehicle_type.type][SpotType.FREE].append(ticket.spot)
-        self.spots[ticket.vehicle_type.type][SpotType.TAKEN].remove(ticket.spot)
-
-    def addSpot(self, type, license):
-        for eachnum in range(license):
-            spot = Spot(type)
-            self.spots[type][SpotType.FREE].append(spot)
 
 # ----------------------- RUNNING ---------------------- #
 
