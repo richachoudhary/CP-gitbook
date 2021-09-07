@@ -359,6 +359,16 @@ if(sum&1){
 
 ## 2.2 Unbounded Knapsack 
 
+* [x] CSES: [Minimizing Coins](https://cses.fi/problemset/task/1634/)
+* [x] CSES: [Coin Combinations 1](https://cses.fi/problemset/task/1635/) ✅
+  * [x] CSES: [Coin Combinations 2](https://cses.fi/problemset/task/1636) ✅
+  * **NOTE**: Switch the order of loops from 1 to get 2
+* [x] [322.Coin Change](https://leetcode.com/problems/coin-change/) 🌟
+* [x] [518.Coin Change 2](https://leetcode.com/problems/coin-change-2/)
+* [x] GfG: [Rod Cutting Problem](https://www.geeksforgeeks.org/cutting-a-rod-dp-13/)         
+  * [ ] Similar\(but Hard\)[1547. Minimum Cost to Cut a Stick](https://leetcode.com/problems/minimum-cost-to-cut-a-stick/)
+* [ ] [279. Perfect Squares](https://leetcode.com/problems/perfect-squares/)
+
 {% tabs %}
 {% tab title="UB knapsack\(MEMO; SC-O\(N\*N\)" %}
 ```python
@@ -435,20 +445,6 @@ cout << dp[x] << '\n';
 ```
 {% endtab %}
 {% endtabs %}
-
-#### 2.2.1 Standard Problems: Unbounded Knapsack 
-
-* [x] CSES: [Minimizing Coins](https://cses.fi/problemset/task/1634/)
-* [x] CSES: [Coin Combinations 1](https://cses.fi/problemset/task/1635/) ✅
-  * [x] CSES: [Coin Combinations 2](https://cses.fi/problemset/task/1636) ✅
-  * **NOTE**: Switch the order of loops from 1 to get 2
-* [x] [322.Coin Change](https://leetcode.com/problems/coin-change/) 🌟
-* [x] [518.Coin Change 2](https://leetcode.com/problems/coin-change-2/)
-* [x] GfG: [Rod Cutting Problem](https://www.geeksforgeeks.org/cutting-a-rod-dp-13/)         
-  * [ ] Similar\(but Hard\)[1547. Minimum Cost to Cut a Stick](https://leetcode.com/problems/minimum-cost-to-cut-a-stick/)
-* [ ] [279. Perfect Squares](https://leetcode.com/problems/perfect-squares/)
-
-#### 2.2.2  Problems: Unbounded Knapsack 
 
 ## 3. Multi Dimension DP
 
@@ -1298,9 +1294,50 @@ return dp(0,0,0)
 
 ## 9. Probability DP
 
-* [ ] [https://leetcode.com/problems/soup-servings/](https://leetcode.com/problems/soup-servings/)
+* [x] 808.[Soup Servings](https://leetcode.com/problems/soup-servings/) 🍜🥘✅✅
+* [x] 1277. [Airplane Seat Assignment Probability](https://leetcode.com/problems/airplane-seat-assignment-probability/) =&gt; `0.5 for n>1`
 * [ ] [https://leetcode.com/problems/new-21-game/](https://leetcode.com/problems/new-21-game/)
-* [ ] [https://leetcode.com/problems/airplane-seat-assignment-probability/](https://leetcode.com/problems/airplane-seat-assignment-probability/)
+
+{% tabs %}
+{% tab title="808.🥘" %}
+```python
+def soupServings(self, N: int) -> float:
+    if N >= 5000: return 1
+
+    @functools.lru_cache(None)
+    def helper(A, B, p):
+
+        # return (prob. of A running out first, prob. of A and B running out at the same time)
+        if (A <= 0) and (B <= 0):
+            return (0, p)
+        elif (A <= 0):
+            return (p, 0)
+        elif (B <= 0):
+            return (0, 0)
+
+        res = []
+        res.append(helper(A-100, B, 0.25*p))
+        res.append(helper(A-75, B-25, 0.25*p))
+        res.append(helper(A-50, B-50, 0.25*p))
+        res.append(helper(A-25, B-75, 0.25*p))
+
+        return functools.reduce(lambda x,y: (x[0]+y[0], x[1]+y[1]), res)
+
+    res = helper(N, N, 1)
+    return res[0] + 0.5*res[1]
+
+'''
+Return the probability that soup A will be empty first, plus half the probability that A and B become empty at the same time. Answers within 10-5 of the actual answer will be accepted.
+
+N can range from 0 to 10^9.
+This solution will TLE for N > 5·10^4.
+However, the output from soupServings grows asymptotically with N.
+When N ≥ 5000, soupServings(N) ≈ 1 so we can just return 1.
+This means we only need to find a solution when N < 5000.
+'''
+```
+{% endtab %}
+{% endtabs %}
 
 ## 10. Classic DPs
 
@@ -1591,6 +1628,14 @@ return res + A[i:] + B[j:]
 *  **LIS in O\(NlogN\)** : [KartikArora](https://www.youtube.com/watch?v=66w10xKzbRM&ab_channel=KartikArora) \| [Leetcode Post](https://leetcode.com/problems/longest-increasing-subsequence/discuss/74824/JavaPython-Binary-search-O%28nlogn%29-time-with-explanation) =&gt; Maintain Tails arr
   * `Tails` arr contains all the **starting** points of all **LISs**\(aptly named\)=&gt; use `bisect_left` for LIS
   * `Tails` arr contains all the **ending** points of all **LIDs**\(aptly named\) =&gt; use `bisect_right` for LDS
+* [x] CSES: [Towers](https://cses.fi/problemset/task/1073) ✅=&gt; Longest Decreasing Sequence: \(exactly same as LIS\)
+* [x] [300.Longest Increasing Subsequence ](https://leetcode.com/problems/longest-increasing-subsequence/)
+* [x] 673. [Number of Longest Increasing Subsequence](https://leetcode.com/problems/number-of-longest-increasing-subsequence/) ✅💪\|ye na kar paoge khud se implement\|**`must_do`**
+* [x] 354. [Russian Doll Envelopes](https://leetcode.com/problems/russian-doll-envelopes/) \| must do!! 🪆🪆❤️
+* [ ] [https://leetcode.com/problems/delete-columns-to-make-sorted-iii/](https://leetcode.com/problems/delete-columns-to-make-sorted-iii/)
+* [ ] [https://leetcode.com/problems/minimum-number-of-removals-to-make-mountain-array/](https://leetcode.com/problems/minimum-number-of-removals-to-make-mountain-array/)
+* [ ] [https://leetcode.com/problems/maximum-height-by-stacking-cuboids/](https://leetcode.com/problems/maximum-height-by-stacking-cuboids/)
+* [ ] [https://leetcode.com/problems/make-array-strictly-increasing/](https://leetcode.com/problems/make-array-strictly-increasing/)
 
 {% tabs %}
 {% tab title="LIS in O\(NlogN\)⭐️" %}
@@ -1621,16 +1666,84 @@ for i in range(n):
 print(len(tails))
 ```
 {% endtab %}
-{% endtabs %}
 
-* [x] CSES: [Towers](https://cses.fi/problemset/task/1073) ✅=&gt; Longest Decreasing Sequence: \(exactly same as LIS\)
-* [x] [300.Longest Increasing Subsequence ](https://leetcode.com/problems/longest-increasing-subsequence/)
-* [ ] [https://leetcode.com/problems/number-of-longest-increasing-subsequence/](https://leetcode.com/problems/number-of-longest-increasing-subsequence/)
-* [ ] [https://leetcode.com/problems/russian-doll-envelopes/](https://leetcode.com/problems/russian-doll-envelopes/)
-* [ ] [https://leetcode.com/problems/delete-columns-to-make-sorted-iii/](https://leetcode.com/problems/delete-columns-to-make-sorted-iii/)
-* [ ] [https://leetcode.com/problems/minimum-number-of-removals-to-make-mountain-array/](https://leetcode.com/problems/minimum-number-of-removals-to-make-mountain-array/)
-* [ ] [https://leetcode.com/problems/maximum-height-by-stacking-cuboids/](https://leetcode.com/problems/maximum-height-by-stacking-cuboids/)
-* [ ] [https://leetcode.com/problems/make-array-strictly-increasing/](https://leetcode.com/problems/make-array-strictly-increasing/)
+{% tab title="673.✅" %}
+```python
+import bisect
+def findNumberOfLIS(self, A: List[int]) -> int:
+    tails = []
+    n = len(A)
+    counter = defaultdict(list)
+    for i in range(n):
+        idx = bisect.bisect_left(tails,A[i])
+        if idx == len(tails):
+            tails.append(A[i])
+        else:
+            tails[idx] = A[i]
+        
+        total = 0
+        for count, last in counter[idx]:
+            if last < A[i]:
+                total += count
+        counter[idx+1].append((max(1, total), A[i]))
+        
+    # print(counter)
+    res = 0
+    for cnt,_ in counter[len(tails)]:
+        res += cnt
+    return res
+    
+'''
+For example for [1,3,5,4,7]; counter =
+len : [(count, last_biggest)]
+{
+   1: [(1, 1)],
+   2: [(1, 3)],
+   3: [(1, 5), (1, 4)],
+   4: [(2, 7)]
+}
+& for nums = [2,2,2,2,2]
+counter = 
+{
+    0: [], 
+    1: [(1, 2), (1, 2), (1, 2), (1, 2), (1, 2)]
+}
+'''
+```
+{% endtab %}
+
+{% tab title="354.🪆❤️" %}
+```python
+def maxEnvelopes(self, A: List[List[int]]) -> int:
+    A.sort()
+    n = len(A)
+    
+# 1. O(N^2) : TLE ===============================================
+    dp = [1]*n
+    for i in range(1,n):
+        for j in range(i):
+            if A[i][0] > A[j][0] and A[i][1] > A[j][1] :
+                dp[i] = max(dp[i], 1+dp[j])
+    return max(dp)
+# 2. O(NlogN) ===================================================
+    
+    # just sorting by asc. order of width will do
+    # the only edge case: for consecutive envelopes with the same sorted width
+    # to avoid this: sort by dec order of heights
+    # s.t. the first envelope encountered for any given width would be the largest one.
+    
+    A.sort(key=lambda x: (x[0], -x[1]))
+    tails = []
+    for _,height in A:
+        left = bisect_left(tails, height)
+        if left == len(tails): 
+            tails.append(height)
+        else: 
+            tails[left] = height
+    return len(tails)
+```
+{% endtab %}
+{% endtabs %}
 
 
 

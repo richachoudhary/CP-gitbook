@@ -500,15 +500,41 @@ int main()
 * [x] CF: [Distance in Tree](https://codeforces.com/contest/161/problem/D) \| \#nodes at dist K from each other \| video
 * [ ] CSES: [Company Queries I](https://cses.fi/problemset/task/1687) \| **LCA + Binary Lifting 🐽🐽**
 * [ ] CSES: [Company Queries II](https://cses.fi/problemset/task/1688) \| **LCA + Binary Lifting 🐽🐽**
-* [ ] CSES: 
+* [x] 968.[Binary Tree Cameras](https://leetcode.com/problems/binary-tree-cameras/) \| @kartikArora 📷✅✅✅✅✅✅✅✅
 * [ ] [https://leetcode.com/problems/unique-binary-search-trees-ii/](https://leetcode.com/problems/unique-binary-search-trees-ii/)
 * [ ] [https://leetcode.com/problems/house-robber-iii/](https://leetcode.com/problems/house-robber-iii/)
 * [ ] [https://leetcode.com/problems/maximum-product-of-splitted-binary-tree/](https://leetcode.com/problems/maximum-product-of-splitted-binary-tree/)
 * [ ] [https://leetcode.com/problems/linked-list-in-binary-tree/](https://leetcode.com/problems/linked-list-in-binary-tree/)
 * [ ] [https://leetcode.com/problems/longest-zigzag-path-in-a-binary-tree/](https://leetcode.com/problems/longest-zigzag-path-in-a-binary-tree/)
-* [ ] [https://leetcode.com/problems/binary-tree-cameras/](https://leetcode.com/problems/binary-tree-cameras/)
 * [ ] [https://leetcode.com/problems/maximum-sum-bst-in-binary-tree/](https://leetcode.com/problems/maximum-sum-bst-in-binary-tree/)
 * [ ] [https://leetcode.com/problems/number-of-ways-to-reorder-array-to-get-same-bst/](https://leetcode.com/problems/number-of-ways-to-reorder-array-to-get-same-bst/)
+
+{% tabs %}
+{% tab title="968.📷✅" %}
+```python
+@lru_cache(None)
+def minCameras(node=root, parent_covered=True, parent_camera=False):
+    if not node: return 0
+    camera_here = 1 + minCameras(node.left, parent_camera=True) + minCameras(node.right, parent_camera=True)
+
+    if parent_camera:
+        no_camera_here = minCameras(node.left) + minCameras(node.right)
+        return min(camera_here, no_camera_here)
+
+    if parent_covered:
+        mincams = camera_here
+        if node.right:
+            mincams = min(mincams, minCameras(node.right, False) + minCameras(node.left, True))
+        if node.left:
+            mincams = min(mincams, minCameras(node.left, False) + minCameras(node.right, True))
+        return mincams
+
+    return camera_here
+
+return minCameras()
+```
+{% endtab %}
+{% endtabs %}
 
 ### 2.1 Resources: Tree DP
 
