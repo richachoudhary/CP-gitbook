@@ -4,6 +4,38 @@ description: Python is about 2-4x slower than C++
 
 # generalInfo
 
+* Json to Python
+
+```python
+import json
+
+# some JSON:
+x =  '{ "name":"John", "age":30, "city":"New York"}'
+y = json.loads(x)
+
+# the result is a Python dictionary:
+print(y["age"])
+```
+
+* Python to Json
+
+```python
+import json
+
+# a Python object (dict):
+x = {
+  "name": "John",
+  "age": 30,
+  "city": "New York"
+}
+
+# convert into JSON:
+y = json.dumps(x)
+
+# the result is a JSON string:
+print(y)
+```
+
 * Python hit an API
 
 ```python
@@ -79,7 +111,7 @@ for p in I():
 ```
 
 * using int\_min & int\_max in py:
-  * **Way1:** recommended: `float('inf')` & `float('`-`inf')`
+  * **Way1:** recommended: `float('inf')` & `float('-inf')`
   * **Way**2**:** Not-recommended `-sys.maxsize`, `sys.maxsize`
 * Python's modular exponentiation method: `pow(base,expo,mod)`
 * char to int & vv: \(its `chr` not char\)

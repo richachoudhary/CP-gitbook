@@ -9,7 +9,7 @@
 ## `list`
 
 * **declare 2D matrix :**  `[[0 for _ in range(1)] for _ in range(5)]`
-* **Delete** at given index:
+* **Delete** by index/value:
 
 ```python
 # ------------- delete by index
