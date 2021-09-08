@@ -7,6 +7,8 @@
 {% tabs %}
 {% tab title="OrderdDict\(FAST\)" %}
 ```python
+# O(1) ===========================================================
+# IDEA: the last guy in OrderdDict() is the least recently used one
 from collections import OrderedDict
 
 class LRUCache:
@@ -15,18 +17,22 @@ class LRUCache:
         self.size = capacity
         self.cache = OrderedDict()
     
+    # O(1)
     def get(self, key: int) -> int:
         if key not in self.cache:
             return -1
         else:
+            # O(1), since OrderedDict is a dict + double linked list
             self.cache.move_to_end(key)  # Gotta keep this pair fresh, move to end of OrderedDict
             return self.cache[key]
-
+    # O(1)
     def put(self, key: int, value: int) -> None:
         if key not in self.cache:
             if len(self.cache) >= self.size:
+                # O(1)
                 self.cache.popitem(last=False) # last=True, LIFO; last=False, FIFO. We want to remove in FIFO fashion. 
         else:
+            # O(1)
             self.cache.move_to_end(key) # Gotta keep this pair fresh, move to end of OrderedDict
         self.cache[key] = value
         
@@ -47,22 +53,29 @@ lRUCache.get(4);    // return 4
 
 {% tab title="deque\(SLOW\)" %}
 ```python
+# O(N) ======================================
+# JHANDU APPROACH --------------------------- XXXX
 from collections import deque
 
 class LRUCache:
 
     def __init__(self, capacity: int):
         self.size = capacity
-        self.deque = deque()
-    
+        self.deque = deque()    # key->val
+        '''
+                deque
+        left ================= right
+least_recently_used      most_recently_used
+        '''
+    # O(N)
     def _find(self, key: int) -> int:
 		""" Linearly scans the deque for a specified key. Returns -1 if it does not exist, returns the index of the deque if it exists"""
         for i in range(len(self.deque)):
-            n = self.deque[i]
-            if n[0] == key:
-                return i 
+            self.deque[i][0] == key:
+                return i
         return -1
     
+    # O(N)
     def get(self, key: int) -> int:
         idx = self._find(key)
         if idx == -1:
@@ -73,7 +86,7 @@ class LRUCache:
             self.deque.append((k, v)) # And now, we put it at the end of the queue. So, the most viewed ones will be always at the end and be saved from popping when new capacity got hit.
             return v
                 
-
+    # O(N)
     def put(self, key: int, value: int) -> None:
         idx = self._find(key)
         if idx == -1:
@@ -87,9 +100,90 @@ class LRUCache:
 {% endtab %}
 {% endtabs %}
 
-## 2. LFU Cache 🐽
+## 2. LFU Cache ✅😅
 
-* LC [460.LFU Cache](https://leetcode.com/problems/lfu-cache/)
+* LC [460.LFU Cache](https://leetcode.com/problems/lfu-cache/) \| [video.py](https://www.youtube.com/watch?v=Jn4mbZVkeik&ab_channel=babybear4812)
+
+{% tabs %}
+{% tab title="LFU" %}
+```python
+'''
+# TC:  get: O(1), put: O(1) ==============================================
+node: obj(val, freq)
+IDEA: keep 2 dictionaries:
+
+1. nodeKeys ={key -> (val, freq)} or {key -> node}  # data on key-val pair & how many times its repeated yet
+2. nodeCounts = {freq -> OrderedDict({key ->node})}
+
+freq:1 => {1:(1,1),2:(2,1)}  # the 'LRU' order(needed during tie)
+freq:2 => 
+freq:3 => {3:(1,3), 4:(5,3)}  # the 'LRU' order(needed during tie)
+
+* Also keep track of least freq yet (minFreq)
+'''
+
+from collections import defaultdict
+from collections import OrderedDict
+
+class Node:
+    def __init__(self, val, freq):
+        self.val = val
+        self.freq = freq
+    
+class LFUCache(object):
+    def __init__(self, capacity):
+        self.capacity = capacity
+        self.nodeKeys = {}                          # key -> node
+        self.nodeCounts = defaultdict(OrderedDict)  # freq -> (key,node)
+        self.minFreq = None
+        
+    def put(self, key, value):
+        if not self.capacity:   #input sanity check
+            return 
+        
+        # 1. if in cache-> update the value
+        # 2. if not in cache:
+            # 2.1 if we're at capacity
+                # remove
+            # 2.2 else:
+                # add item
+                
+        if key in self.nodeKeys:
+            self.nodeKeys[key].val = value
+            self.get(key) # get increases the freq internally
+            return
+        
+        if len(self.nodeKeys) == self.capacity:
+            # pop the first(head) item in orderdDict
+            lfu_key, _ = self.nodeCounts[self.minFreq].popitem(last=False) 
+            del self.nodeKeys[lfu_key] 
+            
+        newNode = Node(value,1)
+        #update both dicts for this new entry & least_freq_yet
+        self.nodeKeys[key] = newNode
+        self.nodeCounts[1][key] = newNode
+        self.minFreq = 1
+        return
+        
+    def get(self, key)->int:
+        if key not in self.nodeKeys:
+            return -1
+        
+        # update its frequency bucket
+        node = self.nodeKeys[key]
+        del self.nodeCounts[node.freq][key]
+        
+        node.freq += 1
+        self.nodeCounts[node.freq][key] = node
+        
+        # update minFreq : if this bucket is empty => our minFreq has increase
+        if not self.nodeCounts[self.minFreq]:
+            self.minFreq += 1
+
+        return node.val
+```
+{% endtab %}
+{% endtabs %}
 
 ## 2. Movie Rental System
 
