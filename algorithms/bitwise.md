@@ -12,7 +12,7 @@
 # binary to int (base 32)
 >>> bit_str = '{0:032b}'.format(5)    # 00000000000000000000000000000101
 # binary to int (base 16)
->>> bit_str = '{0:032b}'.format(5)    # 0000000000000101
+>>> bit_str = '{0:016b}'.format(5)    # 0000000000000101
 
 
 >>> n.bit_count()
