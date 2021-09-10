@@ -5,6 +5,10 @@
 ### 1.1 Notes
 
 * Heron's formula for area of triangle![\text{ Area }=\sqrt{s\(s-a\)\(s-b\)\(s-c\)}](https://www.gstatic.com/education/formulas2/355397047/en/heron_s_formula.svg)
+* Set theory conventions **∀ \(for all\)** and **∃ \(there is\).** 
+  * For example,     **`∀x(∃y(y<x))`**
+
+    ===&gt; means that **for each** element x in the set, **there is** an element y in the set **such that** y is smaller than x
 
 ### 1.2 Problems: Geometry
 

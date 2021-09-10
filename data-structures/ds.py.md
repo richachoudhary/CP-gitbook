@@ -96,6 +96,8 @@ str1.endswith(str2)     # => returns bool
 
 ## `set`
 
+* In c++ **;**the structure **set** is based on a **balanced binary tree** and its operations work in **O\(log n\)** time.
+* In c++; the structure **unordered\_set** uses **hashing**, and its operations work in **O\(1\) time** on average.
 * **declare a set**:
   * `s = set()`
   * `s = {}`

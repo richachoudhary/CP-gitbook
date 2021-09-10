@@ -1,5 +1,7 @@
 # Bitwise
 
+### **ANY PROBLEM IN THE WORLD CAN BE SOLVED BY BITSET\(i.e. checking on all possible solutions\)🟢🟢🟢**
+
 ## **Notes:**
 
 ```python
@@ -34,7 +36,7 @@
       <td style="text-align:left">
         <p><code>1 &lt;&lt; n = pow(2,n)</code>
         </p>
-        <p>is equivalent to <b>multiplying</b> the bit pattern with</p>
+        <p><b><code>n&lt;&lt;k </code></b>is equivalent to <b>multiplying</b> n with</p>
       </td>
     </tr>
     <tr>
@@ -43,7 +45,7 @@
         <p><code>n &gt;&gt; 1</code>
         </p>
         <p>16 &gt;&gt; 4 = 1</p>
-        <p>is equivalent to <b>dividing</b> the bit pattern with</p>
+        <p><b><code>n&gt;&gt;k </code></b>is equivalent to <b>dividing</b> n with</p>
       </td>
     </tr>
     <tr>
@@ -52,13 +54,22 @@
       </td>
     </tr>
     <tr>
+      <td style="text-align:left"><b>TURN OFF </b> the i-th bit in x</td>
+      <td style="text-align:left"><b><code>x = x^(1&lt;&lt;i) </code></b> # xor turns that bit off</td>
+    </tr>
+    <tr>
+      <td style="text-align:left"><b>TURN ON </b>the i-th bit in x</td>
+      <td style="text-align:left"><b><code>x = x|(1&lt;&lt;i)</code></b>
+      </td>
+    </tr>
+    <tr>
       <td style="text-align:left"><b>Implementation: </b>generate all the possible subsets</td>
       <td style="text-align:left">
         <p><code>for i in range(0, 1&lt;&lt;n):<br />         sub = []</code>
         </p>
-        <p><code>         for n in range(0,n):</code>
+        <p><code>         for j in range(0,n):</code>
         </p>
-        <p><code>              if i and (1&lt;&lt;j):</code>
+        <p><code>              if i </code><b><code>&amp;</code></b><code>(1&lt;&lt;j):</code>
         </p>
         <p><code>                   sub.append(a[j])</code>
         </p>
@@ -111,11 +122,6 @@
       </td>
     </tr>
     <tr>
-      <td style="text-align:left"><b>Implementation: </b>Set N-th bit in x</td>
-      <td style="text-align:left"><b><code>x | (1 &lt;&lt; n)</code></b>
-      </td>
-    </tr>
-    <tr>
       <td style="text-align:left"><b>Implementation: </b>Highest power of 2 less than or equal to given
         N</td>
       <td style="text-align:left">
@@ -165,7 +171,9 @@
   </tbody>
 </table>
 
-* **Bitmasking**:
+\*\*\*\*
+
+## **Bitmasking**:
 
 ```python
 
@@ -185,7 +193,9 @@ add(SUBSET,2)
 remove(SUBSET,5)
 ```
 
+### DP with Bitmasking:
 
+* check \#DP section
 
 
 

@@ -356,6 +356,7 @@ def calcEquation(self, equations: List[List[str]], values: List[float], queries:
 * [x] LC [818. Race Car](https://leetcode.com/problems/race-car/) 😎✅✅
   * [x] Similar: LC [1654.Minimum Jumps to Reach Home](https://leetcode.com/problems/minimum-jumps-to-reach-home/) ✅\| must do\| DP se nhi honge aise Questions
   * [x] LC [1533.Minimum Number of Days to Eat N Oranges](https://leetcode.com/problems/minimum-number-of-days-to-eat-n-oranges/) \| BFS or DP 💪✅
+* [x] LC [847. Shortest Path Visiting All Nodes](https://leetcode.com/problems/shortest-path-visiting-all-nodes/) 🐽\| BFS + bitmask
 
 {% tabs %}
 {% tab title="818" %}
@@ -1498,6 +1499,11 @@ for i in range(0,len(disjoints)-1):
 
 ## 5. **Graph colouring/Bipartition ⚪️🔴🔵**
 
+* **colors:**  **`# 0:grey, 1:blue, 2:red`**
+* **`dfs(x,col=1)`** `--[for all its children]--->` **`dfs(y, col^1)`** 
+
+![](../.gitbook/assets/screenshot-2021-09-10-at-11.49.49-am.png)
+
 * [x] \*\*\*\*[**785.** Is Graph Bipartite?](https://leetcode.com/problems/is-graph-bipartite/)
 * [x] [886.Possible Bipartition](https://leetcode.com/problems/possible-bipartition/)
 * [x] CSES:[ Building Teams](https://cses.fi/problemset/task/1668/) 
@@ -1505,28 +1511,42 @@ for i in range(0,len(disjoints)-1):
 {% tabs %}
 {% tab title="785" %}
 ```python
-def dfs(src,col):
-    if vis[src]:    # no need to process already visited node
-        if color[src] != col:
-            return False
-        else:
+from collections import defaultdict
+
+
+def possibleBipartition(self, n: int, dislikes: List[List[int]]) -> bool:
+        adj = defaultdict(list)
+        
+        for x,y in dislikes:
+            adj[x].append(y)
+            adj[y].append(x)
+            
+        col = [-1 for _ in range(n+1)]  #all uncolored
+        
+        
+        def color_possible(x,c):
+            col[x] = c
+            for y in adj[x]:
+                '''
+                # if not colored yet => check if coloring possible from this
+                # else: is colored
+                    # if same color as parent=> return false
+                    # else diff color than parent => we're cool with it
+                '''
+                if col[y] == -1:
+                    if not color_possible(y,c^1):
+                        return False
+                else:
+                    if col[y] == c:
+                        return False
             return True
-    color[src] = col
-    vis[src] = True
-    for x in graph[src]:
-        if not dfs(x,col^1):
-            return False
-    return True
-
-color = [0 for _ in range(N)]  # 0:grey, 1:red, 2:blue
-vis = [False for _ in range(N)]
-
-# for every node- if not painted, paint red & do dfs
-for i in range(N):
-    if not vis[i]:
-        if not dfs(i,1):
-            return False
-return True
+        
+        for i in range(1,n+1):
+            if col[i] == -1:
+                #color it blue & start dfs
+                if not color_possible(i,1):
+                    return False
+        return True
 ```
 {% endtab %}
 {% endtabs %}
@@ -1534,7 +1554,12 @@ return True
 ## 6. Cycle Detection
 
 * **For Undirected graphs =&gt;** use DSU
-* **For Directed graphs =&gt;** [Modified DFS](https://www.algotree.org/algorithms/tree_graph_traversal/depth_first_search/cycle_detection_in_directed_graphs/) \(**`inPath`**\)  OR topological ordering
+* **For Directed graphs =&gt;** 
+  1. **Way\#1**: start dfs from a node & maintain list of all visited nodes\(**`in_path`**\); if a about-to-be-traversed node is already in the **`in_path`** =&gt; there is a cycle.✅
+  2. **Way\#2:** just count the \#nodes & \#edges: \(**IDEA**: a non-cyclic graph is a tree, dumbass!\)
+     * If a component contains **c nodes** and no cycle, it must contain **exactly c − 1 edges** \(so it has to be a **tree**\). 
+     * If there are **c or more edges**, the component surely **contains a cycle.**
+  3. **Way\#3:**  topological ordering
 
 {% tabs %}
 {% tab title="1.Undir::DSU" %}
@@ -1560,7 +1585,7 @@ for x,y in edges:
 ```
 {% endtab %}
 
-{% tab title="2.1Direc::dfs" %}
+{% tab title="2.1Direc::dfs✅" %}
 ```python
 def dfs(x):
     vis[x] = True
@@ -1582,7 +1607,7 @@ for i in range(N):
 ```
 {% endtab %}
 
-{% tab title="2.2 Direc::topo" %}
+{% tab title="2.3 Direc::topo" %}
 ```
 Approach: 
 In Topological Sort, the idea is to visit the parent node followed by the child node. 

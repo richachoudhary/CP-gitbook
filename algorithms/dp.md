@@ -4,6 +4,11 @@ description: 'All the problems from LC, categorised'
 
 # DP
 
+### \#There are two uses for dynamic programming:🟢🟢🟢
+
+1. **Finding an optimal solution**: We want to find a solution that is as large as possible or as small as possible.
+2. **Counting the number of solutions**: We want to calculate the total num- ber of possible solutions.
+
 ## \# Notes 
 
 *  **Approach for DP problem:**  find Recursion **===&gt;** Memoize it **===&gt;** \(optional\) Top-Down OR matrix
@@ -620,8 +625,9 @@ def f():
 * [x] Traveling Salesman Problem:✅💯
   * Bruteforce: O\(N!\)
   * **DP**: SC: O\(N\*\(2^N\)\) , TC: O\(\(N^2\)\*\(2^N\)\)
-* [x] CF: [Fish - Probability that i-th fish is alive at last](https://codeforces.com/contest/16/problem/E) \| [Video@KartikArora](https://www.youtube.com/watch?v=d7kvyp6dfz8&list=PLb3g_Z8nEv1icFNrtZqByO1CrWVHLlO5g&index=5&ab_channel=KartikArora) 😓
-* [x] Codechef: [People Wearing diff t-shrits in party](https://www.codechef.com/problems/TSHIRTS) \| [Video@KartikArora](https://www.youtube.com/watch?v=Smem2tVQQXU&list=PLb3g_Z8nEv1icFNrtZqByO1CrWVHLlO5g&index=6&ab_channel=KartikArora)
+* [ ] CF: [Fish - Probability that i-th fish is alive at last](https://codeforces.com/contest/16/problem/E) \| [Video@KartikArora](https://www.youtube.com/watch?v=d7kvyp6dfz8&list=PLb3g_Z8nEv1icFNrtZqByO1CrWVHLlO5g&index=5&ab_channel=KartikArora) 😓🐽🐽
+* [ ] Codechef: **Little Elephant:** [People Wearing diff t-shrits in party](https://www.codechef.com/problems/TSHIRTS) \| [Video@KartikArora](https://www.youtube.com/watch?v=Smem2tVQQXU&list=PLb3g_Z8nEv1icFNrtZqByO1CrWVHLlO5g&index=6&ab_channel=KartikArora)
+* [ ] **CSES:** [**Counting Tiling**](https://cses.fi/problemset/task/2181) **:** number of ways to fill NxM board with 1x2 or 2x1 tiles **\|**[ **KartikArora**](https://www.youtube.com/watch?v=lPLhmuWMRag&list=PLb3g_Z8nEv1icFNrtZqByO1CrWVHLlO5g&index=7&ab_channel=KartikArora) **🐽**
 
 {% tabs %}
 {% tab title="\#1" %}
@@ -656,8 +662,13 @@ INIT: mask = 1111....(2^n) times .....11 :: all people are available
 {% tab title="\#2.TSP" %}
 ```python
 '''
-dp(i,S) = min ( dist(i,j) + dp(j, S-{j}) )
-S is the bitmask of size 2^n 
+dp(i,S) = min ( dist(i,j) + dp(j, S-{j}) ) 
+i.e. min dist to travel when you're @i & you need to visit cities in Set
+
+==> S is the bitmask of size 2^n 
+
+SC: O(N*(2^N))
+TC: O((N^2)*(2^N)) : (N^2) because of transactional time
 '''
 
 @lru_cache(None)
@@ -676,6 +687,9 @@ def travellingSalesMan(i, mask, n):
 
 {% tab title="CF-Fish" %}
 ```cpp
+//Space Complexity: O(2^N)
+//Time Complexity: O(N^2 * 2^N)
+
 //#define double db
 double prob[20][20];
 double dp[(1 << 19)];
@@ -717,16 +731,84 @@ double solve(int bitmask, int n){
     }
     //cout << answer << endl;
     return dp[bitmask] = answer;
-    
-    
 }
  
 ```
 {% endtab %}
 
 {% tab title="CC-tshirts" %}
+```cpp
+//https://www.codechef.com/viewsolution/28505745
+/*
+dp(i,mask) = 
+    no of ways to assign t-shirts from i...N 
+    to the people in mask
+    who are not wearing any t-shirt now(i.e. unassigned people)
+
+mask = [0..100] (mentioned in Ques)
+ANS = dp(1, (2^N))
+
+dp(i,mask) = dp(i+1,mask) + SUM[dp(i+1, mask-{j}) s.t. own[i][j] == true]
+*/
+
+
 ```
-https://www.codechef.com/viewsolution/28505745
+{% endtab %}
+
+{% tab title="Counting Tiling🐽" %}
+```cpp
+void generate_next_masks(int current_mask, int i, int next_mask, int n, 
+                            vector<int>& next_masks){
+      if(i == n + 1){
+        next_masks.push_back(next_mask);
+        return;
+      }
+      
+      if((current_mask & (1 << i)) != 0)
+          generate_next_masks(current_mask, i + 1, next_mask, n, next_masks);
+      
+      if(i != n)
+        if((current_mask & (1 << i)) == 0 && (current_mask & (1 << (i+1))) == 0)
+          generate_next_masks(current_mask, i + 2, next_mask, n, next_masks);      
+      
+      if((current_mask & (1 << i)) == 0)
+          generate_next_masks
+                (current_mask, i + 1, next_mask + (1 << i), n, next_masks);    
+}
+ 
+int dp[1001][1<<11];
+int solve(int col, int mask, const int m, const int n){
+    // BASE CASE
+    if(col == m + 1){
+        if(mask == 0)
+          return 1;
+        return 0;
+    }
+ 
+    if(dp[col][mask] != -1)
+      return dp[col][mask];
+ 
+    int answer = 0;
+    vector<int> next_masks;
+    generate_next_masks(mask, 1, 0, n, next_masks);
+ 
+    for(int next_mask: next_masks){
+        answer = (answer + solve(col + 1, next_mask, m, n)) % mod;
+    }
+ 
+    return dp[col][mask] = answer;
+}
+ 
+int main() {
+   init_code();
+   int t = 1; //cin >> t;
+   while(t--){
+        read(n); read(m);
+        memset(dp, -1, sizeof dp);
+        cout << solve(1, 0, m, n); 
+   }
+   return 0;
+}
 ```
 {% endtab %}
 {% endtabs %}
@@ -734,10 +816,11 @@ https://www.codechef.com/viewsolution/28505745
 ### My Own Solves:
 
 * [x] [464.Can I Win](https://leetcode.com/problems/can-i-win/)
-* [x] [698.Partition to K Equal Sum Subsets](https://leetcode.com/problems/partition-to-k-equal-sum-subsets/) 💯💯
+* [x] [698.Partition to K Equal Sum Subsets](https://leetcode.com/problems/partition-to-k-equal-sum-subsets/) 💯💯✅
 * [ ] CSES: [Elevator Rides](https://cses.fi/problemset/task/1653/) 🐽✅
 * [ ] CSES: [Counting Tiles ](https://cses.fi/problemset/task/2181) \| [KartikArora](https://www.youtube.com/watch?v=lPLhmuWMRag&ab_channel=KartikArora) 🐽🐽
 * [ ] 1986.[Minimum Number of Work Sessions to Finish the Tasks](https://leetcode.com/problems/minimum-number-of-work-sessions-to-finish-the-tasks/) 🐽
+* [ ] LC [847. Shortest Path Visiting All Nodes](https://leetcode.com/problems/shortest-path-visiting-all-nodes/) 🐽\| BFS + bitmask
 
 {% tabs %}
 {% tab title="464." %}
@@ -747,7 +830,7 @@ dp(player,curr_score,mask) = OR (for all valid i's)
                             [ 
                                     (curr_score+i>=Target) 
                                             or 
-                            dp(next_player,scrore+i,mask with i-th bit turn off) 
+                            NOT dp(next_player,scrore+i,mask with i-th bit turn off) 
                             ]
 '''
 def canIWin(self, N: int, Target: int) -> bool:
