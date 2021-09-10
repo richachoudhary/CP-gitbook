@@ -821,6 +821,7 @@ int main() {
 * [ ] CSES: [Counting Tiles ](https://cses.fi/problemset/task/2181) \| [KartikArora](https://www.youtube.com/watch?v=lPLhmuWMRag&ab_channel=KartikArora) 🐽🐽
 * [ ] 1986.[Minimum Number of Work Sessions to Finish the Tasks](https://leetcode.com/problems/minimum-number-of-work-sessions-to-finish-the-tasks/) 🐽
 * [ ] LC [847. Shortest Path Visiting All Nodes](https://leetcode.com/problems/shortest-path-visiting-all-nodes/) 🐽\| BFS + bitmask
+* [x] @Google: [Team Standup Problem](https://leetcode.com/discuss/interview-question/978112/Google-or-L4-or-Onsite-SWE-or-Standups) 🤯🤯
 
 {% tabs %}
 {% tab title="464." %}
@@ -919,6 +920,56 @@ for (int s = 1; s < (1<<n); s++) {
     }
 }
 cout<<dp[(1<<n)-1].first;
+```
+{% endtab %}
+
+{% tab title="Stadnup@google" %}
+```python
+'''
+Question:
+N people are formed in a circle during standup. 
+The first person starts the conversation and then calls on someone non-adjacent to them to go next. 
+This process repeats until everyone has spoken only once. 
+Given N, how many different combinations can standup take place?
+
+N = 5 ==> ANS = 2
+N = 9 ==> ANS = 4106
+'''
+memo = dict()
+
+def standup(n: int, mask: int, last: int):
+
+    if mask == 2 ** n - 1:
+        return 1
+    
+    if (mask, last) in memo:
+        return memo[(mask, last)]
+    
+    ans = 0
+    p = 0
+    blocked = {}
+    if last == 0:
+        blocked = {1, n-1}
+    elif last == n-1:
+        blocked = {0,n-2}
+    else:
+        blocked = {last-1, last+1}
+    while p < n:
+        p_mask = 1 << p
+        if mask & p_mask == 0 and p not in blocked:
+            ans += standup(n, mask | p_mask, p)
+        p += 1
+    memo[(mask, last)] = ans
+    return ans
+
+N = 9 #change this
+print(standup(N, 1, 0)) #leave second parameters as 1 and 0
+
+
+'''
+Time: O(2^N * N^2)
+Space O(2^N * N)
+'''
 ```
 {% endtab %}
 {% endtabs %}

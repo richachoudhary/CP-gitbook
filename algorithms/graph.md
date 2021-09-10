@@ -562,8 +562,8 @@ def bellmanFord_SSSP(matrix):
     dist[k] = 0
     for node in range(1,N):        # relax each edge (N-1) times
         for u,v,w in matrix:
-            if dist[u] + w < dist[v]:
-                dist[v] = dist[u] + w
+            dist[v] = min(dist[v],dist[u] + w)
+                
                 
 #============ USAGE ==================
 for _ in range(m):
@@ -1112,6 +1112,48 @@ res =  ''.join(res)
 print(res)
 ```
 {% endtab %}
+
+{% tab title="BOOk\#2❤️" %}
+```python
+def solve(G,N):
+    adj = defaultdict(list)
+    inDeg = [0]*(N+1)
+
+    for x,y in G:
+        adj[x].append(y)
+        inDeg[y] += 1
+        
+    topo = []
+    Q = deque()
+    for i in range(1,N+1):
+        if inDeg[i] == 0:
+            Q.append(i)
+    while Q:
+        x = Q.popleft()
+        topo.append(x)
+        
+        for y in adj[x]:
+            inDeg[y] -= 1 
+            if inDeg[y] == 0:
+                Q.append(y)
+                
+    if len(topo) != N:
+        return -1
+    # print(topo
+    ways = [0]*(N+1)
+    ways[topo[0]] = 1
+    for i in range(N):
+        curr = topo[i]
+        for x in adj[curr]:
+            ways[x] += ways[curr]
+    return ways[1:]
+
+N = 6
+G = [[1,2],[1,4],[4,5],[5,2],[2,3],[5,3],[3,6]]
+res = solve(G,N)
+print(res)
+```
+{% endtab %}
 {% endtabs %}
 
 ### **3.2 Problems: Topological Sort**
@@ -1140,6 +1182,9 @@ print(res)
 * [ ] 631.[Design Excel Sum Formula](https://leetcode.com/problems/design-excel-sum-formula)
 * [ ] 1632.[Rank Transform of a Matrix](https://leetcode.com/problems/rank-transform-of-a-matrix)
 * [x] CSES: [Longest Flight Route](https://cses.fi/problemset/task/1680) ✅
+* [x] **BOOK\#2: Counting the number of paths till node X ✅✅❤️**\(repeat from trees\)
+
+![](../.gitbook/assets/screenshot-2021-09-10-at-1.13.22-pm.png)
 
 
 
@@ -1553,13 +1598,24 @@ def possibleBipartition(self, n: int, dislikes: List[List[int]]) -> bool:
 
 ## 6. Cycle Detection
 
-* **For Undirected graphs =&gt;** use DSU
-* **For Directed graphs =&gt;** 
-  1. **Way\#1**: start dfs from a node & maintain list of all visited nodes\(**`in_path`**\); if a about-to-be-traversed node is already in the **`in_path`** =&gt; there is a cycle.✅
-  2. **Way\#2:** just count the \#nodes & \#edges: \(**IDEA**: a non-cyclic graph is a tree, dumbass!\)
-     * If a component contains **c nodes** and no cycle, it must contain **exactly c − 1 edges** \(so it has to be a **tree**\). 
-     * If there are **c or more edges**, the component surely **contains a cycle.**
-  3. **Way\#3:**  topological ordering
+### **6.1**  use DSU: &gt;&gt; **For Undirected graphs**
+
+### 6.2 for Directed Graphs:
+
+### 🟢1. in\_path
+
+### 🟢2. \#\(Nodes - 1\) = \#Edges
+
+### 🔴3. Floyd's Algo
+
+### ⚪️4. Topological Ordering
+
+1. **Way\#1🟢**: start dfs from a node & maintain list of all visited nodes\(**`in_path`**\); if a about-to-be-traversed node is already in the **`in_path`** =&gt; there is a cycle.✅
+2. **Way\#2:🟢** just count the \#nodes & \#edges: \(**IDEA**: a non-cyclic graph is a tree, dumbass!\)
+   * If a component contains **c nodes** and no cycle, it must contain **exactly c − 1 edges** \(so it has to be a **tree**\). 
+   * If there are **c or more edges**, the component surely **contains a cycle.**
+3. **Way\#3🔴** : **Floyd's Algo** \(see the pic\)
+4. **Way\#4⚪️:**  topological ordering
 
 {% tabs %}
 {% tab title="1.Undir::DSU" %}
@@ -1619,7 +1675,18 @@ Therefore, after the topological sort,
     check for every directed edge whether it follows the order or not.
 ```
 {% endtab %}
+{% endtabs %}
 
+![Floyd&apos;s algo for cycle detection](../.gitbook/assets/screenshot-2021-09-10-at-1.18.55-pm.png)
+
+### 6.3 Problems: Cycle Detection
+
+* [x] [802.Find Eventual Safe States](https://leetcode.com/problems/find-eventual-safe-states/) .💯 
+* [x] [886.Possible Bipartition](https://leetcode.com/problems/possible-bipartition/)
+* [x] CSES: [Round Trip](https://cses.fi/problemset/task/1669/) ✅✅ 🐽 \| Undirected Graph \|  cycle retrieval
+* [x] CSES: [Round Trip II](https://cses.fi/problemset/task/1678) \| Directed Graph \| [Approach](https://www.youtube.com/watch?v=kzeAHV2Pw2o&ab_channel=Dardev)
+
+{% tabs %}
 {% tab title="802." %}
 ```python
 # find cycles in directed graph
@@ -1825,13 +1892,6 @@ int32_t main()
 ```
 {% endtab %}
 {% endtabs %}
-
-### 6.3 Problems: Cycle Detection
-
-* [x] [802.Find Eventual Safe States](https://leetcode.com/problems/find-eventual-safe-states/) .💯 
-* [x] [886.Possible Bipartition](https://leetcode.com/problems/possible-bipartition/)
-* [x] CSES: [Round Trip](https://cses.fi/problemset/task/1669/) ✅✅ 🐽 \| Undirected Graph \|  cycle retrieval
-* [x] CSES: [Round Trip II](https://cses.fi/problemset/task/1678) \| Directed Graph \| [Approach](https://www.youtube.com/watch?v=kzeAHV2Pw2o&ab_channel=Dardev)
 
 ## 7. SCCs \(Strongly Connected Cycles\)
 
@@ -2040,12 +2100,12 @@ class Solution:
 * [ ] [https://leetcode.com/problems/maximum-number-of-non-overlapping-substrings/](https://leetcode.com/problems/maximum-number-of-non-overlapping-substrings/) 🐽🐽🐽
 * [ ] [Airbnb \| Cover all vertices with the least number of vertices](https://leetcode.com/discuss/interview-question/algorithms/124861/airbnb-cover-all-vertices-with-the-least-number-of-vertices)
 
-## 8. Euler Path & Circuits
+## 8. ✏️Euler Path & Circuits✏️
 
 * **Definitions:**
   * **Euler Path/Trail? =&gt;** a path of edges which visits every edge only once.
     * Depends on the starting vertex.
-    * “Is it possible to draw a given graph without lifting pencil from the paper and without tracing any of the edges more than once”.
+    * “Is it possible to draw a given graph without lifting pencil from the paper and without tracing any of the edges more than once”.✏️✍️
   * **Euler Circuit/Cycle ? =&gt;** an eulerian path which starts & ends at the same vertex.
     * If you know your graph has Euler Cycle, you can start from any vertex.
 * **Conditions for Path & Circuits:**
@@ -2088,7 +2148,8 @@ class Solution:
 
 ### 8.1 Algos
 
-* Eulers Path: [GfG](https://www.geeksforgeeks.org/eulerian-path-and-circuit/) \| see \#332. for algo: `O(E+V)` **\| Resource:** [this page](http://www.graph-magics.com/articles/euler.php)
+* Eulers Path: [GfG](https://www.geeksforgeeks.org/eulerian-path-and-circuit/) \| see [\#332](https://leetcode.com/problems/reconstruct-itinerary/). for algo: `O(E+V)` **\| Resource:** [this page](http://www.graph-magics.com/articles/euler.php)
+  * [x] [332.Reconstruct Itinerary](https://leetcode.com/problems/reconstruct-itinerary/)
 * **Hierholzer's algorithm** for Euler Circuit: [GfG](https://www.geeksforgeeks.org/hierholzers-algorithm-directed-graph/)
 
 {% tabs %}
@@ -2125,7 +2186,7 @@ return euler_path[::-1]    # this reversing is part of the standard algo
 
 ### 8.2 Problems
 
-* [x] [332.Reconstruct Itinerary](https://leetcode.com/problems/reconstruct-itinerary/) ✅✈️
+* [x] [332.Reconstruct Itinerary](https://leetcode.com/problems/reconstruct-itinerary/) ✅✈️ ✏️✏️ \| `@google`
 * [ ] [753.Cracking the Safe](https://leetcode.com/problems/cracking-the-safe/)   🐽🐽🐽 `+Google`
 * [ ] [https://www.hackerearth.com/practice/algorithms/graphs/euler-tour-and-path/practice-problems/algorithm/wildcard-tree-problem-c2a1fbac/](https://www.hackerearth.com/practice/algorithms/graphs/euler-tour-and-path/practice-problems/algorithm/wildcard-tree-problem-c2a1fbac/) 
 

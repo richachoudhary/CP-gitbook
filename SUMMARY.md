@@ -10,15 +10,15 @@
 
 ## Algorithms
 
-* [✅Graph](algorithms/graph.md)
-* [Recursion 💪](algorithms/recursion.md)
-* [Linked List](algorithms/linked-list.md)
-* [Tree](algorithms/tree.md)
-* [Greeeedy](algorithms/greeeedy.md)
 * [DP](algorithms/dp.md)
-* [Maths & Geometry](algorithms/maths.md)
+* [✅Graph](algorithms/graph.md)
+* [Tree](algorithms/tree.md)
+* [Linked List](algorithms/linked-list.md)
+* [Recursion 💪](algorithms/recursion.md)
 * [Bitwise](algorithms/bitwise.md)
 * [Design](algorithms/design.md)
+* [Maths & Geometry](algorithms/maths.md)
+* [Greeeedy](algorithms/greeeedy.md)
 
 ## Data Structures
 

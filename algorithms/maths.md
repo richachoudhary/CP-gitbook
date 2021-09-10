@@ -237,25 +237,29 @@ def solve():
 
 ## 2. Maths
 
-### 2.1 Notes
+### 2.1 Notes :
 
+### **Fibonacci:**
+
+* **Zeckendorf’s theorem** states that every positive integer has a **unique representation as a sum of Fibonacci numbers** such that **no two numbers are equal or consecutive Fibonacci numbers**. 
+  * For example, the number 74 can be represented as the sum 55+13+5+1.
 * **Binet’s formula** for calculating **Fibonacci numbers:**
 
 ![](../.gitbook/assets/screenshot-2021-08-13-at-9.32.25-am.png)
 
-* Modular Exponentiation :
+### **Primes & Factors**
 
-```cpp
-int modularExponentiation(int x,int n,int M){    //get (x^n % M)
-    if(n==0) return 1;
-    else if(n%2 == 0) return modularExponentiation((x*x)%M,n/2,M);
-    else return (x*modularExponentiation((x*x)%M,(n-1)/2,M))%M;
-}
-// or in python: 
-math.pow(x,n,M)
-```
+![](../.gitbook/assets/screenshot-2021-09-10-at-2.04.29-pm.png)
 
-* Euclidean GCD
+![](../.gitbook/assets/screenshot-2021-09-10-at-2.06.28-pm.png)
+
+![Wilson&#x2019;s theorem to check whether a number is prime or not](../.gitbook/assets/screenshot-2021-09-10-at-2.14.35-pm.png)
+
+![Euler&#x2019;s totient function](../.gitbook/assets/screenshot-2021-09-10-at-2.10.08-pm.png)
+
+* **Lagrange’s theorem** states that every positive integer can be represented as a sum of four squares, i.e.,   ****$$N = a^2 + b^2 + c^2 + d^2 $$ ****
+  * For example, the number 123 can be represented as the sum $$123 = 8^2 + 5^2 + 5^2 + 3^3 $$ 8
+* **Euclidean GCD**
 
 ```python
 def gcd(a,b):
@@ -264,8 +268,16 @@ def gcd(a,b):
     return gcd(b, a%b)
 ```
 
-* Sieve of Eratosthenes
+* **Sieve of Eratosthenes**
 
+  * **COMPLEXITY**: 
+
+ 
+
+![TC of Sieve algo](../.gitbook/assets/screenshot-2021-09-10-at-2.08.37-pm.png)
+
+{% tabs %}
+{% tab title="Sieve\_Algo.py" %}
 ```cpp
 if n <= 1:
     return 0
@@ -281,8 +293,43 @@ for i in range(2,int(sqrt(n+1))+1):
 
 return sum(x for x in primes if x)
 ```
+{% endtab %}
+{% endtabs %}
+
+### Combinatorics
+
+* **Catalan numbers** 
+  * C\(n\) equals the number of **valid parenthesis expressions** that consist of n left parentheses and n right parentheses.
+  * Catalan numbers are also related to **trees**: 
+    * there are **C\(n\)** **binary trees** of **n nodes**
+    * there are **C\(n−1\)** **rooted trees** of **n nodes**
+
+![](../.gitbook/assets/screenshot-2021-09-10-at-2.22.05-pm.png)
+
+* **Derangements**
+  * ==&gt; permutations where no element remains in its original place
+    * number of derangements of elements {1, 2, . . . , n}, i.e., . 
+    * For example, when n = 3, there are two derangements: \(2, 3, 1\) and \(3, 1, 2\)
+
+![formula for Derangements](../.gitbook/assets/screenshot-2021-09-10-at-2.25.10-pm.png)
 
 
+
+### Other Imp things
+
+* **Modular Exponentiation** :
+
+```cpp
+int modularExponentiation(int x,int n,int M){    //get (x^n % M)
+    if(n==0) return 1;
+    else if(n%2 == 0) return modularExponentiation((x*x)%M,n/2,M);
+    else return (x*modularExponentiation((x*x)%M,(n-1)/2,M))%M;
+}
+// or in python: 
+math.pow(x,n,M)
+```
+
+### 
 
 ### 2.2 Problems: Maths
 

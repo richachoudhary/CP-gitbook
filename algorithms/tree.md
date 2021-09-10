@@ -27,6 +27,9 @@ root = TreeNode(x)
 * [x] \*\*\*\*[**Inorder Successor in Binary Search Tree**](https://www.geeksforgeeks.org/inorder-successor-in-binary-search-tree/) ✅💪
 * [x] 501. [Find Mode in Binary Search Tree](https://leetcode.com/problems/find-mode-in-binary-search-tree/) \| MindTickle!
 * [x] 236. [Find LCA in Binary Tree](https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/) \| **DnQ** \| Standard ✅✅
+* [x] Distance b/w 2 nodes in Tree: **`dist(a,b) = depth(a) + depth(b) - 2*depth(c) ; where c = lca(a,b)`**
+* [x] LCA of N-ary tree \([article](https://medium.com/@sahilawasthi9560460170/lowest-common-ancestor-of-n-ary-tree-107fa772a939)\)
+* [x] 1367.[ Linked List in Binary Tree](https://leetcode.com/problems/linked-list-in-binary-tree/)
 
 {% tabs %}
 {% tab title="InO\_Succ✅" %}
@@ -184,12 +187,49 @@ def lca(root,p,q) -> 'TreeNode':
             return left
 ```
 {% endtab %}
+
+{% tab title="1367." %}
+```python
+def isSubPath(self, head: Optional[ListNode], root: Optional[TreeNode]) -> bool:
+
+    def dfs(head, root):
+        if not head: return True
+        if not root: return False
+        return root.val == head.val and (dfs(head.next, root.left) or dfs(head.next, root.right))
+    if not head: return True
+    if not root: return False
+    return dfs(head, root) or self.isSubPath(head, root.left) or self.isSubPath(head, root.right)
+
+'''
+Time O(N * min(L,H))
+Space O(H)
+where N = tree size, H = tree height, L = list length.
+'''
+```
+{% endtab %}
 {% endtabs %}
 
-##  2. DP on Trees
+![LCA of N-ary Tree](../.gitbook/assets/screenshot-2021-09-10-at-1.56.31-pm.png)
+
+##  2. DP on Trees  ✅                        :          // does the job in O\(N\) 
+
+### 2.1 Trivial Questions
+
+* [x] **BOOK\#1: Number of nodes in subtree**
+
+![](../.gitbook/assets/screenshot-2021-09-10-at-12.43.41-pm.png)
+
+* [x] **BOOK\#2: Counting the number of paths till node X**
+
+![](../.gitbook/assets/screenshot-2021-09-10-at-1.13.22-pm.png)
+
+* [x] CSES:[ Tree Diameter](https://cses.fi/problemset/task/1131) ✅✅ \| Basic level Tree DP \| AdityaVerma \| [KartikArora- N-ary tree](https://www.youtube.com/watch?v=qNObsKl0GGY&list=PLb3g_Z8nEv1j_BC-fmZWHFe6jmU_zv-8s&index=3&ab_channel=KartikArora)
+* [x] CSES: [Tree Distances I](https://cses.fi/problemset/task/1132) \| aka. **`All Longest Paths`** \| Same code as TreeDiameter=&gt; use 2 dfs to get endpoints of dia ==&gt; dfs b/w them \| [underrated amazing video by HiteshTripathi](https://www.youtube.com/watch?v=Rnv4qvoxsTo&ab_channel=HiteshTripathi) 🚀✅✅🚀 \| **must\_do**
+* [x] LC: [Diameter of N-ary tree](http://leetcode.libaoj.in/diameter-of-n-ary-tree.html) \| `TreeDistances I 's` code works here too
+* [x] CSES: [Tree Distances II](https://cses.fi/problemset/task/1133) \| **Tree Rerooting ✅🐽\|** [video](https://www.youtube.com/watch?v=lWCZOjUOjRc&t=42s)
 
 {% tabs %}
-{% tab title="<template>⭐️" %}
+{% tab title="template" %}
 ```python
 def f(node):
     #1. Base Condition
@@ -210,15 +250,31 @@ def f(node):
 {% tab title="TreeDiameter" %}
 ```python
 ---------------------- works only for binary tree
-def dia(node):
-    if not node: return 0     #1. BC
+
+def recurse(x):
+    if not x: 
+        return 0
+    ldia = recurse(x.left)
+    rdia = recurse(x.right)
+
+    self.result = max(self.result, ldia+rdia)  # this is the dia of node x
+    return 1 + max(ldia,rdia)  # passes this to its parent
+
+self.result = 0
+recurse(root)
+return self.result    
+
+''' ============== below one is WRONNGGGGGm ============= '''
+# def dia(node):
+#     if not node: return 0     #1. BC
         
-    ldia = dia(node.left)    #2. Hypothesis
-    rida = dia(node.right)
+#     ldia = dia(node.left)    #2. Hypothesis
+#     rida = dia(node.right)
     
-    opt1 = max(ldia, rdia)        # when node isnt part of final ans
-    opt2 = 1 + ldia + rdia        # when node is part of final ans
-    return max(opt1, opt2)
+#     opt1 = max(ldia, rdia)        # when node isnt part of final ans
+#     opt2 = 1 + ldia + rdia        # when node is part of final ans
+#     return max(opt1, opt2)
+    
 ------------------------- for n-arry tree
 int n, ans;
 vector<int> adj[MAX];
@@ -229,8 +285,8 @@ int d[MAX];
          if(v==p)continue;
 
          dfs(v,u);
-         ans = max(ans, d[u]+d[v]+1);
-         d[u] = max(d[u],1+d[v]);
+         ans = max(ans, d[u]+d[v]+1); # when node is part of final ans
+         d[u] = max(d[u],1+d[v]);     # when node isnt part of final ans
      }
  }
  
@@ -250,81 +306,129 @@ int main() {
 {% endtab %}
 
 {% tab title="TreeDistance I" %}
+```python
+from collections import defaultdict
+
+G = [[1,2],[2,3],[2,4],[3,5],[4,6]]
+N = 6
+adj = defaultdict(list)
+
+for x,y in G:
+    adj[x].append(y)
+    adj[y].append(x)
+
+def dfs(x,p,d):
+    vis.add(x)
+    par[x] = p
+    dists[x] = d
+    for y in adj[x]:
+        if y not in vis and y != p:
+            dfs(y,x,d+1)
+            
+#=================== DFS#1: getting one end of diameter: ndoe1
+par = [-1]*(N+1)
+dists = [0]*(N+1)
+vis = set()
+
+dfs(1,-1,0)     # start dfs from any arbitraily rooted node
+node1 = -1
+max_dist = float('-inf')
+
+for i in range(1,N+1):
+    if max_dist < dists[i]:
+        node1 = i
+        max_dist = dists[i]
+
+print('node1 = ', node1)
+
+#=================== DFS#1: getting the other end of diameter: ndoe2
+par = [-1]*(N+1)
+dists = [0]*(N+1)
+vis = set()
+
+dfs(node1,-1,0) # start dfs from tree rooted @node1
+node2 = -1
+max_dist = float('-inf')
+
+for i in range(1,N+1):
+    if max_dist < dists[i]:
+        node2 = i
+        max_dist = dists[i]
+
+print('node2 = ', node2)
+
+# node1 & node2 mil gye
+# ab unse dfs call karo aur dists calculate karo
+
+dists = [0]*(N+1)
+vis = set()
+
+dfs(node1,-1,0)
+d1 = dists[::]
+
+dists = [0]*(N+1)
+vis = set()
+
+dfs(node2,-1,0)
+d2 = dists[::]
+
+print(d1)
+print(d2)
+print(f'========> Tree Diameter = {d1[node2]}')
+
+print('======== Now printing max longest paths for all nodes =========')
+for i in range(1,N+1):
+    print(f' Node: {i} => {max(d1[i],d2[i])}')
+
+```
+{% endtab %}
+
+{% tab title="TreeDistance 2" %}
 ```cpp
-vector<int>a[200005];
-int vis[200005];
-int d[200005];
-int par[200005];
+vi ar[200001];
+lli res[200001];
+int subSize[200001];
+lli subDist[200001];
+int n;
  
-void dfs(int src, int p, int dis){
-    vis[src]=1;
-    d[src]=dis;
-    
-    for(auto i:a[src]){
-        if(!vis[i] and i!=p){
-            par[i] = src;
-            dfs(i, src, dis+1);
+// preprocessing - to fill subtree-dist & subtree-size arr ==================
+void dfs1(int node , int par)
+{
+	subSize[node] = 1;
+	
+	for(int child : ar[node])
+        if(child != par)
+        {
+            dfs1(child , node);
+            subSize[node] += subSize[child];
+            subDist[node] += subSize[child] + subDist[child];
         }
-    }
 }
  
+// rerooting node to get ans ==================================
+void dfs(int node , int par)
+{
+	res[node] = (res[par] - subSize[node] - subDist[node]); //Rerooting1: remove contribution of self from parent's
+  res[node] += n - subSize[node] + subDist[node];         //Rerooting2: add contribution of self in ans
+	
+	for(int child : ar[node])
+	    if(child != par)
+	        dfs(child , node);
+}
  
-int main(){
-    cin>>n;
-    for(int i=0;i<n-1;i++){
-        int x, y;cin>>x>>y;
-        a[x].pb(y);
-        a[y].pb(x);
-    }
-    //==================================== DFS#1: to get one diameter end point
-    memset(par, 0, sizeof(par));
-    memset(vis, 0, sizeof(vis));
-    memset(d, 0, sizeof(d));
-    par[1]=0;
-    dfs(1, par[1], 0);
-    int node1 = -1 , node2 = -1 , ma = INT_MIN;
-    for(int i=2;i<=n;i++){
-        if(ma<d[i]){
-            node1 = i;
-            ma = d[i];
-        }
-    }
-    
-    //==================================== DFS#2: to get 2nd diameter end point
-    ma=INT_MIN;
-    memset(vis, 0, sizeof(vis));
-    memset(d, 0, sizeof(d));
-    dfs(node1 , 0 , 0);
-    
-    for(int i=1;i<=n;i++){
-        if(ma<d[i] and i!=node1){
-            node2 = i;
-            ma = d[i];
-        }
-    }
-    
-    //node1 and node2 mil gaye...
-    //ab unse dfs call kardo 
-    //==================================== DFS#: to get diameter length
-    
-    memset(vis, 0, sizeof(vis));
-    memset(d, 0, sizeof(d));
-    dfs(node1, 0 , 0);
-    vector<int>d1;d1.pb(0);
-    for(int i=1;i<=n;i++){
-        d1.pb(d[i]);
-    }
-    
-    
-    memset(vis, 0, sizeof(vis));
-    memset(d, 0, sizeof(d));
-    dfs(node2, 0 , 0);
-    
-    //cout<<d[node1]<<endl;            //for tree diameter
-    for(int i=1;i<=n;i++){              //for max dist from each node
-       cout<<max(d[i], d1[i])<<" ";
-    }
-    return 0;
+int main()
+{
+	int a , b;
+	cin>>n;
+	REP(i , n-1) cin>>a>>b , ar[a].pb(b) , ar[b].pb(a);
+	
+	dfs1(1 , -1);
+	res[1] = subDist[1];
+	
+	for(int child : ar[1])
+	dfs(child , 1);
+	
+	REP(i , n) cout<<res[i]<<" ";
 }
 ```
 {% endtab %}
@@ -364,6 +468,70 @@ def solve(node):
 ```
 {% endtab %}
 
+{% tab title="BOOk\#2" %}
+```python
+def solve(G,N):
+    adj = defaultdict(list)
+    inDeg = [0]*(N+1)
+
+    for x,y in G:
+        adj[x].append(y)
+        inDeg[y] += 1
+        
+    topo = []
+    Q = deque()
+    for i in range(1,N+1):
+        if inDeg[i] == 0:
+            Q.append(i)
+    while Q:
+        x = Q.popleft()
+        topo.append(x)
+        
+        for y in adj[x]:
+            inDeg[y] -= 1 
+            if inDeg[y] == 0:
+                Q.append(y)
+                
+    if len(topo) != N:
+        return -1
+    # print(topo
+    ways = [0]*(N+1)
+    ways[topo[0]] = 1
+    for i in range(N):
+        curr = topo[i]
+        for x in adj[curr]:
+            ways[x] += ways[curr]
+    return ways[1:]
+
+
+N = 6
+G = [[1,2],[1,4],[4,5],[5,2],[2,3],[5,3],[3,6]]
+res = solve(G,N)
+print(res)
+```
+{% endtab %}
+{% endtabs %}
+
+### 
+
+### 2.2 Not-so trivial Questions
+
+* [x] CSES: [Subordinates](https://cses.fi/problemset/task/1674) ✅
+* [x] CF: [Distance in Tree](https://codeforces.com/contest/161/problem/D) \| \#nodes at dist K from each other \| video
+* [x] CSES: [Tree Matching](https://cses.fi/problemset/task/1130) \| [kartikArora](https://www.youtube.com/watch?v=RuNAYVTn9qM&list=PLb3g_Z8nEv1j_BC-fmZWHFe6jmU_zv-8s&index=2&ab_channel=KartikArora) ✅
+* [ ] CSES: [Company Queries I](https://cses.fi/problemset/task/1687) \| **LCA + Binary Lifting 🐽🐽**
+* [ ] CSES: [Company Queries II](https://cses.fi/problemset/task/1688) \| **LCA + Binary Lifting 🐽🐽**
+* [x] 968.[Binary Tree Cameras](https://leetcode.com/problems/binary-tree-cameras/) \| @kartikArora 📷✅✅✅✅✅✅✅✅
+* [x] 337. [House Robber III](https://leetcode.com/problems/house-robber-iii/) ✅
+* [x] 95. [Unique Binary Search Trees II](https://leetcode.com/problems/unique-binary-search-trees-ii/) ✅\| @MindTickle
+* [x] 1339. [Maximum Product of Splitted Binary Tree](https://leetcode.com/problems/maximum-product-of-splitted-binary-tree/)\| ❤️✅\| looks so complicated, yet so easy
+* [ ] [https://leetcode.com/problems/longest-zigzag-path-in-a-binary-tree/](https://leetcode.com/problems/longest-zigzag-path-in-a-binary-tree/)
+* [ ] [https://leetcode.com/problems/maximum-sum-bst-in-binary-tree/](https://leetcode.com/problems/maximum-sum-bst-in-binary-tree/)
+* [ ] [https://leetcode.com/problems/number-of-ways-to-reorder-array-to-get-same-bst/](https://leetcode.com/problems/number-of-ways-to-reorder-array-to-get-same-bst/)
+
+
+
+{% tabs %}
 {% tab title="Subordinates" %}
 ```python
 adj = defaultdict(list)
@@ -440,76 +608,6 @@ void dfs (int src){
 ```
 {% endtab %}
 
-{% tab title="TreeDistance 2" %}
-```cpp
-vi ar[200001];
-lli res[200001];
-int subSize[200001];
-lli subDist[200001];
-int n;
- 
-// preprocessing - to fill subtree-dist & subtree-size arr ==================
-void dfs1(int node , int par)
-{
-	subSize[node] = 1;
-	
-	for(int child : ar[node])
-        if(child != par)
-        {
-            dfs1(child , node);
-            subSize[node] += subSize[child];
-            
-            subDist[node] += subSize[child] + subDist[child];
-        }
-}
- 
-// rerooting node to get ans ==================================
-void dfs(int node , int par)
-{
-	res[node] = (res[par] - subSize[node] - subDist[node]); //Rerooting1: remove contribution of self from parent's
-    res[node] += n - subSize[node] + subDist[node];         //Rerooting2: add contribution of self in ans
-	
-	for(int child : ar[node])
-	    if(child != par)
-	        dfs(child , node);
-}
- 
-int main()
-{
-	int a , b;
-	cin>>n;
-	REP(i , n-1) cin>>a>>b , ar[a].pb(b) , ar[b].pb(a);
-	
-	dfs1(1 , -1);
-	res[1] = subDist[1];
-	
-	for(int child : ar[1])
-	dfs(child , 1);
-	
-	REP(i , n) cout<<res[i]<<" ";
-}
-```
-{% endtab %}
-{% endtabs %}
-
-* [x] CSES:[ Tree Diameter](https://cses.fi/problemset/task/1131) ✅✅ \| Basic level Tree DP \| AdityaVerma \| [KartikArora- N-ary tree](https://www.youtube.com/watch?v=qNObsKl0GGY&list=PLb3g_Z8nEv1j_BC-fmZWHFe6jmU_zv-8s&index=3&ab_channel=KartikArora)
-* [x] CSES: [Subordinates](https://cses.fi/problemset/task/1674) ✅
-* [x] CSES: [Tree Matching](https://cses.fi/problemset/task/1130) \| [kartikArora](https://www.youtube.com/watch?v=RuNAYVTn9qM&list=PLb3g_Z8nEv1j_BC-fmZWHFe6jmU_zv-8s&index=2&ab_channel=KartikArora) ✅
-* [x] CSES: [Tree Distances I](https://cses.fi/problemset/task/1132) \| Same code as TreeDiameter=&gt; use 2 dfs to get endpoints of dia ==&gt; dfs b/w them \| [underrated amazing video by HiteshTripathi](https://www.youtube.com/watch?v=Rnv4qvoxsTo&ab_channel=HiteshTripathi) 🚀✅✅🚀 \| **must\_do**
-* [x] CSES: [Tree Distances II](https://cses.fi/problemset/task/1133) \| **Tree Rerooting ✅🐽\|** [video](https://www.youtube.com/watch?v=lWCZOjUOjRc&t=42s)
-* [x] CF: [Distance in Tree](https://codeforces.com/contest/161/problem/D) \| \#nodes at dist K from each other \| video
-* [ ] CSES: [Company Queries I](https://cses.fi/problemset/task/1687) \| **LCA + Binary Lifting 🐽🐽**
-* [ ] CSES: [Company Queries II](https://cses.fi/problemset/task/1688) \| **LCA + Binary Lifting 🐽🐽**
-* [x] 968.[Binary Tree Cameras](https://leetcode.com/problems/binary-tree-cameras/) \| @kartikArora 📷✅✅✅✅✅✅✅✅
-* [ ] [https://leetcode.com/problems/unique-binary-search-trees-ii/](https://leetcode.com/problems/unique-binary-search-trees-ii/)
-* [ ] [https://leetcode.com/problems/house-robber-iii/](https://leetcode.com/problems/house-robber-iii/)
-* [ ] [https://leetcode.com/problems/maximum-product-of-splitted-binary-tree/](https://leetcode.com/problems/maximum-product-of-splitted-binary-tree/)
-* [ ] [https://leetcode.com/problems/linked-list-in-binary-tree/](https://leetcode.com/problems/linked-list-in-binary-tree/)
-* [ ] [https://leetcode.com/problems/longest-zigzag-path-in-a-binary-tree/](https://leetcode.com/problems/longest-zigzag-path-in-a-binary-tree/)
-* [ ] [https://leetcode.com/problems/maximum-sum-bst-in-binary-tree/](https://leetcode.com/problems/maximum-sum-bst-in-binary-tree/)
-* [ ] [https://leetcode.com/problems/number-of-ways-to-reorder-array-to-get-same-bst/](https://leetcode.com/problems/number-of-ways-to-reorder-array-to-get-same-bst/)
-
-{% tabs %}
 {% tab title="968.📷✅" %}
 ```python
 @lru_cache(None)
@@ -534,12 +632,79 @@ def minCameras(node=root, parent_covered=True, parent_camera=False):
 return minCameras()
 ```
 {% endtab %}
+
+{% tab title="HouesRobber3" %}
+```python
+MEMO = {}
+def dp(x):
+    if not x:
+        return 0
+    if not x.left and not x.right:
+        return x.val
+    if x in MEMO:
+        return MEMO[x]
+    opt1 = dp(x.left) + dp(x.right) # do not rob this node
+    
+    #rob this node
+    opt2 = x.val 
+    if x.left:
+        opt2 += dp(x.left.left) + dp(x.left.right)
+    if x.right:
+        opt2 += dp(x.right.left) + dp(x.right.right) 
+    MEMO[x] = max(opt1, opt2)
+    return MEMO[x]
+    
+
+return dp(root)
+```
+{% endtab %}
+
+{% tab title="95" %}
+```python
+ def solve(arr):
+		#Base conditions
+    if len(arr) < 1:
+        return [None]
+    if len(arr) == 1:
+        return [TreeNode(arr[0])]
+    
+    ret = []
+    for i,item in enumerate(arr):
+        leftTrees = f(arr[0:i])
+        rightTrees = f(arr[i+1:])
+        
+        for lt in leftTrees:
+            for rt in rightTrees:
+                r = TreeNode(arr[i])
+                r.left = lt
+                r.right = rt
+                ret.append(r)
+    return ret
+
+return solve(list(range(1,n+1)))
+```
+{% endtab %}
+
+{% tab title="1339.❤️✅" %}
+```python
+def maxProduct(self, root: Optional[TreeNode]) -> int:
+        
+    # dfs to get sum of subtree rooted @node
+    def dfs(node):
+        if not node: return 0
+        ans = dfs(node.left) + dfs(node.right) + node.val
+        res.append(ans)
+        return ans
+    
+    res = []
+    dfs(root)
+    sum_all = max(res)
+    return max(i*(sum_all-i) for i in res) % (10**9 + 7)
+```
+{% endtab %}
 {% endtabs %}
 
-### 2.1 Resources: Tree DP
 
-* ✅Kartik Arora's Playlist: [Tree DP](https://www.youtube.com/watch?v=fGznXJ-LTbI&list=PLb3g_Z8nEv1j_BC-fmZWHFe6jmU_zv-8s&ab_channel=KartikArora)
-* Aditya Verma's Playlist: [TreeDP](https://www.youtube.com/watch?v=qZ5zayHSH2g&list=PL_z_8CaSLPWfxJPz2-YKqL9gXWdgrhvdn&ab_channel=AdityaVerma)
 
 ## 3. Adv Trees 
 
@@ -1041,6 +1206,9 @@ def queryTreeRSQ(ql, qr,sl,sr,index):
 ## Resources:
 
 * Youtube playlist by **WilliamFiset**  : [here](https://www.youtube.com/watch?v=0qgaIMqOEVs&list=PLDV1Zeh2NRsDGO4--qE8yH72HFL1Km93P&index=9&ab_channel=WilliamFiset)
+* **Resources: Tree DP**
+  * ✅Kartik Arora's Playlist: [Tree DP](https://www.youtube.com/watch?v=fGznXJ-LTbI&list=PLb3g_Z8nEv1j_BC-fmZWHFe6jmU_zv-8s&ab_channel=KartikArora)
+  * Aditya Verma's Playlist: [TreeDP](https://www.youtube.com/watch?v=qZ5zayHSH2g&list=PL_z_8CaSLPWfxJPz2-YKqL9gXWdgrhvdn&ab_channel=AdityaVerma)
 
 
 
