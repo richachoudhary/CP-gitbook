@@ -2,7 +2,7 @@
 description: Patterns & their problem list
 ---
 
-# ✅Graph
+# Graph
 
 ## **Notes**
 
@@ -146,160 +146,145 @@ diagram: https://leetcode.com/problems/shortest-bridge/discuss/189293/C%2B%2B-BF
 {% endtab %}
 
 {% tab title="MessageRoute" %}
-```cpp
-# ============================================ PY[WA on few]
-def solve():
-    I = lambda: map(int, input().split())
-    n, m = I()
-    adj = defaultdict(list)
+```python
+I = lambda: map(int, input().split())
 
-    for _ in range(m):
-        x, y = I()
-        adj[x].append(y)
-        adj[y].append(x)
+n, m = I()
 
-    par = [0]*(n+1)
-    # BFS
-    Q = deque()
-    Q.append(1)
-    par[1] = -1
+adj = defaultdict(list)
+
+for _ in range(m):
+    x,y = I()
+    adj[x].append(y)
+    adj[y].append(x)
     
-    while Q:
-        p = Q.pop()
-        
-        if p == n:
-            break
-        
-        for x in adj[p]:
-            if not par[x]:
-                Q.append(x)
-                par[x] = p
+# op1: copy of path( this shit cost me coinbase job 😖)=========    
+vis = set()
+Q = deque()
+path = [1]
+is_solved = False
+Q.append((1,path))
+
+while Q:
+    x,p = Q.popleft()
+    if x == n:
+        is_solved = True
+        path = p
+        break
+    if x in vis:
+        continue
+    vis.add(x)
     
-    # Traverse back from n-> 1
-    if not par[n]:
-        print("IMPOSSIBLE")
-        return
+    for y in adj[x]:
+        new_path = p.copy()
+        new_path.append(y)
+        Q.append((y,new_path))
     
-    path = []
-    curr = n
-    while curr != -1:
-        path.append(curr)
-        curr = par[curr]
-        
+
+if not is_solved:
+    print('IMPOSSIBLE')
+else:
     print(len(path))
-    for p in reversed(path):
-        print(p,end = " ")
-    return 
+    print(*path, end = ' ')
 
-#============================================= CPP[AC}
-for(int i=0 ; i<m ; i++ )
-{
-    int u , v;
-    cin >> u >> v ;
-    g[u].pb(v);
-    g[v].pb(u);
-}
-queue < int > q;
-q.push( 1 );
-par[1] = -1;
-while( !q.empty() )
-{
-    int p = q.front() ;
-    q.pop();
-    if( p == n ) break;
-    for( auto &i : g[p] )
-        if( !par[i] ) par[i] = p , q.push( i );
-}
-if( par[n] )
-{
-    stack<int> s;
-    s.push( n );
-    int p = par[n] ;
-    while( p != -1 )
-    {
-        s.push( p );
-        p = par[p];
-    }
-    cout << (int)(s.size() ) << "\n";
-    while( !s.empty() )
-    {
-        cout << s.top() << " " ;
-        s.pop();
-    }
-}
-else
-    cout << "IMPOSSIBLE";
+# opt#2: par[] is always reliable ============================
+vis = set()
+Q = deque()
+
+par = [-1 for _ in range(n+1)]
+Q.append((1,-1))
+
+while Q:
+    x,p = Q.popleft()
+    if x in vis:
+        continue
+    vis.add(x)
+    par[x] = p
+    if x == n:
+        break
+    
+    for y in adj[x]:
+        Q.append((y,x))    
+
+if par[n] == -1:
+    print('IMPOSSIBLE')
+else:
+    path = []
+    x = n
+    while x != -1:
+        path.append(x)
+        x = par[x]
+    path.reverse()
+    print(len(path))
+    print(*path, end = ' ')
 ```
 {% endtab %}
 
 {% tab title="Monsters\| LavaFlow" %}
 ```python
-n,m = I()
+I = lambda: map(int, input().split())
+n, m = I()
 
-graph = []
+grid = [['x' for _ in range(m)] for _ in range(n)]
 monsters = []
-dirs = [(1,0),(-1,0),(0,1),(0,-1)]
-
-#1. Construct lavas matrix ======================
-lavas = [[float('inf') for _ in range(m)] for _ in range(n)]   #the min time when monster/laba reaches the cell
-vis = [[False for _ in range(m)] for _ in range(n)]
+start = None
 
 for i in range(n):
     s = str(input())
-    row = []
-    for j in range(len(s)):
-        row.append(s[j])
+    for j in range(m):
+        grid[i][j] = s[j]
         if s[j] == 'M':
             monsters.append((i,j))
-        if s[j] == 'A':
+        if grid[i][j] == 'A':
             start = (i,j)
-    graph.append(row)
 
-q = deque()
-# file lavas
-for x,y in monsters:
-    q.append((x,y,0))
+times = [[float('inf') for _ in range(m)] for _ in range(n)]
+dirs = [(0,1,'R'),(0,-1,'L'),(1,0,'D'),(-1,0,'U')]
 
-while q:
-    x,y,t = q.popleft()
-    lavas[x][y] = min(lavas[x][y],t)
+# 1.populate monsters reaching time ===========================
+Q = deque()
+vis = set()
+for mx,my in monsters:
+    Q.append((mx,my,0))
 
-    for dx,dy in dirs:
-        nx, ny = x+dx,y+dy
-        if 0<=nx<n and 0<=ny<m and graph[nx][ny] == '.' and lavas[nx][ny] > 1+t:
-            q.append((nx,ny,t+1))
-
-# for l in lavas:
-#     print(l)
-# 2. Make our player escape ===========================
-def isEscape(x,y,t):
-    return 0<=x<n and 0<=y<m and not vis[x][y] and graph[x][y] == '.' and lavas[x][y] > t
-
-q = deque()
-q.append((start[0],start[1],0,""))
-
-while q:
-    X,Y,T,path = q.popleft()
-    vis[X][Y] = True
-    if (X == n-1 or Y == m-1 or X == 0 or Y == 0) and (graph[X][Y]=='.') and T < lavas[X][Y]:
-        print("YES")
-        print(len(path))
-        print(path)
-        return
+while Q:
+    mx,my, t = Q.popleft()
+    vis.add((mx,my))
     
-    x,y = X-1,Y
-    if isEscape(x,y,T+1):
-        q.append((x,y,T+1,path+"U"))
-    x,y = X+1,Y
-    if isEscape(x,y,T+1):
-        q.append((x,y,T+1,path+"D"))
-    x,y = X,Y-1
-    if isEscape(x,y,T+1):
-        q.append((x,y,T+1,path+"L"))
-    x,y = X,Y+1
-    if isEscape(x,y,T+1):
-        q.append((x,y,T+1,path+"R"))
-print("NO")
+    times[mx][my] = min(t,times[mx][my])
+    for dx,dy,_ in dirs:
+        x,y = mx+dx, my+dy
+        if 0<=x<n and 0<=y<m and (x,y) not in vis and grid[x][y] != '#':
+            Q.append((x,y,t+1))
+
+# 2. start your escape 🏃‍♂️🏃‍♂️🏃‍♂️🏃‍♂️🏃‍♂️🏃‍♂️🏃‍♂️ ===========================
+Q = deque()
+vis.clear()
+Q.append((start[0],start[1],0,[]))
+escape_possible = False
+path = []
+
+while Q:
+    x,y,t,p = Q.popleft()
+    if x == n-1 or x == 0 or y == 0 or y == m-1:
+        escape_possible = True
+        path = p
+        break
+    vis.add((x,y))
+    
+    for dx,dy,dr in dirs:
+        nx,ny = x+dx,y+dy
+        if 0<=nx<n and 0<=ny<m and (nx,ny) not in vis and grid[nx][ny] == '.' and times[nx][ny] > t:
+            new_path = p.copy()
+            new_path.append(dr)
+            Q.append((nx,ny,t+1,new_path))
+    
+if not escape_possible:
+    print('NO')
+else:
+    print('YES')
+    print(len(path))
+    print(''.join(path))
 
 ```
 {% endtab %}
@@ -329,7 +314,7 @@ def calcEquation(self, equations: List[List[str]], values: List[float], queries:
 {% endtabs %}
 
 * [x] [339. Evaluate Division](https://leetcode.com/problems/evaluate-division/) **@coinbase**
-* [x] CSES: [Message Route](https://cses.fi/problemset/task/1667/) \| BFS+backtrack ✅✅
+* [x] CSES: [Message Route](https://cses.fi/problemset/task/1667/) \| BFS+backtrack ✅✅ \| this shit costed me @coinbase job 😖😖
 * [x] [The Maze](https://leetfree.com/problems/the-maze)
 * [x] [130. Surrounded Regions](https://leetcode.com/problems/surrounded-regions/)
 * [x] [1020.Number of Enclaves](https://leetcode.com/problems/number-of-enclaves/)
@@ -351,7 +336,7 @@ def calcEquation(self, equations: List[List[str]], values: List[float], queries:
 * [ ] CSES:[ Grid Paths](https://cses.fi/problemset/task/1625) ✅✅✅🐽\| [WilliamLin](https://www.youtube.com/watch?v=dZ_6MS14Mg4&t=2440s&ab_channel=WilliamLin)
 * [x] CSES: [Labyrinth](https://cses.fi/problemset/task/1193) ==&gt; **DFS** fails, **ALWAYS USE BFS for SHORTEST PATH ✅✅**
 * [x] **CSES:** [Monsters](https://cses.fi/problemset/task/1194) \| `Lava Flow Problem✅✅✅🔥🔥` \| [video](https://www.youtube.com/watch?v=hB59dxdDLII&ab_channel=Dardev)
-* [x] LC 127. [Word Ladder](https://leetcode.com/problems/word-ladder/)
+* [x] LC 127. [Word Ladder](https://leetcode.com/problems/word-ladder/) ✅✅💪💪
 * [ ] CSES: [Swap Game](https://cses.fi/problemset/task/1670)
 * [x] LC [818. Race Car](https://leetcode.com/problems/race-car/) 😎✅✅
   * [x] Similar: LC [1654.Minimum Jumps to Reach Home](https://leetcode.com/problems/minimum-jumps-to-reach-home/) ✅\| must do\| DP se nhi honge aise Questions
@@ -456,6 +441,34 @@ def minDays(self, n: int) -> int:
                     vis.add(x//3)
 
     return bfs(n)
+```
+{% endtab %}
+
+{% tab title="127.💪" %}
+```python
+def ladderLength(self, beginWord: str, endWord: str, wordList: List[str]) -> int:
+
+    if endWord not in wordList or not endWord or not beginWord or not wordList:
+        return 0
+    L = len(beginWord)
+    all_combo_dict = defaultdict(list)
+    for word in wordList:
+        for i in range(L):
+            all_combo_dict[word[:i] + "*" + word[i+1:]].append(word) 
+    queue = deque([(beginWord, 1)])
+    visited = set()
+    visited.add(beginWord)
+    while queue:
+        current_word, level = queue.popleft()
+        for i in range(L):
+            intermediate_word = current_word[:i] + "*" + current_word[i+1:]
+            for word in all_combo_dict[intermediate_word]:
+                if word == endWord:
+                    return level + 1
+                if word not in visited:
+                    visited.add(word)
+                    queue.append((word, level + 1))
+    return 0
 ```
 {% endtab %}
 {% endtabs %}
@@ -640,6 +653,170 @@ for _ in range(q):
 | **SP on unweighted graph** | Best algorithm | Ok | Bad | Bad in general |
 
 {% tabs %}
+{% tab title="Investigation" %}
+```python
+'''
+Dijkstra's ko nichoooooooooodddddd liya isne
+
+
+You are going to travel from node 1 to N by plane. 
+You would like to find answers to the following questions:
+
+1. what is the minimum price of such a route?
+2. how many minimum-price routes are there? (modulo 109+7)
+3. what is the minimum number of flights in a minimum-price route?
+4. what is the maximum number of flights in a minimum-price route?
+'''
+MOD = (10**9) + 7
+I = lambda: map(int, input().split())
+
+n,m= I()
+adj = defaultdict(list)
+    
+for _ in range(m):
+    u,v,w = I()
+    adj[u].append((v,w))
+
+dists = [float('inf') for _ in range(n+1)]
+nums = [1 for _ in range(n+1)]
+minf = [0 for _ in range(n+1)]
+maxf = [0 for _ in range(n+1)]
+
+vis = set()
+dists[1] = 0
+H = []
+heappush(H,(0,1))
+
+while H:
+    wx,x = heappop(H)
+    if x in vis:
+        continue
+    vis.add(x)
+    
+    for y,w in adj[x]:
+        if dists[y] > dists[x] + w:
+            dists[y] = dists[x] + w
+            nums[y] = nums[x]
+            minf[y] = 1+minf[x]
+            maxf[y] = 1+maxf[x]
+            heappush(H,(dists[y], y))
+        elif dists[y] == dists[x] + w:
+            nums[y] = (nums[x]+nums[y])%MOD
+            minf[y] = min(minf[y], 1+minf[x])
+            maxf[y] = max(maxf[y], 1+maxf[x])
+    
+print(dists[n])
+print(nums[n])
+print(minf[n])
+print(maxf[n])
+```
+{% endtab %}
+
+{% tab title="HighScore" %}
+```python
+I = lambda: map(int, input().split())
+n, m = I()
+
+graph = []
+
+for _ in range(m):
+    x,y,w = I()
+    graph.append((x,y,w))
+    
+
+dist = [float("-inf")] * (n+1)
+dist[1] = 0
+for node in range(n+1):        # relax each edge (N-1) times
+    for u,v,w in graph:
+        dist[v] = max(dist[v],dist[u] + w)
+res1 = dist[n]
+# print(dist)
+
+#2. check for neg cycle
+for u,v,w in graph:
+    old_v = dist[v]
+    dist[v] = max(dist[v],dist[u] + w)
+    if dist[v] != old_v:
+        dist[v] = float('inf')    # Negative cycle detected
+res2 = dist[n]
+
+
+if res1 != res2:
+    print('-1')
+else:
+    print(res1)
+```
+{% endtab %}
+
+{% tab title="FlightDiscount" %}
+```python
+'''
+Say we use the discount coupon on the edge between cities A and B.
+There are two cases: we can go from 1->A->B->N OR 1->B->A->N
+
+We can use Dijkstra's to compute:
+* dis1:  the distance from 1->N to every vertex.
+* distN: dist of A-> for every vertext
+
+Then our answer is: MIN {dist1[A] + c(A,B) + distN[B] } for every vertex A--B
+    * where c(A,B) is the cost to travel from 1->B after applying coupon to that flight
+'''
+
+I = lambda: map(int, input().split())
+n, m = I()
+
+prices = dict()
+adj_in = defaultdict(list)		#in[i] contains flights from city i
+adj_out = defaultdict(list)	  #out[i] contains flights to city i
+
+for _ in range(m):
+    x,y,w = I()
+    adj_in[x].append((y,w))
+    adj_out[y].append((x,w))
+    
+    if (x,y) in prices:
+        prices[(x,y)] = min(w,prices[(x,y)])
+    else:
+        prices[(x,y)] = w
+    
+dist1 = [float('inf') for _ in range(n+1)]  # dist 1 --> x ; for all x
+distN = [float('inf') for _ in range(n+1)]  # dist x --> N ; for all x
+
+#1.get dist1
+h = []
+dist1[1] = 0
+heappush(h,(0,1))
+while h:
+    ws,x = heappop(h)
+    
+    for y,w in adj_in[x]:
+        if dist1[y] > w + dist1[x]:
+            dist1[y] = w + dist1[x]
+            heappush(h,(dist1[y],y))
+            
+#2. get dist2
+h = []
+distN[n] = 0
+heappush(h,(0,n))
+while h:
+    ws,x = heappop(h)
+    
+    for y,w in adj_out[x]:
+        if distN[y] > w + distN[x]:
+            distN[y] = w + distN[x]
+            heappush(h,(distN[y],y))
+            
+#3. get the ans - with coupon code 
+print(dist1[1:])    
+print(distN[1:])
+res = float('inf')
+for (x,y), w in prices.items():
+    res = min(res, dist1[x] + (w//2) + distN[y] )
+print(res)
+
+```
+{% endtab %}
+
 {% tab title="LongestFlighRoute" %}
 ```python
 for _ in range(m):
@@ -707,95 +884,7 @@ for e in dist[-1]:
 ```
 {% endtab %}
 
-{% tab title="Flight Discount" %}
-```cpp
-/*
-Say we use the discount coupon on the edge between cities A and B.
-There are two cases: we can go from 1->A->B->N OR 1->B->A->N
-
-We can use Dijkstra's to compute:
-* dis1:  the distance from 1->N to every vertex.
-* distN: dist of A-> for every vertext
-
-Then our answer is: MIN {dist1[A] + c(A,B) + distN[B] } for every vertex A--B
-    * where c(A,B) is the cost to travel from 1->B after applying coupon to that flight
-*/
-int n, m;
-cin >> n >> m;
-//in[i] contains flights from city i
-//out[i] contains flights to city i
-vector<pair<int, int>> in[100000], out[100000];
-for (int i = 0; i < m; i++)
-{
-	int a, b, c;
-	cin >> a >> b >> c;
-	out[a - 1].push_back({b - 1, c});
-	in[b - 1].push_back({a - 1, c});
-}
-priority_queue<pair<long long, int>> q; //(-price, city)
-bool visited[100000]{};
-
-//find the price to go from city 1 to all other cities
-long long dist1[100000];
-fill(dist1, dist1 + n, 1e18);
-dist1[0] = 0;
-q.push({0, 0});
-while (!q.empty())
-{
-	int a = q.top().second;
-	q.pop();
-	if (visited[a]) continue;
-	visited[a] = true;
-	for (auto i : out[a])
-	{
-		int b = i.first, w = i.second;
-		if (dist1[a] + w < dist1[b])
-		{
-			dist1[b] = dist1[a] + w;
-			q.push({-dist1[b], b});
-		}
-	}
-}
-
-//find the price to go from each city to city n
-long long distn[100000];
-fill(distn, distn + n, 1e18);
-fill(visited, visited + n, false);
-distn[n - 1] = 0;
-q.push({0, n - 1});
-while (!q.empty())
-{
-	int a = q.top().second;
-	q.pop();
-	if (visited[a]) continue;
-	visited[a] = true;
-	for (auto i : in[a])
-	{
-		int b = i.first, w = i.second;
-		if (distn[a] + w < distn[b])
-		{
-			distn[b] = distn[a] + w;
-			q.push({-distn[b], b});
-		}
-	}
-}
-
-//take the minimum cost after using the coupon over all pairs of cities
-long long cost = dist1[n - 1];
-for (int a = 0; a < n; a++)
-{
-	for (auto i : out[a])
-	{
-		int b = i.first, w = i.second;
-		cost = min(cost, dist1[a] + distn[b] + w / 2);
-	}
-}
-cout << cost << endl;
-return 0;
-```
-{% endtab %}
-
-{% tab title="currency\_arbitrage" %}
+{% tab title="cur\_arbitrage" %}
 ```python
 from math import log
 
@@ -858,10 +947,52 @@ The Bellman-Ford algorithm can detect negative cycles. So if we run Bellman-Ford
 '''
 ```
 {% endtab %}
+
+{% tab title="1368" %}
+```python
+from heapq import heappush, heappop
+
+def minCost(self, grid: List[List[int]]) -> int:
+    n,m = len(grid), len(grid[0])
+    
+    dirs = [(0,1),(0,-1),(1,0),(-1,0)]  #1,2,3,4
+    
+    h = []
+    vis = set()
+    
+    heappush(h,(0,0,0))
+    while h:
+        c,x,y = heappop(h)
+        
+        if x == n-1 and y == m-1:
+            return c
+        
+        if (x,y) in vis:
+            continue
+        vis.add((x,y))
+        
+        for i,(dx,dy) in enumerate(dirs):
+            nx,ny = x+dx,y+dy
+            if 0<=nx<n and 0<=ny<m:
+                #if in the pointed direction: cost = 0
+                if dirs[grid[x][y]-1] == (dx,dy):
+                    heappush(h,(c,nx,ny))
+                #else cost = 1
+                else:
+                    heappush(h,(c+1,nx,ny))            
+    return -1
+'''
+TC: M*N(log(MN))
+'''        
+        
+# SOLN: https://leetcode.com/problems/minimum-cost-to-make-at-least-one-valid-path-in-a-grid/discuss/525011/Python-CLEAN-Priority-Queue-Solution-with-explanation
+```
+{% endtab %}
 {% endtabs %}
 
 ### 1.x Problems: **SSSP/SSLP** 
 
+* [x] CSES: [Investigation](https://cses.fi/problemset/task/1202)🏆✅✅
 * [x] [743. Network Delay Time](https://leetcode.com/problems/network-delay-time/)  🍪🍪
 * [x] [1631.Path With Minimum Effort](https://leetcode.com/problems/path-with-minimum-effort/)
 * [x] [787. Cheapest Flights Within K Stops](https://leetcode.com/problems/cheapest-flights-within-k-stops/)[ ✅](https://leetcode.com/problems/cheapest-flights-within-k-stops/
@@ -882,6 +1013,7 @@ The Bellman-Ford algorithm can detect negative cycles. So if we run Bellman-Ford
 * [x] CSES:  [Flight Routes](https://cses.fi/problemset/task/1196) \|  ✅✅ \| [approach](https://www.youtube.com/watch?v=009PBKHXtyA&ab_channel=Dardev) \| 2-D dijkstra's
 * [x]  CSES: [Flight Discount](https://cses.fi/problemset/result/2664805/) \| reversed dij: \| [approach](https://usaco.guide/problems/cses-1195-flight-discount/solution) ✅✅ aise hi questions toh dekhne mei impossible lagte hai BC!!!!............so damn easy
 * [x] [Currency Arbitrage](https://www.dailycodingproblem.com/blog/how-to-find-arbitrage-opportunities-in-python/) \| @coinbase
+* [x] 1368. [Minimum Cost to Make at Least One Valid Path in a Grid](https://leetcode.com/problems/minimum-cost-to-make-at-least-one-valid-path-in-a-grid/) 🍪🍪🍪\| disguised Dijkstra's \| too easy when you see it
 
 
 
@@ -1113,7 +1245,7 @@ print(res)
 ```
 {% endtab %}
 
-{% tab title="BOOk\#2❤️" %}
+{% tab title="BOOK\#2❤️" %}
 ```python
 def solve(G,N):
     adj = defaultdict(list)
@@ -1182,7 +1314,7 @@ print(res)
 * [ ] 631.[Design Excel Sum Formula](https://leetcode.com/problems/design-excel-sum-formula)
 * [ ] 1632.[Rank Transform of a Matrix](https://leetcode.com/problems/rank-transform-of-a-matrix)
 * [x] CSES: [Longest Flight Route](https://cses.fi/problemset/task/1680) ✅
-* [x] **BOOK\#2: Counting the number of paths till node X ✅✅❤️**\(repeat from trees\)
+* [x] **BOOK\#2: Counting the number of paths till node X ✅✅❤️**\(repeat from trees\) \| [**CSES:** Game Routes](https://cses.fi/problemset/task/1681)
 
 ![](../.gitbook/assets/screenshot-2021-09-10-at-1.13.22-pm.png)
 
@@ -1269,6 +1401,7 @@ return cnt
 * [x] [1331.Rank Transform of an Array](https://leetcode.com/problems/rank-transform-of-an-array/) \| tag:Easy
 * [x] [1632.Rank Transform of a Matrix](https://leetcode.com/problems/rank-transform-of-a-matrix/) \| **GOOGLE!!!!..........last time 🐽🐽🐽**
 * [x] CSES :[ Building Roads](https://cses.fi/problemset/task/1666) ✅
+* [x] \*\*\*\*[**1168. Optimize Water Distribution in a Village**](http://leetcode.libaoj.in/optimize-water-distribution-in-a-village.html) **\| @google \|** [**video**](https://www.youtube.com/watch?v=_Bb9GRu4myk&ab_channel=KelvinChandra) **\| ✅✅䷯**
 * [ ] [352.Data Stream as Disjoint Intervals](https://leetcode.com/problems/data-stream-as-disjoint-intervals/)
 * [ ] 128, [https://leetcode.com/problems/longest-consecutive-sequence/](https://leetcode.com/problems/longest-consecutive-sequence/) 305, [https://leetcode.com/problems/number-of-islands-ii/](https://leetcode.com/problems/number-of-islands-ii/) 💲 1202, [https://leetcode.com/problems/smallest-string-with-swaps/](https://leetcode.com/problems/smallest-string-with-swaps/) 749, [https://leetcode.com/problems/contain-virus/](https://leetcode.com/problems/contain-virus/) 1627, [https://leetcode.com/problems/graph-connectivity-with-threshold/](https://leetcode.com/problems/graph-connectivity-with-threshold/) 1168, [https://leetcode.com/problems/optimize-water-distribution-in-a-village/](https://leetcode.com/problems/optimize-water-distribution-in-a-village/) 1579, [https://leetcode.com/problems/remove-max-number-of-edges-to-keep-graph-fully-traversable/](https://leetcode.com/problems/remove-max-number-of-edges-to-keep-graph-fully-traversable/) 1061, [https://leetcode.com/problems/lexicographically-smallest-equivalent-string/](https://leetcode.com/problems/lexicographically-smallest-equivalent-string/) 1101, [https://leetcode.com/problems/the-earliest-moment-when-everyone-become-friends/](https://leetcode.com/problems/the-earliest-moment-when-everyone-become-friends/) 1258, [https://leetcode.com/problems/synonymous-sentences/](https://leetcode.com/problems/synonymous-sentences/) 1319, [https://leetcode.com/problems/number-of-operations-to-make-network-connected/](https://leetcode.com/problems/number-of-operations-to-make-network-connected/) 737, [https://leetcode.com/problems/sentence-similarity-ii/](https://leetcode.com/problems/sentence-similarity-ii/) 990, [https://leetcode.com/problems/satisfiability-of-equality-equations/](https://leetcode.com/problems/satisfiability-of-equality-equations/) 924, [https://leetcode.com/problems/minimize-malware-spread/](https://leetcode.com/problems/minimize-malware-spread/) 928, [https://leetcode.com/problems/minimize-malware-spread-ii/](https://leetcode.com/problems/minimize-malware-spread-ii/) 839, [https://leetcode.com/problems/similar-string-groups/](https://leetcode.com/problems/similar-string-groups/) 711, [https://leetcode.com/problems/number-of-distinct-islands-ii/](https://leetcode.com/problems/number-of-distinct-islands-ii/)
 
@@ -1534,6 +1667,60 @@ for i in range(0,len(disjoints)-1):
     print(f'{disjoints[i]} {disjoints[i+1]}')
 ```
 {% endtab %}
+
+{% tab title="1168" %}
+```python
+def find(x):
+    while par[x] != x:
+        x = par[par[x]]
+    return par[x]
+
+def unite(x,y):
+    par[find(x)] = find(y)
+
+N = 3
+wells = [1,2,3]
+pipes = [[1,2,1],[2,3,1]]
+
+pipes.sort(key = lambda x: (x[2]))
+
+par = [i for i in range(N+1)]
+
+well_cost = dict()
+for i in range(N):
+    well_cost[i+1] = wells[i]
+
+
+total_cost = 0
+for x,y,w in pipes:
+    if find(x) != find(y):
+        cost_of_separate_wells = well_cost[find(x)]+ well_cost[find(y)]
+        
+        cost_of_well_in_group_of_x = well_cost[find(x)]
+        cost_of_well_in_group_of_y = well_cost[find(y)]
+        cost_of_connecting_by_pipes = w + min(
+                                            cost_of_well_in_group_of_x,
+                                            cost_of_well_in_group_of_y
+                                            )
+        
+        # if its cheaper to connect by pipe => merge
+        if cost_of_connecting_by_pipes < cost_of_separate_wells:
+            unite(x,y)
+            well_cost[find(x)] = min(
+                                    cost_of_well_in_group_of_x,
+                                    cost_of_well_in_group_of_y
+                                    )
+            total_cost += w #just couting pipes now (wells ko neeche karenge union ke baad)
+            
+for i in range(1,N+1):
+    if find(i) == i:
+        total_cost += well_cost[i]
+        
+print(total_cost)
+        
+
+```
+{% endtab %}
 {% endtabs %}
 
 ### **4.3 Resources:**
@@ -1598,7 +1785,9 @@ def possibleBipartition(self, n: int, dislikes: List[List[int]]) -> bool:
 
 ## 6. Cycle Detection
 
-### **6.1**  use DSU: &gt;&gt; **For Undirected graphs**
+### **6.1  For Undirected graphs :** use DSU OR par\[\]
+
+* Do [CSES: Round Trip](https://cses.fi/problemset/task/1669) \(below\) to understand it truly
 
 ### 6.2 for Directed Graphs:
 
@@ -1681,12 +1870,83 @@ Therefore, after the topological sort,
 
 ### 6.3 Problems: Cycle Detection
 
+* [x] CSES: [Round Trip](https://cses.fi/problemset/task/1669/) ✅✅  \| **Undirected Graph** \|  **cycle retrieval** \| [video](https://www.youtube.com/watch?v=qYyyj2SRsRc&t=427s&ab_channel=Dardev)
 * [x] [802.Find Eventual Safe States](https://leetcode.com/problems/find-eventual-safe-states/) .💯 
 * [x] [886.Possible Bipartition](https://leetcode.com/problems/possible-bipartition/)
-* [x] CSES: [Round Trip](https://cses.fi/problemset/task/1669/) ✅✅ 🐽 \| Undirected Graph \|  cycle retrieval
 * [x] CSES: [Round Trip II](https://cses.fi/problemset/task/1678) \| Directed Graph \| [Approach](https://www.youtube.com/watch?v=kzeAHV2Pw2o&ab_channel=Dardev)
 
 {% tabs %}
+{% tab title="RoundTrip" %}
+```python
+'''
+LOGIC: 
+
+* do DFS(x) -> marking parents
+-------for every neighbour y: adj[x]
+-------------if not visited: DFS(y)
+-------------if visited: 
+-----------------if its parent: -> continue //no problem
+-----------------else ---> cycle detected!!
+
+'''
+
+I = lambda: map(int, input().split())
+
+n, m = I()
+adj = defaultdict(list)
+
+for _ in range(m):
+    x,y = I()
+    adj[x].append(y)
+    adj[y].append(x)
+    
+is_possible = False
+vis = set()
+par = [-1 for _ in range(n+1)]
+start_node, end_node = -1,-1
+
+def dfs(x,p):
+    vis.add(x)
+    global start_node
+    global end_node
+    par[x] = p
+    
+    for y in adj[x]:
+        end_node = y
+        # print(f'@ start_node = {start_node}, end_node = {end_node}')
+        if y == p:
+            continue
+        if y in vis:    # cycle found!!!!!!!
+            start_node = x
+            end_node = y
+            return True
+        else:
+            if dfs(y,x):
+                return True
+            
+    return False
+
+        
+for i in range(1,n+1):
+    if i not in vis:
+        if dfs(i,-1):
+            print('yess')
+            if par[end_node] == -1:
+                end_node , start_node = start_node, end_node
+            x = end_node
+            path = []
+            while x != -1:
+                print(f' x = {x} , par[x] = {par[x]}')
+                path.append(x)
+                x = par[x]
+            path.append(end_node)
+            path.reverse()
+            print(*path, end = ' ')
+            exit()
+print('noooo')
+```
+{% endtab %}
+
 {% tab title="802." %}
 ```python
 # find cycles in directed graph
@@ -1725,86 +1985,6 @@ for i in range(N):
 # print(cycleNodes)
 return sorted(list(set(range(N)) - set(cycleNodes)))
 
-```
-{% endtab %}
-
-{% tab title="RoundTrip" %}
-```cpp
-int n, m;
-int sv, ev;
-vector<vector<int>> g;
-vector<int> vis;
-vector<int> parent;
- 
- 
-bool dfs(int u, int p)
-{
-	vis[u] = true;
-	parent[u] = p;
-	for(auto v: g[u])
-	{
-		if(v == p) continue;
-		if(vis[v]) 
-		{
-			sv = v; 
-			ev = u; 
-			return true;
-		} 
-		if(!vis[v]) 
-			if(dfs(v,u)) 
-				return true;
-	}
-	return false;
-}
- 
- 
-bool visit_all()
-{
-	for(int i = 1; i <= n; ++i)
-	{
-		if(!vis[i])
-			if(dfs(i,-1)) return true;
-	}
-	return false;
-}
- 
-int32_t main()
-{
-	cin.tie(NULL);
-	cin >> n >> m;
-	g.resize(n+1);
-	vis.resize(n+1);
-	parent.resize(n+1);
-	for(int i =0 ; i < m; ++i)
-	{
-		int u, v;
-		cin >> u >> v;
-		g[u].push_back(v);
-		g[v].push_back(u);
-	}
- 
-	if(!visit_all())
-	{
-		cout << "IMPOSSIBLE" << endl;
-		return 0;
-	}
- 
-	int tv = ev;
-	vector<int> ans;
-	ans.push_back(ev);
-	while(tv != sv)
-	{
-		ans.push_back(parent[tv]);
-		tv = parent[tv];
-	}
-	ans.push_back(ev);
-	cout << ans.size() << endl;
-	for(auto c: ans)
-	{
-		cout << c << " ";
-	}
- 
-}
 ```
 {% endtab %}
 

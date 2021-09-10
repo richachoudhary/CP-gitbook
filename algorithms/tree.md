@@ -528,6 +528,7 @@ print(res)
 * [ ] [https://leetcode.com/problems/longest-zigzag-path-in-a-binary-tree/](https://leetcode.com/problems/longest-zigzag-path-in-a-binary-tree/)
 * [ ] [https://leetcode.com/problems/maximum-sum-bst-in-binary-tree/](https://leetcode.com/problems/maximum-sum-bst-in-binary-tree/)
 * [ ] [https://leetcode.com/problems/number-of-ways-to-reorder-array-to-get-same-bst/](https://leetcode.com/problems/number-of-ways-to-reorder-array-to-get-same-bst/)
+* [ ] CSES: [Planets Queries I](https://cses.fi/problemset/task/1750) \| Binary Lifting 🐽🐽
 
 
 
@@ -700,6 +701,49 @@ def maxProduct(self, root: Optional[TreeNode]) -> int:
     dfs(root)
     sum_all = max(res)
     return max(i*(sum_all-i) for i in res) % (10**9 + 7)
+```
+{% endtab %}
+
+{% tab title="PlanetQueries!" %}
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+const int MAXN = 2e5+5;
+const int MAXD = 30; // ceil(log2(10^9))
+
+// number of planets and queries
+int n, q;
+// parent matrix where [i][j] corresponds to i's (2^j)th parent
+int parent[MAXN][MAXD];
+
+int jump(int a, int d) {
+	for(int i=0; i<MAXD; i++) if(d & (1<<i))
+		a = parent[a][i];
+	return a;
+}
+
+int main() {
+	cin >> n >> q;
+	for(int i=1; i<=n; i++) {
+		cin >> parent[i][0];
+	}
+	// evaluate the parent matrix
+	for(int d=1; d<MAXD; d++){
+	    for(int i=1; i<=n; i++) {
+		    parent[i][d] = parent[parent[i][d-1]][d-1];
+        }
+	}   
+	// process queries
+	while(q--) {
+		int a, d;
+		cin >> a >> d;
+		cout << jump(a, d) << '\n';
+	}
+}
+/*
+Time Complexity :  O(NlogN)
+*/
 ```
 {% endtab %}
 {% endtabs %}

@@ -11,7 +11,7 @@
 ## Algorithms
 
 * [DP](algorithms/dp.md)
-* [✅Graph](algorithms/graph.md)
+* [Graph](algorithms/graph.md)
 * [Tree](algorithms/tree.md)
 * [Linked List](algorithms/linked-list.md)
 * [Recursion 💪](algorithms/recursion.md)
