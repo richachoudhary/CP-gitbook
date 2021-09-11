@@ -1100,7 +1100,8 @@ else:
 
 * [x] [1584. Min Cost to Connect All Points](https://leetcode.com/problems/min-cost-to-connect-all-points/) 💯
 * [ ] [https://leetcode.com/problems/connecting-cities-with-minimum-cost/](https://leetcode.com/problems/connecting-cities-with-minimum-cost/) 💲
-* [ ] 
+* [x] CSES: [Road Reparation](https://cses.fi/problemset/task/1675)
+
 ## 3. Topological Sort `O(V+E)`
 
 * Only DAGs can have topological sorting\(graphs with a cycle CANNOT\)
@@ -1323,6 +1324,8 @@ print(res)
 
 
 ## **4. Union Find `O(logV)`**
+
+> > WHEN you're thinking ki DSU ka question hai : easy-peasy & halfway coding, suddenly you notice; **"Oh Fuck! ye toh DIRECTED GRAPH hai**" ...................... immediately switch to SCC
 
 ### 4.1 Template
 
@@ -2075,6 +2078,8 @@ int32_t main()
 
 ## 7. SCCs \(Strongly Connected Cycles\)
 
+> WHEN you're thinking ki DSU ka question hai : easy-peasy & halfway coding, suddenly you notice; **"Oh Fuck! ye toh DIRECTED GRAPH hai**" ...................... immediately switch to SCC
+
 * **What?** self contained cycles in graph in & from every vertex in cycle you can reach every other vertex.
 * **Property:`SCC will always be disjoint from each other`**\(as shown in Kosaraju's. Ref:[ClementInterview](https://www.youtube.com/watch?v=qz9tKlF431k&ab_channel=Cl%C3%A9mentMihailescu)\)
 * **Algos**: 
@@ -2268,6 +2273,7 @@ class Solution:
 
 ### 7.1 Problems: SCCs
 
+* [x] CSES: [Flight Routes Check](https://cses.fi/problemset/task/1682) \| direct copy-paste of Kosaraju's code
 * [x] [990.Satisfiability of Equality Equations](https://leetcode.com/problems/satisfiability-of-equality-equations/)
 * [x] **Clemment's interview**:[ Google Coding Interview With A High School Student](https://www.youtube.com/watch?v=qz9tKlF431k&ab_channel=Cl%C3%A9mentMihailescu) ✈️
 * [x] [207.Course Schedule](https://leetcode.com/problems/course-schedule/) \| if SCC of len &gt; 1 exits ==&gt; there is cyclic dependency
