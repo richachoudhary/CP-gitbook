@@ -193,7 +193,7 @@ class LFUCache(object):
 ## From LC:
 
 * [x] LC [1600. Throne Inheritance](https://leetcode.com/problems/throne-inheritance/)
-* [ ] LC [855. Exam Room ](https://leetcode.com/problems/exam-room/)\| based on \#LC.849 \| **@google \|** 🐽🐽
+* [x] LC [855. Exam Room ](https://leetcode.com/problems/exam-room/)\| based on \#LC.849 \| **@google \|** 🐽🐽
 
 {% tabs %}
 {% tab title="1600" %}
@@ -224,6 +224,35 @@ class ThroneInheritance:
     
 # TC:
 # birth() -> O(1) || death -> O(1) || getInheritance -> O(N)
+```
+{% endtab %}
+
+{% tab title="885" %}
+```python
+class ExamRoom:
+    def __init__(self, N):
+        self.seated, self.n = [], N - 1
+        
+    def seat(self):
+        if not self.seated:
+            self.seated += 0,
+            return 0
+        mx = ind = 0
+        for i in range(1, len(self.seated)):
+            l, r = self.seated[i - 1], self.seated[i]
+            if (r - l) // 2 > mx:
+                mx = (r - l) // 2
+                ind = l + mx
+        if self.seated[-1] != self.n and self.n - self.seated[-1] > mx:
+            mx, ind = self.n - self.seated[-1], self.n
+        if self.seated[0] >= mx:
+            mx, ind = self.seated[0], 0
+        self.seated.append(ind)
+        self.seated.sort()
+        return ind
+        
+    def leave(self, p):
+        self.seated.remove(p)
 ```
 {% endtab %}
 {% endtabs %}

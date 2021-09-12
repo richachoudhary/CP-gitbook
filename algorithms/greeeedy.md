@@ -914,6 +914,39 @@ def kClosest(self, points: List[List[int]], k: int) -> List[List[int]]:
     while heap:
         res.append(heappop(heap)[1])
     return res
+    #3. ============ QuickSort : avg case: O(N), worst: O(N^2) ===========
+    dist = lambda x: A[x][0]**2 + A[x][1]**2
+    
+    def partition(l,r, pvt):
+        # 1. move pivot to end
+        A[pvt],A[r] = A[r],A[pvt]
+        
+        # 2. move all smaller elements in start
+        start = l
+        for i in range(l,r):
+            if dist(i) < dist(pvt):
+                A[start], A[i] = A[i],A[start]
+                start += 1
+        
+        # 3. move pivot(now @r) ele to its correct position
+        A[start],A[r] = A[r],A[start]
+        return start
+
+    n = len(A)
+    lo, hi = 0, n-1
+    while lo<hi:
+        #step 1 in quick sort : pick a pivot
+        pvt = hi        
+        # pvt = random.randint(lo,hi) # to avoid the worst case of O(N^2)
+        #step 2 in quick sort: partition
+        pvt = partition(lo,hi,pvt)  # now; after partition pvt element is ats correct position
+        if pvt < k:
+            lo = pvt+1
+        elif pvt > k:
+            hi = pvt - 1
+        else:
+            break
+    return A[:k]
 ```
 {% endtab %}
 {% endtabs %}
@@ -971,7 +1004,7 @@ while d:
 
 ## 6.Sort
 
-* [x] Learn Quicksort for LC [937.K Closest Points to Origin](https://leetcode.com/problems/k-closest-points-to-origin/) \| [O\(N\) quicksort approach](https://leetcode.com/problems/k-closest-points-to-origin/discuss/219442/Python-with-quicksort-algorithm) \| **@uber**
+* [x] Learn Quicksort for LC [973.K Closest Points to Origin](https://leetcode.com/problems/k-closest-points-to-origin/) \| [O\(N\) quicksort approach](https://leetcode.com/problems/k-closest-points-to-origin/discuss/219442/Python-with-quicksort-algorithm) \| **@uber**
   * Sort OR Heap se koi bhi kar lega, koi na poorch rha interview mei ye approach!!!
 * [x] CSES: [Stick Lengths](https://cses.fi/problemset/result/2583535/)✅ \| standard problem \|use **MEDIAN** not **MEAN**
 * [x] CSES: [Traffic Lights](https://cses.fi/problemset/task/1163) : 🐽🐽✅✅ \| [Youtube](ttps://www.youtube.com/watch?v=4HKXdh_LHps&ab_channel=ARSLONGAVITABREVIS) \| [Stackoverflow](https://stackoverflow.com/questions/63329220/i-tried-solving-traffic-lights-problem-in-the-cses-problem-set-my-approach-seem)
@@ -979,6 +1012,43 @@ while d:
 * [x] CSES: [Reading Books](https://cses.fi/problemset/task/1631) \| [why max\(sum,2\*last\_ele\) works](https://codeforces.com/blog/entry/79238)
 
 {% tabs %}
+{% tab title="973.QuickSortBased" %}
+```python
+dist = lambda x: A[x][0]**2 + A[x][1]**2
+    
+def partition(l,r, pvt):
+    # 1. move pivot to end
+    A[pvt],A[r] = A[r],A[pvt]
+    
+    # 2. move all smaller elements in start
+    start = l
+    for i in range(l,r):
+        if dist(i) < dist(pvt):
+            A[start], A[i] = A[i],A[start]
+            start += 1
+    
+    # 3. move pivot(now @r) ele to its correct position
+    A[start],A[r] = A[r],A[start]
+    return start
+
+n = len(A)
+lo, hi = 0, n-1
+while lo<hi:
+    #step 1 in quick sort : pick a pivot
+    pvt = hi        
+    # pvt = random.randint(lo,hi) # to avoid the worst case of O(N^2)
+    #step 2 in quick sort: partition
+    pvt = partition(lo,hi,pvt)  # now; after partition pvt element is ats correct position
+    if pvt < k:
+        lo = pvt+1
+    elif pvt > k:
+        hi = pvt - 1
+    else:
+        break
+return A[:k]
+```
+{% endtab %}
+
 {% tab title="Traffic Lights" %}
 ```python
 # ======================== NOOB: O(N*N(logN))
@@ -1498,8 +1568,8 @@ ONLY when you're working with all negative or positives or if your input is sort
 * [x] GfG\#2 [First negative integer in every window of size k](https://www.geeksforgeeks.org/first-negative-integer-every-window-size-k/#:~:text=Recommended%3A%20Please%20solve%20it%20on,the%20current%20subarray%28window%29.)
 * [x] [438.Find All Anagrams in a String](https://leetcode.com/problems/find-all-anagrams-in-a-string/) 🚀
 * [x] [239. Sliding Window Maximum](https://leetcode.com/problems/sliding-window-maximum/) 🍪🍪🍪
-* [ ] 849. [Maximize Distance to Closest Person](https://leetcode.com/problems/maximize-distance-to-closest-person/) 🤯🐽\| unable to get the 2P method!!!!
-  * [ ] 855.[Exam Room](https://leetcode.com/problems/exam-room/) \| design problem based on this \| **@Google!!!!!🐽**
+* [x] 849. [Maximize Distance to Closest Person](https://leetcode.com/problems/maximize-distance-to-closest-person/) 🤯🐽\| ~~unable to get the 2P method!!!!~~ not needed
+  * [x] 855.[Exam Room](https://leetcode.com/problems/exam-room/) \| design problem based on this \| **@Google!!!!!🐽**
 
 {% tabs %}
 {% tab title="\#1" %}
@@ -1624,6 +1694,55 @@ def maxSlidingWindow(self, nums: List[int], k: int) -> List[int]:
         heappush(heap,(-nums[r],r))    # '-' as maxheap
         res.append(nums[heap[0][1]])
     return res
+```
+{% endtab %}
+
+{% tab title="849." %}
+```python
+def maxDistToClosest(self, A: List[int]) -> int:
+      
+    # 1. ========================= My Approach, 2 pass :: : O(N)          
+    n = len(A)
+    left, right = [1]*n,[1]*n
+
+    for i in range(n):
+        if i== 0 or A[i] == 1:
+            left[i] = float('inf')
+        else:   # i>1
+            if A[i-1]==0:
+                left[i] = 1+left[i-1]
+            else:
+                left[i] = 1
+
+    for i in range(n-1,-1,-1):
+        if i== n-1 or A[i] == 1:
+            right[i] = float('inf')
+        else:   # i>1
+            if A[i+1]==0:
+                right[i] = 1+right[i+1]
+            else:
+                right[i] = 1
+
+    dists = [0]*n
+
+    for i in range(n):
+        dists[i] = min(left[i],right[i])
+        if dists[i] == float('inf'):
+            dists[i] = 0
+    return max(dists)
+
+    # 2. ======================== 2Pointer Approach, single pass :: O(N)
+    prev, max_len = 0, 0
+    for cur, seat in enumerate(A):
+        if seat:
+            if A[prev]:
+                max_len = max(max_len, (cur - prev) // 2)       # [...10001....]
+            else:
+                max_len = max(max_len, (cur - prev))            # [1000...
+            prev = cur
+    if A[prev]: 
+        max_len = max(max_len, len(A) - 1 - prev)                # ...10000]
+    return max_len
 ```
 {% endtab %}
 {% endtabs %}
