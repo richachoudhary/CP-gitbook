@@ -334,6 +334,33 @@ if(sum&1){
 }
 ```
 {% endtab %}
+
+{% tab title="Rubrik\#1" %}
+```python
+MEMO = {}
+def dp(i,prev):
+    if i >= n:
+        return 0
+    
+    if (i,prev) in MEMO: 
+        return MEMO[(i,prev)]
+    opt1,opt2 = 0,0
+    
+    if A[i] == prev+1:
+        opt1 = dp(i+1,prev)         # here you CANNOT take
+    else:   
+        opt1 = A[i] + dp(i+1,A[i])  # take A[i]
+        opt2 = dp(i+1,prev)         # dont take A[i]
+    
+    MEMO[(i,prev)] = max(opt1,opt2)
+    return MEMO[(i,prev)]
+
+A = [1, 1, 1, 2, 2, 3, 6]    #==> 12
+# A = [1, 1, 1, 2]             #==>3
+n = len(A)
+print(dp(0,-1))  
+```
+{% endtab %}
 {% endtabs %}
 
 #### 2.1.1 0/1 Knapsack Standard Variations \| source : [AdityaVerma](https://www.youtube.com/watch?v=-GtpxG6l_Mc&list=PL_z_8CaSLPWekqhdCPmFohncHwz8TY2Go&index=10&ab_channel=AdityaVerma)
@@ -348,6 +375,7 @@ if(sum&1){
 * [x] CSES: [Book Shop](https://cses.fi/problemset/task/1158/)
 * [x] CSES: [Money Sums](https://cses.fi/problemset/task/1745/) \| Aisa Knapsack jo pehchaan na pao ✅⭐️💪💪🚀 \| **MUST DO**
 * [x] CSES: [Two Sets II](https://cses.fi/problemset/task/1093)
+* [x] **Rubrik\#1**. [Maximum Sum of numerically non-consecutive numbers in Arr](https://leetcode.com/discuss/interview-question/959412/Rubrik-or-Phone-Interview-or-Maximum-Sum) \| **@rubrilk** ✅
 
 #### 2.1.2  Problems: 0/1 Knapsack 
 
