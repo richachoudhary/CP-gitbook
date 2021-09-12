@@ -1765,7 +1765,7 @@ return res + A[i:] + B[j:]
 * [x] CSES: [Towers](https://cses.fi/problemset/task/1073) ✅=&gt; Longest Decreasing Sequence: \(exactly same as LIS\)
 * [x] [300.Longest Increasing Subsequence ](https://leetcode.com/problems/longest-increasing-subsequence/)
 * [x] 673. [Number of Longest Increasing Subsequence](https://leetcode.com/problems/number-of-longest-increasing-subsequence/) ✅💪\|ye na kar paoge khud se implement\|**`must_do`**
-* [x] 354. [Russian Doll Envelopes](https://leetcode.com/problems/russian-doll-envelopes/) \| must do!! 🪆🪆❤️
+* [x] 354. [Russian Doll Envelopes](https://leetcode.com/problems/russian-doll-envelopes/) \| must do!! 🪆🪆❤️ \| **@Observer.AI \| fuck\_yaaar!**
 * [ ] [https://leetcode.com/problems/delete-columns-to-make-sorted-iii/](https://leetcode.com/problems/delete-columns-to-make-sorted-iii/)
 * [ ] [https://leetcode.com/problems/minimum-number-of-removals-to-make-mountain-array/](https://leetcode.com/problems/minimum-number-of-removals-to-make-mountain-array/)
 * [ ] [https://leetcode.com/problems/maximum-height-by-stacking-cuboids/](https://leetcode.com/problems/maximum-height-by-stacking-cuboids/)
@@ -1935,9 +1935,74 @@ def maxEnvelopes(self, A: List[List[int]]) -> int:
 
 ## 14. Binary Lifting
 
-* [x] 1483.[ Kth Ancestor of a Tree Node](https://leetcode.com/problems/kth-ancestor-of-a-tree-node/) \| Standard Binary lifting ✅✅\| [KartikArora](https://www.youtube.com/watch?v=FAfSArGC8KY&t=892s&ab_channel=KartikArora)
+* [x] CSES: [Company Queries I](https://cses.fi/problemset/task/1687) ✅💪
+* [x] 1483.[ Kth Ancestor of a Tree Node](https://leetcode.com/problems/kth-ancestor-of-a-tree-node/) \| Standard Binary lifting ✅\| [KartikArora](https://www.youtube.com/watch?v=FAfSArGC8KY&t=892s&ab_channel=KartikArora)
 
 {% tabs %}
+{% tab title="CSES\#1: Binary Lifting 101" %}
+```python
+"""
+# Binary Lifting
+
+up(u,x) : parent of node 'u' which is 2^x level up
+x = log2(N)
+
+TC: O(NlogN)
+
+RECURSION:
+
+* up(u,x) = up(up(u,x-1),x-1)   # because 2^(x-1) + 2^(x-1) = 2^x
+
+BC:
+1. up(u,0) = par[u]
+2. up(root,x) = -1
+
+"""
+
+from collections import defaultdict
+I = lambda: map(int, input().split())
+
+def dfs(u, p):
+    up[(u, 0)] = p  # BC.1
+
+    # setup values for node u
+    for i in range(1, 20):
+        if (u, i - 1) in up and up[(u, i - 1)] != -1:
+            up[(u, i)] = up[(up[u, i - 1], i - 1)]
+        else:
+            up[(u, i)] = -1  # BC.2
+    # recurs on u's children
+    for v in adj[u]:
+        if v != p:
+            dfs(v, u)
+
+def query(x, k):
+    if x == -1 or k == 0:
+        return x
+
+    for i in range(19, -1, -1):  # jump the highest --> lowest set bit
+        if k >= (1 << i):
+            return query(up[(x,i)], k - (1 << i))
+
+
+n, q = I()
+l = list(I())
+adj = defaultdict(list)
+up = {}
+
+for i in range(2, n + 1):
+    adj[i].append(l[i - 2])
+    adj[l[i - 2]].append(i)
+
+dfs(1, -1)
+# print(up)
+for _ in range(q):
+    x, k = I()
+    print(query(x, k))
+
+```
+{% endtab %}
+
 {% tab title="1483" %}
 ```python
 class TreeAncestor:
@@ -2130,4 +2195,7 @@ def f():
   * **✅Aditya Verma Playlist**: [https://www.youtube.com/watch?v=nqowUJzG-iM&list=PL\_z\_8CaSLPWekqhdCPmFohncHwz8TY2Go&ab\_channel=AdityaVerma](https://www.youtube.com/watch?v=nqowUJzG-iM&list=PL_z_8CaSLPWekqhdCPmFohncHwz8TY2Go&ab_channel=AdityaVerma)
     * Good for problem classification & variety, but poor for intuition building
   * **✅Kartik Arora's Playlist:** [https://www.youtube.com/watch?v=24hk2qW\_BCU&list=PLb3g\_Z8nEv1h1w6MI8vNMuL\_wrI0FtqE7&ab\_channel=KartikArora](https://www.youtube.com/watch?v=24hk2qW_BCU&list=PLb3g_Z8nEv1h1w6MI8vNMuL_wrI0FtqE7&ab_channel=KartikArora)
+* CF: list of all DP resource & questions:  [**DP Tutorial and Problem List**](https://codeforces.com/blog/entry/67679) 
+
+
 

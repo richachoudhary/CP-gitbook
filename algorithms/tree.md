@@ -213,6 +213,8 @@ where N = tree size, H = tree height, L = list length.
 
 ##  2. DP on Trees  ✅                        :          // does the job in O\(N\) 
 
+* [CF tutorial](https://codeforces.com/blog/entry/20935?locale=en)
+
 ### 2.1 Trivial Questions
 
 * [x] **BOOK\#1: Number of nodes in subtree**
@@ -223,10 +225,15 @@ where N = tree size, H = tree height, L = list length.
 
 ![](../.gitbook/assets/screenshot-2021-09-10-at-1.13.22-pm.png)
 
+* [x] **CF\#1**: [Find max coins s.t. no two adjacent edges get collected](https://codeforces.com/blog/entry/20935?locale=en)
+
+  * Do **`dfs()`** & build our dp1 & dp2
+
+![CF\#1](../.gitbook/assets/screenshot-2021-09-12-at-2.07.09-am.png)
+
 * [x] CSES:[ Tree Diameter](https://cses.fi/problemset/task/1131) ✅✅ \| Basic level Tree DP \| AdityaVerma \| [KartikArora- N-ary tree](https://www.youtube.com/watch?v=qNObsKl0GGY&list=PLb3g_Z8nEv1j_BC-fmZWHFe6jmU_zv-8s&index=3&ab_channel=KartikArora)
 * [x] CSES: [Tree Distances I](https://cses.fi/problemset/task/1132) \| aka. **`All Longest Paths`** \| Same code as TreeDiameter=&gt; use 2 dfs to get endpoints of dia ==&gt; dfs b/w them \| [underrated amazing video by HiteshTripathi](https://www.youtube.com/watch?v=Rnv4qvoxsTo&ab_channel=HiteshTripathi) 🚀✅✅🚀 \| **must\_do**
 * [x] LC: [Diameter of N-ary tree](http://leetcode.libaoj.in/diameter-of-n-ary-tree.html) \| `TreeDistances I 's` code works here too
-* [x] CSES: [Tree Distances II](https://cses.fi/problemset/task/1133) \| **Tree Rerooting ✅🐽\|** [video](https://www.youtube.com/watch?v=lWCZOjUOjRc&t=42s)
 
 {% tabs %}
 {% tab title="template" %}
@@ -247,6 +254,49 @@ def f(node):
 ```
 {% endtab %}
 
+{% tab title="CF\#1." %}
+```cpp
+/ =====================================Complexity is O(N).
+
+vector<int> adj[N];
+int dp1[N],dp2[N];        //functions as defined above
+
+//p is parent of node x
+void dfs(int x, int p){
+
+    //for storing sums of dp1 and max(dp1, dp2) for all children of V
+    int sum1=0, sum2=0;
+
+    //traverse over all children
+    for(auto y: adj[x]){
+        if(y == p) continue;
+        dfs(y, x);        // ===> now we have calculated dp1[y] & dp2[y]
+        sum1 += dp2[y];
+        sum2 += max(dp1[y], dp2[y]);
+    }
+
+    dp1[x] = C[x] + sum1;
+    dp2[x] = sum2;
+}
+
+int main(){
+    int n;
+    cin >> n;
+
+    for(int i=1; i<n; i++){
+    cin >> u >> v;
+        adj[u].push_back(v);
+        adj[v].push_back(u);
+    }
+
+    dfs(1, 0);
+    int ans = max(dp1[1], dp2[1]);
+    cout << ans << endl;
+}
+
+```
+{% endtab %}
+
 {% tab title="TreeDiameter" %}
 ```python
 ---------------------- works only for binary tree
@@ -263,17 +313,6 @@ def recurse(x):
 self.result = 0
 recurse(root)
 return self.result    
-
-''' ============== below one is WRONNGGGGGm ============= '''
-# def dia(node):
-#     if not node: return 0     #1. BC
-        
-#     ldia = dia(node.left)    #2. Hypothesis
-#     rida = dia(node.right)
-    
-#     opt1 = max(ldia, rdia)        # when node isnt part of final ans
-#     opt2 = 1 + ldia + rdia        # when node is part of final ans
-#     return max(opt1, opt2)
     
 ------------------------- for n-arry tree
 int n, ans;
@@ -283,10 +322,9 @@ int d[MAX];
  void dfs(int u = 1, int p = -1){
      for(auto v:adj[u]){
          if(v==p)continue;
-
          dfs(v,u);
-         ans = max(ans, d[u]+d[v]+1); # when node is part of final ans
-         d[u] = max(d[u],1+d[v]);     # when node isnt part of final ans
+         ans = max(ans, d[u]+d[v]+1); # max v1--u--v2 
+         d[u] = max(d[u],1+d[v]) # max v---u ::max depth of node u(i.e. longest path in its subtree)
      }
  }
  
@@ -299,7 +337,7 @@ int main() {
         adj[u].push_back(v);
         adj[v].push_back(u);
     }
-    dfs();
+    dfs(1,-1);
     cout<<ans;
 }
 ```
@@ -380,56 +418,6 @@ print('======== Now printing max longest paths for all nodes =========')
 for i in range(1,N+1):
     print(f' Node: {i} => {max(d1[i],d2[i])}')
 
-```
-{% endtab %}
-
-{% tab title="TreeDistance 2" %}
-```cpp
-vi ar[200001];
-lli res[200001];
-int subSize[200001];
-lli subDist[200001];
-int n;
- 
-// preprocessing - to fill subtree-dist & subtree-size arr ==================
-void dfs1(int node , int par)
-{
-	subSize[node] = 1;
-	
-	for(int child : ar[node])
-        if(child != par)
-        {
-            dfs1(child , node);
-            subSize[node] += subSize[child];
-            subDist[node] += subSize[child] + subDist[child];
-        }
-}
- 
-// rerooting node to get ans ==================================
-void dfs(int node , int par)
-{
-	res[node] = (res[par] - subSize[node] - subDist[node]); //Rerooting1: remove contribution of self from parent's
-  res[node] += n - subSize[node] + subDist[node];         //Rerooting2: add contribution of self in ans
-	
-	for(int child : ar[node])
-	    if(child != par)
-	        dfs(child , node);
-}
- 
-int main()
-{
-	int a , b;
-	cin>>n;
-	REP(i , n-1) cin>>a>>b , ar[a].pb(b) , ar[b].pb(a);
-	
-	dfs1(1 , -1);
-	res[1] = subDist[1];
-	
-	for(int child : ar[1])
-	dfs(child , 1);
-	
-	REP(i , n) cout<<res[i]<<" ";
-}
 ```
 {% endtab %}
 
@@ -517,10 +505,14 @@ print(res)
 ### 2.2 Not-so trivial Questions
 
 * [x] CSES: [Subordinates](https://cses.fi/problemset/task/1674) ✅
-* [x] CF: [Distance in Tree](https://codeforces.com/contest/161/problem/D) \| \#nodes at dist K from each other \| video
+* [x] CSES: [Tree Distances II](https://cses.fi/problemset/task/1133) \| **`Tree Rerooting` ✅✅✅💪💪💪❤️❤️❤️\|** [video](https://www.youtube.com/watch?v=lWCZOjUOjRc&t=42s)
+  * **When is Rerooting DP applicable?**
+  * **===&gt;** when **given** `dp(x)`; you can calculated **`dp(y)`** for y:children\[x\]
+  * ========&gt; mane; parent ki value mei kuch adjust karke uske children ki value nikali jaa sakti ho.
+  * ========&gt; e.g. **Tree Distance \|\|\(^\)** : get sum of all nodes from node X
+  * **FINALLY SAMAJH AAYAAAAA!!!!!!!!!!!!!!!!!!!!!!!!!❤️**
 * [x] CSES: [Tree Matching](https://cses.fi/problemset/task/1130) \| [kartikArora](https://www.youtube.com/watch?v=RuNAYVTn9qM&list=PLb3g_Z8nEv1j_BC-fmZWHFe6jmU_zv-8s&index=2&ab_channel=KartikArora) ✅
-* [ ] CSES: [Company Queries I](https://cses.fi/problemset/task/1687) \| **LCA + Binary Lifting 🐽🐽**
-* [ ] CSES: [Company Queries II](https://cses.fi/problemset/task/1688) \| **LCA + Binary Lifting 🐽🐽**
+* [x] CF: [Distance in Tree](https://codeforces.com/contest/161/problem/D) \| \#nodes at dist K from each other 
 * [x] 968.[Binary Tree Cameras](https://leetcode.com/problems/binary-tree-cameras/) \| @kartikArora 📷✅✅✅✅✅✅✅✅
 * [x] 337. [House Robber III](https://leetcode.com/problems/house-robber-iii/) ✅
 * [x] 95. [Unique Binary Search Trees II](https://leetcode.com/problems/unique-binary-search-trees-ii/) ✅\| @MindTickle
@@ -528,31 +520,85 @@ print(res)
 * [ ] [https://leetcode.com/problems/longest-zigzag-path-in-a-binary-tree/](https://leetcode.com/problems/longest-zigzag-path-in-a-binary-tree/)
 * [ ] [https://leetcode.com/problems/maximum-sum-bst-in-binary-tree/](https://leetcode.com/problems/maximum-sum-bst-in-binary-tree/)
 * [ ] [https://leetcode.com/problems/number-of-ways-to-reorder-array-to-get-same-bst/](https://leetcode.com/problems/number-of-ways-to-reorder-array-to-get-same-bst/)
-* [ ] CSES: [Planets Queries I](https://cses.fi/problemset/task/1750) \| Binary Lifting 🐽🐽
 
 
 
 {% tabs %}
 {% tab title="Subordinates" %}
 ```python
+'''
+TC: O(N)
+'''
+from collections import defaultdict
+I = lambda : map(int,input().split())
+
+# ===============================================
+def dfs(x,p):
+    dp[x] = 0
+    
+    for y in adj[x]:
+        if y == p: continue
+        dfs(y,x)
+        dp[x] += 1+dp[y]
+
+# ==============================================
+n = int(input())
+l = list(I())
 adj = defaultdict(list)
 dp = [0]*(n+1)
-
-def dfs(x,par):
-    res = 0
-    for e in adj[x]:
-        if e != par:
-            dfs(e,x)
-            res += 1 + dp[e]
-    dp[x] = res
-
 for i in range(2,n+1):
-    x = A[i-2]
-    adj[x].append(i)
+    adj[l[i-2]].append(i)
+    
+dfs(1,1)
+print(dp[1:])
+```
+{% endtab %}
 
-dfs(1,0)
-for e in dp[1:]:
-    print(e, end = " ")
+{% tab title="TreeDist2💪" %}
+```python
+# STEP:1 ======================= preprocessing :: rooted@1
+def preprocess_dfs(x, p):
+
+    subtree_size[x] = 1
+
+    for y in adj[x]:
+        if y != p:
+            preprocess_dfs(y, x)
+            subtree_size[x] += subtree_size[y]
+            subtree_dist[x] += subtree_dist[y] + subtree_size[y]
+
+# STEP:2 ======================= use values w.r.t 1 to get values for other nodes
+def dfs(x, p):
+    dp[x] = dp[p] - subtree_size[x] - subtree_dist[x] # detatch x from p
+    dp[x] += n - subtree_size[x] + subtree_dist[x]    # add all nodes to x
+    
+    for y in adj[x]:
+        if y != p:
+            dfs(y,x)
+            
+n = int(input())
+adj = defaultdict(list)
+subtree_size = [0] * (n + 1)
+subtree_dist = [0] * (n + 1)
+dp = [0] * (n + 1)
+
+for _ in range(n - 1):
+    x, y = I()
+    adj[x].append(y)
+    adj[y].append(x)
+
+# root the tree at any(here 1) node & preprocess values w.r.t. it
+preprocess_dfs(1, -1)
+
+# now use those precomputed values w.r.t. 1 to get values for other nodes
+dp[1] = subtree_dist[1]
+for x in adj[1]:
+    dfs(x,1)
+
+print(subtree_size)
+print(subtree_dist)
+
+print(dp[1:])
 ```
 {% endtab %}
 
@@ -748,7 +794,126 @@ Time Complexity :  O(NlogN)
 {% endtab %}
 {% endtabs %}
 
+### Binary Lifting
 
+* [x] CSES\#1: [Company Queries I](https://cses.fi/problemset/task/1687) \|  **`Binary Lifting` 💪✅✅❤️**
+* [x] CSES\#2: [Company Queries II](https://cses.fi/problemset/task/1688) \| **`LCA + Binary Lifting` 🐽🐽**
+* [ ] CSES: [Planets Queries I](https://cses.fi/problemset/task/1750) \| Binary Lifting 
+
+{% tabs %}
+{% tab title="CSES\#1: Binary Lifting 101" %}
+```python
+"""
+# Binary Lifting
+
+up(u,x) : parent of node 'u' which is 2^x level up
+x = log2(N)
+
+TC: O(NlogN)
+
+RECURSION:
+
+* up(u,x) = up(up(u,x-1),x-1)   # because 2^(x-1) + 2^(x-1) = 2^x
+
+BC:
+1. up(u,0) = par[u]
+2. up(root,x) = -1
+
+"""
+
+from collections import defaultdict
+I = lambda: map(int, input().split())
+
+def dfs(u, p):
+    up[(u, 0)] = p  # BC.1
+
+    # setup values for node u
+    for i in range(1, 20):
+        if (u, i - 1) in up and up[(u, i - 1)] != -1:
+            up[(u, i)] = up[(up[u, i - 1], i - 1)]
+        else:
+            up[(u, i)] = -1  # BC.2
+    # recurs on u's children
+    for v in adj[u]:
+        if v != p:
+            dfs(v, u)
+
+def query(x, k):
+    if x == -1 or k == 0:
+        return x
+
+    for i in range(19, -1, -1):  # jump the highest --> lowest set bit
+        if k >= (1 << i):
+            return query(up[(x,i)], k - (1 << i))
+
+
+n, q = I()
+l = list(I())
+adj = defaultdict(list)
+up = {}
+
+for i in range(2, n + 1):
+    adj[i].append(l[i - 2])
+    adj[l[i - 2]].append(i)
+
+dfs(1, -1)
+# print(up)
+for _ in range(q):
+    x, k = I()
+    print(query(x, k))
+```
+{% endtab %}
+
+{% tab title="CSES\#2: LCA in LlogN" %}
+```cpp
+#include<bits/stdc++.h>
+using namespace std;
+  
+int n, q, a, b, p[200005][20], d[200005];
+  
+int dp(int x){
+    if (d[x]) return d[x];
+    if (x == 1) return d[x] = 1;
+    return d[x] = dp(p[x][0])+1;
+}
+int solve(int a, int b){
+    int x = dp(a), y = dp(b);
+    if (x > y){
+        swap(a, b);
+        swap(x, y);
+    }
+    y -= x;
+    for (int i = 0; i < 20; i++){
+        if (y & (1<<i)) b = p[b][i];
+    }
+    if (a == b) return a;
+    for (int i = 19; i >= 0; i--){
+        if (p[a][i] != p[b][i]){
+            a = p[a][i];
+            b = p[b][i];
+        }
+    }
+    return p[a][0];
+}
+  
+int main() {
+    cin >> n >> q;
+    for (int i = 2; i <= n; i++){
+        cin >> p[i][0];
+    }
+    for (int i = 1; i < 20; i++){
+        for (int j = 1; j <= n; j++){
+            p[j][i] = p[p[j][i-1]][i-1];
+        }
+    }
+    while (q--){
+        cin >> a >> b;
+        cout << solve(a, b) << "\n";
+    }
+}
+```
+{% endtab %}
+{% endtabs %}
 
 ## 3. Adv Trees 
 

@@ -273,6 +273,7 @@ def fullJustify(self, words: List[str], maxWidth: int):
 * [x] CSES: [Sliding Cost](https://cses.fi/problemset/task/1077/) \| very similar to Sliding Medium; jst keep two sums: `upperSum` & `lowerSum`
 * [x] CSES: [Maximum Subarray Sum II](https://cses.fi/problemset/task/1644/) \| idea [here](https://discuss.codechef.com/t/help-with-maximum-subarray-sum-ii-from-cses/73404) 🐽
 * [x] LC [315.Count of Smaller Numbers After Self](https://leetcode.com/problems/count-of-smaller-numbers-after-self/) 🍪🍪🍪\| **SortedList \|** BST \| MergeSort
+* [x] LC [1347. Minimum Number of Steps to Make Two Strings Anagram](https://leetcode.com/problems/minimum-number-of-steps-to-make-two-strings-anagram/) \| **@google ✅💪**
 
 {% tabs %}
 {% tab title="218 🌇" %}
@@ -584,6 +585,29 @@ if not SortedList, there are other(& more tricky ways) too:
     2.BST
     3. Index/AVL Tree
 '''
+```
+{% endtab %}
+
+{% tab title="1347" %}
+```python
+from collections import Counter
+
+def f(s,t):
+    sc = Counter(list(s))
+    
+    for c in t:
+        if c in sc.keys():
+            sc[c] -= 1
+        else:
+            sc[c] = -1
+    res = 0
+    for _, v in sc.items():
+        if v < 0:
+            res += abs(v)
+    return res
+        
+print(f("bab","aba"))           #``
+print(f("leetcode","practice")) #5
 ```
 {% endtab %}
 {% endtabs %}
@@ -947,6 +971,8 @@ while d:
 
 ## 6.Sort
 
+* [x] Learn Quicksort for LC [937.K Closest Points to Origin](https://leetcode.com/problems/k-closest-points-to-origin/) \| [O\(N\) quicksort approach](https://leetcode.com/problems/k-closest-points-to-origin/discuss/219442/Python-with-quicksort-algorithm) \| **@uber**
+  * Sort OR Heap se koi bhi kar lega, koi na poorch rha interview mei ye approach!!!
 * [x] CSES: [Stick Lengths](https://cses.fi/problemset/result/2583535/)✅ \| standard problem \|use **MEDIAN** not **MEAN**
 * [x] CSES: [Traffic Lights](https://cses.fi/problemset/task/1163) : 🐽🐽✅✅ \| [Youtube](ttps://www.youtube.com/watch?v=4HKXdh_LHps&ab_channel=ARSLONGAVITABREVIS) \| [Stackoverflow](https://stackoverflow.com/questions/63329220/i-tried-solving-traffic-lights-problem-in-the-cses-problem-set-my-approach-seem)
 * [x] CSES: [Room Allocation](https://cses.fi/problemset/task/1164) ✅ \| LC: [1942.The Number of the Smallest Unoccupied Chair](https://leetcode.com/problems/the-number-of-the-smallest-unoccupied-chair/discuss/1360146/python-heap-easy-implementation-faster-than-100) -&gt; my first editorial!!
@@ -1377,6 +1403,8 @@ ONLY when you're working with all negative or positives or if your input is sort
 * [x] GfG\#2 [First negative integer in every window of size k](https://www.geeksforgeeks.org/first-negative-integer-every-window-size-k/#:~:text=Recommended%3A%20Please%20solve%20it%20on,the%20current%20subarray%28window%29.)
 * [x] [438.Find All Anagrams in a String](https://leetcode.com/problems/find-all-anagrams-in-a-string/) 🚀
 * [x] [239. Sliding Window Maximum](https://leetcode.com/problems/sliding-window-maximum/) 🍪🍪🍪
+* [ ] 849. [Maximize Distance to Closest Person](https://leetcode.com/problems/maximize-distance-to-closest-person/) 🤯🐽\| unable to get the 2P method!!!!
+  * [ ] 855.[Exam Room](https://leetcode.com/problems/exam-room/) \| design problem based on this \| **@Google!!!!!🐽**
 
 {% tabs %}
 {% tab title="\#1" %}

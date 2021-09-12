@@ -193,6 +193,7 @@ class LFUCache(object):
 ## From LC:
 
 * [x] LC [1600. Throne Inheritance](https://leetcode.com/problems/throne-inheritance/)
+* [ ] LC [855. Exam Room ](https://leetcode.com/problems/exam-room/)\| based on \#LC.849 \| **@google \|** 🐽🐽
 
 {% tabs %}
 {% tab title="1600" %}

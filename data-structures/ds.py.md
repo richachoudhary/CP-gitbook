@@ -69,7 +69,9 @@ sorted_list.remove(2)  # O(logN)
 
 ## `string`
 
-* **str-&gt;list**  **:** split a string by char: `s = txt.split("#")`
+* **str-&gt;list**  **:** 
+  * \(**most commonly used**\)for a continuous char string: `l = list(s)`
+  * split a string by char: `s = txt.split("#")`
 * **list-&gt;str  :** join a list by char into string: `list1 = ['1', '2', '3'] str1 = ','.join(list1)`
 * **get freq** of element in list/string: `list.count(x)`
 * **Casing/Type checking**: 
@@ -131,6 +133,10 @@ sorted_set.remove(5) # O(logN)
 
 
 ## `dict`: 
+
+{% hint style="warning" %}
+**NOTE**: always use dict.**get**\(x,0\) to avoid key errors!!!!!!!!!!!!
+{% endhint %}
 
 * Its is a hashmap of key-value pairs
 * Creating a dictionary:
