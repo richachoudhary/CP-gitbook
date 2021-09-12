@@ -1383,6 +1383,101 @@ def findDuplicate(self, nums: List[int]) -> int:
 * [x] CSES: [Ferris Wheel](https://cses.fi/problemset/task/1090) 
 * [x] CSES: [Subarray Distinct Values](https://cses.fi/problemset/result/2649112/)
 
+{% tabs %}
+{% tab title="Apartments" %}
+```python
+import bisect
+ 
+n,m,k = map(int,input().split())
+a = list(map(int,input().split()))
+b = list(map(int,input().split()))
+ 
+a.sort()
+b.sort()
+i,j, = 0,0
+ 
+cnt = 0
+ 
+for i in range(n):
+    while j<m and b[j]<a[i]-k:
+        j += 1
+    if j<m and b[j]<=a[i]+k:
+        cnt += 1
+        j += 1
+print(cnt)
+ 
+'''
+2Pointer:similar to Policemen Catches Theives
+ 
+b: 30 60 75
+a: 45 60 60 80
+ 
+'''
+```
+{% endtab %}
+
+{% tab title="Ferris Wheel" %}
+```python
+import bisect
+ 
+def run():
+    I = lambda : map(int, input().split())
+    n,x = I()
+    A = list(I())
+    A.sort()
+ 
+    cnt = 0
+    l,r = 0, len(A)-1
+ 
+    while l<=r:
+        if A[l]+A[r] <= x:
+            l += 1
+            r -= 1
+            cnt += 1
+        else:
+            cnt += 1
+            r -= 1
+ 
+    # if l==r:
+    #     cnt += 1
+ 
+    print(cnt)
+    
+ 
+if __name__ == "__main__":
+    run()
+```
+{% endtab %}
+
+{% tab title="Subarray Distinct Values" %}
+```python
+I = lambda : map(int, input().split())
+n,k = I()
+
+A = list(I())
+d = dict()
+res = 0
+
+l = 0
+for r in range(n):
+    if A[r] in d:
+        d[A[r]] += 1
+    else:
+        d[A[r]] = 1
+
+    while l<r and len(d) > k:
+        if d[A[l]] == 1:
+            d.pop(A[l])
+        else:
+            d[A[l]] -= 1
+        l += 1
+    res += (r-l+1)
+
+print(res) 
+```
+{% endtab %}
+{% endtabs %}
+
 ## 9.Sliding Window
 
 * **Fixed Size: How I do it?**
@@ -1416,7 +1511,7 @@ def maximumSumSubarray (k,arr,n):
         curr_sum += arr[i]
     res = curr_sum
     for r in range(k,n):
-        l = k-j
+        l = r-k     # l is "just outside the window on left"
         curr_sum += -arr[l] + arr[r]
         res = max(res, curr_sum)
     return res
@@ -1437,7 +1532,7 @@ def printFirstNegativeInteger( a,n,k):
         if a[r]<0:
             negs.append(a[r])
         if negs and a[l] == negs[0]:
-                negs.pop(0)
+            negs.pop(0)
         
         if len(negs):
             res.append(negs[0])
@@ -1701,17 +1796,17 @@ if __name__ == "__main__":
 
 ### 9.2 Other Problems
 
-* [ ]  * [https://leetcode.com/problems/longest-continuous-subarray-with-absolute-diff-less-than-or-equal-to-limit/](https://leetcode.com/problems/longest-continuous-subarray-with-absolute-diff-less-than-or-equal-to-limit/)
-  * [https://leetcode.com/problems/number-of-substrings-containing-all-three-characters/](https://leetcode.com/problems/number-of-substrings-containing-all-three-characters/)
-  * [https://leetcode.com/problems/replace-the-substring-for-balanced-string/](https://leetcode.com/problems/replace-the-substring-for-balanced-string/)
-  * [https://leetcode.com/problems/max-consecutive-ones-iii/](https://leetcode.com/problems/max-consecutive-ones-iii/)
-  * [https://leetcode.com/problems/subarrays-with-k-different-integers/](https://leetcode.com/problems/subarrays-with-k-different-integers/)
-  * [https://leetcode.com/problems/fruit-into-baskets/](https://leetcode.com/problems/fruit-into-baskets/)
-  * [https://leetcode.com/problems/get-equal-substrings-within-budget/](https://leetcode.com/problems/get-equal-substrings-within-budget/)
-  * [https://leetcode.com/problems/longest-repeating-character-replacement/](https://leetcode.com/problems/longest-repeating-character-replacement/)
-  * [https://leetcode.com/problems/shortest-subarray-with-sum-at-least-k/](https://leetcode.com/problems/shortest-subarray-with-sum-at-least-k/)
-  * [https://leetcode.com/problems/minimum-size-subarray-sum/](https://leetcode.com/problems/minimum-size-subarray-sum/)
-  * [https://leetcode.com/problems/sliding-window-maximum/](https://leetcode.com/problems/sliding-window-maximum/)
+* [https://leetcode.com/problems/longest-continuous-subarray-with-absolute-diff-less-than-or-equal-to-limit/](https://leetcode.com/problems/longest-continuous-subarray-with-absolute-diff-less-than-or-equal-to-limit/)
+* [https://leetcode.com/problems/number-of-substrings-containing-all-three-characters/](https://leetcode.com/problems/number-of-substrings-containing-all-three-characters/)
+* [https://leetcode.com/problems/replace-the-substring-for-balanced-string/](https://leetcode.com/problems/replace-the-substring-for-balanced-string/)
+* [https://leetcode.com/problems/max-consecutive-ones-iii/](https://leetcode.com/problems/max-consecutive-ones-iii/)
+* [https://leetcode.com/problems/subarrays-with-k-different-integers/](https://leetcode.com/problems/subarrays-with-k-different-integers/)
+* [https://leetcode.com/problems/fruit-into-baskets/](https://leetcode.com/problems/fruit-into-baskets/)
+* [https://leetcode.com/problems/get-equal-substrings-within-budget/](https://leetcode.com/problems/get-equal-substrings-within-budget/)
+* [https://leetcode.com/problems/longest-repeating-character-replacement/](https://leetcode.com/problems/longest-repeating-character-replacement/)
+* [https://leetcode.com/problems/shortest-subarray-with-sum-at-least-k/](https://leetcode.com/problems/shortest-subarray-with-sum-at-least-k/)
+* [https://leetcode.com/problems/minimum-size-subarray-sum/](https://leetcode.com/problems/minimum-size-subarray-sum/)
+* [https://leetcode.com/problems/sliding-window-maximum/](https://leetcode.com/problems/sliding-window-maximum/)
 
  
 
