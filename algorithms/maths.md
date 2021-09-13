@@ -36,6 +36,7 @@ For problems like \(**\#892**\) :in geometry of 3-D blocks: think in terms of su
 * [x] LC: [149.Max Points on a Line](https://leetcode.com/problems/max-points-on-a-line/) \| just count all the slopes b/w all 2 pair points
 * [x] Check collinearity : [1232. Check If It Is a Straight Line](https://leetcode.com/problems/check-if-it-is-a-straight-line/)
   * [x] Similar: [1037.Valid Boomerang](https://leetcode.com/problems/valid-boomerang/)
+* [x] LC [218.The Skyline Problem](https://leetcode.com/problems/the-skyline-problem/) ✅🌇\| uses **SortedList** 
 
 {% tabs %}
 {% tab title="149" %}
@@ -216,6 +217,44 @@ def solve():
 
     print(abs(res)//2) 
     
+```
+{% endtab %}
+
+{% tab title="218.🌇" %}
+```python
+from sortedcontainers import SortedList
+class Solution:
+    def getSkyline(self, buildings: List[List[int]]) -> List[List[int]]:
+        events = []
+        
+        for l,r,h in buildings:
+            events.append((l,h,-1)) #starting event
+            events.append((r,h,1))  #ending event
+            
+        events.sort()   #sort by X cordinate
+        n = len(events)
+        
+        res = []
+        active_heights = SortedList([0]) #min heap of curr all hights in current window
+        
+        i = 0
+        while i<n:
+            curr_x = events[i][0]
+            
+            #process all events with same X together
+            while i<n and events[i][0] == curr_x:
+                x,h,t = events[i]
+                
+                if t == -1:                      #starting event
+                    active_heights.add(h)
+                else:
+                    active_heights.remove(h)    #ending event
+                i += 1
+                
+            #check if biggest height has changed in window due to this event
+            if len(res) == 0 or (len(res) > 0 and res[-1][1] != active_heights[-1]):
+                res.append((curr_x, active_heights[-1]))
+        return res
 ```
 {% endtab %}
 {% endtabs %}

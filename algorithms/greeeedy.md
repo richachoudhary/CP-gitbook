@@ -11,7 +11,7 @@
   * [x] CSES: [Collecting Numbers](https://cses.fi/problemset/task/2216)  \| [Approach](https://discuss.codechef.com/t/cses-collecting-numbers/83775)
   * [x] CSES: [Collecting Numbers II](https://cses.fi/problemset/task/2217) \|  [Video](https://www.youtube.com/watch?v=LEL3HW4dQew&ab_channel=ARSLONGAVITABREVIS) 🐽
 * [x] CSES: [Subarray Sum 1](https://cses.fi/problemset/task/1660/) \| only "prefix sum"
-* [x] CSES: [Subarray Sum 2](https://cses.fi/problemset/task/1661) \| neg numbers \| prefix sum + map
+* [x] CSES: [Subarray Sum 2](https://cses.fi/problemset/task/1661) \| neg numbers \| prefix sum **+** map
 * [x] CSES: [Subarray Divisibility](https://cses.fi/problemset/result/2648945/) \| ✅ 
 * [x] LC 44: [Wildcard Matching](https://leetcode.com/problems/wildcard-matching/)
 * [x] LC [163. Missing Ranges](https://leetfree.com/problems/missing-ranges)
@@ -255,9 +255,7 @@ def fullJustify(self, words: List[str], maxWidth: int):
 
 ### String Matching Algo
 
-
-
-* [x] [28. Implement strStr\(\)](https://leetcode.com/problems/implement-strstr/) 
+* [x] [28. Implement strStr\(\)](https://leetcode.com/problems/implement-strstr/) 🐽
 
 {% tabs %}
 {% tab title="Naive Search" %}
@@ -273,7 +271,7 @@ def strStr(self, haystack: str, needle: str) -> int:
                 return i
     return -1
 
-# ==== One Line code ====================
+# ============================ One Line code =============================
 def strStr(self, haystack: str, needle: str) -> int:
          return haystack.find(needle)
 ```
@@ -374,10 +372,47 @@ def strStr(self, haystack: str, needle: str) -> int:
 
 ### 2.1 Rolling Hash
 
-* [ ] [1044. Longest Duplicate Substring](https://leetcode.com/problems/longest-duplicate-substring/) ⚡️ - learn [this approach](https://leetcode.com/problems/longest-duplicate-substring/discuss/695029/python-binary-search-with-rabin-karp-o%28n-log-n%29-explained)
+* [x] [1044. Longest Duplicate Substring](https://leetcode.com/problems/longest-duplicate-substring/) ⚡️ - learn [**Rabin-Karp**](https://leetcode.com/problems/longest-duplicate-substring/discuss/695029/python-binary-search-with-rabin-karp-o%28n-log-n%29-explained)\*\*\*\*
 * [ ] [1923. Longest Common Subpath](https://leetcode.com/problems/longest-common-subpath) 
 
-## TODO: KMP & Z-algo for string!!!!!!!!!!!!!!!!!!!!!!!!!!!
+{% tabs %}
+{% tab title="1044" %}
+```python
+def RabinKarp(self,text, M, q):
+    if M == 0: return True
+    h, t, d = (1<<(8*M-8))%q, 0, 256
+
+    dic = defaultdict(list)
+
+    for i in range(M): 
+        t = (d * t + ord(text[i]))% q
+
+    dic[t].append(i-M+1)
+
+    for i in range(len(text) - M):
+        t = (d*(t-ord(text[i])*h) + ord(text[i + M]))% q
+        for j in dic[t]:
+            if text[i+1:i+M+1] == text[j:j+M]:
+                return (True, text[j:j+M])
+        dic[t].append(i+1)
+    return (False, "")
+
+def longestDupSubstring(self, S):
+    beg, end = 0, len(S)
+    q = (1<<31) - 1 
+    Found = ""
+    while beg + 1 < end:
+        mid = (beg + end)//2
+        isFound, candidate = self.RabinKarp(S, mid, q)
+        if isFound:
+            beg, Found = mid, candidate
+        else:
+            end = mid
+
+    return Found
+```
+{% endtab %}
+{% endtabs %}
 
 ## 3. Map \| Set \| SortedList
 
@@ -732,8 +767,6 @@ print(f("leetcode","practice")) #5
 
 
 
-
-
 ## 4. Queue/Stack/Monotonic
 
 ### 4.0 Notes:
@@ -900,8 +933,6 @@ def trap(h: List[int]) -> int:
         res += min(mxl[i],mxr[i]) - h[i]
     return res
 ```
-
-
 
 * [ ] [1130. Minimum Cost Tree From Leaf Values](https://leetcode.com/problems/minimum-cost-tree-from-leaf-values/discuss/339959/One-Pass-O%28N%29-Time-and-Space)
 * [ ] [907. Sum of Subarray Minimums](https://leetcode.com/problems/sum-of-subarray-minimums/discuss/170750/C++JavaPython-Stack-Solution)
@@ -1250,9 +1281,319 @@ for(int i=0;i<n;i++){
 {% endtab %}
 {% endtabs %}
 
-## 7.Binary Search 🌟//TODO: complete & notes from[ greatest template](https://leetcode.com/discuss/general-discussion/786126/python-powerful-ultimate-binary-search-template-solved-many-problems)
+## 7.Binary Search 🌟
 
 ### 7.0 Notes
+
+* \*\*\*\*[ **greatest template**](https://leetcode.com/discuss/general-discussion/786126/python-powerful-ultimate-binary-search-template-solved-many-problems) **ever!!!!**
+* Generalized template \( **works all the time**\) :: fucking moonshot!!!
+  * Remember this: **after exiting the while loop, `left` is the minimal k​ satisfying the `condition` function**;
+
+{% tabs %}
+{% tab title="Binary Search Template" %}
+```python
+def binary_search(array) -> int:
+    def condition(value) -> bool:
+        pass
+
+    left, right = min(search_space), max(search_space) # could be [0, n], [1, n] etc. Depends on problem
+    while left < right:
+        mid = left + (right - left) // 2
+        if condition(mid):
+            right = mid
+        else:
+            left = mid + 1
+    return left
+```
+{% endtab %}
+{% endtabs %}
+
+### \#\# Problems based on Template
+
+* [x] \*\*\*\*[**278. First Bad Version \[Easy\]**](https://leetcode.com/problems/first-bad-version/)\*\*\*\*
+* [x] \*\*\*\*[**69. Sqrt\(x\) \[Easy\]**](https://leetcode.com/problems/sqrtx/)\*\*\*\*
+* [x] \*\*\*\*[**35. Search Insert Position \[Easy\]**](https://leetcode.com/problems/search-insert-position/)\*\*\*\*
+
+{% tabs %}
+{% tab title="278" %}
+```python
+def firstBadVersion(self, n):
+    l,r = 1, n
+    while l<r:
+        mid = (l+r)//2
+        if isBadVersion(mid):
+            r = mid
+        else:
+            l = mid+1
+    return l
+```
+{% endtab %}
+
+{% tab title="69" %}
+```python
+def mySqrt(self, n: int) -> int:
+    if n == 0 or n == 1:
+        return n
+    l,r = 0, n+1
+    while l<r:
+        mid = (l+r)//2
+        if mid*mid > n:
+            r = mid
+        else:
+            l = mid+1
+    return l-1
+    
+    '''
+    set right = n + 1 instead of right = x to deal with 
+    special input cases like n = 0 and n = 1
+    '''
+```
+{% endtab %}
+
+{% tab title="35" %}
+```python
+def searchInsert(self, nums: List[int], target: int) -> int:
+        
+    return bisect.bisect_left(nums,target)
+    
+    # =====================================
+    n = len(nums)
+    l,r = 0, n
+    while l<r:
+        mid = (l+r)//2
+        if nums[mid] >= target:
+            r = mid
+        else:
+            l = mid+1
+    return l
+```
+{% endtab %}
+{% endtabs %}
+
+* [x] \*\*\*\*[**1011. Capacity To Ship Packages Within D Days \[Medium\]**](https://leetcode.com/problems/capacity-to-ship-packages-within-d-days/) **✅**
+* [x] \*\*\*\*[**410. Split Array Largest Sum \[Hard\]**](https://leetcode.com/problems/split-array-largest-sum/)          ****// ditto same as `1011`
+* [x] \*\*\*\*[**875. Koko Eating Bananas \[Medium\]**](https://leetcode.com/problems/koko-eating-bananas/)\*\*\*\*
+* [x] \*\*\*\*[**1482. Minimum Number of Days to Make m Bouquets \[Medium\]**](https://leetcode.com/problems/minimum-number-of-days-to-make-m-bouquets/)\*\*\*\*
+* [x] \*\*\*\*[**475. Heaters \[Medium\]**](https://leetcode.com/problems/heaters/) **✅💪**
+
+{% tabs %}
+{% tab title="1011" %}
+```python
+def shipWithinDays(self, W: List[int], k: int) -> int:
+    def is_feasible(x):
+        days = 1
+        total = 0
+        for w in W:
+            total += w
+            if total > x:   # too heavy, wait for next day
+                total = w
+                days += 1
+        return days <= k
+    
+    l, r = max(W), sum(W)        # initialization pe GAUR farmayein
+    
+    while l<r:
+        mid = (l+r)//2
+        if is_feasible(mid):
+            r = mid
+        else:
+            l = mid+1
+    return l
+
+```
+{% endtab %}
+
+{% tab title="410" %}
+```python
+def splitArray(self, nums: List[int], m: int) -> int:
+    def feasible(threshold) -> bool:
+        count = 1
+        total = 0
+        for num in nums:
+            total += num
+            if total > threshold:
+                total = num
+                count += 1
+                if count > m:
+                    return False
+        return True
+
+    left, right = max(nums), sum(nums)
+    while left < right:
+        mid = left + (right - left) // 2
+        if feasible(mid):
+            right = mid     
+        else:
+            left = mid + 1
+    return left
+```
+{% endtab %}
+
+{% tab title="875" %}
+```python
+def minEatingSpeed(self, A: List[int], H: int) -> int:
+        
+    def is_feasible(k):
+        hrs = 0
+        for x in A:
+            hrs += math.ceil(x/k)
+        return hrs <= H
+        # return sum((a-1)//k + 1 for a in A)   # raster!!
+    
+    l,r = 1, max(A)
+    while l<r:
+        mid = (l+r)//2
+        if is_feasible(mid):
+            r = mid
+        else:
+            l = mid+1
+    return l
+```
+{% endtab %}
+
+{% tab title="1482" %}
+```python
+def minDays(self, A: List[int], m: int, k: int) -> int:
+        
+    def is_feasible(x):
+        cnt = 0
+        curr_flowers = 0
+        for i in range(len(A)):
+            if A[i] <= x:
+                cnt += (curr_flowers + 1)//k
+                curr_flowers = (curr_flowers + 1)%k
+            else: 
+                curr_flowers = 0
+            '''
+            # Below fails for case: [x, x, x, x, _, x, x] , m = 2, k = 3. ==> we can form 2 bouquets(not 1) from first 3 flowers
+            if A[i] <= x:    # has bloomed
+                curr_flowers += 1
+                if curr_flowers >= k:
+                    cnt += 1
+            else:
+                curr_flowers = 0
+            '''
+        return cnt >= m
+    
+    # BC:
+    if len(A) < m*k:
+        return -1
+    
+    l,r = 1, max(A)
+    while l<r:
+        mid = (l+r)//2
+        if is_feasible(mid):
+            r = mid
+        else:
+            l = mid+1
+    return l
+```
+{% endtab %}
+
+{% tab title="475" %}
+```python
+def findRadius(self, houses: List[int], heaters: List[int]) -> int:
+        
+    def is_feasible(r):
+        j = 0
+        for h in houses:
+            if heaters[j] - r <= h <= heaters[j] + r:
+                continue
+            else:
+                while j < m and h > heaters[j] + r:
+                    j += 1
+                if j == m or h < heaters[j] - r:
+                    return False
+        return True
+    
+    heaters.sort()
+    houses.sort()
+    n, m = len(houses), len(heaters)
+    
+    l,r = 0,(10**9)+1
+    while l<r:
+        mid = (l+r)//2
+        if is_feasible(mid):
+            r = mid
+        else:
+            l = mid+1
+    return l
+```
+{% endtab %}
+{% endtabs %}
+
+* [x] [**1201. Ugly Number III \[Medium\]**](https://leetcode.com/problems/ugly-number-iii/) **✅✅ \|** weird GCD formula
+* [ ] \*\*\*\*[**668. Kth Smallest Number in Multiplication Table \[Hard\]**](https://leetcode.com/problems/kth-smallest-number-in-multiplication-table/description/)\*\*\*\*
+* [ ] \*\*\*\*[**719. Find K-th Smallest Pair Distance \[Hard\]**](https://leetcode.com/problems/find-k-th-smallest-pair-distance/)\*\*\*\*
+* [ ] \*\*\*\*[**1283. Find the Smallest Divisor Given a Threshold \[Medium\]**](https://leetcode.com/problems/find-the-smallest-divisor-given-a-threshold/)\*\*\*\*
+* [x] [1044. Longest Duplicate Substring](https://leetcode.com/problems/longest-duplicate-substring/) **\| `RabinKarp`**
+
+{% tabs %}
+{% tab title="1201" %}
+```python
+def nthUglyNumber(self, n: int, a: int, b: int, c: int) -> int:
+        
+    # Since a might be a multiple of b or c, 
+    # OR the other way round, we need the help of greatest common divisor
+    # to avoid counting duplicate numbers.
+    def enough(num) -> bool:
+        total = num//a + num//b + num//c - num//ab - num//ac - num//bc + num//abc
+        return total >= n
+
+    ab = a * b // math.gcd(a, b)
+    ac = a * c // math.gcd(a, c)
+    bc = b * c // math.gcd(b, c)
+    abc = a * bc // math.gcd(a, bc)
+    left, right = 1, 10 ** 10
+    while left < right:
+        mid = left + (right - left) // 2
+        if enough(mid):
+            right = mid
+        else:
+            left = mid + 1
+    return left
+```
+{% endtab %}
+
+{% tab title="1044." %}
+```python
+def RabinKarp(self,text, M, q):
+    if M == 0: return True
+    h, t, d = (1<<(8*M-8))%q, 0, 256
+
+    dic = defaultdict(list)
+
+    for i in range(M): 
+        t = (d * t + ord(text[i]))% q
+
+    dic[t].append(i-M+1)
+
+    for i in range(len(text) - M):
+        t = (d*(t-ord(text[i])*h) + ord(text[i + M]))% q
+        for j in dic[t]:
+            if text[i+1:i+M+1] == text[j:j+M]:
+                return (True, text[j:j+M])
+        dic[t].append(i+1)
+    return (False, "")
+
+def longestDupSubstring(self, S):
+    beg, end = 0, len(S)
+    q = (1<<31) - 1 
+    Found = ""
+    while beg + 1 < end:
+        mid = (beg + end)//2
+        isFound, candidate = self.RabinKarp(S, mid, q)
+        if isFound:
+            beg, Found = mid, candidate
+        else:
+            end = mid
+
+    return Found
+```
+{% endtab %}
+{% endtabs %}
+
+\*\*\*\*
 
 ### 7.1 Problems
 
