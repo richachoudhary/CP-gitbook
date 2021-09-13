@@ -1522,6 +1522,7 @@ def findRadius(self, houses: List[int], heaters: List[int]) -> int:
 {% endtab %}
 {% endtabs %}
 
+* [x] \*\*\*\*[**287: Find the Duplicate Number**](https://leetcode.com/problems/find-the-duplicate-number/) \| **@ShareChat** \| also see in `LinkedLIst` 💪
 * [x] [**1201. Ugly Number III \[Medium\]**](https://leetcode.com/problems/ugly-number-iii/) **✅✅ \|** weird GCD formula
 * [ ] \*\*\*\*[**668. Kth Smallest Number in Multiplication Table \[Hard\]**](https://leetcode.com/problems/kth-smallest-number-in-multiplication-table/description/)\*\*\*\*
 * [ ] \*\*\*\*[**719. Find K-th Smallest Pair Distance \[Hard\]**](https://leetcode.com/problems/find-k-th-smallest-pair-distance/)\*\*\*\*
@@ -1529,6 +1530,32 @@ def findRadius(self, houses: List[int], heaters: List[int]) -> int:
 * [x] [1044. Longest Duplicate Substring](https://leetcode.com/problems/longest-duplicate-substring/) **\| `RabinKarp`**
 
 {% tabs %}
+{% tab title="287.💪" %}
+```python
+'''
+array size is n + 1while the value in array is from 1 to n
+Apply binary search to pick a number m within 1 to n,
+count how many numbers in the array is less or equal to m
+If the count > m , then m is too large or m is the answer, so right = m
+If count <= m, then m is too small, so left = m + 1
+Time: O(nlogn)
+Space: O(1)
+'''
+
+n = len(nums)
+l,r = 1,n-1
+while l<r:
+    mid = (l+r)//2
+    cnt = sum(x<=mid for x in nums)
+    
+    if cnt > mid:
+        r = mid
+    else:
+        l = mid+1
+return l
+```
+{% endtab %}
+
 {% tab title="1201" %}
 ```python
 def nthUglyNumber(self, n: int, a: int, b: int, c: int) -> int:
@@ -1789,7 +1816,7 @@ So for this question, you **HAVE TO GO WITH C++**
 * [x] CSES: [Factory Machines ](https://cses.fi/problemset/task/1620)✅
 * [x] CSES: [Array Division](https://cses.fi/problemset/task/1085/) ✅✅
 * [x] LC [287: Find the Duplicate Number](https://leetcode.com/problems/find-the-duplicate-number/) \| @ShareChat \| also see in `LinkedLIst` 💪
-* [ ] LC [1201. Ugly Number III](https://leetcode.com/problems/ugly-number-iii/) \| Some weird lcm formula
+* [x] LC [1201. Ugly Number III](https://leetcode.com/problems/ugly-number-iii/) \| Some weird lcm formula
 
 {% tabs %}
 {% tab title="875. Koko" %}
@@ -1877,29 +1904,28 @@ def findDuplicate(self, nums: List[int]) -> int:
             slow, fast = nums[slow], nums[fast]
         return slow
     
-    
         #2. Binary Search ==========================================================================
         '''
-        Let us choose middle element m = n//2 and count number of elements in list, 
-        which are less or equal than m. 
-        If we have m+1 of them it means we need to search for duplicate in [1,m] range, else in [m+1,n] range
+        array size is n + 1while the value in array is from 1 to n
+        Apply binary search to pick a number m within 1 to n,
+        count how many numbers in the array is less or equal to m
+        If the count > m , then m is too large or m is the answer, so right = m
+        If count <= m, then m is too small, so left = m + 1
+        Time: O(nlogn)
+        Space: O(1)
         '''
-        #TC: O(NlogN) , SC: O(1)
         
-        low = 0
-        high = len(nums) - 1
-        mid = (high + low) / 2
-        while high - low > 1:
-            count = 0
-            for k in nums:
-                if mid < k <= high:
-                    count += 1
-            if count > high - mid:
-                low = mid
+        n = len(nums)
+        l,r = 1,n-1
+        while l<r:
+            mid = (l+r)//2
+            cnt = sum(x<=mid for x in nums)
+            
+            if cnt > mid:
+                r = mid
             else:
-                high = mid
-            mid = (high + low) / 2
-        return high
+                l = mid+1
+        return l
 ```
 {% endtab %}
 {% endtabs %}
