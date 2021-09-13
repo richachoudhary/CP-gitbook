@@ -55,6 +55,7 @@ for x in A:
     s.add(x)
 
 print(cnt)
+
 '''
 VIDEO: https://www.youtube.com/watch?v=lhhHCZYoJvs&ab_channel=ARSLONGAVITABREVIS
 '''
@@ -248,6 +249,123 @@ def fullJustify(self, words: List[str], maxWidth: int):
         result[i] = reorderSpaces(result[i])
     return result 
         
+```
+{% endtab %}
+{% endtabs %}
+
+### String Matching Algo
+
+
+
+* [x] [28. Implement strStr\(\)](https://leetcode.com/problems/implement-strstr/) 
+
+{% tabs %}
+{% tab title="Naive Search" %}
+```python
+def strStr(self, haystack: str, needle: str) -> int:
+    if not needle:
+        return 0
+    for i in range(len(haystack) - len(needle) + 1):
+        for j in range(len(needle)):
+            if haystack[i + j] != needle[j]:
+                break
+            if j == len(needle) - 1:
+                return i
+    return -1
+
+# ==== One Line code ====================
+def strStr(self, haystack: str, needle: str) -> int:
+         return haystack.find(needle)
+```
+{% endtab %}
+
+{% tab title="KMP" %}
+```python
+# TC: O(N) =========================================================
+def strStr(self, haystack: str, needle: str) -> int:
+    lps = [0] * len(needle)
+    i, j = 1, 0
+    if not needle:
+        return 0
+    # preprocess needle
+    while i < len(needle):
+        if needle[i] == needle[j]:
+            lps[i] = j + 1
+            i += 1
+            j += 1
+        elif j == 0:
+            lps[i] = 0
+            i += 1
+        else:
+            j = lps[j - 1]
+    i, j = 0, 0
+    # find using lps
+    while i < len(haystack) and j < len(needle):
+        if needle[j] == haystack[i]:
+            if j == len(needle) - 1:
+                return i - j
+            i += 1
+            j += 1
+        else:
+            if j == 0:
+                i += 1
+                continue
+            j = lps[j - 1]
+    return -1
+
+```
+{% endtab %}
+
+{% tab title="Z Algorithm" %}
+```python
+# TC: O(N) =========================================================
+def strStr(self, haystack: str, needle: str) -> int:
+    s = needle + "$" + haystack
+    left, right = 0, 0
+    z = [0] * len(s)
+    if not len(needle):
+        return 0
+    for k in range(1, len(s)):
+        if k > right:
+            right = left = k
+            while right < len(s) and s[right] == s[right - left]:
+                right += 1
+            z[k] = right - left
+            right -= 1
+            if z[k] == len(needle):
+                return k - 1 - len(needle)
+        else:
+            if z[k - left] < right - k + 1:
+                z[k] = z[k - left]
+            else:
+                left = k
+                while right < len(s) and s[right] == s[right - left]:
+                    right += 1
+                z[k] = right - left
+                right -= 1
+                if z[k] == len(needle):
+                    return k - 1 - len(needle)
+    return -1
+
+```
+{% endtab %}
+
+{% tab title="Rabin Karp" %}
+```python
+def strStr(self, haystack: str, needle: str) -> int:
+        n,m=len(haystack),len(needle)
+        hck,nle=0,0
+        if n<m: return -1
+        for i in range(m):
+                hck=10*hck+ord(haystack[i])
+                nle=10*nle+ord(needle[i])
+        for i in range(n-m+1):
+                if hck==nle:
+                        return i
+                if i==n-m: break
+                hck=10*(hck-ord(haystack[i])*10**(m-1))+(ord(haystack[i+m]))    
+        return -1
+
 ```
 {% endtab %}
 {% endtabs %}
