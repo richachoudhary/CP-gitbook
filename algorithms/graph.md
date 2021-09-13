@@ -569,7 +569,8 @@ def dijkstras_SSSP():
 
 {% tab title="1.2 Bellman-Ford" %}
 ```python
-# input matrix = [[2,1,1],[2,3,1],[3,4,1]] : [from,to,weight]; src = k; dst = X
+# INPUT:         [from,to,weight]; src = k; dst = X
+# input matrix = [[2,1,1],[2,3,1],[3,4,1]]
 def bellmanFord_SSSP(matrix):
     dist = [0] + [float("inf")] * N
     dist[k] = 0
@@ -1029,8 +1030,8 @@ TC: M*N(log(MN))
 
 #### 2.1.2 Kruskal's Algo
 
-Prim: O\(\(V+E\)logV\) because each vertex is inserted in **heap**  
-Kruskal : O\(ElogV\) most time consuming operation is **sorting**
+**Prim: O\(\(V+E\)logV\)** because each vertex is inserted in **heap**  
+**Kruskal : O\(ElogV\)** most time consuming operation is **sorting**
 
 {% tabs %}
 {% tab title="Prims" %}
@@ -1062,9 +1063,8 @@ else:
 {% tab title="Kruskals" %}
 ```python
 def find(who,x):
-    while who[x] != x:
-        who[x] = who[who[x]]
-        x = who[x]
+    if who[x] != x:
+        who[x] = find(who[x])
     return x
 
 def union(who,x,y):
@@ -1735,7 +1735,7 @@ print(total_cost)
 
 ## 5. **Graph colouring/Bipartition ⚪️🔴🔵**
 
-* **colors:**  **`# 0:grey, 1:blue, 2:red`**
+* **colors:**  **`# -1:grey, 1:blue, 0:red`**
 * **`dfs(x,col=1)`** `--[for all its children]--->` **`dfs(y, col^1)`** 
 
 ![](../.gitbook/assets/screenshot-2021-09-10-at-11.49.49-am.png)
@@ -2151,8 +2151,7 @@ def kosaraju_scc(G):
     G = reverse_graph(G)
 
     visited = set()
-    count = 0    # count of total SCCs in ans
-
+    
     def dfs(u, scc):
         visited.add(u)
         scc.add(u)
@@ -2162,6 +2161,7 @@ def kosaraju_scc(G):
                 dfs(v, scc)
 
     sccs = defaultdict(set)
+    count = 0    # count of total SCCs in ans
 
     for u in reversed(postorder):
         if u not in visited:
