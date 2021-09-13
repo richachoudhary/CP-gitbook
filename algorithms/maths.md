@@ -369,10 +369,10 @@ return sum(x for x in primes if x)
 * **Modular Exponentiation** :
 
 ```cpp
-int modularExponentiation(int x,int n,int M){    //get (x^n % M)
+int my_pow(int x,int n,int M){    //get (x^n % M)
     if(n==0) return 1;
-    else if(n%2 == 0) return modularExponentiation((x*x)%M,n/2,M);
-    else return (x*modularExponentiation((x*x)%M,(n-1)/2,M))%M;
+    else if(n%2 == 0) return my_pow((x*x)%M,n/2,M);
+    else return (x*my_pow((x*x)%M,(n-1)/2,M))%M;
 }
 // or in python: 
 math.pow(x,n,M)
