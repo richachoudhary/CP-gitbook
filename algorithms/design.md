@@ -115,15 +115,15 @@ IDEA: keep 2 dictionaries:
 1. nodeKeys ={key -> (val, freq)} or {key -> node}  # data on key-val pair & how many times its repeated yet
 2. nodeCounts = {freq -> OrderedDict({key ->node})}
 
+* Also keep track of least freq yet (minFreq)
+
 freq:1 => {1:(1,1),2:(2,1)}  # the 'LRU' order(needed during tie)
 freq:2 => 
 freq:3 => {3:(1,3), 4:(5,3)}  # the 'LRU' order(needed during tie)
 
-* Also keep track of least freq yet (minFreq)
 '''
 
-from collections import defaultdict
-from collections import OrderedDict
+from collections import defaultdict,OrderedDict
 
 class Node:
     def __init__(self, val, freq):

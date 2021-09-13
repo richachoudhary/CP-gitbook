@@ -19,7 +19,7 @@ class ListNode:
 * [x] [82.Remove Duplicates from Sorted List II](https://leetcode.com/problems/remove-duplicates-from-sorted-list-ii/) 🌟 🏴‍☠️
 
 {% tabs %}
-{% tab title="" %}
+{% tab title="148" %}
 ```python
 def mergeSort(head):
     if not head or not head.next : 
@@ -321,7 +321,7 @@ def findDuplicate(self, nums):
 * [ ] [142.Linked List Cycle II](https://leetcode.com/problems/linked-list-cycle-ii/)
 * [x] [138.Copy List with Random Pointer](https://leetcode.com/problems/copy-list-with-random-pointer/) \| Deep copy \| chillar
 * [x] 23. [Merge k Sorted Lists](https://leetcode.com/problems/merge-k-sorted-lists/) 🍪🍪🍪✅
-* [x] LC [287. Find the Duplicate Number](https://leetcode.com/problems/find-the-duplicate-number/) \| **Rabbit-Tortoise** method on array \| had me failed @ShareChat back then 💪 \| also see in `BinarySearch`
+* [x] LC [287. Find the Duplicate Number](https://leetcode.com/problems/find-the-duplicate-number/) \| **Rabbit-Tortoise** method on array \| had me failed **@ShareChat** back then 💪 \| also see in `BinarySearch`
 
 ## 2. All Problems
 

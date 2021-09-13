@@ -13,12 +13,12 @@
 * [DP](algorithms/dp.md)
 * [Graph](algorithms/graph.md)
 * [Tree](algorithms/tree.md)
-* [Linked List](algorithms/linked-list.md)
-* [Recursion 💪](algorithms/recursion.md)
+* [Greeeedy](algorithms/greeeedy.md)
 * [Bitwise](algorithms/bitwise.md)
 * [Design](algorithms/design.md)
 * [Maths & Geometry](algorithms/maths.md)
-* [Greeeedy](algorithms/greeeedy.md)
+* [Recursion 💪](algorithms/recursion.md)
+* [Linked List](algorithms/linked-list.md)
 
 ## Data Structures
 

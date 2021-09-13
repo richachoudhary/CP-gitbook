@@ -10,6 +10,16 @@
 
     ===&gt; means that **for each** element x in the set, **there is** an element y in the set **such that** y is smaller than x
 
+```python
+# Cross Product
+'''
+         i   j   k
+AXB = |  x1  y1  z1 |
+      |  x2  y2  z2 |
+    = (y1z2 - y2z1) i - (x1z2 - x2z1) j + (x1y2 - x2y1) k
+'''
+```
+
 ### 1.2 Problems: Geometry
 
 #### 1.2.1 Easy 🧠
@@ -20,7 +30,7 @@
 * [x] [892. Surface Area of 3D Shapes](https://leetcode.com/problems/surface-area-of-3d-shapes/) ✴️
 
 {% hint style="info" %}
-For problems like \(\#892\) :in geometry of 3-D blocks: think in terms of subtracting the overlap, not adding each block one-by-one.
+For problems like \(**\#892**\) :in geometry of 3-D blocks: think in terms of subtracting the overlap, not adding each block one-by-one.
 {% endhint %}
 
 * [x] LC: [149.Max Points on a Line](https://leetcode.com/problems/max-points-on-a-line/) \| just count all the slopes b/w all 2 pair points

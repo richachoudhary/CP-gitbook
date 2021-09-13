@@ -34,7 +34,7 @@
     <tr>
       <td style="text-align:left">Left Shift ( &lt;&lt; )</td>
       <td style="text-align:left">
-        <p><code>1 &lt;&lt; n = pow(2,n)</code>
+        <p><code>1 &lt;&lt; i = pow(2,i) : </code><b><code>general_use</code></b>
         </p>
         <p><b><code>n&lt;&lt;k </code></b>is equivalent to <b>multiplying</b> n with</p>
       </td>
@@ -42,7 +42,7 @@
     <tr>
       <td style="text-align:left">Right Shift ( &gt;&gt; )</td>
       <td style="text-align:left">
-        <p><code>n &gt;&gt; 1</code>
+        <p><code>i &gt;&gt; 1 : </code><b><code>general_use</code></b>
         </p>
         <p>16 &gt;&gt; 4 = 1</p>
         <p><b><code>n&gt;&gt;k </code></b>is equivalent to <b>dividing</b> n with</p>

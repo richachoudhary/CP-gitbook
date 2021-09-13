@@ -2056,6 +2056,7 @@ class TreeAncestor:
 
 * [x] LC [264. Ugly Number II](https://leetcode.com/problems/ugly-number-ii/) ✅
 * [x] LC [313. Super Ugly Number](https://leetcode.com/problems/super-ugly-number/)
+* [x] [241.Different Ways to Add Parentheses](https://leetcode.com/problems/different-ways-to-add-parentheses/) \| exactly similar to **print all binary trees**
 
 {% tabs %}
 {% tab title="264" %}
@@ -2089,6 +2090,39 @@ for _ in range(n):
             heappush(heap,new_ugly)
 
 return nums[-1]
+```
+{% endtab %}
+
+{% tab title="241." %}
+```python
+def diffWaysToCompute(self, s: str) -> List[int]:
+    MEMO = {}
+    
+    def f(s):
+        if s in MEMO:
+            return MEMO[s]
+        if s.isdigit():
+            MEMO[s] = [int(s)]
+            return MEMO[s]
+        res = []
+        for i,c in enumerate(s):
+            if c in '+-*':
+                l = f(s[:i])
+                r = f(s[i+1:])
+                for _l in l:
+                    for _r in r:
+                        if c == '+':
+                            res.append(_l + _r)
+                        elif c == '-':
+                            res.append(_l - _r)
+                        else:
+                            res.append(_l * _r)
+        MEMO[s] = res
+        return res
+    return f(s)
+    '''
+    Complexity: w/o MEMO: O(2^n)
+    '''
 ```
 {% endtab %}
 {% endtabs %}

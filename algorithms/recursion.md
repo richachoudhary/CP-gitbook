@@ -161,6 +161,23 @@ and for each part we should check the requirement again
         
 ```
 {% endtab %}
+
+{% tab title="Apple Division" %}
+```python
+x,y = 0,0
+# MEMO = {}
+def f(x,y,i):
+    # print('i: {} , x:{} ,y:{} '.format(i,x,y))
+    if i >= len(a) :
+        return abs(x-y)
+    opt1 = f(x+a[i],y,i+1)
+    opt2 = f(x,y+a[i],i+1)
+    return min(opt1,opt2)
+    
+ans = f(0,0,0)
+print(ans)
+```
+{% endtab %}
 {% endtabs %}
 
 * [x] [241.Different Ways to Add Parentheses](https://leetcode.com/problems/different-ways-to-add-parentheses/) ✅

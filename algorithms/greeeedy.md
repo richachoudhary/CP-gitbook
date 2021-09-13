@@ -1132,7 +1132,7 @@ for(int i=0;i<n;i++){
 {% endtab %}
 {% endtabs %}
 
-## 7.Binary Search
+## 7.Binary Search 🌟//TODO: complete & notes from[ greatest template](https://leetcode.com/discuss/general-discussion/786126/python-powerful-ultimate-binary-search-template-solved-many-problems)
 
 ### 7.0 Notes
 
