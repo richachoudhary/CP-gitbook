@@ -119,6 +119,7 @@ def dp(l,r):
     opt2 = dp(l+1,r)
     MEMO[(l,r)] = max(opt1, opt2)
     return MEMO[(l,r)]
+    
 n = len(nums)
 if n == 0:
     return 0
@@ -483,7 +484,7 @@ cout << dp[x] << '\n';
 
 * [x] CSES: [Grid Paths](https://cses.fi/problemset/task/1638/)
 * [ ] CSES: [Array Description](https://cses.fi/problemset/task/1746) \| [KartikArora](https://www.youtube.com/watch?v=d1H5JylYG4I&ab_channel=KartikArora) .🐽✅🐽 
-* [ ] Egg Dropping puzzle: [gfg](https://www.geeksforgeeks.org/egg-dropping-puzzle-dp-11/) 🥚🏣✅
+* [x] Egg Dropping puzzle: [gfg](https://www.geeksforgeeks.org/egg-dropping-puzzle-dp-11/) 🥚🏣✅
 * [ ] [https://leetcode.com/problems/triangle/](https://leetcode.com/problems/triangle/)
 * [ ] [https://leetcode.com/problems/combination-sum-iv/](https://leetcode.com/problems/combination-sum-iv/)
 * [ ] [https://leetcode.com/problems/out-of-boundary-paths/](https://leetcode.com/problems/out-of-boundary-paths/)
@@ -1613,6 +1614,7 @@ def largestDivisibleSubset(self, nums: List[int]) -> List[int]:
 ### 10.2 LCS
 
 * [x] 72. Edit Distance \| ✅✅\| aata hai; par fir bhi dekh lo ek baar \| _**the R-C initialization**_
+* [x] \*\*\*\*[**1143. LCS** ](https://leetcode.com/problems/longest-common-subsequence/)\| standard
 * [x] 718. [Maximum Length of Repeated Subarray](https://leetcode.com/problems/maximum-length-of-repeated-subarray/) \| Now find this LCS 😎🤯😎
 * [x] 5.[ Longest Palindromic Substring](https://leetcode.com/problems/longest-palindromic-substring/) \| **`LPS`** \| not a DP question
 * [x] 516.[ Longest Palindromic Subsequence](https://leetcode.com/problems/longest-palindromic-subsequence/) \| **`LPS`** \| this is a DP question \| `LCS on reversed self` ✅
@@ -1643,6 +1645,23 @@ def minDistance(self, s: str, t: str) -> int:
                 dp[i][j]=dp[i-1][j-1]
             else:
                 dp[i][j] = 1+min(dp[i-1][j],dp[i][j-1],dp[i-1][j-1])
+    return dp[-1][-1]
+```
+{% endtab %}
+
+{% tab title="1143.LCS" %}
+```python
+def longestCommonSubsequence(self, text1: str, text2: str) -> int:
+       
+    m, n = len(text1), len(text2)
+    dp = [[0]*(n+1) for _ in range(m+1)]
+    
+    for i in range(1, m+1):
+        for j in range(1, n+1):
+            if text1[i-1] == text2[j-1]:
+                dp[i][j] = dp[i-1][j-1]+1
+            else:
+                dp[i][j] = max(dp[i][j-1], dp[i-1][j])
     return dp[-1][-1]
 ```
 {% endtab %}
@@ -1792,7 +1811,7 @@ return res + A[i:] + B[j:]
   * `Tails` arr contains all the **ending** points of all **LIDs**\(aptly named\) =&gt; use `bisect_right` for LDS
 * [x] CSES: [Towers](https://cses.fi/problemset/task/1073) ✅=&gt; Longest Decreasing Sequence: \(exactly same as LIS\)
 * [x] [300.Longest Increasing Subsequence ](https://leetcode.com/problems/longest-increasing-subsequence/)
-* [x] 673. [Number of Longest Increasing Subsequence](https://leetcode.com/problems/number-of-longest-increasing-subsequence/) ✅💪\|ye na kar paoge khud se implement\|**`must_do`**
+* [x] 673. [Number of Longest Increasing Subsequence](https://leetcode.com/problems/number-of-longest-increasing-subsequence/) ✅💪\| ye na kar paoge khud se implement\|**`must_do`**
 * [x] 354. [Russian Doll Envelopes](https://leetcode.com/problems/russian-doll-envelopes/) \| must do!! 🪆🪆❤️ \| **@Observer.AI \| fuck\_yaaar!**
 * [ ] [https://leetcode.com/problems/delete-columns-to-make-sorted-iii/](https://leetcode.com/problems/delete-columns-to-make-sorted-iii/)
 * [ ] [https://leetcode.com/problems/minimum-number-of-removals-to-make-mountain-array/](https://leetcode.com/problems/minimum-number-of-removals-to-make-mountain-array/)
@@ -1892,7 +1911,8 @@ def maxEnvelopes(self, A: List[List[int]]) -> int:
     # just sorting by asc. order of width will do
     # the only edge case: for consecutive envelopes with the same sorted width
     # to avoid this: sort by dec order of heights
-    # s.t. the first envelope encountered for any given width would be the largest one.
+    # s.t. the first envelope encountered for any given width would be 
+    # the largest one.
     
     A.sort(key=lambda x: (x[0], -x[1]))
     tails = []
