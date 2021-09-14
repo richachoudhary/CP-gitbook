@@ -850,6 +850,7 @@ int main() {
 * [ ] CSES: [Counting Tiles ](https://cses.fi/problemset/task/2181) \| [KartikArora](https://www.youtube.com/watch?v=lPLhmuWMRag&ab_channel=KartikArora) 🐽🐽
 * [ ] 1986.[Minimum Number of Work Sessions to Finish the Tasks](https://leetcode.com/problems/minimum-number-of-work-sessions-to-finish-the-tasks/) 🐽
 * [ ] LC [847. Shortest Path Visiting All Nodes](https://leetcode.com/problems/shortest-path-visiting-all-nodes/) 🐽\| BFS + bitmask
+* [ ] 804. [Split Array With Same Average](https://leetcode.com/problems/split-array-with-same-average/) \| 🐽
 * [x] @Google: [Team Standup Problem](https://leetcode.com/discuss/interview-question/978112/Google-or-L4-or-Onsite-SWE-or-Standups) 🤯🤯
 
 {% tabs %}
@@ -949,6 +950,44 @@ for (int s = 1; s < (1<<n); s++) {
     }
 }
 cout<<dp[(1<<n)-1].first;
+```
+{% endtab %}
+
+{% tab title="804" %}
+```python
+def splitArraySameAverage(self, A: List[int]) -> bool:
+        
+    def n_sum_target(n, tgt, j):    # helper fn, can we find n numbers in A[j:] that sum to tgt?
+
+        if (n, tgt, j) in invalid:  # already know this is impossible
+            return False
+        if n == 0:                  # if no more numbers can be chosen,
+            return tgt == 0         # then True if and only if we have exactly reached the target
+
+        for i in range(j, len(C)):
+
+            if C[i] > tgt:          # remaining numbers are at least as large because C is sorted
+                break
+            if n_sum_target(n - 1, tgt - C[i], i + 1):  # recurse having used num in B
+                return True
+
+        invalid.add((n, tgt, j))
+        return False
+
+    n, sum_A = len(A), sum(A)
+    invalid = set()                 # memoize failed attempts
+    C = sorted(A)                   # C initially contains all of A
+
+    for len_B in range(1, (n // 2) + 1):  # try all possible lengths of B
+
+        target = sum_A * len_B / float(n)
+        if target != int(target):  # target must be an integer
+            continue
+
+        if n_sum_target(len_B, target, 0):
+            return True
+
+    return False
 ```
 {% endtab %}
 
@@ -1224,6 +1263,7 @@ def minDays(self, n: int) -> int:
   * [x] LC: [139.Word Break](https://leetcode.com/problems/word-break/)
 * [x] LC [87. Scramble String](https://leetcode.com/problems/scramble-string/) 🤯💪😎✅\| must\_do
 * [x] 97.[Interleaving String](https://leetcode.com/problems/interleaving-string/) \| standarddddddddddddddddddd \| Do it nowwwwwwwwwww ✅✅✅💪💪
+* [x] 1977. [Number of Ways to Separate Numbers](https://leetcode.com/problems/number-of-ways-to-separate-numbers/) \| contest \| 🍪🍪🍪✅
 * [ ] [https://leetcode.com/problems/is-subsequence/](https://leetcode.com/problems/is-subsequence/)
 * [ ] [https://leetcode.com/problems/palindrome-partitioning/](https://leetcode.com/problems/palindrome-partitioning/)
 * [ ] [https://leetcode.com/problems/palindrome-partitioning-ii/](https://leetcode.com/problems/palindrome-partitioning-ii/)
@@ -1451,6 +1491,33 @@ def dp(a,b,c): # not O(N^3) but O(N^2) since 'c' is dependent -> 'a'+'b'
     return False
 
 return dp(0,0,0)
+```
+{% endtab %}
+
+{% tab title="1977." %}
+```python
+def numberOfCombinations(self, s: str) -> int:
+    MOD = (10**9) +7
+    
+    MEMO = {}
+    def dp(x,prev):
+        if x == n:
+            return 1
+        if s[x] == '0':
+            return 0
+        if (x,prev) in MEMO:
+            return MEMO[(x,prev)]
+        res = 0
+        for i in range(x,n):
+            curr = int(s[x:i+1])
+            if curr >= prev:
+                res = (res + dp(i+1,curr))%MOD
+        MEMO[(x,prev)] = res
+        return MEMO[(x,prev)]%MOD
+    
+    n = len(s)
+    return dp(0,0)
+        
 ```
 {% endtab %}
 {% endtabs %}

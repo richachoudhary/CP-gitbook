@@ -2,6 +2,7 @@
 
 ## 1. List & String
 
+* [x] [18. 4Sum](https://leetcode.com/problems/4sum/) - generalized for **K-sum**
 * [x] [1021.Remove Outermost Parentheses](https://leetcode.com/problems/remove-outermost-parentheses/)
 * [x] [443.String Compression](https://leetcode.com/problems/string-compression/)
 * [x] [1520.Maximum Number of Non-Overlapping Substrings](https://leetcode.com/problems/maximum-number-of-non-overlapping-substrings/) 🍪🍪🍪
@@ -25,6 +26,37 @@
   * Built upon \[EASY\] [1592.Rearrange Spaces Between Words](https://leetcode.com/problems/rearrange-spaces-between-words/) ✅💪
 
 {% tabs %}
+{% tab title="18" %}
+```python
+def fourSum(self, nums: List[int], target: int) -> List[List[int]]:
+    def dfs(l, r, k, target, path, out):  # [l, r] inclusive
+        if k == 2:
+            while l < r:
+                if nums[l] + nums[r] == target:
+                    out.append(path + [nums[l], nums[r]])
+                    while l+1 < r and nums[l] == nums[l+1]: l += 1  # Skip duplicate nums[l]
+                    l, r = l + 1, r - 1
+                elif nums[l] + nums[r] > target:
+                    r -= 1  # Decrease sum
+                else:
+                    l += 1  # Increase sum
+            return
+
+        while l < r:
+            dfs(l+1, r, k - 1, target - nums[l], path + [nums[l]], out)
+            while l+1 < r and nums[l] == nums[l+1]: l += 1  # Skip duplicate nums[i]
+            l += 1
+
+    def kSum(k):  # k >= 2
+        ans = []
+        nums.sort()
+        dfs(0, len(nums)-1, k, target, [], ans)
+        return ans
+
+    return kSum(4)
+```
+{% endtab %}
+
 {% tab title="Collecting Numbers✅" %}
 ```python
 # 1. ==================== LIS doesnt work here: WA
