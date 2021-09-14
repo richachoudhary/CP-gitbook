@@ -43,6 +43,7 @@ def solve().....
   * Binary Search!!!! Dont skip!
   * Dekhke lagta nhi ki DP lagegi!!!
 * [x] LC: [1340.Jump Game V](https://leetcode.com/problems/jump-game-v/)
+* [x] CF: [Potions](https://codeforces.com/problemset/problem/1526/C1)
 
 {% tabs %}
 {% tab title="70" %}
@@ -184,6 +185,40 @@ class Solution:
             return max_jumps + 1
         
         return max(jumps(start) for start in range(n))
+```
+{% endtab %}
+
+{% tab title="Potions" %}
+```python
+# 1. DP ================================= timed out
+@lru_cache(None)
+def dp(x, curr, cnt):
+    if x == n:
+        return cnt
+    ans = 0
+    for i in range(x, n):
+        op1, op2 = 0, 0
+        if A[i] + curr >= 0:
+            op1 = dp(i + 1, curr + A[i], cnt + 1)   # drink it
+        op2 = dp(i + 1, curr, cnt)
+        ans = max(ans, op1, op2)
+    return ans
+# 2. Greedy ============================ got AC
+def solve(A):
+    res = 0
+    H = []  # min_heap
+    curr_sum, curr_len = 0,0
+    for a in A:
+        curr_sum += a
+        curr_len += 1
+        heappush(H,a)
+        
+        while H and curr_sum < 0:
+            x = heappop(H)
+            curr_sum -= x
+            curr_len -= 1
+        res = max(res, curr_len)
+    return res
 ```
 {% endtab %}
 {% endtabs %}

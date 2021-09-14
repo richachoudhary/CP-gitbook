@@ -4,6 +4,23 @@ description: useful methods found & stolen during CP-ing
 
 # methods.py
 
+## `itertools`
+
+* Print **all permutations** of a list/string
+
+```python
+from itertools import permutations
+
+# for a list ==================================================
+a = [1,2,3]
+perms = [p for p in permutations(a)] 
+# [(1, 2, 3), (1, 3, 2), (2, 1, 3), (2, 3, 1), (3, 1, 2), (3, 2, 1)]
+
+# for a string ===============================================
+perms = [''.join(p) for p in permutations('abc')] 
+# ['abc', 'acb', 'bac', 'bca', 'cab', 'cba']
+```
+
 ## `map()`
 
 * Takes a function & list as input; applies that function on list & returns the map object for new list.

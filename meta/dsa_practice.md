@@ -1,9 +1,9 @@
 # DSA\_PRACTICE
 
 * [x] [**Unstable String**](https://codeforces.com/problemset/problem/1535/C)
-* [ ] \*\*\*\*[**Secret Santa**](https://codeforces.com/contest/1530/problem/D)\*\*\*\*
+* [x] \*\*\*\*[**Secret Santa**](https://codeforces.com/contest/1530/problem/D)\*\*\*\*
 * [ ] [**Berland Regional**](https://codeforces.com/problemset/problem/1519/C)
-* [ ] [**Potions \(Both Versions\)**](https://codeforces.com/problemset/problem/1526/C2)
+* [x] [**Potions \(Both Versions\)**](https://codeforces.com/problemset/problem/1526/C2)
 * [ ] [**Compression and Expansion**](https://codeforces.com/problemset/problem/1523/C)
 * [ ] [**Arranging The Sheep**](https://codeforces.com/problemset/problem/1520/E)
 * [ ] [**AGAGA XOOORRR**](https://codeforces.com/problemset/problem/1516/B)
