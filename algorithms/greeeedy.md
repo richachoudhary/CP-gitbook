@@ -285,6 +285,41 @@ def fullJustify(self, words: List[str], maxWidth: int):
 {% endtab %}
 {% endtabs %}
 
+
+
+* [x] CF: [C.Unstable String](https://codeforces.com/problemset/problem/1535/C)
+
+{% tabs %}
+{% tab title="UnstableStr" %}
+```python
+def solve(s):
+    res = 0
+    pos0, pos1 = 0,0
+    for c in s:
+        if c == '0':
+            pos0 += 1
+            pos1 = 0
+            res += pos0
+        elif c == '1':
+            pos1 += 1
+            pos0 = 0
+            res += pos1
+        else:
+            pos1 += 1
+            pos0 += 1
+            res += max(pos1,pos0)
+        pos1, pos0 = pos0,pos1
+    return res
+
+t = int(input())
+while t:
+    t -= 1
+    s = str(input())
+    print(solve(s))
+```
+{% endtab %}
+{% endtabs %}
+
 ### String Matching Algo
 
 * [x] [28. Implement strStr\(\)](https://leetcode.com/problems/implement-strstr/) 🐽
