@@ -977,7 +977,12 @@ def maximalRectangle(self, matrix: List[List[str]]):
 {% endtabs %}
 
 * [x] [42. Trapping Rain Water](https://leetcode.com/problems/trapping-rain-water/)
+* [x] [227. Basic Calculator II](https://leetcode.com/problems/basic-calculator-ii/)
+* [x] [224. Basic Calculator](https://leetcode.com/problems/basic-calculator/) ✅ 
+* [x] \*\*\*\*[**772. Basic Calculator III**](https://ttzztt.gitbooks.io/lc/content/quant-dev/basic-calculator-iii.html) **🐽 \|** [**approach**](https://leetcode.com/problems/basic-calculator-ii/discuss/658480/python-basic-calculator-i-ii-iii-easy-solution-detailed-explanation)\*\*\*\*
 
+{% tabs %}
+{% tab title="42" %}
 ```python
 def trap(h: List[int]) -> int:
     n = len(h)
@@ -1000,6 +1005,136 @@ def trap(h: List[int]) -> int:
         res += min(mxl[i],mxr[i]) - h[i]
     return res
 ```
+{% endtab %}
+
+{% tab title="227" %}
+```python
+def calculate(self, s: str) -> int:
+        
+    '''
+    IDEA : just keep the numbers (positve/negative) in stack
+    in the end; sum up all of them
+    
+    22+5-17*5
+    
+    '''
+    num = 0
+    pre_op = '+'
+    stk = []
+    
+    
+    for c in s:
+        if c.isdigit():
+            num = num*10 + int(c)
+        elif not c.isspace():
+            if pre_op == '+':
+                stk.append(num)
+            elif pre_op == '-':
+                stk.append(-num)
+            elif pre_op == '*':
+                x = stk.pop()
+                stk.append(x*num)
+            else:
+                x = stk.pop()
+                stk.append(int(x/num))
+            num = 0
+            pre_op = c
+    
+    # for the last operation -------------
+    if pre_op == '+':
+        stk.append(num)
+    elif pre_op == '-':
+        stk.append(-num)
+    elif pre_op == '*':
+        x = stk.pop()
+        stk.append(x*num)
+    else:
+        x = stk.pop()
+        stk.append(int(x/num))
+            
+    # now just add all numbers in stack
+    # print(stk)
+    return sum(stk)
+                    
+    # 2. ==================================================[The amazing hack]
+    s += '+0'        # JUGAAD to handle the last operation------------------
+    stack, num, preOp = [], 0, "+"
+    for i in range(len(s)):
+        if s[i].isdigit(): num = num * 10 + int(s[i])
+        elif not s[i].isspace():
+            if   preOp == "-":  stack.append(-num)
+            elif preOp == "+":  stack.append(num)
+            elif preOp == "*":  stack.append(stack.pop() * num)
+            else:               stack.append(int(stack.pop() / num))
+            preOp, num = s[i], 0
+    return sum(stack)                    
+```
+{% endtab %}
+
+{% tab title="224" %}
+```python
+def calculate(self, s: str) -> int:
+    num=0
+    res=0
+    sign=1
+    stack=[]
+
+    for char in s:
+        if char.isdigit():
+            num=num*10+int(char)
+        elif char in ["-","+"]:
+            res=res+num*sign
+            num=0
+            if char=="-":
+                sign=-1
+            else:
+                sign=1
+        elif char=="(":
+            stack.append(res)
+            stack.append(sign)
+            sign=1
+            res=0
+        elif char==")":
+            res+=sign*num
+            res*=stack.pop()## process sign
+            res+=stack.pop() ##process with old value
+            num=0
+
+    return res+num*sign
+```
+{% endtab %}
+
+{% tab title="" %}
+```python
+def calc(it):
+    def update(op, v):
+        if op == "+": stack.append(v)
+        if op == "-": stack.append(-v)
+        if op == "*": stack.append(stack.pop() * v)
+        if op == "/": stack.append(int(stack.pop() / v))
+
+    num, stack, sign = 0, [], "+"
+    
+    while it < len(s):
+        if s[it].isdigit():
+            num = num * 10 + int(s[it])
+        elif s[it] in "+-*/":
+            update(sign, num)
+            num, sign = 0, s[it]
+        elif s[it] == "(":
+            num, j = calc(it + 1)
+            it = j - 1
+        elif s[it] == ")":
+            update(sign, num)
+            return sum(stack), it + 1
+        it += 1
+    update(sign, num)
+    return sum(stack)
+
+return calc(0)
+```
+{% endtab %}
+{% endtabs %}
 
 * [ ] [1130. Minimum Cost Tree From Leaf Values](https://leetcode.com/problems/minimum-cost-tree-from-leaf-values/discuss/339959/One-Pass-O%28N%29-Time-and-Space)
 * [ ] [907. Sum of Subarray Minimums](https://leetcode.com/problems/sum-of-subarray-minimums/discuss/170750/C++JavaPython-Stack-Solution)

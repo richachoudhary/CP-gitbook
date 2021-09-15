@@ -342,6 +342,7 @@ def calcEquation(self, equations: List[List[str]], values: List[float], queries:
   * [x] Similar: LC [1654.Minimum Jumps to Reach Home](https://leetcode.com/problems/minimum-jumps-to-reach-home/) ✅\| must do\| DP se nhi honge aise Questions
   * [x] LC [1533.Minimum Number of Days to Eat N Oranges](https://leetcode.com/problems/minimum-number-of-days-to-eat-n-oranges/) \| BFS or DP 💪✅
 * [x] LC [847. Shortest Path Visiting All Nodes](https://leetcode.com/problems/shortest-path-visiting-all-nodes/) 🐽\| BFS + bitmask
+* [x] LC [**127. Word Ladder**](https://leetcode.com/problems/word-ladder/) \| &[ **126.Word Ladder II**](https://leetcode.com/problems/word-ladder-ii/) **- amazon@happy !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!🤯**
 
 {% tabs %}
 {% tab title="818" %}
@@ -469,6 +470,51 @@ def ladderLength(self, beginWord: str, endWord: str, wordList: List[str]) -> int
                     visited.add(word)
                     queue.append((word, level + 1))
     return 0
+```
+{% endtab %}
+
+{% tab title="126🤯" %}
+```python
+def findLadders(self, beginWord: str, endWord: str, wordList: List[str]) -> List[List[str]]:
+
+    L = len(beginWord)
+    if len(endWord) != L or endWord not in wordList:
+        return []
+
+    # preprocess wordList
+    all_word_comobs = defaultdict(list)
+    for word in wordList:
+        for i in range(L):
+            new_word = word[:i] + '*' + word[i+1:]
+            all_word_comobs[new_word].append(word)
+
+    # start BFS
+    res = []
+    Q = deque()
+    vis = set([beginWord])
+
+    curr_path = [beginWord]
+    Q.append((beginWord, curr_path))
+
+    while Q and not res:
+        lenq = len(Q)
+        local_vis = set()
+
+        for l in range(lenq):
+            x, path = Q.popleft()
+            print(f' x = {x} , path = {path}')
+            for i in range(0,L):
+                y =  x[:i]+'*' + x[i+1:]
+                list_y = all_word_comobs[y]
+
+                for z in list_y:
+                    if z == endWord:
+                        res.append(path+[endWord])    #found
+                    if z not in vis:
+                        Q.append((z,path+[z]))
+                        local_vis.add(z)
+        vis = vis.union(local_vis)
+    return res
 ```
 {% endtab %}
 {% endtabs %}
