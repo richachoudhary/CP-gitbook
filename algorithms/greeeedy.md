@@ -2447,6 +2447,7 @@ def maxDistToClosest(self, A: List[int]) -> int:
 
 #### Dynamic Size Window
 
+* [x] \*\*\*\*[**3. Longest Substring Without Repeating Characters**](https://leetcode.com/problems/longest-substring-without-repeating-characters/) **\| @rubrik \| doob maro sharam se behanchood**
 * [x] CSES: [Playlist](https://cses.fi/problemset/task/1141)
 * [x] [560.Subarray Sum Equals K](https://leetcode.com/problems/subarray-sum-equals-k/)✅
   * **NOTE:** Sliding window technique works only for all positive/all negative \(i.e. not for arr with both pos & neg numbers\).So soln\#1 below gets WA
@@ -2456,6 +2457,26 @@ def maxDistToClosest(self, A: List[int]) -> int:
 * [x] CSES: [Shortest Subsequence](https://cses.fi/problemset/task/1087/) \| DNA \| eee naa hora bina [theory](https://codeforces.com/blog/entry/82174) padhe.Karlo betta💪
 
 {% tabs %}
+{% tab title="3" %}
+```python
+def lengthOfLongestSubstring(self, s: str) -> int:
+    l,r = 0,0
+    d = dict()
+    ans = ''
+
+    while r<len(s):
+        if s[r] in d:
+            l = max(d[s[r]]+1,l)
+
+        d[s[r]] = r
+        if r-l+1 >= len(ans):
+            ans = s[l:r+1]
+        r += 1
+
+    return len(ans)
+```
+{% endtab %}
+
 {% tab title="Playlist" %}
 ```python
 n= int(input())
