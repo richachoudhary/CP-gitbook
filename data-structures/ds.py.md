@@ -63,6 +63,9 @@ from sortedcontainers import SortedList, SortedSet, SortedDict
 sorted_list = SortedList([1, 2, 3, 4])
 sorted_list.add(1)     # O(logN)
 sorted_list.remove(2)  # O(logN)
+
+# find: only bisect works
+idx = bisect.bisect_left(sorted_list,3) # 2
 ```
 
 * Used in [LC 218.The Skyline Problem](https://leetcode.com/problems/the-skyline-problem/) 🌇
@@ -78,9 +81,11 @@ sorted_list.remove(2)  # O(logN)
 
 ```python
 mystr.islower()       # Check is alphabet
-mystr.isnumeric()     # check if number(0-9)
 mystring.lower()      # Change case
+
+mystr.isnumeric()     # check if number(0-9)
 mystr.isalnum()       # checks alphanumeric
+mystr.isspace()
 ```
 
 * Check casing:  `mystr.islower()`
