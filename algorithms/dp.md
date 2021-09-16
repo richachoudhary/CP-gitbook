@@ -1040,7 +1040,7 @@ N = 9 ==> ANS = 4106
 '''
 memo = dict()
 
-def standup(n: int, mask: int, last: int):
+def standup(n, mask, last): # last -> the one who just spoke
 
     if mask == 2 ** n - 1:
         return 1
@@ -1449,6 +1449,7 @@ def recur(s,i):
                         return True
             MEMO[s] = False
             return False
+            
         return recur(s)
 
 # 140. Word Break II ======================================
@@ -1719,7 +1720,7 @@ def largestDivisibleSubset(self, nums: List[int]) -> List[int]:
 * [x] \*\*\*\*[**1143. LCS** ](https://leetcode.com/problems/longest-common-subsequence/)\| standard
 * [x] 718. [Maximum Length of Repeated Subarray](https://leetcode.com/problems/maximum-length-of-repeated-subarray/) \| Now find this LCS 😎🤯😎
 * [x] 5.[ Longest Palindromic Substring](https://leetcode.com/problems/longest-palindromic-substring/) \| **`LPS`** \| not a DP question
-* [x] 516.[ Longest Palindromic Subsequence](https://leetcode.com/problems/longest-palindromic-subsequence/) \| **`LPS`** \| this is a DP question \| `LCS on reversed self` ✅
+* [x] 516.[ Longest Palindromic Subsequence](https://leetcode.com/problems/longest-palindromic-subsequence/) \| **`LPS`** \| this is a DP question \| **`LCS`**`on reversed self` ✅
 * [x] 10. [Regular Expression Matching](https://leetcode.com/problems/regular-expression-matching/) \| Regex Match 🐽✅✅
 * [x] 44. [Wildcard Matching](https://leetcode.com/problems/wildcard-matching/) \| Wildcard Match 🐽✅✅
 * [x] 97.[Interleaving String](https://leetcode.com/problems/interleaving-string/) \| standarddddddddddddddddddd \| Do it nowwwwwwwwwww ✅✅✅💪💪
