@@ -7,7 +7,7 @@ description: 'All the problems from LC, categorised'
 ### \#There are two uses for dynamic programming:🟢🟢🟢
 
 1. **Finding an optimal solution**: We want to find a solution that is as large as possible or as small as possible.
-2. **Counting the number of solutions**: We want to calculate the total num- ber of possible solutions.
+2. **Counting the number of solutions**: We want to calculate the total number of possible solutions.
 
 ## \# Notes 
 
