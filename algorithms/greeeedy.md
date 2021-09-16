@@ -159,34 +159,34 @@ return max(-2**31, min(sign * ret,2**31-1))
 ```python
 # 1. O(NlogN) ===========================
         
-    nums.sort()
-    res = 1
-    for e in nums:
-        if res == e:
-            res += 1
-    return res
-    
-    # 2. O(N) ===================================
-    # missing number will be in range [1,n]
-    
-    n = len(nums)
-    
-    # ignore all out of bound numbers
-    for i in range(n):
-        if nums[i] <= 0 or nums[i] > n:
-            nums[i] = n + 1
-            
-     # mark all the numbers                
-    for i in range(n):
-        if abs(nums[i]) > n:
-            continue
-        nums[abs(nums[i]) - 1] = -abs(nums[abs(nums[i]) - 1])
-    
-    # return first unmarked number
-    for i in range(n):
-        if nums[i] > 0:
-            return i + 1
-    return n + 1
+nums.sort()
+res = 1
+for e in nums:
+    if res == e:
+        res += 1
+return res
+
+# 2. O(N) ===================================
+# missing number will be in range [1,n]
+
+n = len(nums)
+
+# ignore all out of bound numbers
+for i in range(n):
+    if nums[i] <= 0 or nums[i] > n:
+        nums[i] = n + 1
+        
+ # mark all the numbers                
+for i in range(n):
+    if abs(nums[i]) > n:
+        continue
+    nums[abs(nums[i]) - 1] = -abs(nums[abs(nums[i]) - 1])
+
+# return first unmarked number
+for i in range(n):
+    if nums[i] > 0:
+        return i + 1
+return n + 1
 ```
 {% endtab %}
 
@@ -1365,6 +1365,17 @@ while d:
 {% tabs %}
 {% tab title="973.QuickSortBased" %}
 ```python
+'''
+Time complexity is O(N^2) worst case. (come up with Quick sort)
+
+But In average, we can reach in logN times and don't need to sort all elements at every step.
+
+It looks like N + N/2 + N/4 + N/8 + .... OK?
+Because of N + N/2 + N/4 + N/8 + .... < 2N 
+        so average time complexity would O(2N) => O(N)
+
+'''
+
 dist = lambda x: A[x][0]**2 + A[x][1]**2
     
 def partition(l,r, pvt):
@@ -1546,7 +1557,7 @@ def mySqrt(self, n: int) -> int:
     return l-1
     
     '''
-    set right = n + 1 instead of right = x to deal with 
+    set right = n + 1 instead of right = n to deal with 
     special input cases like n = 0 and n = 1
     '''
 ```
@@ -2615,8 +2626,6 @@ if __name__ == "__main__":
 * [https://leetcode.com/problems/sliding-window-maximum/](https://leetcode.com/problems/sliding-window-maximum/)
 
  
-
-
 
 ## 10.Intervals Question
 
