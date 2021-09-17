@@ -194,6 +194,7 @@ class LFUCache(object):
 
 * [x] LC [1600. Throne Inheritance](https://leetcode.com/problems/throne-inheritance/)
 * [x] LC [855. Exam Room ](https://leetcode.com/problems/exam-room/)\| based on \#LC.849 \| **@google \|** 🐽🐽
+* [x] LC [295. Find median from a data stream](https://leetcode.com/problems/find-median-from-data-stream/)
 
 {% tabs %}
 {% tab title="1600" %}
@@ -253,6 +254,33 @@ class ExamRoom:
         
     def leave(self, p):
         self.seated.remove(p)
+```
+{% endtab %}
+
+{% tab title="295" %}
+```python
+from heapq import *
+
+'''
+O(log n) add, O(1) find
+'''
+class MedianFinder:
+    def __init__(self):
+        self.small = []  # the smaller half of the list, max heap (invert min-heap)
+        self.large = []  # the larger half of the list, min heap
+
+    def addNum(self, num):
+        if len(self.small) == len(self.large):
+            heappush(self.large, -heappushpop(self.small, -num))
+        else:
+            heappush(self.small, -heappushpop(self.large, num))
+
+    def findMedian(self):
+        if len(self.small) == len(self.large):
+            return float(self.large[0] - self.small[0]) / 2.0
+        else:
+            return float(self.large[0])
+        
 ```
 {% endtab %}
 {% endtabs %}

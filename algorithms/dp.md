@@ -681,7 +681,7 @@ def f():
 {% endtab %}
 {% endtabs %}
 
-## 5. Bit DP
+## 5. Bitmask
 
 ### From KartikArora's Playlist
 
@@ -940,7 +940,7 @@ def solve(x,k,cursum, mask):
     res = False
     for i in range(x,N):
         if mask & (1<<i):
-            res = res or solve(i,k,cursum+nums[i],mask^(1<<i))
+            res = res or solve(i+1,k,cursum+nums[i],mask^(1<<i))
     return res
 
 # -------------------------------- Basic Validation: START
@@ -1614,6 +1614,9 @@ This means we only need to find a solution when N < 5000.
 * [x] 873. [Length of Longest Fibonacci Subsequence](https://leetcode.com/problems/length-of-longest-fibonacci-subsequence/) 🍪🍪✅💪
 * [x] 1186.[Maximum Subarray Sum with One Deletion](https://leetcode.com/problems/maximum-subarray-sum-with-one-deletion/) \| so similar to Kaden's; yet the so simple approach is unthinkable \| [approach\_with\_diag](https://leetcode.com/problems/maximum-subarray-sum-with-one-deletion/discuss/377522/C%2B%2B-forward-and-backward-solution-with-explanation-and-picture) \| must do baby ✅💪
 * [x] 368. [Largest Divisible Subset](https://leetcode.com/problems/largest-divisible-subset/submissions/) 🐽
+* [x] 1191. [K-Concatenation Maximum Sum](https://leetcode.com/problems/k-concatenation-maximum-sum/)
+* [x] 1014.[ Best Sightseeing Pair](https://leetcode.com/problems/best-sightseeing-pair/) 
+  * It's similar to [Best Time to Buy and Sell Stock](https://leetcode.com/problems/best-time-to-buy-and-sell-stock/), but instead of min price, we track max value, and our max value decays every step due to the distance penalty
 * [ ] [https://leetcode.com/problems/bitwise-ors-of-subarrays/](https://leetcode.com/problems/bitwise-ors-of-subarrays/)
 * [ ] [https://leetcode.com/problems/longest-turbulent-subarray/](https://leetcode.com/problems/longest-turbulent-subarray/)
 * [ ] [https://leetcode.com/problems/maximum-subarray-sum-with-one-deletion/](https://leetcode.com/problems/maximum-subarray-sum-with-one-deletion/)
@@ -1710,6 +1713,40 @@ def largestDivisibleSubset(self, nums: List[int]) -> List[int]:
             if nums[i] % nums[j] == 0 and len(sol[i]) < len(sol[j]) + 1:
                 sol[i] = sol[j] + [nums[i]]
     return max(sol, key=len)
+```
+{% endtab %}
+
+{% tab title="1191" %}
+```python
+MOD = (10**9)+7
+
+def kaden(A):
+    curr, ans = A[0],A[0]
+    for i in range(1,len(A)):
+        curr = max(curr+A[i], A[i])
+✅        ans = max(ans,curr)
+    return max(ans,0)
+
+
+def solve(A,k):
+    if k <= 1:
+        return kaden(A)
+    return (max(sum(A)*(k-2),0) + kaden(A*2))%MOD
+
+return solve(A,k)
+
+```
+{% endtab %}
+
+{% tab title="1014" %}
+```python
+def maxScoreSightseeingPair(self, A: List[int]) -> int:
+    max_yet, ans = 0,0
+    for a in A:
+        ans = max(ans,max_yet+a)
+        max_yet = max(a,max_yet) -1
+        
+    return ans
 ```
 {% endtab %}
 {% endtabs %}

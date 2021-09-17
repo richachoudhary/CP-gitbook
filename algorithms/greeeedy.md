@@ -1321,7 +1321,7 @@ def kClosest(self, points: List[List[int]], k: int) -> List[List[int]]:
 
 **Two Heaps Pattern**
 
-* [ ] [LC \#295](https://leetcode.com/problems/find-median-from-data-stream) - Find median from a data stream
+* [x] [LC \#295](https://leetcode.com/problems/find-median-from-data-stream) - Find median from a data stream
 * [x] [LC \#480](https://leetcode.com/problems/sliding-window-median/) - Sliding window Median
 * [ ] [LC \#502](https://leetcode.com/problems/ipo/) - Maximize Capital/IPO
 
@@ -1351,6 +1351,33 @@ while d:
     print(d.popleft())
 ```
 {% endtab %}
+
+{% tab title="295" %}
+```python
+from heapq import *
+
+'''
+O(log n) add, O(1) find
+'''
+class MedianFinder:
+    def __init__(self):
+        self.small = []  # the smaller half of the list, max heap (invert min-heap)
+        self.large = []  # the larger half of the list, min heap
+
+    def addNum(self, num):
+        if len(self.small) == len(self.large):
+            heappush(self.large, -heappushpop(self.small, -num))
+        else:
+            heappush(self.small, -heappushpop(self.large, num))
+
+    def findMedian(self):
+        if len(self.small) == len(self.large):
+            return float(self.large[0] - self.small[0]) / 2.0
+        else:
+            return float(self.large[0])
+        
+```
+{% endtab %}
 {% endtabs %}
 
 ## 6.Sort
@@ -1361,6 +1388,7 @@ while d:
 * [x] CSES: [Traffic Lights](https://cses.fi/problemset/task/1163) : 🐽🐽✅✅ \| [Youtube](ttps://www.youtube.com/watch?v=4HKXdh_LHps&ab_channel=ARSLONGAVITABREVIS) \| [Stackoverflow](https://stackoverflow.com/questions/63329220/i-tried-solving-traffic-lights-problem-in-the-cses-problem-set-my-approach-seem)
 * [x] CSES: [Room Allocation](https://cses.fi/problemset/task/1164) ✅ \| LC: [1942.The Number of the Smallest Unoccupied Chair](https://leetcode.com/problems/the-number-of-the-smallest-unoccupied-chair/discuss/1360146/python-heap-easy-implementation-faster-than-100) -&gt; my first editorial!!
 * [x] CSES: [Reading Books](https://cses.fi/problemset/task/1631) \| [why max\(sum,2\*last\_ele\) works](https://codeforces.com/blog/entry/79238)
+* [x] [220. Contains Duplicate III](https://leetcode.com/problems/contains-duplicate-iii/) \| Bucket sort strategy
 
 {% tabs %}
 {% tab title="973.QuickSortBased" %}
@@ -1490,6 +1518,31 @@ cout<<max_room-1<<endl;
 for(int i=0;i<n;i++){
     cout<<res[i]<<" ";
 }
+```
+{% endtab %}
+
+{% tab title="220." %}
+```python
+def solve(A, k, t):
+    d = dict()
+    
+    for i in range(len(A)):
+        bucket = A[i]//(t+1)
+        # check in bucekt, bucekt-1, bucekt+1
+        # 1. check in same bucket
+        if bucket in d and abs(d[bucket] - A[i])<= t:
+            return True
+        # 2. check in JUST prev bucket
+        if bucket-1 in d and abs(d[bucket-1] - A[i])<= t:
+            return True
+        # 2. check in JUST next bucket
+        if bucket+1 in d and abs(d[bucket+1] - A[i])<= t:
+            return True
+        
+        d[bucket] = A[i]    # put A[i] into its bucket
+        if i>=k:
+            del d[A[i-k]//(t+1)]
+    return False
 ```
 {% endtab %}
 {% endtabs %}
@@ -2455,6 +2508,7 @@ def maxDistToClosest(self, A: List[int]) -> int:
   * [x] SIMILAR: [904.Fruit Into Baskets](https://leetcode.com/problems/fruit-into-baskets/submissions/)
 * [x] [424.Longest Repeating Character Replacement ](https://leetcode.com/problems/longest-repeating-character-replacement/)\(similar to \#1\) 🚀🚀
 * [x] CSES: [Shortest Subsequence](https://cses.fi/problemset/task/1087/) \| DNA \| eee naa hora bina [theory](https://codeforces.com/blog/entry/82174) padhe.Karlo betta💪
+* [x] [1658.Minimum Operations to Reduce X to Zero](https://leetcode.com/problems/minimum-operations-to-reduce-x-to-zero/) \| the trick is to identify that its a Sliding Window Q
 
 {% tabs %}
 {% tab title="3" %}
@@ -2626,6 +2680,30 @@ def solve():
 if __name__ == "__main__":
     solve()
 
+```
+{% endtab %}
+
+{% tab title="" %}
+```python
+l = 0
+curr = 0
+d = -1
+need = sum(A) - x
+if need == 0:
+    return len(A)
+
+for r in range(0,len(A)):
+    curr += A[r]
+    while curr > need and l<r:
+        curr -= A[l]
+        l += 1
+    if curr == need:
+        print('\t ===============')
+        d = max(d,r-l+1)
+    print(f'>>> {curr} l = {l} , r ={r}')
+if d==-1:
+    return -1
+return len(A)-d
 ```
 {% endtab %}
 {% endtabs %}
