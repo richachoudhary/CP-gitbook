@@ -1153,6 +1153,7 @@ return calc(0)
 * [x] [155. Min Stack](https://leetcode.com/problems/min-stack/) : instead of 2 stacks, use single stack & insert pairs in it: `ele,min_ele`
   * Regular approach of `O(1)` =&gt; [Aditya Verma](https://www.youtube.com/watch?v=ZvaRHYYI0-4&list=PL_z_8CaSLPWdeOezg68SKkeLN4-T_jNHd&index=11&ab_channel=AdityaVerma)
 * [x] [1441.Build an Array With Stack Operations](https://leetcode.com/problems/build-an-array-with-stack-operations/)
+* [x] SPOJ: [STPAR - Street Parade](https://www.spoj.com/problems/STPAR/) \| [Approach](http://discuss.spoj.com/t/stpar-street-parade/2022)
 
 ### 4.3 Resources
 

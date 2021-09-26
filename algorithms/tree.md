@@ -1399,6 +1399,7 @@ def queryTreeRSQ(ql, qr,sl,sr,index):
   * Normal Seg Tree implementation =&gt; update on **point** & query on **range**
   * Lazy Seg Tree implementation      =&gt; update on **range** & query on **point**
 * [ ] CSES: [Josephus Problem II](https://cses.fi/problemset/result/2607517/) 🐽✅
+* [ ] SPOJ: [MKTHNUM](https://www.spoj.com/problems/MKTHNUM/)
 
 ### 3.3 BIT 
 
