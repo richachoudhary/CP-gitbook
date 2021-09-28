@@ -11,6 +11,7 @@
 
 ## Algorithms
 
+* [Adhoc](algorithms/adhoc.md)
 * [Graph](algorithms/graph.md)
 * [DP](algorithms/dp.md)
 * [Tree](algorithms/tree.md)

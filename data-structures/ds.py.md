@@ -230,6 +230,16 @@ c['a']=4               # Counter({'b': 1, 'c': 1, 'a': 1})
 * **Delete a key:** `d.pop("key")`
 * **Delete a value**\(in defaultdict\(list\)\) : `d[key].remove(val)`
 
+### `SortedDict`
+
+```python
+sd = SortedDict({'a': 1, 'b': 2, 'c': 3})
+sd.peekitem()
+('c', 3)
+sd.peekitem(0)
+('a', 1)
+```
+
 ## `heapq` - min heaps
 
 * returns **somewhat** sorted list
@@ -244,6 +254,8 @@ heapq.heapify(list1)
 * **delete** min element: `heapq.heappop(a)`
 * get **n-smallest elements**: `heapq.nsmallest(n,list1)`
 * get **n-largest elements**: `heapq.nlargest(n,list1)`
+* `heappushpop()` :Push _item_ on the heap, then pop and return the smallest item from the _heap_. The combined action runs more efficiently than [`heappush()`](https://docs.python.org/3/library/heapq.html#heapq.heappush) followed by a separate call to [`heappop()`](https://docs.python.org/3/library/heapq.html#heapq.heappop).
+  * Useful in `find_median_of_data_stream`
 * **MIN\_HEAP:** Use it like this\(with plain list + hepq operations while insert & get\) 
 
 ```python

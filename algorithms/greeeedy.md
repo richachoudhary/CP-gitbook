@@ -1,5 +1,78 @@
 # Greeeedy
 
+## 1. Prefix Sums
+
+* 1D array:
+  * `prefix[k]=prefix[k−1]+arr[k]`
+  *  $$i=[L,R] ∑ arr[i]=prefix[R]−prefix[L−1] $$ 
+* 2D matrix:
+  * `prefix[i][j] = prefix[i-1][j] + prefix[i][j-1] − prefix[i-1][j-1] + arr[i][j]`
+  * `arr[i][j] = prefix[A][B] − prefix[a-1][B] − prefix[A][b-1] + prefix[a-1][b-1]`
+
+### 1.1  Questions
+
+* [x] CSES: [Subarray Sums II](https://cses.fi/problemset/task/1661)
+* [x] CSES: [Subarray Divisibility](https://cses.fi/problemset/task/1662) ✅
+* [ ] 
+{% tabs %}
+{% tab title="SubarraySums2" %}
+```python
+for _ in range(1):
+    n,x = I()
+    A = list(I())
+    prefix = [0]*n
+    ans = 0
+    
+    D = dict()
+    D[0] = 1
+    for i in range(n):
+        if i == 0:
+            prefix[i] = A[i]
+        else:
+            prefix[i] = prefix[i-1] + A[i]
+            
+        ans += D.get(prefix[i]-x, 0)
+        
+        if prefix[i] in D:
+            D[prefix[i]] += 1
+        else:
+            D[prefix[i]] = 1
+            
+    print(ans)
+        
+'''
+ 
+5 7
+    2 -1 3 5 -2
+    2  1 4 9 7  
+ 
+'''
+```
+{% endtab %}
+
+{% tab title="SubarrDivisibility✅" %}
+```python
+A = list(I())
+ 
+d = dict()
+d[0] = 1
+cnt = 0
+curr = 0
+
+for e in A:
+    curr = (curr+e+n)%n # '+n' because of negative numbers
+    if curr in d:
+        cnt += d[curr]
+
+    if curr in d:
+        d[curr] += 1
+    else:
+        d[curr] = 1
+print(cnt)
+```
+{% endtab %}
+{% endtabs %}
+
 ## 1. List & String
 
 * [x] [18. 4Sum](https://leetcode.com/problems/4sum/) - generalized for **K-sum**
@@ -320,7 +393,7 @@ while t:
 {% endtab %}
 {% endtabs %}
 
-### String Matching Algo
+### 1.2 String Matching Algo
 
 * [x] [28. Implement strStr\(\)](https://leetcode.com/problems/implement-strstr/) 🐽
 
@@ -435,6 +508,58 @@ def strStr(self, haystack: str, needle: str) -> int:
 {% endtab %}
 {% endtabs %}
 
+### \#\#\# --\[CP :: Array\] --\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#
+
+* [x] CF: [1367B. Even Array](https://codeforces.com/contest/1367/problem/B)
+* [x] CF:[ 1353A. Most Unstable Array](https://codeforces.com/contest/1353/problem/A)
+* [ ] 
+{% tabs %}
+{% tab title="1367B" %}
+```python
+T = int(input())
+for _ in range(T):
+    n = int(input())
+    a = list(I())
+    
+    misp_o, misp_e = 0,0
+    for i,x in enumerate(a):
+        if (i%2 != 0) and (x%2 == 0):
+            misp_o += 1
+        if (i%2 == 0) and (x%2 != 0):
+            misp_e += 1
+    if misp_e != misp_o:
+        print('-1')
+    else:
+        print(misp_o)
+```
+{% endtab %}
+
+{% tab title="1353A" %}
+```python
+T = int(input())
+for _ in range(T):
+    n,m = I()
+    if n == 1:
+        print(0)
+    elif n == 2:
+        print(m)
+    else:
+        print(2*m)
+```
+{% endtab %}
+{% endtabs %}
+
+### \#\#\# --\[CP :: String\] --\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#
+
+* [ ] 
+{% tabs %}
+{% tab title="" %}
+```python
+
+```
+{% endtab %}
+{% endtabs %}
+
 ## 2. Hashing
 
 ### 2.1 Rolling Hash
@@ -480,6 +605,8 @@ def longestDupSubstring(self, S):
 ```
 {% endtab %}
 {% endtabs %}
+
+
 
 ## 3. Map \| Set \| SortedList
 
@@ -832,6 +959,17 @@ print(f("leetcode","practice")) #5
 {% endtab %}
 {% endtabs %}
 
+### \#\#\# --\[CP :: Map\|Set\] --\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#
+
+* [ ] 
+{% tabs %}
+{% tab title="" %}
+```python
+
+```
+{% endtab %}
+{% endtabs %}
+
 
 
 ## 4. Queue/Stack/Monotonic
@@ -1158,6 +1296,19 @@ return calc(0)
 ### 4.3 Resources
 
 * [Aditya Verma's Playlist](https://www.youtube.com/watch?v=P1bAPZg5uaE&list=PL_z_8CaSLPWdeOezg68SKkeLN4-T_jNHd&ab_channel=AdityaVerma)
+
+### \#\#\# --\[CP :: Stk\|Queue\|PQ\] --\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#
+
+* [ ] 
+{% tabs %}
+{% tab title="" %}
+```python
+
+```
+{% endtab %}
+{% endtabs %}
+
+
 
 ## 5. Heap
 
