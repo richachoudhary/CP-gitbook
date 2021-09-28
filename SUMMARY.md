@@ -12,10 +12,10 @@
 ## Algorithms
 
 * [Adhoc](algorithms/adhoc.md)
+* [Greeeedy](algorithms/greeeedy.md)
 * [Graph](algorithms/graph.md)
 * [DP](algorithms/dp.md)
 * [Tree](algorithms/tree.md)
-* [Greeeedy](algorithms/greeeedy.md)
 * [Bitwise](algorithms/bitwise.md)
 * [Design](algorithms/design.md)
 * [Maths & Geometry](algorithms/maths.md)
