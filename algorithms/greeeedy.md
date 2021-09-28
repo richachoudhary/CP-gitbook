@@ -2098,7 +2098,7 @@ def kClosest(self, points: List[List[int]], k: int) -> List[List[int]]:
 
 **Two Heaps Pattern**
 
-* [x] [LC \#295](https://leetcode.com/problems/find-median-from-data-stream) - Find median from a data stream
+* [x] [LC \#295](https://leetcode.com/problems/find-median-from-data-stream) - Find median from a data stream 🌟
 * [x] [LC \#480](https://leetcode.com/problems/sliding-window-median/) - Sliding window Median
 * [ ] [LC \#502](https://leetcode.com/problems/ipo/) - Maximize Capital/IPO
 
@@ -2123,9 +2123,10 @@ n = int(input())
 d = deque([i for i in range(1,n+1)])
 
 while d:
-    x = d.popleft()
-    d.append(x)
-    print(d.popleft())
+    bach_gya = d.popleft()
+    d.append(bach_gya) # bachao
+    gya = d.popleft()
+    print(gya)
 ```
 {% endtab %}
 
@@ -2143,13 +2144,20 @@ class MedianFinder:
 
     def addNum(self, num):
         if len(self.small) == len(self.large):
-            heappush(self.large, -heappushpop(self.small, -num))
+            # push to small
+            heappush(self.small, -num)
+            # rebalance
+            heappush(self.large, -heappop(self.small))
         else:
-            heappush(self.small, -heappushpop(self.large, num))
+            # push to large
+            heappush(self.large, num)
+            # rebalance
+            heappush(self.small, -heappop(self.large))
 
     def findMedian(self):
+        
         if len(self.small) == len(self.large):
-            return float(self.large[0] - self.small[0]) / 2.0
+            return float(self.large[0] + (-self.small[0])) / 2.0
         else:
             return float(self.large[0])
         
@@ -2853,127 +2861,7 @@ So for this question, you **HAVE TO GO WITH C++**
 **\(**cant use Counters either, because of case: when just prev elemnent has freq = 0 & you've to keep searching back for prev lowest ele\)
 {% endhint %}
 
-### 7.2 Linear Function based problems \(find min x for f\(x\)\)
 
-* [x] LC: [875 Koko Eating Bananas](https://leetcode.com/problems/koko-eating-bananas/) \| ✅✅✅🍌\| kinda bible for this type of question
-* [x] CSES: [Factory Machines ](https://cses.fi/problemset/task/1620)✅
-* [x] CSES: [Array Division](https://cses.fi/problemset/task/1085/) ✅✅
-* [x] LC [287: Find the Duplicate Number](https://leetcode.com/problems/find-the-duplicate-number/) \| @ShareChat \| also see in `LinkedLIst` 💪
-* [x] LC [1201. Ugly Number III](https://leetcode.com/problems/ugly-number-iii/) \| Some weird lcm formula
-
-{% tabs %}
-{% tab title="875. Koko" %}
-```python
-def is_possible(k):
-    hrs = 0
-    for x in a:
-        hrs += math.ceil(x/k)
-    return hrs <= h
-
-lo,hi = 1,max(a)
-ans = hi
-while lo<hi:
-    mid = (lo+hi)//2
-    if is_possible(mid):
-        hi = mid
-        ans = mid
-    else:
-        lo = mid+1
-        
-return ans
-```
-{% endtab %}
-
-{% tab title="FactoryMachines" %}
-```python
-lb, ub = 0,10**18
-ans = 0
-while lb<=ub:
-    mid = (lb+ub)//2
-    summ = 0
-    print(f'lb = {lb} , mid = {mid} , ub = {ub}')
-    for e in A:
-        summ += mid//e
-        if summ >= t:
-            break
-    print(f'\t summ = {summ}')
-    if summ >= t:
-        ans = mid
-        ub = mid-1
-    else:
-        lb = mid+1
-print(ans)
-```
-{% endtab %}
-
-{% tab title="Array Division" %}
-```python
-n,k = I()
-A = list(I())
-
-lo,hi = max(A), sum(A)
-while lo<hi:
-    mid = (lo+hi)//2
-    cnt = 0
-    curr = 0
-    for e in A:
-        if curr+e > mid:
-            cnt += 1
-            curr = 0
-        curr += e
-        
-    cnt += 1    # count the last segment
-    if cnt > k:
-        lo = mid+1
-    else:
-        hi = mid
-print(lo)
-```
-{% endtab %}
-
-{% tab title="287.💪" %}
-```python
-def findDuplicate(self, nums: List[int]) -> int:
-        
-        # 1. Rabbit-Tortoise method ==========================================================
-        # TC:O(N) , SC:(1)
-        slow, fast = nums[0], nums[0]
-        while True:
-            slow, fast = nums[slow], nums[nums[fast]]
-            if slow == fast: break
-           
-        slow = nums[0];
-        while slow != fast:
-            slow, fast = nums[slow], nums[fast]
-        return slow
-    
-        #2. Binary Search ==========================================================================
-        '''
-        array size is n + 1while the value in array is from 1 to n
-        Apply binary search to pick a number m within 1 to n,
-        count how many numbers in the array is less or equal to m
-        If the count > m , then m is too large or m is the answer, so right = m
-        If count <= m, then m is too small, so left = m + 1
-        Time: O(nlogn)
-        Space: O(1)
-        '''
-        
-        n = len(nums)
-        l,r = 1,n-1
-        while l<r:
-            mid = (l+r)//2
-            cnt = sum(x<=mid for x in nums)
-            
-            if cnt > mid:
-                r = mid
-            else:
-                l = mid+1
-        return l
-```
-{% endtab %}
-{% endtabs %}
-
-[Aditya Verma playlist](https://www.youtube.com/watch?v=j7NodO9HIbk&list=PL_z_8CaSLPWeYfhtuKHj-9MpYb6XQJ_f2&ab_channel=AdityaVerma)
 
 ## 
 
