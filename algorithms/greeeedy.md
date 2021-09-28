@@ -700,7 +700,7 @@ for (int i = 0; i < n; i++) {
 
 ## 5. List & String
 
-* [x] [18. 4Sum](https://leetcode.com/problems/4sum/) - generalized for **K-sum**
+* [x] [18. 4Sum](https://leetcode.com/problems/4sum/) - generalized for **Ksum**
 * [x] [1021.Remove Outermost Parentheses](https://leetcode.com/problems/remove-outermost-parentheses/)
 * [x] [443.String Compression](https://leetcode.com/problems/string-compression/)
 * [x] [1520.Maximum Number of Non-Overlapping Substrings](https://leetcode.com/problems/maximum-number-of-non-overlapping-substrings/) 🍪🍪🍪
@@ -716,7 +716,7 @@ for (int i = 0; i < n; i++) {
 * [x] LC [163. Missing Ranges](https://leetfree.com/problems/missing-ranges)
 * [x] LC [179.Largest Number](https://leetcode.com/problems/largest-number/) 🐽
 * [x] LC [41.First Missing Positive](https://leetcode.com/problems/first-missing-positive/) ✅🍪🍪🍪
-* [x] LC [14.Longest Common Prefix](https://leetcode.com/problems/longest-common-prefix/) ✅\| kaafi clever
+* [x] LC [14.Longest Common Prefix](https://leetcode.com/problems/longest-common-prefix/) ✅\| kaafi clever \| longest common prefix
 * [x] LC [334.Increasing Triplet Subsequence](https://leetcode.com/problems/increasing-triplet-subsequence/) \| **O\(N\)**
 * [x] LC [68. Text Justification](https://leetcode.com/problems/text-justification/) 💪🔴
   * Asked in Coinbase **Karat Test** \| multiple times
@@ -1622,6 +1622,7 @@ for i in range(0,N):
 * [x] [901. Online Stock Span](https://leetcode.com/problems/online-stock-span/discuss/168311/C++JavaPython-O%281%29) \| similar to NGL \|  \| system design heavy🔒
 * [x] [84. Largest Rectangle in Histogram](https://leetcode.com/problems/largest-rectangle-in-histogram/) \| simple implementation of `NSL+NSR` ❤️
   * **NOTE**: dont cram that single stack traversal method. This one is easy to derive on your own
+  * `area = abs(nsr[i] - nsl[i] - 1)*h[i]`
 * [x] [85.Maximal Rectangle Area In Binary Matrix](https://leetcode.com/problems/maximal-rectangle/) **`NSL+NSR`** add heights for every row&apply \#84's code😎
 
 {% tabs %}
@@ -1739,7 +1740,7 @@ def maximalRectangle(self, matrix: List[List[str]]):
 {% endtab %}
 {% endtabs %}
 
-* [x] [42. Trapping Rain Water](https://leetcode.com/problems/trapping-rain-water/)
+* [x] [42. Trapping Rain Water](https://leetcode.com/problems/trapping-rain-water/) `res += min(mxl[i],mxr[i]) - h[i]`
 * [x] [227. Basic Calculator II](https://leetcode.com/problems/basic-calculator-ii/)
 * [x] [224. Basic Calculator](https://leetcode.com/problems/basic-calculator/) ✅ 
 * [x] \*\*\*\*[**772. Basic Calculator III**](https://ttzztt.gitbooks.io/lc/content/quant-dev/basic-calculator-iii.html) **🐽 \|** [**approach**](https://leetcode.com/problems/basic-calculator-ii/discuss/658480/python-basic-calculator-i-ii-iii-easy-solution-detailed-explanation)\*\*\*\*
@@ -2135,7 +2136,15 @@ while d:
 from heapq import *
 
 '''
-O(log n) add, O(1) find
+O(log n) : add, O(1) : find
+
+When we have new element num, we always put it to small heap, 
+and then normalize our heaps:
+     remove biggest element from the small heap 
+     and put it to the large heap. 
+ After this operation we can be sure that 
+ we have the property that 
+ the largest element in small heap is smaller than smaller elements in large heap.
 '''
 class MedianFinder:
     def __init__(self):
