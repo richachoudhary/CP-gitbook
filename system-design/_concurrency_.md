@@ -387,6 +387,13 @@ Output: prints 500(as expected) all the time => Atomic tranactions
 * the most common way to  avoid race condition
   * **Race Condition:** The condition occurs when one thread tries to modify a shared resource _at the same time_ that another thread is modifying that resource – t​his leads to garbled output
 * Once a thread has acquired the lock, all subsequent attempts to acquire the lock are blocked until it is released
+* **Mutex vs Semaphore:**
+  * **Mutex =** single key to single toilet
+    * only 1 thread can access the critical section once
+  * **Semaphore =** set of identical keys to multiple identical toilets
+    * i.e. given number\(&gt;=1\)  threads can access the critical sections simultaneously 
+* **Mutex vs Binary Semaphore:**
+  * A **mutex** can be released only by **the thread that had acquired it**. A **binary semaphore** can be signalled **by any thread** \(or process\).
 
 ### Code: Lock
 
@@ -424,7 +431,56 @@ print(deposit)
 
 
 
-## 2. Barrier
+## 2. Semaphore
+
+* This is one of the oldest synchronization primitives in the history of computer science,
+  *  invented by the early Dutch computer scientist Edsger W. Dijkstra \(he used the names `P()` and `V()` instead of [`acquire()`](https://docs.python.org/3/library/threading.html#threading.Semaphore.acquire) and [`release()`](https://docs.python.org/3/library/threading.html#threading.Semaphore.release)\).
+* A semaphore manages an internal counter which is decremented by each [`acquire()`](https://docs.python.org/3/library/threading.html#threading.Semaphore.acquire) call and incremented by each [`release()`](https://docs.python.org/3/library/threading.html#threading.Semaphore.release) call. The counter can never go below zero; when [`acquire()`](https://docs.python.org/3/library/threading.html#threading.Semaphore.acquire) finds that it is zero, it blocks, waiting until some other thread calls [`release()`](https://docs.python.org/3/library/threading.html#threading.Semaphore.release).
+* The use of a **bounded semaphore** reduces the chance that a programming error which causes the semaphore to be released more than it’s acquired will go undetected
+* **Mutex vs Semaphore:**
+  * **Mutex =** single key to single toilet
+    * only 1 thread can access the critical section once
+  * **Semaphore =** set of identical keys to multiple identical toilets
+    * i.e. given number\(&gt;=1\)  threads can access the critical sections simultaneously 
+* **Mutex vs Binary Semaphore:**
+  * A **mutex** can be released only by **the thread that had acquired it**. A **binary semaphore** can be signalled **by any thread** \(or process\).
+
+### Code: Semaphore
+
+```python
+from threading import Thread,Semaphore, current_thread
+
+semaphore = Semaphore(2)
+
+def my_fn():
+    semaphore.acquire()
+    print(semaphore)
+    print(f'Thread : {current_thread().name} acquired the lock')
+    print('>> semaphore._value',semaphore._value)
+    semaphore.release()
+    print(f'Thread : {current_thread().name} released the lock')
+    print('>> semaphore._value',semaphore._value)
+    
+t1= Thread(target=my_fn)
+t2= Thread(target=my_fn)
+t1.start()
+t2.start()
+
+'''
+<threading.Semaphore object at 0x104aa8fd0>
+Thread : Thread-1 acquired the lock
+>> semaphore._value 0
+<threading.Semaphore object at 0x104aa8fd0>
+Thread : Thread-2 acquired the lock
+Thread : Thread-1 released the lock
+>> semaphore._value 1
+>> semaphore._value 1
+Thread : Thread-2 released the lock
+>> semaphore._value 2
+'''
+```
+
+## 3. Barrier
 
 * Once the barrier threshold is reached, every thread will be passed through
 * **WHEN TO USE:**  could be a good fit for **batched processes** where you want to wait on a certain percentage before starting a process, but accept the remainder.
@@ -479,11 +535,91 @@ P1 is finished
 '''
 ```
 
-## 3. Event
+## 4. Event
 
+* one of the simplest mechanisms for communication between threads: **one thread signals an event and other threads wait for it**
+* **APIs:** 
+  * `set()`
+  * `wait()`
+  * `reset() :` Reset the internal flag to false
+  * `is_set()`
 
+### Code: Event
+
+```python
+from threading import Thread,Event
+
+event = Event()
+
+def my_fn():
+    print('waiting for event to trigger ..........')
+    event.wait()
+    print('Received event trigger. Performing action XYZ now')
+    
+t1 = Thread(target=my_fn)
+t1.start()
+
+x = input('Do you want to trigger an event? (y/n)')
+if x == 'y':
+    event.set() #trigger the event
+    
+'''
+waiting for event to trigger ..........
+Do you want to trigger an event? (y/n)
+>> y
+Received event trigger. Performing action XYZ now
+'''
+```
 
 ## 5. Condition
+
+* A condition variable is **always associated with some kind of lock**; this can be passed in or one will be created by default. 
+* The lock is part of the condition object: you don’t have to track it separately.
+* A condition variable obeys the [context management protocol](https://docs.python.org/3/library/threading.html#with-locks): using the `with` statement acquires the associated lock for the duration of the enclosed block.
+* APIs: [`acquire()`](https://docs.python.org/3/library/threading.html#threading.Condition.acquire) and [`release()`](https://docs.python.org/3/library/threading.html#threading.Condition.release) 
+  * The [`notify()`](https://docs.python.org/3/library/threading.html#threading.Condition.notify) method wakes up one of the threads waiting for the condition variable, if any are waiting. 
+  * The [`notify_all()`](https://docs.python.org/3/library/threading.html#threading.Condition.notify_all) method wakes up all threads waiting for the condition variable.
+  * **Note**: the [`notify()`](https://docs.python.org/3/library/threading.html#threading.Condition.notify) and [`notify_all()`](https://docs.python.org/3/library/threading.html#threading.Condition.notify_all) methods **don’t release the loc**k; this means that the thread or threads awakened will not return from their [`wait()`](https://docs.python.org/3/library/threading.html#threading.Condition.wait) call immediately, but only when the thread that called [`notify()`](https://docs.python.org/3/library/threading.html#threading.Condition.notify) or [`notify_all()`](https://docs.python.org/3/library/threading.html#threading.Condition.notify_all) finally relinquishes ownership of the lock.
+
+### Code: Condition
+
+```python
+import time
+from threading import Thread,Condition
+
+cv = Condition()
+topics = []
+
+def generator():  # creates topics
+    cv.acquire()
+    for i in range(6):
+        topics.append(i)
+        print(f'Topic: {i} generated')
+        time.sleep(.1)
+    cv.notify() # notify the producers to awaken
+    cv.release()
+    
+def consumer():
+    cv.acquire()
+    cv.wait(timeout=0)  # optional param
+    cv.release()
+    print(f'Consumer got topics: {topics}')
+    
+gen_th = Thread(target=generator)
+consu_th = Thread(target=consumer)
+
+gen_th.start()
+consu_th.start()
+'''
+Topic: 0 generated
+Topic: 1 generated
+Topic: 2 generated
+Topic: 3 generated
+Topic: 4 generated
+Topic: 5 generated
+Consumer got topics: [0, 1, 2, 3, 4, 5]
+'''
+```
 
 
 
