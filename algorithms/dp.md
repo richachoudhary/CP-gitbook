@@ -429,8 +429,8 @@ print(dp(0,-1))
 ## 2.2 Unbounded Knapsack 
 
 * [x] CSES: [Minimizing Coins](https://cses.fi/problemset/task/1634/)
-* [x] CSES: [Coin Combinations 1](https://cses.fi/problemset/task/1635/) ✅
-  * [x] CSES: [Coin Combinations 2](https://cses.fi/problemset/task/1636) ✅
+* [x] CSES: [Coin Combinations 1](https://cses.fi/problemset/task/1635/) ✅ \(unordered\)
+  * [x] CSES: [Coin Combinations 2](https://cses.fi/problemset/task/1636) ✅ \(ordered\)
   * **NOTE**: Switch the order of loops from 1 to get 2
 * [x] [322.Coin Change](https://leetcode.com/problems/coin-change/) 🌟
 * [x] [518.Coin Change 2](https://leetcode.com/problems/coin-change-2/)
@@ -1986,7 +1986,7 @@ return res + A[i:] + B[j:]
 *  **LIS in O\(NlogN\)** : [KartikArora](https://www.youtube.com/watch?v=66w10xKzbRM&ab_channel=KartikArora) \| [Leetcode Post](https://leetcode.com/problems/longest-increasing-subsequence/discuss/74824/JavaPython-Binary-search-O%28nlogn%29-time-with-explanation) =&gt; Maintain Tails arr
   * `Tails` arr contains all the **starting** points of all **LISs**\(aptly named\)=&gt; use `bisect_left` for LIS
   * `Tails` arr contains all the **ending** points of all **LIDs**\(aptly named\) =&gt; use `bisect_right` for LDS
-* [x] CSES: [Towers](https://cses.fi/problemset/task/1073) ✅=&gt; Longest Decreasing Sequence: \(exactly same as LIS\)
+* [x] CSES: [Towers](https://cses.fi/problemset/task/1073) ✅=&gt; Longest Decreasing Sequence: \(exactly same as LIS\) \| **just use** `bisect_right`
 * [x] [300.Longest Increasing Subsequence ](https://leetcode.com/problems/longest-increasing-subsequence/)
 * [x] 673. [Number of Longest Increasing Subsequence](https://leetcode.com/problems/number-of-longest-increasing-subsequence/) ✅💪\| ye na kar paoge khud se implement\|**`must_do`**
 * [x] 354. [Russian Doll Envelopes](https://leetcode.com/problems/russian-doll-envelopes/) \| must do!! 🪆🪆❤️ \| **@Observer.AI \| fuck\_yaaar!**
@@ -2004,9 +2004,9 @@ tails = []
 for num in nums:
     i = bisect.bisect_left(tails, num)
     if i == len(tails):
-        tails.append(num)    #append if bigger
+        tails.append(num)    ## we can have a new, longer increasing subsequence!
     else: 
-        tails[i] = num    # replace if in-btw
+        tails[i] = num   # oh ok, at least we can make the ending element smaller
 return len(tails)  
 
 ```
@@ -2016,7 +2016,7 @@ return len(tails)
 ```python
 tails = []
 for i in range(n):
-    idx = bisect.bisect_right(tails,A[i])
+    idx = bisect.bisect_right(tails,A[i]) # not bisect_left | to take only >= values
     if idx == len(tails):
         tails.append(A[i])
     else:
