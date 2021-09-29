@@ -570,7 +570,12 @@ Below steps to be taken\(as \#users increase\)
   * [RabbitMQ](https://www.rabbitmq.com/) is popular but requires you to adapt to the 'AMQP' protocol and manage your own nodes.
   * [Amazon SQS](https://aws.amazon.com/sqs/) is hosted but can have high latency and has the possibility of messages being delivered twice.
   * **Kafka**
+
     * Kafak has **Brokers**
+
+    \*\*\*\*
+
+![](../.gitbook/assets/screenshot-2021-09-30-at-2.54.24-am.png)
 
 ## 11. APIs
 

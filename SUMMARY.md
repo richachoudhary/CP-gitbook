@@ -31,6 +31,7 @@
 ## System Design
 
 * [\_concurrency\_](system-design/_concurrency_.md)
+* [concurrency: Questions](system-design/concurrency-questions.md)
 * [SQL](system-design/sql.md)
 * [LLD:Theory](system-design/lld.md)
 * [LLD:Questions](system-design/lld-questions.md)
