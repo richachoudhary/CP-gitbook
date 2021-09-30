@@ -1,4 +1,4 @@
-# \_concurrency\_
+# Concurrency
 
 ## General
 
@@ -381,6 +381,32 @@ Output: prints 500(as expected) all the time => Atomic tranactions
 
 
 ## `threading` module: Common Multithreading Techniques
+
+### Pros & Cons of all 5 below:
+
+* **Lock** The underlying abstraction used to implement the later constructs. It controls access to one resource for one thread.
+* **Condition** Another primitive used with Lock to implement the other structures. Gives you finer control over what happens after you release a lock.
+* **Semaphore** Can be used to share one resource among a limited number of threads. Can be chained together \(e.g. a task releases on semaphore1 every time it executes. Another thread acquires semaphore1 10 times and releases semaphore2 to indicate the task completion.
+* **Barrier** Once the barrier threshold is reached, every thread will be passed through - could be a good fit for batched processes where you want to wait on a certain percentage before starting a process, but accept the remainder.
+* **Event** Contrary to the traditional 'event' concept in other forms \(one event results in one callback\) - once it is in a triggered state, all threads will not block on the 'wait' call until the event is 'cleared' - reset to the untriggered state. It could be thought of as a Barrier\(1\) that can be reset easily.
+
+### WTH is `with` \(for lock, semaphore, condition\)
+
+* Using with
+
+  ```text
+  with some_lock:
+      # do something...
+  ```
+
+* is equivalent to: \(**acquire** & **release**\)
+* ```text
+  some_lock.acquire()
+  try:
+      # do something...
+  finally:
+      some_lock.release()
+  ```
 
 ## 1. Lock \| Mutex
 
