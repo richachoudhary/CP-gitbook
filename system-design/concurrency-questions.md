@@ -8,7 +8,9 @@
 {% tab title="1114-1 : Lock" %}
 ```python
 '''
-Start with two locked locks. First thread unlocks the first lock that the second thread is waiting on. Second thread unlocks the second lock that the third thread is waiting on.
+Start with two locked locks. 
+First thread unlocks the first lock that the second thread is waiting on. 
+Second thread unlocks the second lock that the third thread is waiting on.
 '''
 from threading import Lock
 
@@ -67,12 +69,15 @@ class Foo:
 ```
 {% endtab %}
 
-{% tab title="1114-3: Barrier" %}
+{% tab title="1114-3: Barrier✅" %}
 ```python
 '''
 Raise two barriers. Both wait for two threads to reach them.
 
 First thread can print before reaching the first barrier. Second thread can print before reaching the second barrier. Third thread can print after the second barrier.
+            |                 |
+first()     |  seocond()      |     third() 
+            |                 |
 '''
 from threading import Barrier
 
@@ -125,7 +130,10 @@ class Foo:
 {% tab title="1114-5: Condition" %}
 ```python
 '''
-Have all three threads attempt to acquire an RLock via Condition. The first thread can always acquire a lock, while the other two have to wait for the order to be set to the right value. First thread sets the order after printing which signals for the second thread to run. Second thread does the same for the third.
+Have all three threads attempt to acquire an RLock via Condition. 
+The first thread can always acquire a lock, while the other two have to wait for the order to be set to the right value. 
+First thread sets the order after printing which signals for the second thread to run. 
+Second thread does the same for the third.
 '''
 from threading import Condition
 
@@ -187,7 +195,7 @@ class FooBar:
         for i in range(self.n):
             self.bar_lock.acquire()
             printBar()
-            self.foo_lock.release()
+            self.bar_lock.release()
 ```
 {% endtab %}
 
@@ -219,12 +227,17 @@ class FooBar:
 ```
 {% endtab %}
 
-{% tab title="3: Barrier" %}
+{% tab title="3: Barrier✅" %}
 ```python
 '''
 Raise a barrier which makes both threads wait for each other before they are allowed to continue. 
 foo prints before reaching the barrier. 
 bar prints after reaching the barrier.
+
+            |             
+foo()       |  bar()     
+            |                 
+
 '''
 from threading import Barrier
 
@@ -325,7 +338,7 @@ class BoundedBlockingQueue(object):
         self.condition = Condition()
         
     def enqueue(self, element: int) -> None:
-        with self.condition: # acquire and release
+        with self.condition:     # acquire and release
             while len(self.queue) >= self.capacity:
                 self.condition.wait()
             
@@ -333,7 +346,7 @@ class BoundedBlockingQueue(object):
             self.condition.notify()
 
     def dequeue(self) -> int:
-        with self.condition:
+        with self.condition:     # acquire and release
             while len(self.queue) == 0:
                 self.condition.wait()
             
@@ -714,7 +727,7 @@ print('================ FINISHED ======================')
 {% endtab %}
 {% endtabs %}
 
-* [ ] LC [1117. Building H2O](https://leetcode.com/problems/building-h2o/)
+* [ ] LC [1117. Building H2O](https://leetcode.com/problems/building-h2o/) \| barrier+semaphore
 * [ ] LC  [1195. Fizz Buzz Multithreaded](https://leetcode.com/problems/fizz-buzz-multithreaded/)
 * [ ] LC [1226. The Dining Philosophers](https://leetcode.com/problems/the-dining-philosophers/)
 
@@ -732,7 +745,7 @@ Here's how I picture this mentally:
 from threading import Barrier, Semaphore
 class H2O:
     def __init__(self):
-        self.b = Barrier(3)
+        self.b = Barrier(3)    # for all 3 atoms leaving together
         self.h = Semaphore(2)
         self.o = Semaphore(1)
 
@@ -857,7 +870,10 @@ class DiningPhilosophers:
 {% endtab %}
 {% endtabs %}
 
-## Q: Scheduled Executor Service
+## Q: `threading.Timer` \| Scheduled Executor Service 
+
+* Syntax: **`t = threading.Timer(n,func_name)`** 
+  * will run the **`func_name`** function **`after n`** milli-seconds
 
 ```java
 #Question
@@ -935,10 +951,11 @@ from threading import Timer
 def repeat_every(n, func, *args, **kwargs):
     def and_again():
         func(*args, **kwargs)
-        t = Timer(n, and_again)
+        t = Timer(n, and_again)      #trick to make it repetitive
         t.daemon = True
         t.start()
-    t = Timer(n, and_again)
+        
+    t = Timer(n, and_again)   
     t.daemon = True
     t.start()
 
@@ -949,7 +966,7 @@ def scheduled_task(msg='hello, world', **kwargs):
 repeat_every(.5, scheduled_task )
 repeat_every(1, scheduled_task, "Slow", name="Hand luke")
 
-for x in range(5):
+for x in range(5):    # will run all possible jobs in 0-5 seconds
     print(time.time(), "Main: busy as a bee.")
     time.sleep(3)
 ```

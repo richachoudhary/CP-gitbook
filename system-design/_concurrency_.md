@@ -71,19 +71,55 @@ print(f'total time = {end_time - start_time}')
 * **Process vs Pool:**
   * **Process:** Its used when **function based parallelism** is required
     * i.e. where I could define different functionality with parameters that they receive and run those different functions in parallel which are doing totally various kind of computations.
-    * When you have a small data or functions and less repetitive tasks to do.
-    * It puts all the process in the memory. Hence in the larger task, it might cause to loss of memory. 
+    * **When you have a small data or functions and less repetitive tasks to do**.
+    * It puts **all the process in the memor**y. Hence in the larger task, it **might cause to loss of memory. 🔴**
     * **I/O operation:** The process class suspends the process executing I/O operations and schedule another process parallel. 
     * Uses FIFO scheduler.
   * **Pool:** is used when **data based parallelism** is required.
-    * **i.e.** parallelizing the execution of a function across multiple input values, distributing the input data across processes.
-    * When you have junk of data, you can use Pool class. 
-    * Only the process under execution are kept in the memory. I/O operation:
-    *  It waits till the **I/O operation** is completed & does not schedule another process. This might increase the execution time. 
+    * **i.e.** parallelizing the execution of a function across **multiple input values, distributing the input data across processes**.
+    * **When you have junk of data, you can use Pool class.** 
+    * Only the process under execution are kept in the memory. 🟢
+    * **I/O operation:** It waits till the I/O operation is completed & does not schedule another process. This might increase the execution time. 
     * Uses FIFO scheduler.
 * Ways for **sharing data between multiple processed** functions:
   * **Queue**
   * Pipe
+* **`multiprocessing` lib vs `threading` lib**
+
+  **Multiprocessing**
+
+  **&gt;&gt; Pros**
+
+  * Separate memory space
+  * Code is usually straightforward
+  * Takes advantage of multiple CPUs & cores
+  * **Avoids GIL limitations for cPython**
+  * Eliminates most needs for synchronization primitives unless if you use shared memory \(instead, it's more of a communication model for IPC\)
+  * **Child processes are interruptible/killable**
+  * Python `multiprocessing` module includes useful abstractions with an interface much like `threading.Thread`
+  * A must with cPython for CPU-bound processing
+
+  **&gt;&gt; Cons**
+
+  * IPC a little more complicated with more overhead \(communication model vs. shared memory/objects\)
+  * Larger memory footprint
+
+  **Threading**
+
+  **&gt;&gt; Pros**
+
+  * Lightweight - low memory footprint
+  * Shared memory - makes access to state from another context easier
+  * Allows you to easily make responsive UIs
+  * cPython C extension modules that properly release the GIL will run in parallel
+  * Great option for I/O-bound applications
+
+  **&gt;&gt; Cons**
+
+  * cPython - **subject to the GIL**
+  * **Not interruptible/killable**
+  * If not following a command queue/message pump model \(using the `Queue` module\), then manual use of synchronization primitives become a necessity \(decisions are needed for the granularity of locking\)
+  * Code is usually harder to understand and to get right - the potential for race conditions increases dramatically
 
 ### 1. `Process`
 
@@ -156,9 +192,8 @@ square(4) = 16
 ```
 
 * Here two functions to pay attention are **`.start()`**and **`.join()`**
-  * .start\(\) helps in starting a process and that too asynchronously.
-  * .join\(\) method on a `Process` does **block** until the process has finished, but because we called `.start()` on all processes before joining, then both processes will run asynchronously. The interpreter will, however, wait until p\[i\] finishes before attempting to wait for p\[i+1\] to finish.✅
-    * =========&gt; This is what makes it async!!!!💪✅🌟
+  * **`.start()`** helps in starting a process and that too **asynchronously**.
+  * **`.join()`** method on a `Process` does **block** until the process has finished, but because we called `.start()` on all processes before joining, then both processes will run asynchronously. The interpreter will, however, wait until p\[i\] finishes before attempting to wait for p\[i+1\] to finish.✅
 * **Note**: A process cannot join itself because this would cause a **deadlock**. It is an error to attempt to join a process before it has been started.
 
 ### 
@@ -170,8 +205,8 @@ square(4) = 16
 
 
 
-* It offers a convenient means of parallelizing the execution of a function across multiple input values, distributing the input data across processes i.e. **data based parallelism.** 
-* Here `pool.map()` is a completely different kind of animal, because it distributes a bunch of arguments to the same function \(asynchronously\), across the pool processes, and then waits until all function calls have completed before returning the list of results.
+* It offers a convenient means of parallelizing the execution of a function across multiple input values, **distributing the input data across processes** i.e. **data based parallelism.** 
+* Here `pool.map()` is a completely different kind of **animal**, because **it distributes a bunch of arguments to the same function \(asynchronously\), across the pool processes, and then waits until** all function calls have completed before returning the list of result**s**.
 
 ```python
 # One can create a pool of processes which will carry out tasks submitted to
@@ -192,12 +227,12 @@ def sum_square(n):
     return s
 
 
-def sum_square_with_multiprocessing(numbers):
+def sum_square_with_multiprocessing(arr):
 
     start_time = time.time()
     p = Pool()        # NOTE: Pool(x) , where x = number of cores/cpus u wanna allocate
                       # default is: use all the cores in system
-    result = p.map(sum_square, numbers)
+    result = p.map(sum_square, arr)
 
     p.close()
     p.join()
@@ -207,12 +242,12 @@ def sum_square_with_multiprocessing(numbers):
     print(f"Processing {len(numbers)} numbers took {end_time} time using multiprocessing.")
 
 
-def sum_square_no_multiprocessing(numbers):
+def sum_square_no_multiprocessing(arr):
 
     start_time = time.time()
     result = []
 
-    for i in numbers:
+    for i in arr:
         result.append(sum_square(i))
     end_time = time.time() - start_time
 
@@ -220,9 +255,9 @@ def sum_square_no_multiprocessing(numbers):
 
 
 if __name__ == '__main__':
-    numbers = range(10000)    # a list: [0,1,....,999]
-    sum_square_with_mp(numbers)
-    sum_square_no_mp(numbers)
+    arr = range(10000)    # a list: [0,1,....,999]
+    sum_square_with_multiprocessing(arr)
+    sum_square_no_multiprocessing(arr)
 
 '''
 OP: as expected; 
@@ -382,13 +417,13 @@ Output: prints 500(as expected) all the time => Atomic tranactions
 
 ## `threading` module: Common Multithreading Techniques
 
-### Pros & Cons of all 5 below:
+### 🟢🔴Pros & Cons of all 5 below:
 
 * **Lock** The underlying abstraction used to implement the later constructs. It controls access to one resource for one thread.
-* **Condition** Another primitive used with Lock to implement the other structures. Gives you finer control over what happens after you release a lock.
-* **Semaphore** Can be used to share one resource among a limited number of threads. Can be chained together \(e.g. a task releases on semaphore1 every time it executes. Another thread acquires semaphore1 10 times and releases semaphore2 to indicate the task completion.
-* **Barrier** Once the barrier threshold is reached, every thread will be passed through - could be a good fit for batched processes where you want to wait on a certain percentage before starting a process, but accept the remainder.
-* **Event** Contrary to the traditional 'event' concept in other forms \(one event results in one callback\) - once it is in a triggered state, all threads will not block on the 'wait' call until the event is 'cleared' - reset to the untriggered state. It could be thought of as a Barrier\(1\) that can be reset easily.
+* **Semaphore** Can be used to share one resource among a limited number of threads. **Can be chained together** \(e.g. a task releases on semaphore1 every time it executes. Another thread acquires semaphore1 **10 times** and releases semaphore2 to indicate the task completion. **E.g: H2O wala Question**
+* **Barrier** Once the barrier threshold is reached, every thread will be passed through - could be a good fit for **batched processes** where you want to wait on a certain percentage before starting a process, but accept the remainder.
+* **Event** Contrary to the traditional 'event' concept in other forms \(one event results in one callback\) - once it is in a triggered state, **all threads will not block on the 'wait' call until the event is 'cleared'** - reset to the untriggered state. It could be thought of as a **Barrier\(1\)** that can be reset easily.
+* **Condition** Another primitive used with Lock to implement the other structures. Gives you **finer control over what happens after you release a lock.**
 
 ### WTH is `with` \(for lock, semaphore, condition\)
 
@@ -410,6 +445,8 @@ Output: prints 500(as expected) all the time => Atomic tranactions
 
 ## 1. Lock \| Mutex
 
+* **WHAT is Lock/Mutex:** 
+  * A lock or mutex is a **synchronisation mechanism** to **enforce limits** on **access to a resource** in an environment where there are **many threads of execution**.
 * the most common way to  avoid race condition
   * **Race Condition:** The condition occurs when one thread tries to modify a shared resource _at the same time_ that another thread is modifying that resource – t​his leads to garbled output
 * Once a thread has acquired the lock, all subsequent attempts to acquire the lock are blocked until it is released
@@ -419,7 +456,8 @@ Output: prints 500(as expected) all the time => Atomic tranactions
   * **Semaphore =** set of identical keys to multiple identical toilets
     * i.e. given number\(&gt;=1\)  threads can access the critical sections simultaneously 
 * **Mutex vs Binary Semaphore:**
-  * A **mutex** can be released only by **the thread that had acquired it**. A **binary semaphore** can be signalled **by any thread** \(or process\).
+  * A **mutex** can be released only by **the thread that had acquired it**.
+  * A **binary semaphore** can be signalled **by any thread** \(or process\).
 
 ### Code: Lock
 
@@ -460,7 +498,7 @@ print(deposit)
 ## 2. Semaphore
 
 * This is one of the oldest synchronization primitives in the history of computer science,
-  *  invented by the early Dutch computer scientist Edsger W. Dijkstra \(he used the names `P()` and `V()` instead of [`acquire()`](https://docs.python.org/3/library/threading.html#threading.Semaphore.acquire) and [`release()`](https://docs.python.org/3/library/threading.html#threading.Semaphore.release)\).
+  *  invented by the early Dutch computer scientist Edsger **W. Dijkstra** \(he used the names `P()` and `V()` instead of [`acquire()`](https://docs.python.org/3/library/threading.html#threading.Semaphore.acquire) and [`release()`](https://docs.python.org/3/library/threading.html#threading.Semaphore.release)\).
 * A semaphore manages an internal counter which is decremented by each [`acquire()`](https://docs.python.org/3/library/threading.html#threading.Semaphore.acquire) call and incremented by each [`release()`](https://docs.python.org/3/library/threading.html#threading.Semaphore.release) call. The counter can never go below zero; when [`acquire()`](https://docs.python.org/3/library/threading.html#threading.Semaphore.acquire) finds that it is zero, it blocks, waiting until some other thread calls [`release()`](https://docs.python.org/3/library/threading.html#threading.Semaphore.release).
 * The use of a **bounded semaphore** reduces the chance that a programming error which causes the semaphore to be released more than it’s acquired will go undetected
 * **Mutex vs Semaphore:**
@@ -469,7 +507,8 @@ print(deposit)
   * **Semaphore =** set of identical keys to multiple identical toilets
     * i.e. given number\(&gt;=1\)  threads can access the critical sections simultaneously 
 * **Mutex vs Binary Semaphore:**
-  * A **mutex** can be released only by **the thread that had acquired it**. A **binary semaphore** can be signalled **by any thread** \(or process\).
+  * A **mutex** can be released only by **the thread that had acquired it**.
+  * A **binary semaphore** can be signalled **by any thread** \(or process\).
 
 ### Code: Semaphore
 
@@ -564,6 +603,7 @@ P1 is finished
 ## 4. Event
 
 * one of the simplest mechanisms for communication between threads: **one thread signals an event and other threads wait for it**
+* once it is in a triggered state, **all threads will not block on the 'wait' call until the event is 'cleared'** - reset to the untriggered state. It could be thought of as a **Barrier\(1\)** that can be reset easily.
 * **APIs:** 
   * `set()`
   * `wait()`
@@ -599,13 +639,14 @@ Received event trigger. Performing action XYZ now
 
 ## 5. Condition
 
+* similar to **Lock** only. **ADVANTAGE**: Gives **finer control over what happens after you release a lock.**
 * A condition variable is **always associated with some kind of lock**; this can be passed in or one will be created by default. 
 * The lock is part of the condition object: you don’t have to track it separately.
 * A condition variable obeys the [context management protocol](https://docs.python.org/3/library/threading.html#with-locks): using the `with` statement acquires the associated lock for the duration of the enclosed block.
 * APIs: [`acquire()`](https://docs.python.org/3/library/threading.html#threading.Condition.acquire) and [`release()`](https://docs.python.org/3/library/threading.html#threading.Condition.release) 
   * The [`notify()`](https://docs.python.org/3/library/threading.html#threading.Condition.notify) method wakes up one of the threads waiting for the condition variable, if any are waiting. 
   * The [`notify_all()`](https://docs.python.org/3/library/threading.html#threading.Condition.notify_all) method wakes up all threads waiting for the condition variable.
-  * **Note**: the [`notify()`](https://docs.python.org/3/library/threading.html#threading.Condition.notify) and [`notify_all()`](https://docs.python.org/3/library/threading.html#threading.Condition.notify_all) methods **don’t release the loc**k; this means that the thread or threads awakened will not return from their [`wait()`](https://docs.python.org/3/library/threading.html#threading.Condition.wait) call immediately, but only when the thread that called [`notify()`](https://docs.python.org/3/library/threading.html#threading.Condition.notify) or [`notify_all()`](https://docs.python.org/3/library/threading.html#threading.Condition.notify_all) finally relinquishes ownership of the lock.
+  * **Note**: the [`notify()`](https://docs.python.org/3/library/threading.html#threading.Condition.notify) and [`notify_all()`](https://docs.python.org/3/library/threading.html#threading.Condition.notify_all) methods **don’t release the loc**k; this means that the thread or threads awakened will not return from their [`wait()`](https://docs.python.org/3/library/threading.html#threading.Condition.wait) call immediately, but only when the thread that called [`notify()`](https://docs.python.org/3/library/threading.html#threading.Condition.notify) or [`notify_all()`](https://docs.python.org/3/library/threading.html#threading.Condition.notify_all) finally relinquishes **ownership of the lock**.
 
 ### Code: Condition
 
