@@ -2435,6 +2435,7 @@ def searchInsert(self, nums: List[int], target: int) -> int:
 * [x] \*\*\*\*[**875. Koko Eating Bananas \[Medium\]**](https://leetcode.com/problems/koko-eating-bananas/)\*\*\*\*
 * [x] \*\*\*\*[**1482. Minimum Number of Days to Make m Bouquets \[Medium\]**](https://leetcode.com/problems/minimum-number-of-days-to-make-m-bouquets/)\*\*\*\*
 * [x] \*\*\*\*[**475. Heaters \[Medium\]**](https://leetcode.com/problems/heaters/) **✅💪**
+* [x] **Spoj**: [Aggressive Cows](https://www.spoj.com/problems/AGGRCOW/) \| @curefit 💪\| khud se kiya poora😎!
 
 {% tabs %}
 {% tab title="1011" %}
@@ -2578,6 +2579,48 @@ def findRadius(self, houses: List[int], heaters: List[int]) -> int:
         else:
             l = mid+1
     return l
+```
+{% endtab %}
+
+{% tab title="AggressiveCows" %}
+```python
+def is_possible(a,gap,c):
+    prev = 0
+    c -= 1  # place cow#1 @idx = 0
+    for curr in range(1,len(a)):
+        if a[curr]-a[prev] >= gap:
+            c -= 1
+            prev = curr
+    return c == 0
+
+T = int(input())
+
+for _ in range(T):
+    n,c = I()
+    stalls = []
+    for _ in range(n):
+        x = int(input())
+        stalls.append(x)
+    
+    stalls.sort()
+    l,r = 0,stalls[-1]-stalls[0]
+    ans = 0
+    while l <r:
+        mid = (l+r)//2
+        if is_possible(stalls,mid,c):
+            l = mid+1   # swapped because we've to find 'largest possible value' here
+            ans = mid
+        else:
+            r = mid
+    print(ans)
+
+
+"""
+
+1 2     4       8  9
+x       x          x
+"""
+
 ```
 {% endtab %}
 {% endtabs %}
