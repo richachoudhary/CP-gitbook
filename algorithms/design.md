@@ -195,6 +195,7 @@ class LFUCache(object):
 * [x] LC [1600. Throne Inheritance](https://leetcode.com/problems/throne-inheritance/)
 * [x] LC [855. Exam Room ](https://leetcode.com/problems/exam-room/)\| based on \#LC.849 \| **@google \|** 🐽🐽
 * [x] LC [295. Find median from a data stream](https://leetcode.com/problems/find-median-from-data-stream/)
+* [x] LC [480. Sliding Window Median](https://leetcode.com/problems/sliding-window-median/)
 
 {% tabs %}
 {% tab title="1600" %}
@@ -281,6 +282,66 @@ class MedianFinder:
         else:
             return float(self.large[0])
         
+```
+{% endtab %}
+
+{% tab title="480" %}
+```python
+# 1. using SortedList ======================================== O(n log k)
+from sortedcontainers import SortedList
+
+class Solution:
+    def medianSlidingWindow(self, nums, k: int):
+    	S = SortedList()
+        # Initialize sorted list with first k - 1 elements of nums.
+    	for i in range(k-1):
+    		S.add(nums[i])  
+            
+    	i = k-1
+    	res = []
+    	while(i<len(nums)):
+    		S.add(nums[i])
+    		if k%2==0:
+    			res.append((S[k//2 -1] + S[k//2])/2)
+    		else:
+    			res.append(S[k//2])
+    		S.remove(nums[i-k+1])
+    		i+=1
+    	return res 
+   
+
+# 2. Using Two Heaps ============================================ O(NlogN) 
+def medianSlidingWindow(self, nums, k):
+        low = []  # lo is max-heap 
+        high = [] # high is min-heap
+        
+        for i in range(k):
+            heapq.heappush(high, (nums[i], i)) # high is a min-heap
+            
+        for _ in range(k>>1):
+            self.convert(high, low)
+            
+        ans = [high[0][0]*1. if k&1 else (high[0][0]-low[0][0])/2]
+        
+        for i in range(len(nums[k:])):
+            if nums[i+k] >= high[0][0]:
+                heapq.heappush(high, (nums[i+k], i+k))
+                if nums[i] <= high[0][0]: # keep the number of elements between two heap always in balance
+                    self.convert(high, low)
+            else:
+                heapq.heappush(low, (-nums[i+k], i+k))
+                if nums[i] >= high[0][0]:
+                    self.convert(low, high)
+            while low and low[0][1] <= i: heapq.heappop(low)
+            while high and high[0][1] <= i: heapq.heappop(high)
+            ans.append(high[0][0]*1. if k&1 else (high[0][0]-low[0][0])/2.)
+        return ans
+        
+                    
+    def convert(self, heap1, heap2): # convert min-heap1 to max-heap2
+        element, index = heapq.heappop(heap1)
+        heapq.heappush(heap2, (-element, index))
+
 ```
 {% endtab %}
 {% endtabs %}

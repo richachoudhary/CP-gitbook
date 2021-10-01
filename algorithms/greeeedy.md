@@ -439,8 +439,8 @@ def maxDistToClosest(self, A: List[int]) -> int:
 
 #### Dynamic Size Window
 
-* [x] \*\*\*\*[**3. Longest Substring Without Repeating Characters**](https://leetcode.com/problems/longest-substring-without-repeating-characters/) **\| @rubrik \| doob maro sharam se behanchood**
-* [x] CSES: [Playlist](https://cses.fi/problemset/task/1141)
+* [x] \*\*\*\*[**3. Longest Substring Without Repeating Characters**](https://leetcode.com/problems/longest-substring-without-repeating-characters/) **\| @rubrik \| doob maro sharam se behanchodd**
+  * [x] CSES: [Playlist](https://cses.fi/problemset/task/1141) similar
 * [x] [560.Subarray Sum Equals K](https://leetcode.com/problems/subarray-sum-equals-k/)✅
   * **NOTE:** Sliding window technique works only for all positive/all negative \(i.e. not for arr with both pos & neg numbers\).So soln\#1 below gets WA
 * [x] GfG\#1: [Longest substring with k unique characters](https://www.geeksforgeeks.org/find-the-longest-substring-with-k-unique-characters-in-a-given-string/) ❤️
@@ -452,6 +452,7 @@ def maxDistToClosest(self, A: List[int]) -> int:
 {% tabs %}
 {% tab title="3" %}
 ```python
+# 1. ================================================ O(N^2) | @rubrik!!!
 def lengthOfLongestSubstring(self, s: str) -> int:
     l,r = 0,0
     d = dict()
@@ -467,6 +468,22 @@ def lengthOfLongestSubstring(self, s: str) -> int:
         r += 1
 
     return len(ans)
+
+# 2. ============================================== O(N)
+
+n = int(input())
+a = list(I())
+
+l = 0
+ans = 0
+D = dict()
+
+for r in range(n):
+    if a[r] in D:
+        l = max(l,D[a[r]]+1)
+    D[a[r]] = r
+    ans = max(ans, r-l+1)
+print(ans)
 ```
 {% endtab %}
 
@@ -1240,7 +1257,7 @@ def longestDupSubstring(self, S):
 * [x] LC [218.The Skyline Problem](https://leetcode.com/problems/the-skyline-problem/) ✅🌇\| uses **SortedList** 
 * [x] LC[ 146. LRU Cache](https://leetcode.com/problems/lru-cache/) ✅✅✅
 * [x] [1700.Number of Students Unable to Eat Lunch](https://leetcode.com/problems/number-of-students-unable-to-eat-lunch/)
-* [x] CSES: [Sliding Medium](https://cses.fi/problemset/task/1076) \| LC: [480 Sliding Window Median](https://leetcode.com/problems/sliding-window-median/)  ✅✅⭐️🚀 // `O(logK)` **NOTE: Dont skip w/o doing it!!!!!!!**
+* [x] LC: [480 Sliding Window Median](https://leetcode.com/problems/sliding-window-median/)  ✅✅⭐️🚀 // `O(logK)` **NOTE: Dont skip w/o doing it!!!!!!!**
   * Video: [link](https://www.youtube.com/watch?v=UGs_kQxJNPk&ab_channel=ARSLONGAVITABREVIS)
 * [x] CSES: [Sliding Cost](https://cses.fi/problemset/task/1077/) \| very similar to Sliding Medium; jst keep two sums: `upperSum` & `lowerSum`
 * [x] CSES: [Maximum Subarray Sum II](https://cses.fi/problemset/task/1644/) \| idea [here](https://discuss.codechef.com/t/help-with-maximum-subarray-sum-ii-from-cses/73404) 🐽
@@ -1361,93 +1378,63 @@ The reason that using OrderedDict was faster than using deque is:
 ```
 {% endtab %}
 
-{% tab title="SlidingMedium" %}
-```cpp
-multiset<int> lo,hi;
-int k;
-void rebalance(){
-    if(k&1){
-        while(lo.size() < k/2 + 1){
-            int t = *(hi.begin());
-            hi.erase(hi.begin());
-            lo.insert(t);
-        }
-        while(lo.size()> k/2 + 1){
-            int t = *(lo.rbegin());
-            lo.erase(lo.find(t));
-            hi.insert(t);
-        }
-    }else{
-        while(lo.size() < k/2){
-            int t = *(hi.begin());
-            hi.erase(hi.begin());
-            lo.insert(t);
-        }
-        while(lo.size()> k/2){
-            int t = *(lo.rbegin());
-            lo.erase(lo.find(t));
-            hi.insert(t);
-        }
-    }
-}
+{% tab title="480.✅" %}
+```python
+# 1. using SortedList ======================================== O(n log k)
+from sortedcontainers import SortedList
 
-void ins(int x){
-    if(x < *(lo.rbegin())){
-        lo.insert(x);
-    }else{
-        hi.insert(x);
-    }
-    rebalance();
-}
+class Solution:
+    def medianSlidingWindow(self, nums, k: int):
+    	S = SortedList()
+        # Initialize sorted list with first k - 1 elements of nums.
+    	for i in range(k-1):
+    		S.add(nums[i])  
+            
+    	i = k-1
+    	res = []
+    	while(i<len(nums)):
+    		S.add(nums[i])
+    		if k%2==0:
+    			res.append((S[k//2 -1] + S[k//2])/2)
+    		else:
+    			res.append(S[k//2])
+    		S.remove(nums[i-k+1])
+    		i+=1
+    	return res 
+   
 
-void rem(int x){
-    if(lo.find(x) != lo.end()){
-        lo.erase(lo.find(x));
-    }else{
-        hi.erase(hi.find(x));
-    }
-    rebalance();
-}
+# 2. Using Two Heaps ============================================ O(NlogN) 
+def medianSlidingWindow(self, nums, k):
+        low = []  # lo is max-heap 
+        high = [] # high is min-heap
+        
+        for i in range(k):
+            heapq.heappush(high, (nums[i], i)) # high is a min-heap
+            
+        for _ in range(k>>1):
+            self.convert(high, low)
+            
+        ans = [high[0][0]*1. if k&1 else (high[0][0]-low[0][0])/2]
+        
+        for i in range(len(nums[k:])):
+            if nums[i+k] >= high[0][0]:
+                heapq.heappush(high, (nums[i+k], i+k))
+                if nums[i] <= high[0][0]: # keep the number of elements between two heap always in balance
+                    self.convert(high, low)
+            else:
+                heapq.heappush(low, (-nums[i+k], i+k))
+                if nums[i] >= high[0][0]:
+                    self.convert(low, high)
+            while low and low[0][1] <= i: heapq.heappop(low)
+            while high and high[0][1] <= i: heapq.heappop(high)
+            ans.append(high[0][0]*1. if k&1 else (high[0][0]-low[0][0])/2.)
+        return ans
+        
+                    
+    def convert(self, heap1, heap2): # convert min-heap1 to max-heap2
+        element, index = heapq.heappop(heap1)
+        heapq.heappush(heap2, (-element, index))
 
-vector<double> medianSlidingWindow(vector<int>& a, int K) {
-    vector<double>res;
-    k = K;
-    int n = a.size();
-    //special case
-    if(k==1){
-        return a;
-    }
-    
-    //first window
-    lo.insert(a[0]);
-    for(int i=1;i<k;i++){
-        ins(a[i]);
-    }
-    if(k&1){
-        res.push_back(double(*lo.rbegin()));
-    }else{
-        double x = (double(*lo.rbegin()) + double(*hi.begin()))/2;
-        res.push_back(x);
-    }
-    
-    //next windows after first
-    for(int i=k;i<n;i++){
-        if(k==1){           //special case(not reqd now, already handled @line51)
-            ins(a[i]);
-            rem(a[i-k]);
-        }else{
-            rem(a[i-k]);
-            ins(a[i]);
-        }
-        if(k&1){
-            res.push_back(double(*lo.rbegin()));
-        }else{
-            double x = (double(*lo.rbegin()) + double(*hi.begin()))/2;
-            res.push_back(x);
-        }
-    }
-    return res;
-}
 ```
 {% endtab %}
 
