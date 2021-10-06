@@ -2,6 +2,7 @@
 
 ## General
 
+* **Mutex =** Mutual Exclusion
 * **Find Cores:** Find out cput count\(how many cores\) of a machine
 
 ```python
@@ -31,7 +32,19 @@ print(f'total time = {end_time - start_time}')
 
 ## `Theory:`
 
-### 1. Threads vs Process:✅
+### 1. What is Concurrency 
+
+* When we talk about concurrent events, it is tempting to say that they happen at the same time, or simultaneously.
+* **Two events are concurrent if we cannot tell by looking at the program which will happen first**.
+* **Non-determinism:**
+  * Concurrent programs are often non-deterministic, which means it is not possible to tell, by looking at the program, what will happen when it executes. 
+  * E.g:            **Thread A                            Thread B**
+
+                       a1 print "yes"                     b1 print "no"
+
+  * Because the two threads run concurrently, ✅**order of execution depends on the scheduler.✅** During any given run of this program, the output might be **“yes no”** or **“no yes”.**
+
+### 2. Threads vs Process:✅
 
 * **Threads** run in the **same** memory heap. 
   * So multiple threads can write to the **same location** in the memory heap.
@@ -39,7 +52,7 @@ print(f'total time = {end_time - start_time}')
 * **Processes** run in  **separate** memory heaps.
   * This makes sharing information **harder** with processes and object instances.
 
-### 2. GIL : Global Interpreter Lock
+### 3. GIL : Global Interpreter Lock
 
 * **CPython**  is the most common\(standard\) implementation of python. 
   * its written in C & Python
@@ -48,9 +61,29 @@ print(f'total time = {end_time - start_time}')
 * A particular feature of CPython is that **it makes use of a global interpreter lock** \(**GIL**\) on **each CPython interpreter process**:
   * which means that **within a single process only one thread may be processing Python byte-code at any one time**. 🌟
 
-### 3. Concurrency vs Parallelism
+### 4. Concurrency vs Parallelism
 
 ![Concurrency vs Parallelism](../.gitbook/assets/screenshot-2021-09-30-at-1.03.43-am.png)
+
+### 5. What is Semaphore
+
+* A semaphore is **like an integer, with three differences**:
+
+1. When you create the semaphore, you can initialize its value to any integer, but after that the only operations you are allowed to perform are increment \(+= 1\) and decrement \(-= 1\). You cannot read the current value of the semaphore.
+2. When a thread decrements the semaphore, if the result is **negative**, the **thread blocks itself** and cannot continue until another thread increments the semaphore.
+3. If the value of the semaphore is negative and a thread increments it, one of the threads that is waiting gets **woken up**.
+
+* Code:
+
+  ```python
+  from threading import Semaphore
+
+  semaphore = Semaphore()  # default value is 1
+
+  semaphore.acquire()
+  # do something...
+  semaphore.release()
+  ```
 
 ## `multiprocessing` module \| [playlist](https://www.youtube.com/watch?v=RR4SoktDQAw&list=PL5tcWHG-UPH3SX16DI6EP1FlEibgxkg_6&index=1&ab_channel=LucidProgramming)
 
@@ -274,6 +307,8 @@ Processing 10000 numbers took 2.190778970718384 time using serial processing.
 * Using the multiprocessing **`Queue`** class to communicate between different processes
   * **OP:**  elements get added in the queue in random order by both functions
 
+{% tabs %}
+{% tab title="usage" %}
 ```python
 # We show how to make use of the multiprocessing Queue class to communicate
 # between different processes.
@@ -321,6 +356,92 @@ OP:    elements get added in the queue in random order by both functions
 64
 '''
 ```
+{% endtab %}
+
+{% tab title="implementation-in-house" %}
+```python
+from collections import deque
+from threading import Condition
+
+class BoundedBlockingQueue(object):
+
+    def __init__(self, capacity: int):
+        self.capacity = capacity
+        self.queue = deque()
+        self.condition = Condition()
+        
+    def enqueue(self, element: int) -> None:
+        with self.condition:     # acquire and release
+            while len(self.queue) >= self.capacity:
+                self.condition.wait()
+            
+            self.queue.append(element)
+            self.condition.notify()
+
+    def dequeue(self) -> int:
+        with self.condition:     # acquire and release
+            while len(self.queue) == 0:
+                self.condition.wait()
+            
+            element = self.queue.popleft()
+            self.condition.notify()
+            return element
+        
+    def size(self) -> int:
+        with self.condition:
+            return len(self.queue)
+            
+# ============================================ [Running It] ===============
+queue = BoundedBlockingQueue(2)
+# norm_queue = deque()
+
+def pop_from_queue():
+    ans = queue.dequeue()
+    print(f'Popped {ans} from queue: \t Q = {queue}')
+
+def add_to_queue(x):
+    queue.enqueue(x)
+    print(f'Added {x} to queue: \t Q = {queue}')
+
+def get_size():
+    print(queue.size())
+
+th = Thread(target=pop_from_queue)
+th.start()
+print(queue)
+time.sleep(2)
+th = Thread(target=get_size)
+th.start()
+th.join()
+print(queue)
+time.sleep(2)
+th = Thread(target=pop_from_queue)
+th.start()
+th.join()
+print(queue)
+th = Thread(target=get_size)
+th.start()
+th.join()
+time.sleep(2)
+th = Thread(target=add_to_queue, args=[1])
+th.start()
+th.join()
+print(queue)
+th = Thread(target=get_size)
+th.start()
+th.join()
+th = Thread(target=pop_from_queue)
+th.start()
+th.join()
+th = Thread(target=get_size)
+th.start()
+th.join()
+print(queue)
+    
+print('done............')
+```
+{% endtab %}
+{% endtabs %}
 
 ### 
 
@@ -443,7 +564,7 @@ Output: prints 500(as expected) all the time => Atomic tranactions
       some_lock.release()
   ```
 
-## 1. Lock \| Mutex
+## 1. Lock \| Mutex \(&lt;Signalling&gt;\)
 
 * **WHAT is Lock/Mutex:** 
   * A lock or mutex is a **synchronisation mechanism** to **enforce limits** on **access to a resource** in an environment where there are **many threads of execution**.
@@ -480,8 +601,8 @@ def pay_bill():
         deposit = deposit - 10
         lock.release()
         
-thread1 = Thread(target = add_profit, args = ())
-thread2 = Thread(target = pay_bill, args = ())
+thread1 = Thread(target = add_profit, args = [])
+thread2 = Thread(target = pay_bill, args = [])
 
 thread1.start()    
 thread2.start() 
@@ -495,7 +616,7 @@ print(deposit)
 
 
 
-## 2. Semaphore
+## 2. Semaphore  \(&lt;Multiplex&gt;\)
 
 * This is one of the oldest synchronization primitives in the history of computer science,
   *  invented by the early Dutch computer scientist Edsger **W. Dijkstra** \(he used the names `P()` and `V()` instead of [`acquire()`](https://docs.python.org/3/library/threading.html#threading.Semaphore.acquire) and [`release()`](https://docs.python.org/3/library/threading.html#threading.Semaphore.release)\).
@@ -545,7 +666,7 @@ Thread : Thread-2 released the lock
 '''
 ```
 
-## 3. Barrier
+## 3. Barrier \(&lt;**Rendezvous&gt;**\)
 
 * Once the barrier threshold is reached, every thread will be passed through
 * **WHEN TO USE:**  could be a good fit for **batched processes** where you want to wait on a certain percentage before starting a process, but accept the remainder.
@@ -567,6 +688,8 @@ Thread : Thread-2 released the lock
 
 ### Code: Barrier
 
+{% tabs %}
+{% tab title="usage" %}
 ```python
 import time
 from threading import Barrier, Thread
@@ -599,6 +722,80 @@ P2 is finished
 P1 is finished
 '''
 ```
+{% endtab %}
+
+{% tab title="implementation-self" %}
+```python
+'''
+You can simulate the barrier with 2 semaphores
+
+ADDED FEATURE: REUSABILITY
+Rewrite the barrier solution so that after all the threads have passed through, 
+the barrier is locked again
+
+This solution is sometimes called a **two-phase barrier**
+because it forces all the threads to wait twice: 
+  1. once for all the threads to arrive 
+  2. and again for all the threads to execute the critical section.
+'''
+
+import time
+from threading import Thread,Semaphore
+
+class Barrier:
+    def __init__(self, n):
+        self.n = n
+        self.count = 0
+        self.mutex = Semaphore(1)
+        self.barrier1 = Semaphore(0)
+        self.barrier1 = Semaphore(0)
+    
+    def phase1(self):
+        self.mutex.acquire()
+        
+        self.count = self.count + 1
+        if self.count == self.n: self.barrier1.release()
+        
+        self.mutex.release()
+        self.barrier1.acquire()
+        
+    def phase2(self):
+        self.mutex.acquire()
+        
+        self.count = self.count - 1
+        if self.count == 0: self.barrier2.release()
+        
+        self.mutex.release()
+        self.barrier2.acquire()
+
+    def wait(self):
+        self.phase1()
+        self.phase2()
+
+b = Barrier(2)
+
+def func1():
+    time.sleep(3)
+    #
+    b.wait()
+    #
+    print('Working from func1')
+    return 
+
+def func2():
+    time.sleep(5)
+    #
+    b.wait()
+    #
+    print('Working from func2')
+    return    
+
+if __name__ == '__main__':
+    Thread(target = func1).start()
+    Thread(target = func2).start()    
+```
+{% endtab %}
+{% endtabs %}
 
 ## 4. Event
 
@@ -690,7 +887,7 @@ Consumer got topics: [0, 1, 2, 3, 4, 5]
 
 
 
-
+## 
 
 
 

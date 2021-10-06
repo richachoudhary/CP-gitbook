@@ -1,5 +1,213 @@
 # concurrency: Questions
 
+## Classical Questions
+
+### 1. Producer-consumer problem
+
+* Whenever an event occurs, a **producer thread** creates an event object and adds it to the event buffer. Concurrently, **consumer threads** take events out of the buffer and process them. In this case, the consumers are called “event handlers.”
+  * **e.g.:** event-driven programs
+* **Constraints Requirements of System:**
+  * While an item is being added to or removed from the buffer, the buffer is in an inconsistent state. Therefore, threads must have exclusive access to the buffer.
+  * If a consumer thread arrives while the buffer is empty, it blocks until a producer adds a new item.
+
+{% tabs %}
+{% tab title="using Semaphore" %}
+```python
+from threading import Thread, Semaphore
+import time
+import random       
+
+queue = []         #queue from where producer will produce data and consumer will                   consume data
+MAX_NUM = 10       #max limit of the queue
+sem = Semaphore()  #intitializing semaphore
+
+class ProducerThread(Thread):
+    def run(self):
+        nums = range(5)
+        global queue
+        
+        while True:
+            sem.acquire()  #wait operation to stop consuming 
+            if len(queue) == MAX_NUM:
+                print ("List is full, producer will wait")
+                sem.release() #signal operation only when when queue is full and  allow consumer to consume data
+                print ("Space in queue, Consumer notified the producer")
+
+            num = random.choice(nums) 
+            queue.append(num) #added any random number from 0 to 4 to the list
+            print ("Produced", num) 
+            sem.release() #signal operation to allow consumer to consume data
+            time.sleep(random.random()) #to allow program to run a bit slower 
+
+class ConsumerThread(Thread):
+    def run(self):
+        global queue
+        
+        while True:
+            sem.acquire()   #wait operation to stop producing
+            if not queue:
+                print ("List is empty, consumer waiting")
+                sem.release()  #signal operation only when when queue is empty and allow
+                               producer to produce data
+                print ("Producer added something to queue and notified the consumer")
+
+            num = queue.pop(0)
+            print ("Consumed", num)
+            sem.release()  #signal operation to allow producer to produce
+            time.sleep(random.random())
+
+def main():
+    ProducerThread().start()    #start producer thread
+    ConsumerThread().start()    #start consumer thread
+
+if __name__ == '__main__':
+    main()
+
+'''
+Output:
+
+
+Produced 2
+Produced 4
+Produced 4
+Produced 2
+Produced 1
+Produced 1
+Produced 1
+Produced 0
+Produced 1
+Produced 2
+List is full, producer will wait
+Space 
+Space in queue, Consumer notified the producer
+Produced 
+Produced 2
+Produced 0
+Produced 0
+.....
+#this will continue untill keyboard interrupt
+'''
+```
+{% endtab %}
+
+{% tab title="using Condition" %}
+```python
+from threading import Thread, Condition
+import time
+import random
+
+queue = []
+MAX_NUM = 10
+condition = Condition()
+
+class ProducerThread(Thread):
+    def run(self):
+        nums = range(5)
+        global queue
+        while True:
+            condition.acquire()
+            if len(queue) == MAX_NUM:
+                print("Queue full, producer is waiting")
+                condition.wait()
+                print("Space made in queue, Consumer notified the producer")
+            num = random.choice(nums)
+            queue.append(num)
+            print("Produced", num)
+            condition.notify()
+            condition.release()
+            time.sleep(random.random())
+
+
+class ConsumerThread(Thread):
+    def run(self):
+        global queue
+        while True:
+            condition.acquire()
+            if not queue:
+                print("Nothing in queue, consumer is waiting")
+                condition.wait()
+                print("Producer added something to queue and notified the consumer")
+            num = queue.pop(0)
+            print("Consumed", num)
+            condition.notify()
+            condition.release()
+            time.sleep(random.random())
+
+
+ProducerThread().start()
+ConsumerThread().start()
+'''
+Producer produced :  1
+Consumer consumed item :  1
+Producer produced :  2
+Producer produced :  3
+Consumer consumed item :  2
+Producer produced :  4
+Producer produced :  5
+Consumer consumed item :  3
+Producer produced :  6
+Producer produced :  7
+Producer produced :  8
+Consumer consumed item :  4
+Producer produced :  9
+Producer produced :  10
+Consumer consumed item :  5
+Producer produced :  11
+Producer produced :  12
+Producer produced :  13
+Consumer consumed item :  6
+Producer produced :  14
+Producer produced :  15
+Consumer consumed item :  7
+Producer produced :  16
+Producer produced :  17
+Consumer consumed item :  8
+Producer produced :  18
+Consumer consumed item :  9
+Producer produced :  19
+Consumer consumed item :  10
+Producer produced :  20
+Consumer consumed item :  11
+Consumer consumed item :  12
+Consumer consumed item :  13
+Consumer consumed item :  14
+Consumer consumed item :  15
+Consumer consumed item :  16
+Consumer consumed item :  17
+Consumer consumed item :  18
+Consumer consumed item :  19
+Consumer consumed item :  20
+'''
+```
+{% endtab %}
+{% endtabs %}
+
+### 2. Readers-Writers Problem
+
+### 
+
+### 
+
+### 
+
+### 
+
+### 
+
+### x. Rate Limiter\(leaky bucket\)
+
+### 2. Scheduler Library
+
+### 3. Logger Library
+
+### 4. Event Bus
+
+### 5. Dining Philosopher
+
+### 6. Sleeping Barber
+
+### 7. Implement Atomic Integer
+
 ## LC:
 
 * [x] LC [1114. Print in Order](https://leetcode.com/problems/print-in-order/) ✅
