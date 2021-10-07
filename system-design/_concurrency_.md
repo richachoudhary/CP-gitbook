@@ -860,7 +860,7 @@ def generator():  # creates topics
         topics.append(i)
         print(f'Topic: {i} generated')
         time.sleep(.1)
-    cv.notify() # notify the producers to awaken
+    cv.notify() # notify the producers to awaken | better use notifyAll() if multiple consumers
     cv.release()
     
 def consumer():
