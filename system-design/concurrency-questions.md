@@ -294,8 +294,9 @@ class ReaderWriter():
 
             print(f"Reader {self.readCount} is reading")
             
+            #reading is done by reader
             self.rd.acquire()   #wait on read semaphore 
-            self.readCount-=1   #reading is done by reader hence decrementing readercount
+            self.readCount-=1   
 
             if self.readCount == 0: #if no reader is present allow writer to write the data
                 self.wrt.release()  # signal on write semphore, now writer can write
@@ -367,7 +368,7 @@ Writing data.....
 {% endtab %}
 {% endtabs %}
 
-### 3. LightSwitch
+### ✅3. LightSwitch
 
 * **first person** into a room **turns on** the light \(locks the mutex\) and the **last one out** turns it **off** \(unlocks the mutex\).
 
@@ -396,36 +397,71 @@ class LightSwitch:
 
 ### 
 
-### 4. Dining Philosophers
+### ✅4. Dining Philosophers
 
-* Leetcode problem
+* [Leetcode problem](https://leetcode.com/problems/the-dining-philosophers/)
+* **PROBLEM**: A philosopher can take the fork on their right or the one on their left as they become available, but cannot start eating before getting both forks.
+* **SOLUTION**:
+* If a philosopher picks up 2 forks, then they will set them down after. So a philosopher could only really get stuck on 0 or 1 forks.
+* **WHEN CAN DEADLOCK HAPPEN:** Its easy to see that this means a deadlock only occurs if 5 forks are picked up \(1 for each philosopher\).
+  * **WHAT ENSURES DEADLOCK WONT HAPPEN**: if max number of forks lifts are allowed = 5 -1 = **4**
 
 {% tabs %}
 {% tab title="leetcode\_soln" %}
 ```python
-from threading import Lock
+'''
+SOLUITON 1: 
+Enforce that at most 4 philosophers can approach the table with sizelock.
+Then at most 4 forks are picked up, so there can't be a deadlock.
+'''
+
+from threading import Semaphore
 
 class DiningPhilosophers:
-    
     def __init__(self):
-        self.locks = [Lock() for _ in range(5)]
+        self.sizelock = Semaphore(4)
+        self.locks = [Semaphore(1) for _ in range(5)]
 
-    # call the functions directly to execute, for example, eat()
-    def wantsToEat(self,
-                   philosopher: int,
-                   pickLeftFork: 'Callable[[], None]',
-                   pickRightFork: 'Callable[[], None]',
-                   eat: 'Callable[[], None]',
-                   putLeftFork: 'Callable[[], None]',
-                   putRightFork: 'Callable[[], None]') -> None:
-        small, large = min(philosopher, (philosopher + 1) % 5), max(philosopher, (philosopher + 1) % 5)
-        with self.locks[small]: 
-            with self.locks[large]: 
-                pickLeftFork()
-                pickRightFork()
-                eat()
-                putLeftFork()
-                putRightFork()
+    def wantsToEat(self, index, *actions):
+        left, right = index, (index - 1) % 5
+        with self.sizelock:
+            with self.locks[left], self.locks[right]:
+                for action in actions:
+                    action()
+                    #actions = [     pickLeftFork()
+                    #                pickRightFork()
+                    #                eat()
+                    #                putLeftFork()
+                    #                putRightFork()
+                    #            ]
+
+'''
+SOLUTION 2: (try left->right OR right->left)
+Enforce that some philosophers pick up forks left then right, 
+    and others pick them up right then left. 
+Then a fork is preferred by two neighboring philosophers, 
+    guaranteeing that if one of them has 1 fork, the other has 0, 
+    and thus at most 4 forks are picked up.
+'''
+                    
+                                                            
+from threading import Semaphore
+
+class DiningPhilosophers:
+    def __init__(self):
+        self.locks = [Semaphore(1) for _ in range(5)]
+
+    def wantsToEat(self, index, *actions):
+        left, right = index, (index - 1) % 5
+        
+        if index:
+            with self.locks[left], self.locks[right]:
+                for action in actions:
+                    action()
+        else:
+            with self.locks[right], self.locks[left]:
+                for action in actions:
+                    action()
 ```
 {% endtab %}
 
@@ -436,7 +472,7 @@ class DiningPhilosophers:
 # This solution make odd positioned philosophers righties and even positioned lefties
 # This guarantees no deadlock and make the solution as fair as possible with maximum philosophers even
 # The Solution is completely fair with even number of philosophers but is slightly unfair when the number is odd where to righties sit next to each other (1st and last)
-# This code is deadlock free if you can see anything else feel free to tell me.
+# This code is deadlock free.
 
 
 n = 5 # for standard Dining Philosophers problem
@@ -486,10 +522,10 @@ def put_forks(i):
 
 ### 5. Cigaretter Smoker Problem
 
-* We assume that the agent has an infinite supply of all three ingredients, and each smoker has an infinite supply of one of the ingredients; that is, one smoker has matches, another has paper, and the third has tobacco.
+* We assume that the agent has an infinite supply of all three ingredients, and each smoker has an infinite supply of one of the ingredients; that is, one smoker has **matches**, another has **paper**, and the third has **tobacco**.
 * The agent repeatedly chooses two different ingredients at random and makes them available to the smokers. Depending on which ingredients are chosen, the smoker with the complementary ingredient should pick up both resources and proceed.
 * For example, if the agent puts out tobacco and paper, the smoker with the matches should pick up both ingredients, make a cigarette, and then signal the agent.
-* To explain the premise, the agent represents an operating system that allo- cates resources, and the smokers represent applications that need resources.
+* To explain the premise, the agent represents an operating system that allocates resources, and the smokers represent applications that need resources.
 * **SOLN:**
 *  ****Vendor routine: 1. Generate two items randomly and put them on table. 2. Broadcast the information to all the smokers. 3. Go to sleep till the particular smoker, creates cigarette and is done with smoking.
 * Smokers routine: 1. Wait for the two ingredients to be made available on table. 2. create the cigarette and smoke. 3. Wakeup the sleeping vendor.
@@ -503,10 +539,11 @@ def put_forks(i):
 # 2nd Smoker has Papers
 # 3rd Smoker has Matches
 # It resembles an Operating System (Agent) and User processes (smokers) where the compete on system resources (cigarette ingredients).
-# This code is deadlock free if you can see anything else feel free to tell me.
+# This code is deadlock free.
+
 from threading import Semaphore
 
-mutex = Semaphore(1)
+mutex = Semaphore(1)	# to ensure that only 1 smoker can try making cigaretter at a time
 tobaccoSmoker = Semaphore(1)
 paperSmoker = Semaphore(1)
 matchSmoker = Semaphore(1)
@@ -516,6 +553,7 @@ matchOnTable = 0
 
 
 # Agent has three different pushers he uses to assign smokers
+
 # Pusher A pushes tobacco onto the Table
 def PusherA(tobaccoOnTable,paperOnTable,matchOnTable):
 	mutex.wait()
@@ -562,12 +600,12 @@ def TobaccoHoldingSmoker():
 	tobaccoSmoker.wait()
 	makeCigarettes()
 	smoke()
-
+# Smoker with paper
 def PaperHoldingSmoker():
 	paperSmoker.wait()
 	makeCigarettes()
 	smoke()
-
+# Smoker with match
 def MatchHoldingSmoker():
 	matchSmoker.wait()
 	makeCigarettes()
@@ -645,7 +683,7 @@ if __name__ == "__main__":
 
 ```
 
-### 2. The Barbershop/Sleeping Barber Problem
+### ✅2. The Barbershop/Sleeping Barber Problem
 
 * A barbershop consists of a waiting room with n chairs, and the barber room containing the barber chair. If there are no customers to be served, the barber goes to sleep. If a customer enters the barbershop and all chairs are occupied, then the customer leaves the shop. If the barber is busy, but chairs are available, then the customer sits in one of the free chairs. If the barber is asleep, the customer wakes up the barber. Write a program to coordinate the barber and the customers.
 * **SOLVE:** The barber waits on customer until a customer enters the shop, then the customer waits on barber until the barber signals him to take a seat.
@@ -699,7 +737,7 @@ class BarberShop:
         
     def barber_working_in_barber_room(self):         
         while True:             
-            #if there are no customer to be served in waiting room            
+            #if there are no customer to be served in waiting room-> goto sleep           
             if len(self.waiting_customers) == 0:                 
                 global barber_wakeup                 
                 print("Barber is sleeping and waiting for customer to wake up")                 
@@ -925,15 +963,16 @@ if isCaptain:
 
 ## Not-so-classical problems
 
-### 1. The search-insert-delete problem
+### 1. LinkedList search-insert-delete problem
 
-* **Descript**io**n:** Three kinds of threads share access to a singly-linked list: searchers, inserters and deleters. Searchers merely examine the list; hence they can execute concurrently with each other. Inserters add new items to the end of the list; insertions must be mutually ex- clusive to preclude two inserters from inserting new items at about the same time. However, one insert can proceed in parallel with any number of searches. Finally, deleters remove items from any- where in the list. At most one deleter process can access the list at a time, and deletion must also be mutually exclusive with searches and insertions.
-* **TODO:** write code for searchers, inserters and deleters that enforces this kind of three-way categorical mutual exclusion.
+* **Descript**io**n:** Three kinds of threads share access to a singly-linked list: searchers, inserters and deleters. Searchers merely examine the list; hence they can execute concurrently with each other. Inserters add new items to the end of the list; insertions must be mutually exclusive to preclude two inserters from inserting new items at about the same time. However, one insert can proceed in parallel with any number of searches. Finally, deleters remove items from anywhere in the list. At most one deleter process can access the list at a time, and deletion must also be mutually exclusive with searches and insertions.
+* **TODO:** write code for searchers, inserters and deleters that enforces this kind of threeway categorical mutual exclusion.
 * **Solution:** 
 
 ```python
 insertMutex = Semaphore(1)	# insertMutex ensures that only one inserter is in its critical section at a time.
-# noSearcher and noInserter indicate (surprise) that there are no searchers and no inserters in their critical sections; a deleter needs to hold both of these to enter.
+# noSearcher and noInserter indicate that there are no searchers and no inserters in their critical sections; 
+# a deleter needs to hold both of these to enter
 noSearcher = Semaphore(1)
 noInserter = Semaphore(1)
 # searchSwitch and insertSwitch are used by searchers and inserters to exclude deleters.
@@ -959,7 +998,7 @@ def deleter():
 	  noSearcher.signal()
 ```
 
-### 2. The unisex bathroom problem
+### ✅2. The unisex bathroom problem
 
 * There **cannot** be **men** and **women** in the bathroom at the same time.
 * There should never be more than **three** employees squandering company time in the bathroom.
@@ -1015,7 +1054,7 @@ class Bathroom(object):
             logging.debug("Bathroom is empty. Opening for anyone")
             self.current_sex = None
             with self.condition:
-                self.condition.notify_all()
+                self.condition.notifyAll()
 
 def Main():
     logging.basicConfig(format='%(threadName)s, %(asctime)s, %(message)s', datefmt='%M:%S', level=logging.DEBUG)
@@ -1121,7 +1160,7 @@ else:
 
 ## SysD Heavy Questions
 
-### 1. Rate Limiting Algo\#1: Token Bucket \| [link](https://dev.to/satrobit/rate-limiting-using-the-token-bucket-algorithm-3cjh)
+### ✅1.1. Rate Limiting Algo\#1: Token Bucket \| [link](https://dev.to/satrobit/rate-limiting-using-the-token-bucket-algorithm-3cjh)
 
 * How does it work
   1. Picture a bucket in your mind.
@@ -1141,7 +1180,7 @@ class TokenBucket:
         self.time_unit = time_unit    # the tokens are added in this time frame.
         self.forward_callback = forward_callback    # this function is called when the packet is being forwarded.
         self.drop_callback = drop_callback    # this function is called when the packet should be dropped
-        self.bucket = tokens
+        self.bucket = tokens             # initial burst
         self.last_check = time.time()    # last_check is the timestamp that we previously handled a packet
 
     def handle(self, packet):
@@ -1201,7 +1240,7 @@ Packet Forwarded: 15
 '''
 ```
 
-### 2. Rate Limiting Algo\#2: Leaky Bucket  \| @rubrik 😖
+### ✅1.2. Rate Limiting Algo\#2: Leaky Bucket  \| @rubrik 😖
 
 ```python
 import time
@@ -1292,7 +1331,7 @@ last_leak_time : 1633569137
 
 ### 
 
-### 3. Rate Limiting Algo\#3: Fixed Window \| [link](https://dev.to/satrobit/rate-limiting-using-the-fixed-window-algorithm-2hgm)
+### ✅1.3. Rate Limiting Algo\#3: Fixed Window \| [link](https://dev.to/satrobit/rate-limiting-using-the-fixed-window-algorithm-2hgm)
 
 * Every time-window has fixed capacity
 
@@ -1340,12 +1379,12 @@ while True:
     packet += 1
 ```
 
-### 2. Rate Limiting Algo\#2: Sliding Window Bucket \| [link](https://dev.to/satrobit/rate-limiting-using-the-sliding-window-algorithm-5fjn)
+### ✅1.4. Rate Limiting Algo\#2: Sliding Window Bucket \| [link](https://dev.to/satrobit/rate-limiting-using-the-sliding-window-algorithm-5fjn) \| [logic](https://nlogn.in/design-a-scalable-rate-limiting-algorithm-system-design/)
 
-* A problem with Fixed Window was that It allowed a huge burst at the edge of windows because you can combine the capacity of the current and the next window to send a burst of requests.
+* A problem with Fixed Window was that It **allowed a huge burst at the edge of windows** because you can combine the capacity of the current and the next window to send a burst of requests.
 * Sliding Window tries to fix that by taking the previous counter into account, causing the flow to be more smooth.
 
-![Sliding Window](../.gitbook/assets/screenshot-2021-10-07-at-6.48.02-am.png)
+![](../.gitbook/assets/screenshot-2021-10-08-at-12.52.39-am.png)
 
 ```python
 from time import time, sleep
@@ -1360,8 +1399,8 @@ class SlidingWindow:
         self.drop_callback = drop_callback
 
         self.cur_time = time()
-        self.pre_count = capacity
-        self.cur_count = 0
+        self.pre_count = capacity    # no_of_req in previous bucket
+        self.cur_count = 0           # no_of_req in curr bucket
 
     def handle(self, packet):
 
@@ -1501,9 +1540,9 @@ finally:
 {% endtab %}
 {% endtabs %}
 
-## 
 
-### 3. Logger Library
+
+### ✅3. Logger Library
 
 * There can be multiple appenders – like file, network, db etc. 
 * Should be easy to add appenders. 
@@ -1513,58 +1552,199 @@ finally:
 * Must log to all appenders simultaneously.
 * [https://stackoverflow.com/questions/62178545/python-logging-thread-safety](https://stackoverflow.com/questions/62178545/python-logging-thread-safety)
 
+
+
+#### \#\#\# &gt;&gt; Used pattern: [Chain of responsibility](https://www.tutorialspoint.com/design_pattern/chain_of_responsibility_pattern.htm)
+
+* **Chain of responsibility** pattern creates a **chain of receiver objects for a request**. This pattern decouples sender and receiver of a request based on type of request
+* In this pattern, normally each receiver contains reference to another receiver. 
+* If one object cannot handle the request then it passes the same to the next receiver and so on.
+
+![Chain of Responsibility Pattern for logger lib](../.gitbook/assets/screenshot-2021-08-29-at-9.52.26-pm.png)
+
+#### Solution
+
+{% tabs %}
+{% tab title="Classes" %}
 ```text
-TODO: khud se
+Enum Level:
+------Info
+------Warn
+------Error
+------Fatal
+
+Logger
+------level
+------writemessage(Level, namespace, message)
+
+FileLogger : Logger
+------------File
+------------FileSink(path)
+------------------openfile()
+-----------writemessage(Level , Namespace , message)
+------------------writetofile()
+
+ConsoleLogger : Logger
+------------Console
+------------ConsoleSink(addr)
+------------------openconsole()
+------------writemessage(Level , Namespace , message)
+------------------writetoconsole()
+
+DatabaseLogger : Logger
+------------DB
+------------DatabaseSink(session)
+------------------opendatabase()
+------------writemessage(Level , Namespace , message)
+------------------writetodb()
+
+LoggerConfig
+------------Hash<Level,Logger> mapping
+------------LogLevel 
+------------------getter()
+------------------setter()
+#------------mapLevelToSink(Level ,ISink)
+#------------------mapping(level,sink)
+------------getLogger(Level)
+------------------mapping[lebel]
+
+LoggerLib
+------LoggerConfig config
+------Level[] levels
+------Logger(LoggerConfig)
+------------config
+------Log(level, namespace, msg)
+------------if(level > config.loglevel
+------------while(level < Level.iterate)
+------------------config.get(level).writemessage(level,namespace,msg)
+------------level++
 ```
+{% endtab %}
 
-### 4. Event Bus
+{% tab title="constants.py" %}
+```python
+import enum
 
-* simplify this: [https://github.com/nipuntalukdar/geeteventbus/blob/master/geeteventbus/eventbus.py](https://github.com/nipuntalukdar/geeteventbus/blob/master/geeteventbus/eventbus.py)
+class Level(enum):
+    INFO, WARN, ERROR, FATAL = 1,2,3,4
+```
+{% endtab %}
 
-```javascript
-**
- * subscriptions data format: 
- * { eventType: { id: callback } }
- */
-const subscriptions = { }
-const getNextUniqueId = getIdGenerator()
+{% tab title="logger.py" %}
+```python
+import sqlite3
 
-function subscribe(eventType, callback) {
-    const id = getNextUniqueId()
+from abc import ABC, abstractmethod
+from .constants import *
 
-    if(!subscriptions[eventType])
-        subscriptions[eventType] = { }
 
-    subscriptions[eventType][id] = callback
+class Logger(ABC):
+    def __init__(self, level):
+        self.__level = level
 
-    return { 
-        unsubscribe: () => {
-            delete subscriptions[eventType][id]
-            if(Object.keys(subscriptions[eventType]).length === 0) delete subscriptions[eventType]
-        }
-    }
-}
+    @abstractmethod
+    def write_msg(self, level, namespace, msg):
+        pass
 
-function publish(eventType, arg) {
-    if(!subscriptions[eventType])
-        return
 
-    Object.keys(subscriptions[eventType]).forEach(key => subscriptions[eventType][key](arg))
-}
+class ConsoleLogger(Logger):
+    def __init__(self, level, console):
+        super().__init__(level)
+        self.__console = console  # console path
 
-function getIdGenerator() {
-    let lastId = 0
+    def write_msg(self, namespace, msg):
+        self.write_to_console(namespace, msg)
+
+    def write_to_console(self, namespace, msg):
+        pass
+
+
+class FileLogger(Logger):
+    def __init__(self, level, file):
+        super().__init__(level)
+        self._file = file
+
+    def write_msg(self, namespace, msg):
+        self.write_to_file(namespace, msg)
+
+    def write_to_file(self, namespace, msg):
+        f = open(self.__file, "a")
+        f.write(msg)
+        f.close()
+
+
+class DBLogger(Logger):
+    def __init__(self, level, db):
+        super().__init__(level)
+        self._db = db
+
+    def write_msg(self, namespace, msg):
+        self.write_to_db(namespace, msg)
+
+    def write_to_db(self, namespace, msg):
+        conn = sqlite3.connect(self.__db)
+        conn.execute(self.form_db_query(namespace, msg))
+        conn.close()
+
+    def form_db_query(self, namespace, msg):
+        pass
+
+```
+{% endtab %}
+
+{% tab title="logger\_config.py" %}
+```python
+from .constants import *
+from .logger import *
+
+class LoggerConfig:
+    def __init__(self, mapping, loglevel= Level.INFO):
+        self.__mapping = mapping
+        # mappings = set(lovlevel: logger)
+        self.__loglevel = loglevel
+        
+    @property
+    def loglevel(self):
+        return self.__loglevel
     
-    return function getNextUniqueId() {
-        lastId += 1
-        return lastId
-    }
-}
-
-module.exports = { publish, subscribe }
+    @loglevel.setter
+    def loglevel(self, loglevel):
+        self.__loglevel = loglevel    
+        
+    def getLogger(self, level):
+        return self.__mappings[level]
 ```
+{% endtab %}
 
-### ✅5. Pub/Sub
+{% tab title="logger\_lib.py" %}
+```python
+from .logger_config import *
+
+class LoggerLib:
+    def __init__(self, config, levels = []):
+        self.__config = config
+        self.__levels = levels
+        
+    @property
+    def config(self):
+        return self.__config
+    
+    @property
+    def levels(self):
+        return self.__levels
+        
+    def log(self,level, namespace, msg):
+        if level > self.config.loglevel:
+            while level < self.levels:
+                self.config.getLogger(level).write_msg(namespace,msg)
+                level += 1
+```
+{% endtab %}
+{% endtabs %}
+
+
+
+### ✅4. Pub/Sub \| Event Bus
 
 * Here: [https://dev.to/mandrewcito/lazy-pub-sub-python-implementation-3fi8](https://dev.to/mandrewcito/lazy-pub-sub-python-implementation-3fi8)
 
@@ -1705,7 +1885,7 @@ print("threaded function non blocking elapsed time {0}".format(end - start))
 {% endtab %}
 {% endtabs %}
 
-### 7. Implement Atomic Integer
+### 5. Implement Atomic Integer
 
 ```python
 class AtomicInteger():
@@ -1733,7 +1913,7 @@ class AtomicInteger():
             return self._value
 ```
 
-### 8. Uber Ride Problem
+### 6. Uber Ride Problem
 
 * Imagine at the end of a political conference, republicans and democrats are trying to leave the venue and ordering Uber rides at the same time. However, to make sure no fight breaks out in an Uber ride, the software developers at Uber come up with an algorithm whereby either an Uber ride can have all democrats or republicans or two Democrats and two Republicans. All other combinations can result in a fist-fight
 
@@ -1773,7 +1953,7 @@ public void seatDemocrat() throws InterruptedException, BrokenBarrierException {
 TODO:
 ```
 
-### 10: Multithreaded Pub-Sub Queue Like Kafka
+### 7: Multithreaded Pub-Sub Queue Like Kafka \| no need; as already done ABOVE\(\#4\)
 
 {% tabs %}
 {% tab title="Kakfa" %}
