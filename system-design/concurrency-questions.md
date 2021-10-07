@@ -1146,15 +1146,15 @@ else:
     mutex.signal()
 ```
 
-### 2. The child care problem
+#### 2. The child care problem
 
-### 3. The room party problem
+#### 3. The room party problem
 
-### 4. The Senate Bus problem
+#### 4. The Senate Bus problem
 
-### 5. The Faneuil Hall problem
+#### 5. The Faneuil Hall problem
 
-### 6. Dining Hall problem
+#### 6. Dining Hall problem
 
 
 
@@ -1437,7 +1437,7 @@ while True:
     packet += 1
 ```
 
-### 2. Scheduler Library \| using`threading.Timer` 
+### ✅2. Scheduler Library \| using`threading.Timer` 
 
 * Syntax: **`t = threading.Timer(n,func_name)`** 
   * will run the **`func_name`** function **`after n`** milli-seconds
@@ -1621,26 +1621,21 @@ LoggerLib
 ```
 {% endtab %}
 
-{% tab title="constants.py" %}
+{% tab title="thread-safe" %}
 ```python
-import enum
-
-class Level(enum):
-    INFO, WARN, ERROR, FATAL = 1,2,3,4
-```
-{% endtab %}
-
-{% tab title="logger.py" %}
-```python
+from enum import Enum
 import sqlite3
-
 from abc import ABC, abstractmethod
-from .constants import *
+from threading import Thread, Lock
 
+class Level(Enum):
+    INFO, WARN, ERROR, FATAL = 1,2,3,4
+    
 
 class Logger(ABC):
     def __init__(self, level):
         self.__level = level
+        self.lock = Lock()	# separate lock for each type of logger
 
     @abstractmethod
     def write_msg(self, level, namespace, msg):
@@ -1653,7 +1648,8 @@ class ConsoleLogger(Logger):
         self.__console = console  # console path
 
     def write_msg(self, namespace, msg):
-        self.write_to_console(namespace, msg)
+        with self.lock:
+        	self.write_to_console(namespace, msg)
 
     def write_to_console(self, namespace, msg):
         pass
@@ -1665,7 +1661,8 @@ class FileLogger(Logger):
         self._file = file
 
     def write_msg(self, namespace, msg):
-        self.write_to_file(namespace, msg)
+        with self.lock:
+        	self.write_to_file(namespace, msg)
 
     def write_to_file(self, namespace, msg):
         f = open(self.__file, "a")
@@ -1679,7 +1676,8 @@ class DBLogger(Logger):
         self._db = db
 
     def write_msg(self, namespace, msg):
-        self.write_to_db(namespace, msg)
+        with self.lock:
+        	self.write_to_db(namespace, msg)
 
     def write_to_db(self, namespace, msg):
         conn = sqlite3.connect(self.__db)
@@ -1687,15 +1685,7 @@ class DBLogger(Logger):
         conn.close()
 
     def form_db_query(self, namespace, msg):
-        pass
-
-```
-{% endtab %}
-
-{% tab title="logger\_config.py" %}
-```python
-from .constants import *
-from .logger import *
+        pass    
 
 class LoggerConfig:
     def __init__(self, mapping, loglevel= Level.INFO):
@@ -1713,15 +1703,9 @@ class LoggerConfig:
         
     def getLogger(self, level):
         return self.__mappings[level]
-```
-{% endtab %}
-
-{% tab title="logger\_lib.py" %}
-```python
-from .logger_config import *
-
+        
 class LoggerLib:
-    def __init__(self, config, levels = []):
+    def __init__(self, config, levels = [1,2,3,4]):
         self.__config = config
         self.__levels = levels
         
@@ -1734,10 +1718,24 @@ class LoggerLib:
         return self.__levels
         
     def log(self,level, namespace, msg):
-        if level > self.config.loglevel:
+        if level >= self.config.loglevel:
             while level < self.levels:
                 self.config.getLogger(level).write_msg(namespace,msg)
-                level += 1
+                level += 1        
+
+# ----------------- RUN ----------------------
+
+
+def emit_log(log_level, log_namespace, log_msg):
+	th = Thread(target= myloggerlib.log , args=[log_level, log_namespace, log_msg])
+	th.start()
+	th.join()
+
+
+myconfig = LoggerConfig(Level.INFO)
+myloggerlib = LoggerLib(myconfig)
+emit_log(Level.INFO, 'local','some info err')
+
 ```
 {% endtab %}
 {% endtabs %}
@@ -1806,8 +1804,7 @@ class EventChannel(object):
         self.subscribers = {}
 
     def unsubscribe(self, event, callback):
-        if event is not None or event != ""\
-                and event in self.subscribers.keys():
+        if event is not None or event != "" and event in self.subscribers.keys():
             self.subscribers[event] = list(
                 filter(
                     lambda x: x is not callback,
@@ -1913,7 +1910,192 @@ class AtomicInteger():
             return self._value
 ```
 
-### 6. Uber Ride Problem
+### 
+
+### ✅6. Multithreaded Merge Sort
+
+```python
+
+"""
+This code exemplifies the Process/Pipe paradigm of parallel design.  
+
+Mergesort says simply:
+-sort the left side of the list.
+-sort the right side of the list.
+-merge the results.
+
+IDEA: 
+So a parallel version comes from the realization that
+the two sorts are independent of one another.
+-sort the left and right sides in parallel
+-merge the results.
+
+Process objects are instantiated to perform the
+sorting on the left and right sublists. 
+
+Pipes are used to transmit the sorted sublists back up the
+execution tree.
+
+This mergesort is NlogN in memory
+"""
+ 
+from multiprocessing import Process, Pipe
+import time, random, sys
+
+
+def merge(left, right):
+    """returns a merged and sorted version of the two already-sorted lists."""
+    ret = []
+    li = ri = 0
+    while li < len(left) and ri < len(right):
+        if left[li] <= right[ri]:
+            ret.append(left[li])
+            li += 1
+        else:
+            ret.append(right[ri])
+            ri += 1
+    if li == len(left):
+        ret.extend(right[ri:])
+    else:
+        ret.extend(left[li:])
+    return ret
+
+def mergesort(lyst):
+    if len(lyst) <= 1:
+        return lyst
+    ind = len(lyst)//2
+    return merge(mergesort(lyst[:ind]), mergesort(lyst[ind:]))
+
+def mergeSortParallel(lyst, conn, procNum):
+    
+    """
+    mergSortParallel receives 
+    	* a list
+     	* a Pipe connection to the parent,
+    	* a procNum. 
+    Mergesort the left and right sides in parallel, then 
+    merge the results and send over the Pipe to the parent.
+    """
+
+    #Base case, this process is a leaf or the problem isvery small.
+    if procNum <= 0 or len(lyst) <= 1:
+        conn.send(mergesort(lyst))
+        conn.close()
+        return
+
+    ind = len(lyst)//2
+
+    #Create processes to sort the left and right halves of lyst.
+
+    #In creating a child process, we also create a pipe for that
+    #child to communicate the sorted list back to us.
+    pconnLeft, cconnLeft = Pipe()
+    leftProc = Process(target=mergeSortParallel, args=(lyst[:ind], cconnLeft, procNum - 1))
+
+    #Creat a process for sorting the right side.
+    pconnRight, cconnRight = Pipe()
+    rightProc = Process(target=mergeSortParallel, args=(lyst[ind:], cconnRight, procNum - 1))
+
+    #Start the two subprocesses.
+    leftProc.start()
+    rightProc.start()
+
+    #receive the left and right sorted sublists (each receive blocks, waiting to finish),
+    #then merge the two sorted sublists, then send the result
+    #to our parent via the conn argument we received.
+    conn.send(merge(pconnLeft.recv(), pconnRight.recv()))
+    conn.close()
+
+    #Join the left and right processes - await response
+    leftProc.join()
+    rightProc.join()
+
+def main():
+    """
+    This is the main method, where we:
+    -generate a random list.
+    -time a sequential mergesort on the list.
+    -time a parallel mergesort on the list.
+    -time Python's built-in sorted on the list.
+    """
+    N = 500000
+    
+    #the user input a list size.
+    # if len(sys.argv) > 1:  
+    #     N = int(sys.argv[1])
+
+    #We want to sort the same list, so make a backup.
+    lystbck = [random.random() for x in range(N)]
+
+    #Sequential mergesort ==============================================
+    lyst = list(lystbck)
+    start = time.time()             #start time
+    lyst = mergesort(lyst)
+    elapsed = time.time() - start   #stop time
+
+    if not isSorted(lyst):
+        print('Sequential mergesort did not sort. oops.')
+    
+    print('Sequential mergesort: %f sec' % (elapsed))
+
+    #So that cpu usage shows a lull.
+    time.sleep(3)
+
+    #Now, parallel mergesort ==============================================
+    lyst = list(lystbck)
+    start = time.time()
+    n = 3  #2**(n+1) - 1 processes will be instantiated.
+
+    #Instantiate a Process and send it the entire list,
+    #along with a Pipe so that we can receive its response.
+    pconn, cconn = Pipe()
+    p = Process(target=mergeSortParallel, args=(lyst, cconn, n))
+    p.start()
+    lyst = pconn.recv()
+    #Blocks until there is something (the sorted list) to receive.
+    
+    p.join()
+    elapsed = time.time() - start
+
+    if not isSorted(lyst):
+        print('mergeSortParallel did not sort. oops.')
+
+    print('Parallel mergesort: %f sec' % (elapsed))
+
+
+    time.sleep(3)
+    
+    #Built-in sort =============================================================
+    #The underlying c code is obviously the fastest, but then
+    #using a calculator is usually faster too.  That isn't the
+    #point here obviously.
+    lyst = list(lystbck)
+    start = time.time()
+    lyst = sorted(lyst)
+    elapsed = time.time() - start
+    print('Built-in sorted: %f sec' % (elapsed))
+
+
+def isSorted(lyst):
+    """
+    Return whether the argument lyst is in non-decreasing order.
+    """
+    for i in range(1, len(lyst)):
+        if lyst[i] < lyst[i-1]:
+            return False
+    return True
+
+if __name__ == '__main__':
+    main()
+    
+'''
+Sequential mergesort: 1.520188 sec   (SLOW) 
+Parallel mergesort: 0.756785 sec     (FASTER)
+Built-in sorted: 0.106752 sec        (FASTEST)
+'''
+```
+
+### 7. Uber Ride Problem
 
 * Imagine at the end of a political conference, republicans and democrats are trying to leave the venue and ordering Uber rides at the same time. However, to make sure no fight breaks out in an Uber ride, the software developers at Uber come up with an algorithm whereby either an Uber ride can have all democrats or republicans or two Democrats and two Republicans. All other combinations can result in a fist-fight
 
@@ -1947,11 +2129,7 @@ public void seatDemocrat() throws InterruptedException, BrokenBarrierException {
     }
 ```
 
-### 9. Multithreaded Merge Sort
 
-```python
-TODO:
-```
 
 ### 7: Multithreaded Pub-Sub Queue Like Kafka \| no need; as already done ABOVE\(\#4\)
 
@@ -2244,7 +2422,7 @@ with MessagingService() as ms:
 
 ## LC:
 
-* [x] LC [1114. Print in Order](https://leetcode.com/problems/print-in-order/) ✅
+### ✅1.LC [1114. Print in Order](https://leetcode.com/problems/print-in-order/) 
 
 {% tabs %}
 {% tab title="1114-1 : Lock" %}
@@ -2409,7 +2587,7 @@ class Foo:
 
 
 
-* [x] LC [1115. Print FooBar Alternately](https://leetcode.com/problems/print-foobar-alternately/) ✅
+### ✅2. LC [1115. Print FooBar Alternately](https://leetcode.com/problems/print-foobar-alternately/) 
 
 {% tabs %}
 {% tab title="1 : Lock" %}
@@ -2564,7 +2742,8 @@ class FooBar:
 {% endtab %}
 {% endtabs %}
 
-* [x] LC [1188.Design Bounded Blocking Queue](https://leetcode.libaoj.in/design-bounded-blocking-queue.html) \| @rubrik
+### ✅3.LC [1188.Design Bounded Blocking Queue](https://leetcode.libaoj.in/design-bounded-blocking-queue.html) \| @rubrik
+
 * Follow up: **Does it matter if we use `notify()` or `notifyAll()` method in our implementation?**
 * In both the `enqueue()` and `dequeue()` methods we use the `notifyAll()` method instead of the `notify()` method. The reason behind the choice is very crucial to understand. Consider a situation with **two producer threads and one consumer thread** all working with a queue of size one. It's possible that when an item is added to the queue by one of the producer threads, the other two threads are blocked waiting on the condition variable. If the producer thread after adding an item invokes `notify()` it is possible that the other producer thread is chosen by the system to resume execution. The woken-up producer thread would find the queue full and go back to waiting on the condition variable, causing a deadlock. Invoking `notifyAll()` assures that the consumer thread also gets a chance to wake up and resume execution.
 
@@ -2735,7 +2914,7 @@ print('done............')
 {% endtab %}
 {% endtabs %}
 
-* [x] Design Threadsafe stack using LinkedList \| @Rubrik
+### ✅4. Design Threadsafe stack using LinkedList \| @Rubrik
 
 {% tabs %}
 {% tab title="with\_threadsafe" %}
@@ -3054,9 +3233,7 @@ print('================ FINISHED ======================')
 {% endtab %}
 {% endtabs %}
 
-* [ ] LC [1117. Building H2O](https://leetcode.com/problems/building-h2o/) \| barrier+semaphore
-* [ ] LC  [1195. Fizz Buzz Multithreaded](https://leetcode.com/problems/fizz-buzz-multithreaded/)
-* [ ] LC [1226. The Dining Philosophers](https://leetcode.com/problems/the-dining-philosophers/)
+### ✅5. LC [1117. Building H2O](https://leetcode.com/problems/building-h2o/) \| barrier+semaphore
 
 {% tabs %}
 {% tab title="1117" %}
@@ -3089,7 +3266,19 @@ class H2O:
         self.o.release()
 ```
 {% endtab %}
+{% endtabs %}
 
+
+
+### ✅6. LC  [1195. Fizz Buzz Multithreaded](https://leetcode.com/problems/fizz-buzz-multithreaded/)
+
+* Modify the given class to output the series `[1, 2, "Fizz", 4, "Buzz", ...]` where the `ith` token \(**1-indexed**\) of the series is:
+  * `"FizzBuzz"` if `i` is divisible by `3` and `5`,
+  * `"Fizz"` if `i` is divisible by `3` and not `5`,
+  * `"Buzz"` if `i` is divisible by `5` and not `3`, or
+  * `i` if `i` is not divisible by `3` or `5`.
+
+{% tabs %}
 {% tab title="1195" %}
 ```python
 # IDEA: use four semaphores with only number one starting unlocked, number-thread will loop numbers and distribute work
@@ -3146,53 +3335,6 @@ class FizzBuzz:
         self.fSem.release()  # let all other threads to break and finish
         self.bSem.release()  #
         self.fbSem.release() #
-```
-{% endtab %}
-
-{% tab title="1226" %}
-```python
-'''
-In both solutions, we have to analyze when a deadlock happens. If a philosopher picks up 2 forks, then they will set them down after. So a philosopher could only really get stuck on 0 or 1 forks. Its easy to see that this means a deadlock only occurs if 5 forks are picked up (1 for each philosopher).
-
-Solution 1:
-Enforce that at most 4 philosophers can approach the table with sizelock. Then at most 4 forks are picked up, so there can't be a deadlock.
-
-Solution 2:
-Enforce that some philosophers pick up forks left then right, and others pick them up right then left. Then a fork is preferred by two neighboring philosophers, guaranteeing that if one of them has 1 fork, the other has 0, and thus at most 4 forks are picked up.
-'''
-# 1. ============================================================
-from threading import Semaphore
-
-class DiningPhilosophers:
-    def __init__(self):
-        self.sizelock = Semaphore(4)
-        self.locks = [Semaphore(1) for _ in range(5)]
-
-    def wantsToEat(self, index, *actions):
-        left, right = index, (index - 1) % 5
-        with self.sizelock:
-            with self.locks[left], self.locks[right]:
-                for action in actions:
-                    action()
-
-# 2. =============================================================
-from threading import Semaphore
-
-class DiningPhilosophers:
-    def __init__(self):
-        self.locks = [Semaphore(1) for _ in range(5)]
-
-    def wantsToEat(self, index, *actions):
-        left, right = index, (index - 1) % 5
-        
-        if index:
-            with self.locks[left], self.locks[right]:
-                for action in actions:
-                    action()
-        else:
-            with self.locks[right], self.locks[left]:
-                for action in actions:
-                    action()
 ```
 {% endtab %}
 {% endtabs %}
