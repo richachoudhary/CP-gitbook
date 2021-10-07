@@ -2,7 +2,7 @@
 
 ## Classical Questions
 
-### 1. Producer-consumer problem
+### ✅1. Producer-consumer problem \| Message Bus
 
 * Whenever an event occurs, a **producer thread** creates an event object and adds it to the event buffer. Concurrently, **consumer threads** take events out of the buffer and process them. In this case, the consumers are called “event handlers.”
   * **e.g.:** event-driven programs
@@ -1564,9 +1564,146 @@ function getIdGenerator() {
 module.exports = { publish, subscribe }
 ```
 
-### 5. Pub/Sub
+### ✅5. Pub/Sub
 
 * Here: [https://dev.to/mandrewcito/lazy-pub-sub-python-implementation-3fi8](https://dev.to/mandrewcito/lazy-pub-sub-python-implementation-3fi8)
+
+![Observer Pattern vs Pub/Sub Pattern](../.gitbook/assets/screenshot-2021-10-07-at-10.13.48-pm.png)
+
+{% tabs %}
+{% tab title="simple: w/o threading" %}
+```python
+class EventChannel(object):
+    def __init__(self):
+        self.subscribers = {}
+    
+    def publish(self, event, args):
+        if event in self.subscribers.keys():
+            for callback in self.subscribers[event]:
+                callback(args)
+    
+    def subscribe(self, event, callback):
+        if not callable(callback):
+            raise ValueError("callback must be callable")
+
+        if event is None or event == "":
+            raise ValueError("Event cant be empty")
+
+        if event not in self.subscribers.keys():
+            self.subscribers[event] = [callback]
+        else:
+            self.subscribers[event].append(callback)
+
+    def unsubscribe(self, event, callback):
+        if event is not None or event != "" and event in self.subscribers.keys():
+            self.subscribers[event] = list(
+                filter(
+                    lambda x: x is not callback,
+                    self.subscribers[event]
+                )
+            )
+                
+event_channel = EventChannel()
+callback = lambda x: print(x)
+
+event_channel.subscribe("myevent", callback)
+event_channel.publish("myevent", "Hello, world!")
+# out: "Hello, world!"
+
+event_channel.unsubscribe("myevent", callback)
+event_channel.publish("myevent", "Hello, world!")
+# No output                
+```
+{% endtab %}
+
+{% tab title="with threading" %}
+```python
+from threading import Thread
+import time
+
+class EventChannel(object):
+    def __init__(self):
+        self.subscribers = {}
+
+    def unsubscribe(self, event, callback):
+        if event is not None or event != ""\
+                and event in self.subscribers.keys():
+            self.subscribers[event] = list(
+                filter(
+                    lambda x: x is not callback,
+                    self.subscribers[event]
+                )
+            )
+
+    def subscribe(self, event, callback):
+        if not callable(callback):
+            raise ValueError("callback must be callable")
+
+        if event is None or event == "":
+            raise ValueError("Event cant be empty")
+
+        if event not in self.subscribers.keys():
+            self.subscribers[event] = [callback]
+        else:
+            self.subscribers[event].append(callback)
+
+    def publish(self, event, args):
+        if event in self.subscribers.keys():
+            for callback in self.subscribers[event]:
+                callback(args)
+                
+                
+class ThreadedEventChannel(EventChannel):
+    def __init__(self, blocking=True):
+        self.blocking = blocking    # blocking = true -> synchronous execution
+        super(ThreadedEventChannel, self).__init__()
+
+    def publish(self, event, *args, **kwargs):
+        threads = []
+        if event in self.subscribers.keys():
+            for callback in self.subscribers[event]:
+                threads.append(Thread(
+                  target=callback,
+                  args=args,
+                  kwargs=kwargs
+                ))
+            for th in threads:
+                th.start()
+
+            if self.blocking:
+                for th in threads:
+                    th.join()
+
+non_thread = EventChannel()
+threaded = ThreadedEventChannel()
+non_blocking_threaded = ThreadedEventChannel(blocking=False)
+
+non_thread.subscribe("myevent", time.sleep)
+non_thread.subscribe("myevent", time.sleep)
+start = time.time()
+non_thread.publish("myevent", 3)
+end = time.time()
+print("non threaded function elapsed time {0}".format(end - start))
+#non threaded function elapsed time 6.0080871582
+
+threaded.subscribe("myevent", time.sleep)
+threaded.subscribe("myevent", time.sleep)
+start = time.time()
+threaded.publish("myevent", 3)
+end = time.time()
+print("threaded function elapsed time {0}".format(end - start))
+# threaded function elapsed time 3.00581121445
+
+non_blocking_threaded.subscribe("myevent", time.sleep)
+non_blocking_threaded.subscribe("myevent", time.sleep)
+start = time.time()
+non_blocking_threaded.publish("myevent", 3)
+end = time.time()
+print("threaded function non blocking elapsed time {0}".format(end - start))
+# threaded function non blocking elapsed time 0.00333380699158
+```
+{% endtab %}
+{% endtabs %}
 
 ### 7. Implement Atomic Integer
 
