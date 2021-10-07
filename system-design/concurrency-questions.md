@@ -1317,15 +1317,203 @@ while True:
     packet += 1
 ```
 
-### 2. Scheduler Library
+### 2. Scheduler Library \| using`threading.Timer` 
+
+* Syntax: **`t = threading.Timer(n,func_name)`** 
+  * will run the **`func_name`** function **`after n`** milli-seconds
+
+```text
+#Question
+Implement following method of ScheduledExecutorService interface in Java
+
+* schedule(Runnable command, long delay, TimeUnit unit)
+Creates and executes a one-shot action that becomes enabled after the given delay.
+
+* scheduleAtFixedRate(Runnable command, long initialDelay, long period, TimeUnit unit)
+Creates and executes a periodic action that becomes enabled first after the given initial delay, 
+and subsequently with the given period; that is executions will 
+    commence after initialDelay then initialDelay+period, then initialDelay + 2 * period, and so on.
+
+* scheduleWithFixedDelay(Runnable command, long initialDelay, long delay, TimeUnit unit)
+Creates and executes a periodic action that becomes enabled first after the given initial delay, and subsequently with the given delay between the termination of one execution and the commencement of the next.
+```
+
+{% tabs %}
+{% tab title="\[easy\]:timer-threadsafe out of the box; relies on 3P" %}
+```python
+import time
+from threading import Timer
+
+def repeat_every(n, func, *args, **kwargs):
+    def and_again():
+        func(*args, **kwargs)
+        t = Timer(n, and_again)      #trick to make it repetitive
+        t.daemon = True
+        t.start()
+        
+    t = Timer(n, and_again)   
+    t.daemon = True
+    t.start()
+
+
+def scheduled_task(msg='hello, world', **kwargs):
+    print (time.time(), "scheduled_task:", msg, kwargs)
+
+repeat_every(.5, scheduled_task )
+repeat_every(1, scheduled_task, "Slow", name="Hand luke")
+
+for x in range(5):    # will run all possible jobs in 0-5 seconds
+    print(time.time(), "Main: busy as a bee.")
+    time.sleep(3)
+```
+{% endtab %}
+
+{% tab title="\[diff\]: theadsafe" %}
+```python
+import time
+from threading import Timer, Lock
+
+class RepeatedTimer(object):
+    """
+    A periodic task running in threading.Timers
+    """
+
+    def __init__(self, interval, function, *args, **kwargs):
+        self._lock = Lock()
+        self._timer = None
+        self.function = function
+        self.interval = interval
+        self.args = args
+        self.kwargs = kwargs
+        self._stopped = True
+        if kwargs.pop('autostart', True):
+            self.start()
+
+    def start(self):
+        self._lock.acquire()
+        if self._stopped:
+            self._stopped = False
+            self._timer = Timer(self.interval, self._run)
+            self._timer.start()
+            self._lock.release()
+
+    def _run(self):
+        self.start()
+        self.function(*self.args, **self.kwargs)
+
+    def stop(self):
+        self._lock.acquire()
+        self._stopped = True
+        self._timer.cancel()
+        self._lock.release()
+
+def print_bio(name, age):
+    print(f'Your name is {name} & age is {age}')
+
+print("starting...")
+rt = RepeatedTimer(1, print_bio, "Sam", age=20,autostart=True) # it auto-starts, no need of rt.start()
+try:
+    time.sleep(5) # your long-running job goes here...
+finally:
+    rt.stop() # better in a try/finally block to make sure the program ends!
+```
+{% endtab %}
+{% endtabs %}
+
+## 
 
 ### 3. Logger Library
 
+* There can be multiple appenders – like file, network, db etc. 
+* Should be easy to add appenders. 
+* Library should be easily configurable. 
+* Message format should be configurable. 
+* Logger should not add additional overhead. 
+* Must log to all appenders simultaneously.
+* [https://stackoverflow.com/questions/62178545/python-logging-thread-safety](https://stackoverflow.com/questions/62178545/python-logging-thread-safety)
+
+```text
+TODO: khud se
+```
+
 ### 4. Event Bus
 
-### 6. Sleeping Barber
+* simplify this: [https://github.com/nipuntalukdar/geeteventbus/blob/master/geeteventbus/eventbus.py](https://github.com/nipuntalukdar/geeteventbus/blob/master/geeteventbus/eventbus.py)
+
+```javascript
+**
+ * subscriptions data format: 
+ * { eventType: { id: callback } }
+ */
+const subscriptions = { }
+const getNextUniqueId = getIdGenerator()
+
+function subscribe(eventType, callback) {
+    const id = getNextUniqueId()
+
+    if(!subscriptions[eventType])
+        subscriptions[eventType] = { }
+
+    subscriptions[eventType][id] = callback
+
+    return { 
+        unsubscribe: () => {
+            delete subscriptions[eventType][id]
+            if(Object.keys(subscriptions[eventType]).length === 0) delete subscriptions[eventType]
+        }
+    }
+}
+
+function publish(eventType, arg) {
+    if(!subscriptions[eventType])
+        return
+
+    Object.keys(subscriptions[eventType]).forEach(key => subscriptions[eventType][key](arg))
+}
+
+function getIdGenerator() {
+    let lastId = 0
+    
+    return function getNextUniqueId() {
+        lastId += 1
+        return lastId
+    }
+}
+
+module.exports = { publish, subscribe }
+```
+
+### 5. Pub/Sub
+
+* Here: [https://dev.to/mandrewcito/lazy-pub-sub-python-implementation-3fi8](https://dev.to/mandrewcito/lazy-pub-sub-python-implementation-3fi8)
 
 ### 7. Implement Atomic Integer
+
+```python
+class AtomicInteger():
+    def __init__(self, value=0):
+        self._value = int(value)
+        self._lock = threading.Lock()
+        
+    def inc(self, d=1):
+        with self._lock:
+            self._value += int(d)
+            return self._value
+
+    def dec(self, d=1):
+        return self.inc(-d)    
+
+    @property
+    def value(self):
+        with self._lock:
+            return self._value
+
+    @value.setter
+    def value(self, v):
+        with self._lock:
+            self._value = int(v)
+            return self._value
+```
 
 ## LC:
 
@@ -2193,109 +2381,6 @@ class DiningPhilosophers:
             with self.locks[right], self.locks[left]:
                 for action in actions:
                     action()
-```
-{% endtab %}
-{% endtabs %}
-
-## Q: `threading.Timer` \| Scheduled Executor Service 
-
-* Syntax: **`t = threading.Timer(n,func_name)`** 
-  * will run the **`func_name`** function **`after n`** milli-seconds
-
-```java
-#Question
-Implement following method of ScheduledExecutorService interface in Java
-
-* schedule(Runnable command, long delay, TimeUnit unit)
-Creates and executes a one-shot action that becomes enabled after the given delay.
-
-* scheduleAtFixedRate(Runnable command, long initialDelay, long period, TimeUnit unit)
-Creates and executes a periodic action that becomes enabled first after the given initial delay, 
-and subsequently with the given period; that is executions will 
-    commence after initialDelay then initialDelay+period, then initialDelay + 2 * period, and so on.
-
-* scheduleWithFixedDelay(Runnable command, long initialDelay, long delay, TimeUnit unit)
-Creates and executes a periodic action that becomes enabled first after the given initial delay, and subsequently with the given delay between the termination of one execution and the commencement of the next.
-```
-
-{% tabs %}
-{% tab title="\[diff\]: theadsafe" %}
-```python
-import time
-from threading import Timer, Lock
-
-class RepeatedTimer(object):
-    """
-    A periodic task running in threading.Timers
-    """
-
-    def __init__(self, interval, function, *args, **kwargs):
-        self._lock = Lock()
-        self._timer = None
-        self.function = function
-        self.interval = interval
-        self.args = args
-        self.kwargs = kwargs
-        self._stopped = True
-        if kwargs.pop('autostart', True):
-            self.start()
-
-    def start(self):
-        self._lock.acquire()
-        if self._stopped:
-            self._stopped = False
-            self._timer = Timer(self.interval, self._run)
-            self._timer.start()
-            self._lock.release()
-
-    def _run(self):
-        self.start()
-        self.function(*self.args, **self.kwargs)
-
-    def stop(self):
-        self._lock.acquire()
-        self._stopped = True
-        self._timer.cancel()
-        self._lock.release()
-
-def print_bio(name, age):
-    print(f'Your name is {name} & age is {age}')
-
-print("starting...")
-rt = RepeatedTimer(1, print_bio, "Sam", age=20,autostart=True) # it auto-starts, no need of rt.start()
-try:
-    time.sleep(5) # your long-running job goes here...
-finally:
-    rt.stop() # better in a try/finally block to make sure the program ends!
-```
-{% endtab %}
-
-{% tab title="\[easy\]:timer-threadsafe out of the box; relies on 3P" %}
-```python
-import time
-from threading import Timer
-
-def repeat_every(n, func, *args, **kwargs):
-    def and_again():
-        func(*args, **kwargs)
-        t = Timer(n, and_again)      #trick to make it repetitive
-        t.daemon = True
-        t.start()
-        
-    t = Timer(n, and_again)   
-    t.daemon = True
-    t.start()
-
-
-def scheduled_task(msg='hello, world', **kwargs):
-    print (time.time(), "scheduled_task:", msg, kwargs)
-
-repeat_every(.5, scheduled_task )
-repeat_every(1, scheduled_task, "Slow", name="Hand luke")
-
-for x in range(5):    # will run all possible jobs in 0-5 seconds
-    print(time.time(), "Main: busy as a bee.")
-    time.sleep(3)
 ```
 {% endtab %}
 {% endtabs %}
