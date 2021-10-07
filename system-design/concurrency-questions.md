@@ -184,25 +184,1144 @@ Consumer consumed item :  20
 
 ### 2. Readers-Writers Problem
 
-### 
+* There is a shared data which can be accessed by multiple processes. 
+* There are two types of processes in the system i.e a **reader** and a **writer**. 
+* **Any number of readers can read** from the shared resource simultaneously, but **only one writer can write** to the shared resource. 
+* When a **writer is writing** data to the resource, **no other process can access** the resource. 
+* A **writer cannot write** to the resource if there are **non zero number of readers** accessing the resource at that time.
+
+{% tabs %}
+{% tab title="simple\_reader\_writer\_soln" %}
+```python
+import threading
+import time
+
+class ReaderWriter():
+    def __init__(self):
+        self.rd = threading.Semaphore()
+        self.wrt = threading.Semaphore()  
+        self.readCount = 0   #initializing number of reader present
+
+    def reader(self):
+        while True:
+            self.rd.acquire()      #wait on read semaphore 
+            self.readCount+=1       #increase count for reader by 1
+
+            if self.readCount == 1: #since reader is present, prevent writing on data
+                self.wrt.acquire()  #wait on write semaphore
+            self.rd.release()     #sinal on read semaphore
+
+            print(f"Reader {self.readCount} is reading")
+            
+            self.rd.acquire()   #wait on read semaphore 
+            self.readCount-=1   #reading is done by reader hence decrementing readercount
+
+            if self.readCount == 0: #if no reader is present allow writer to write the data
+                self.wrt.release()  # signal on write semphore, now writer can write
+            self.rd.release()      #sinal on read semaphore
+
+            time.sleep(3)          
+
+    def writer(self):
+        while True:
+            self.wrt.acquire()     #wait on write semaphore
+
+            print("Wrting data.....")  # write the data
+            print("-"*20)
+
+            self.wrt.release()      #sinal on write semaphore
+
+            time.sleep(3)    
+
+    def main(self):
+        # calling mutliple readers and writers
+        t1 = threading.Thread(target = self.reader) 
+        t1.start()
+        t2 = threading.Thread(target = self.writer) 
+        t2.start()
+        t3 = threading.Thread(target = self.reader) 
+        t3.start()
+        t4 = threading.Thread(target = self.reader) 
+        t4.start()
+        t6 = threading.Thread(target = self.writer) 
+        t6.start()
+        t5 = threading.Thread(target = self.reader) 
+        t5.start()
+        
+
+if __name__=="__main__":
+    c = ReaderWriter()
+    c.main()
+
+
+'''
+Output:
+Reader 1 is reading
+Reader 
+Reader 1 is reading
+Writing data.....
+--------------------
+Reader 
+Writing data.....
+--------------------
+Reader 1 is reading
+Reader 
+Reader 1 is reading
+Reader 
+Reader 1 is reading
+Reader 
+Reader 2 is reading
+Reader 
+Reader 3 is reading
+Writing data.....
+--------------------
+Writing data.....
+--------------------
+Writing data.....
+--------------------
+Writing data.....
+--------------------
+'''
+```
+{% endtab %}
+{% endtabs %}
+
+### 3. LightSwitch
+
+* **first person** into a room **turns on** the light \(locks the mutex\) and the **last one out** turns it **off** \(unlocks the mutex\).
+
+```python
+class LightSwitch:
+	"""An auxiliary "light switch"-like object. The first thread turns on the 
+	"switch", the last one turns it off (see [1, sec. 4.2.2] for details)."""
+	def __init__(self):
+		self.counter = 0
+		self.mutex = threading.Lock()
+	
+	def acquire(self, lock):
+		self.mutex.acquire()
+		self.counter += 1
+		if self.counter == 1:
+			lock.acquire()
+		self.mutex.release()
+
+	def release(self, lock):
+		self.mutex.acquire()
+		self.counter -= 1
+		if self.counter == 0:
+			lock.release()
+		self.mutex.release()
+```
 
 ### 
 
-### 
+### 4. Dining Philosophers
+
+* Leetcode problem
+
+{% tabs %}
+{% tab title="leetcode\_soln" %}
+```python
+from threading import Lock
+
+class DiningPhilosophers:
+    
+    def __init__(self):
+        self.locks = [Lock() for _ in range(5)]
+
+    # call the functions directly to execute, for example, eat()
+    def wantsToEat(self,
+                   philosopher: int,
+                   pickLeftFork: 'Callable[[], None]',
+                   pickRightFork: 'Callable[[], None]',
+                   eat: 'Callable[[], None]',
+                   putLeftFork: 'Callable[[], None]',
+                   putRightFork: 'Callable[[], None]') -> None:
+        small, large = min(philosopher, (philosopher + 1) % 5), max(philosopher, (philosopher + 1) % 5)
+        with self.locks[small]: 
+            with self.locks[large]: 
+                pickLeftFork()
+                pickRightFork()
+                eat()
+                putLeftFork()
+                putRightFork()
+```
+{% endtab %}
+
+{% tab title="full\_soln\_from\_book" %}
+```python
+# The Dining Philosophers Problem solved using alternating lefties and righties
+#
+# This solution make odd positioned philosophers righties and even positioned lefties
+# This guarantees no deadlock and make the solution as fair as possible with maximum philosophers even
+# The Solution is completely fair with even number of philosophers but is slightly unfair when the number is odd where to righties sit next to each other (1st and last)
+# This code is deadlock free if you can see anything else feel free to tell me.
+
+
+n = 5 # for standard Dining Philosophers problem
+forks = [Semaphore(1) for i in range(n)]
+
+
+
+def dining_philosphers():
+	while True:
+		think()
+		get_forks()
+		eat()
+		put_forks()
+
+# do something useful in the following two functions
+def think():
+	pass
+def eat(): 
+	pass		
+		
+def left(i): 
+	return i
+	
+def right(i):
+ return (i + 1) % n
+
+
+def get_forks(i):
+	if i%2==0:
+		fork[right(i)].wait()
+		fork[left(i)].wait()
+	else:
+		fork[left(i)].wait()
+		fork[right(i)].wait()
+	
+
+def put_forks(i):
+	if i%2==0:
+		fork[right(i)].signal()
+		fork[left(i)].signal()
+	else:
+		fork[left(i)].signal()
+		fork[right(i)].signal()
+```
+{% endtab %}
+{% endtabs %}
+
+### 5. Cigaretter Smoker Problem
+
+* We assume that the agent has an infinite supply of all three ingredients, and each smoker has an infinite supply of one of the ingredients; that is, one smoker has matches, another has paper, and the third has tobacco.
+* The agent repeatedly chooses two different ingredients at random and makes them available to the smokers. Depending on which ingredients are chosen, the smoker with the complementary ingredient should pick up both resources and proceed.
+* For example, if the agent puts out tobacco and paper, the smoker with the matches should pick up both ingredients, make a cigarette, and then signal the agent.
+* To explain the premise, the agent represents an operating system that allo- cates resources, and the smokers represent applications that need resources.
+* **SOLN:**
+*  ****Vendor routine: 1. Generate two items randomly and put them on table. 2. Broadcast the information to all the smokers. 3. Go to sleep till the particular smoker, creates cigarette and is done with smoking.
+* Smokers routine: 1. Wait for the two ingredients to be made available on table. 2. create the cigarette and smoke. 3. Wakeup the sleeping vendor.
+
+```python
+# Cigarette Smokers Problem Solution
+#
+# Three Smokers and one Agent, the Agent pulls out one of the three ingredients of a cigarette (Tobacco, Paper or Match)
+# while each of the smokers hold only one ingredient different than each other
+# 1st Smoker has Tobacco
+# 2nd Smoker has Papers
+# 3rd Smoker has Matches
+# It resembles an Operating System (Agent) and User processes (smokers) where the compete on system resources (cigarette ingredients).
+# This code is deadlock free if you can see anything else feel free to tell me.
+from threading import Semaphore
+
+mutex = Semaphore(1)
+tobaccoSmoker = Semaphore(1)
+paperSmoker = Semaphore(1)
+matchSmoker = Semaphore(1)
+tobaccoOnTable = 0
+paperOnTable = 0
+matchOnTable = 0
+
+
+# Agent has three different pushers he uses to assign smokers
+# Pusher A pushes tobacco onto the Table
+def PusherA(tobaccoOnTable,paperOnTable,matchOnTable):
+	mutex.wait()
+	if paperOnTable:
+		paperOnTable -= 1
+		matchSmoker.signal()
+	elif matchOnTable:
+		matchOnTable -= 1
+		paperSmoker.signal()
+	else:
+		tobaccoOnTable += 1
+	mutex.signal()
+	
+
+# Pusher B pushes paper onto the Table
+def PusherB(tobaccoOnTable,paperOnTable,matchOnTable):
+	mutex.wait()
+	if tobaccoOnTable:
+		tobaccoOnTable -= 1
+		matchSmoker.signal()
+	elif matchOnTable:
+		matchOnTable -= 1
+		tobaccoSmoker.signal()
+	else:
+		paperOnTable += 1
+	mutex.signal()
+	
+
+# Pusher C pushes matches onto the Table
+def PusherC(tobaccoOnTable,paperOnTable,matchOnTable):
+	mutex.wait()
+	if tobaccoOnTable:
+		tobaccoOnTable -= 1
+		paperSmoker.signal()
+	elif paperOnTable:
+		paperOnTable -= 1
+		tobaccoSmoker.signal()
+	else:
+		matchOnTable += 1
+	mutex.signal()
+
+# Smoker with Tobacco
+def TobaccoHoldingSmoker():
+	tobaccoSmoker.wait()
+	makeCigarettes()
+	smoke()
+
+def PaperHoldingSmoker():
+	paperSmoker.wait()
+	makeCigarettes()
+	smoke()
+
+def MatchHoldingSmoker():
+	matchSmoker.wait()
+	makeCigarettes()
+	smoke()
+	
+	
+def makeCigarettes():
+	pass
+
+def smoke():
+	pass
+```
+
+## Less Classical Problems
+
+### 1. The dining savages problem
+
+* A tribe of savages eats communal dinners from a large pot that can hold M servings of stewed missionary. When a savage wants to eat, he helps himself from the pot, unless it is empty. If the pot is empty, the savage wakes up the cook and then waits until the cook has refilled the pot.
+
+```python
+import threading
+import time
+
+
+class ReaderWriter:
+    def __init__(self):
+        self.servings = 0
+        self.mutex = threading.Semaphore(1)
+        self.emptyPot = threading.Semaphore(0)
+        self.fullPot = threading.Semaphore(0)
+        self.M = 5
+
+    def cook(self):
+        while True:
+            self.emptyPot.acquire()
+            self.put_serving_in_pot(self.M)
+            self.fullPot.release()
+
+            time.sleep(3)
+
+    def savage(self):
+        while True:
+            self.mutex.acquire() 
+            
+            if self.servings == 0:
+                self.emptyPot.release()
+                self.fullPot.acquire()
+                self.servings = self.M
+            self.servings -= 1
+            self.get_servings_from_pot()
+
+            self.mutex.release() 
+
+            time.sleep(3)
+            
+    def put_serving_in_pot(self,M):
+        pass
+    def get_servings_from_pot(self):
+        pass
+
+    def main(self):
+        # calling mutliple readers and writers
+        t1 = threading.Thread(target=self.savage)
+        t1.start()
+        t2 = threading.Thread(target=self.savage)
+        t2.start()
+        t3 = threading.Thread(target=self.cook)
+        t3.start()
+        t4 = threading.Thread(target=self.savage)
+        t4.start()
+
+if __name__ == "__main__":
+    c = ReaderWriter()
+    c.main()
+
+```
+
+### 2. The Barbershop/Sleeping Barber Problem
+
+* A barbershop consists of a waiting room with n chairs, and the barber room containing the barber chair. If there are no customers to be served, the barber goes to sleep. If a customer enters the barbershop and all chairs are occupied, then the customer leaves the shop. If the barber is busy, but chairs are available, then the customer sits in one of the free chairs. If the barber is asleep, the customer wakes up the barber. Write a program to coordinate the barber and the customers.
+* **SOLVE:** The barber waits on customer until a customer enters the shop, then the customer waits on barber until the barber signals him to take a seat.
+
+```python
+from threading import Thread
+import threading 
+import time 
+import random  
+
+barber_wakeup = 1 #1 means customer can wakeup barber , 0 means customers cannot wakeup barber  
+customers_sem = threading.Semaphore(0) 
+barber_sem = threading.Semaphore(0) 
+mutex = threading.Semaphore(1) #for Mutual Exclusion
+
+class BarberShop:     
+    waiting_customers = []      
+    def __init__(self,barber,total_chairs):         
+        self.barber = barber         
+        self.total_chairs = total_chairs         
+        print("Total seats: ", total_chairs)
+    
+    def startBarberThread(self):
+        t_barber = Thread(target = self.barber_working_in_barber_room)         
+    	  t_barber.start()
+
+	def barber_shop_entry(self,customer): 
+    	print("\nCustomer {} is entering in the shop and looking for empty seats".format(customer))         
+    	mutex.acquire() #Try to get access to the waiting room chairs or Enter in CS          
+     	
+        #if waiting room is not fulled then customer can sit on chair         
+        if len(self.waiting_customers) < self.total_chairs:             
+            print("\nCustomer {} founds an empty chair".format(customer))             
+            self.waiting_customers.append(customer)              
+            global barber_wakeup 
+            while barber_wakeup:
+                #barber gets a wakeup call by customer                 
+                customers_sem.release() #1st customer will come                 
+                print("\nCustomer {} wakesup the barber".format(customer))                 
+                barber_wakeup = 0 #now no customer can wakeup the baber before barber goes to sleep
+                
+            print("Customer {} sits on waiting chair".format(customer))             
+            mutex.release() #customer after sitting on waiting seat is releasing the lock              
+            print("\nCustomer {} is waiting to be called by barber".format(customer))             
+            barber_sem.acquire()              
+            Customer.get_hair_cut(self,customer) #customer is having haircut
+        else: #if waiting room is full             
+            #As no seat is empty so leaving the CS             
+            mutex.release()             
+            Customer.balk(self,customer)       
+        
+    def barber_working_in_barber_room(self):         
+        while True:             
+            #if there are no customer to be served in waiting room            
+            if len(self.waiting_customers) == 0:                 
+                global barber_wakeup                 
+                print("Barber is sleeping and waiting for customer to wake up")                 
+                barber_wakeup = 1 #now customer can wakeup barber                 
+                customers_sem.acquire() #barber sleep if there is no customer                 
+            
+            #if customers are waiting in the room             
+            if len(self.waiting_customers) > 0:                 
+                mutex.acquire() #Barber saw the customer so he locked the barber's chair (CS)                 
+                #Barber calls the customer                 
+                cust = self.waiting_customers[0]                 
+                print("\nBarber calls {} for haircut".format(cust))
+                del self.waiting_customers[0]                 
+                barber_sem.release() #barber is now ready to work                 
+                mutex.release() #Barber unlock the barber's chair so customer can sit on the chair                 
+                self.barber.cut_hair(cust) #(Cut hair here.)
+
+class Barber:     
+    def cut_hair(self,customer):         
+        for i in range(0,3):             
+            print("\nBarber is cutting hair of {}.".format(customer))             
+            time.sleep(2)         
+            print("\n{} is done so leaving barber shop".format(customer))  
+
+class Customer:     
+    def __init__(self,name):         
+        self.name = name        
+    
+    def get_hair_cut(self,customer):         
+		    for i in range(0,3):             
+		        print("\nCutomer {} is having haircut".format(customer))             
+  		      time.sleep(2)      
+    
+    def balk(self,customer):         
+        print("\nWaiting Room is full. Customer {} leaves shop without hair cutting".format(customer))
+        
+if __name__ == '__main__':         
+    customers_list = []            
+    barber = Barber()          
+    barberShop = BarberShop(barber, 1) # 1 Seat         
+    barberShop.startBarberThread()         
+    # 1 customers are entering         
+    customers_list.append(Customer('Areeba Seher'))         
+    customers_list.append(Customer('Kinza Hameed'))         
+    #customers_list.append(Customer('Mehar Fatima'))            
+    while len(customers_list) > 0:             
+        c = customers_list.pop()
+        #running customer threads here             
+        t = threading.Thread(target = barberShop.barber_shop_entry, args = (c.name,))             
+        time.sleep(random.randint(1,5)) #customers are entering in shop after random seconds from 1 to 5             
+        t.start()
+```
+
+### 3. Santa Claus Problem
+
+* Stand Claus sleeps in his shop at the North Pole and can only be awakened by either \(1\) all nine reindeer being back from their vaca- tion in the South Pacific, or \(2\) some of the elves having difficulty making toys; to allow Santa to get some sleep, the elves can only wake him when three of them have problems. When three elves are having their problems solved, any other elves wishing to visit Santa must wait for those elves to return. If Santa wakes up to find three elves waiting at his shop’s door, along with the last reindeer having come back from the tropics, Santa has decided that the elves can wait until after Christmas, because it is more important to get his sleigh ready. \(It is assumed that the reindeer do not want to leave the tropics, and therefore they stay there until the last possible mo- ment.\) The last reindeer to arrive must get Santa while the others wait in a warming hut before being harnessed to the sleigh.
+* Here are some addition specifications:
+  * After the ninth reindeer arrives, Santa must invoke prepareSleigh, and
+
+    then all nine reindeer must invoke getHitched.
+
+  * After the third elf arrives, Santa must invoke helpElves. Concurrently,
+
+    all three elves should invoke getHelp.
+
+  * All three elves must invoke getHelp before any additional elves enter
+
+    \(increment the elf counter\).
+
+```python
+import random
+from threading import Semaphore
+from threading import Thread
+import time
+
+elves_c = 0
+reindeer_c = 0
+santaSem = Semaphore()
+reindeerSem = Semaphore()
+elfTex = Semaphore()
+mutex = Semaphore(1)
+
+
+def prepareSleigh():
+    global reindeer_c
+    print("Santa Claus: preparing sleigh")
+
+
+def helpElves():
+    print("Santa Claus: helping elves")
+
+
+def getHitched():
+    print("This is reindeer ", reindeer_c)
+
+
+def getHelp():
+    print("This is elve", elves_c)
+
+
+def santa():
+    global elves_c, reindeer_c
+    print("Santa Claus: Hoho, here I am")
+    while True:
+        santaSem.acquire()
+        mutex.acquire()
+        if reindeer_c >= 9:
+            prepareSleigh()
+            for i in range(9):
+                reindeerSem.release()
+            print("Santa Claus: make all kids in the world happy")
+            reindeer_c -= 9
+            time.sleep(4)
+        elif elves_c == 3:
+            helpElves()
+        mutex.release()
+
+
+def reindeer():
+    global reindeer_c
+    while True:
+        mutex.acquire()
+        reindeer_c += 1
+        if reindeer_c == 9:
+            santaSem.release()
+        mutex.release()
+        getHitched()
+        print("Reindeer", reindeer_c, "getting hitched")
+        reindeerSem.acquire()
+        time.sleep(random.randint(2, 3))
+
+
+def elves():
+    global elves_c
+    while True:
+        elfTex.acquire()
+        mutex.acquire()
+        elves_c += 1
+        if elves_c == 3:
+            santaSem.release()
+        else:
+            elfTex.release()
+        mutex.release()
+        getHelp()
+        time.sleep(random.randint(2, 5))
+        mutex.acquire()
+        elves_c -= 1
+        if elves_c == 0:
+            elfTex.release()
+        mutex.release()
+        print("Elve", elves_c, "at work")
+
+
+elfThread = []  # threads for elves
+reindThread = []  # threads from reindeers
+
+
+def main():
+    thread = Thread(target=santa)  # main thread for SantaClaus
+    thread.start()  # starting the thread
+    for i in range(9):
+        reindThread.append(Thread(target=reindeer))
+    for j in range(9):
+        elfThread.append(Thread(target=elves))
+    for t in elfThread:
+        t.start()
+    for t in reindThread:
+        t.start()
+    for t in elfThread:
+        t.join()
+    for t in reindThread:
+        t.join()
+    thread.join()
+
+
+main()
+```
+
+### 4. River Crossing Problem
+
+* Somewhere near Redmond, Washington there is a rowboat that is used by both Linux hackers and Microsoft employees \(serfs\) to cross a river. The ferry can hold exactly four people; it won’t leave the shore with more or fewer. To guarantee the safety of the passengers, it is not permissible to put one hacker in the boat with three serfs, or to put one serf with three hackers. Any other combination is safe.
+
+  As each thread boards the boat it should invoke a function called board. You must guarantee that all four threads from each boatload invoke board before any of the threads from the next boatload do.
+
+  After all four threads have invoked board, exactly one of them should call a function named rowBoat, indicating that that thread will take the oars. It doesn’t matter which thread calls the function, as long as one does.
+
+  Don’t worry about the direction of travel. Assume we are only interested in traffic going in one of the directions.
+
+* **SOLUTION:**
+  * The basic idea of this solution is that each arrival updates one of the counters and then checks whether it makes a full complement, either by being the fourth of its kind or by completing a mixed pair of pairs.
+
+```java
+barrier = Barrier(4) 
+mutex = Semaphore(1) 
+hackers = 0
+serfs = 0
+hackerQueue = Semaphore(0) 
+serfQueue = Semaphore(0)
+local isCaptain = False    
+
+
+mutex.wait()
+    hackers += 1
+    if hackers == 4:
+       hackerQueue.signal(4)
+       hackers = 0
+       isCaptain = True
+    elseif hackers == 2 and serfs >= 2:
+       hackerQueue.signal(2)
+       serfQueue.signal(2)
+       serfs -= 2
+          hackers = 0
+       isCaptain = True
+    else:
+       mutex.signal()
+hackerQueue.wait()
+board()
+barrier.wait()
+if isCaptain:
+    rowBoat()
+    mutex.signal() # captain keeps the mutex
+```
+
+## Not-so-classical problems
+
+### 1. The search-insert-delete problem
+
+* **Descript**io**n:** Three kinds of threads share access to a singly-linked list: searchers, inserters and deleters. Searchers merely examine the list; hence they can execute concurrently with each other. Inserters add new items to the end of the list; insertions must be mutually ex- clusive to preclude two inserters from inserting new items at about the same time. However, one insert can proceed in parallel with any number of searches. Finally, deleters remove items from any- where in the list. At most one deleter process can access the list at a time, and deletion must also be mutually exclusive with searches and insertions.
+* **TODO:** write code for searchers, inserters and deleters that enforces this kind of three-way categorical mutual exclusion.
+* **Solution:** 
+
+```python
+insertMutex = Semaphore(1)	# insertMutex ensures that only one inserter is in its critical section at a time.
+# noSearcher and noInserter indicate (surprise) that there are no searchers and no inserters in their critical sections; a deleter needs to hold both of these to enter.
+noSearcher = Semaphore(1)
+noInserter = Semaphore(1)
+# searchSwitch and insertSwitch are used by searchers and inserters to exclude deleters.
+searchSwitch = Lightswitch() 
+insertSwitch = Lightswitch()
+
+def searcher():
+				  searchSwitch.wait(noSearcher)
+					# critical section
+					searchSwitch.signal(noSearcher)
+				        
+def inserter():
+		  insertSwitch.wait(noInserter) 
+		  insertMutex.wait()
+			# critical section
+			insertMutex.signal()
+			insertSwitch.signal(noInserter)
+
+def deleter():
+    noSearcher.wait()
+	  noInserter.wait()
+	  # critical section 4 noInserter.signal() 
+	  noSearcher.signal()
+```
+
+### 2. The unisex bathroom problem
+
+* There **cannot** be **men** and **women** in the bathroom at the same time.
+* There should never be more than **three** employees squandering company time in the bathroom.
+
+{% tabs %}
+{% tab title="implemented\_using\_conditon\_obj" %}
+```python
+import logging, threading, random, time
+
+# Lame enum in case you aren't on Python 3.4.
+# FEMALE = 0; MALE = 1
+names = ["Female", "Male"]
+
+class User(object):
+    def __init__(self, sex):
+        self.sex = sex
+        self.name = names[sex]
+
+    def go(self, bathroom):
+        logging.debug("%s queueing up" % self.name)
+
+        with bathroom.condition:
+            while not bathroom.is_open(self):
+                bathroom.condition.wait()
+
+        logging.debug("%s entering the bathroom" % self.name)
+        bathroom.enter(self)
+        time.sleep(1)
+
+        logging.debug("%s leaving the bathroom" % self.name)
+        bathroom.leave(self)
+
+class Bathroom(object):
+    def __init__(self):
+        self.condition = threading.Condition()
+        self.current_sex = None
+        self.count = 0
+
+    def is_open(self, user):
+        return self.current_sex is None or self.current_sex == user.sex
+
+    def enter(self, user):
+        assert(self.is_open(user))
+        self.current_sex = user.sex
+        self.count += 1
+
+    def leave(self, user):
+        assert(user.sex == self.current_sex)
+        self.count -= 1
+        assert(self.count >= 0)
+
+        if self.count == 0:
+            logging.debug("Bathroom is empty. Opening for anyone")
+            self.current_sex = None
+            with self.condition:
+                self.condition.notify_all()
+
+def Main():
+    logging.basicConfig(format='%(threadName)s, %(asctime)s, %(message)s', datefmt='%M:%S', level=logging.DEBUG)
+
+    b = Bathroom()
+
+    logging.debug("we're off to the races!")
+    for i in range(10):
+        user = User(random.randint(0, 1))
+        t = threading.Thread(target=user.go, args=(b,))
+        logging.debug("Starting a thread")
+        t.start()
+
+if __name__ == '__main__':
+    Main()
+    
+'''
+Thread-1, 19:27, Male queueing up
+Thread-1, 19:27, Male entering the bathroom
+MainThread, 19:27, Starting a thread
+Thread-2, 19:27, Female queueing up
+MainThread, 19:27, Starting a thread
+Thread-3, 19:27, Male queueing up
+MainThread, 19:27, Starting a thread
+Thread-3, 19:27, Male entering the bathroom
+Thread-4, 19:27, Female queueing up
+MainThread, 19:27, Starting a thread
+Thread-5, 19:27, Female queueing up
+MainThread, 19:27, Starting a thread
+Thread-6, 19:27, Female queueing up
+MainThread, 19:27, Starting a thread
+Thread-7, 19:27, Male queueing up
+MainThread, 19:27, Starting a thread
+Thread-7, 19:27, Male entering the bathroom
+Thread-8, 19:27, Female queueing up
+MainThread, 19:27, Starting a thread
+Thread-9, 19:27, Male queueing up
+MainThread, 19:27, Starting a thread
+Thread-9, 19:27, Male entering the bathroom
+Thread-10, 19:27, Male queueing up
+Thread-10, 19:27, Male entering the bathroom
+Thread-3, 19:28, Male leaving the bathroom
+Thread-1, 19:28, Male leaving the bathroom
+Thread-7, 19:28, Male leaving the bathroom
+Thread-10, 19:28, Male leaving the bathroom
+Thread-9, 19:28, Male leaving the bathroom
+Thread-9, 19:28, Bathroom is empty. Opening for anyone
+'''
+```
+{% endtab %}
+{% endtabs %}
+
+### 3. Baboon crossing problem
+
+### 4. The Modus Hall Problem
+
+
+
+## Not remotely classical problems
+
+### 1. The sushi bar problem
+
+* Imagine a sushi bar with 5 seats. If you arrive while there is an empty seat, you can take a seat immediately. But if you arrive when all 5 seats are full, that means that all of them are dining together, and you will have to wait for the entire party to leave before you sit down.
+* **Puzzle**: write code for customers entering and leaving the sushi bar that enforces these requirements.
+
+```python
+eating = waiting = 0  # eating and waiting keep track of the number of threads sitting at the bar and waiting
+mutex = Semaphore(1)  # mutex protects both counters
+block = Semaphore(0)  # If customers have to wait, they block on block.
+
+mutex.wait()
+if eating == 5:
+    waiting += 1
+    mutex.signal()
+    block.wait()
+    waiting -= 1
+# when we resume, we have the mutex
+       eating += 1
+if eating < 5 and waiting:
+    block.signal()
+else:
+    mutex.signal()
+# eat sushi
+mutex.wait()
+eating -= 1
+if eating == 0 and waiting:
+    block.signal()
+else:
+    mutex.signal()
+```
+
+### 2. The child care problem
+
+### 3. The room party problem
+
+### 4. The Senate Bus problem
+
+### 5. The Faneuil Hall problem
+
+### 6. Dining Hall problem
+
+
+
+## SysD Heavy Questions
+
+### 1. Rate Limiting Algo\#1: Token Bucket \| [link](https://dev.to/satrobit/rate-limiting-using-the-token-bucket-algorithm-3cjh)
+
+* How does it work
+  1. Picture a bucket in your mind.
+  2. Fill the buckets with tokens at a constant rate.
+  3. When a packet arrives, check if there is any token in the bucket.
+  4. If there was any token left, remove one from the bucket and forward the packet. If the bucket was empty, simply drop the packet.
+
+![token bucket working](../.gitbook/assets/screenshot-2021-10-07-at-5.47.55-am.png)
+
+```python
+import time
+
+class TokenBucket:
+
+    def __init__(self, tokens, time_unit, forward_callback, drop_callback):
+        self.tokens = tokens    # number of tokens added to the bucket in each time unit
+        self.time_unit = time_unit    # the tokens are added in this time frame.
+        self.forward_callback = forward_callback    # this function is called when the packet is being forwarded.
+        self.drop_callback = drop_callback    # this function is called when the packet should be dropped
+        self.bucket = tokens
+        self.last_check = time.time()    # last_check is the timestamp that we previously handled a packet
+
+    def handle(self, packet):
+        current = time.time()
+        time_passed = current - self.last_check
+        self.last_check = current
+        
+        # we find out how many token needs to be added to the bucket.
+        self.bucket = self.bucket+time_passed * (self.tokens / self.time_unit)
+
+        # Reset the bucket if it has more tokens than the default value.
+        if (self.bucket > self.tokens):
+            self.bucket = self.tokens
+
+        # If the bucket doesn't have enough token, drop the packet
+        if (self.bucket < 1):
+            self.drop_callback(packet)
+        else:
+            # Otherwise, remove one token and forward the packet.
+            self.bucket = self.bucket - 1
+            self.forward_callback(packet)
+
+
+def forward(packet):
+    print("Packet Forwarded: " + str(packet))
+
+
+def drop(packet):
+    print("Packet Dropped: " + str(packet))
+
+
+throttle = TokenBucket(1, 1, forward, drop)
+
+packet = 0
+
+while True:
+    time.sleep(0.2)    # We send a packet every 0.2 seconds.
+    throttle.handle(packet)
+    packet += 1
+'''
+Packet Forwarded: 0
+Packet Dropped: 1
+Packet Dropped: 2
+Packet Dropped: 3
+Packet Dropped: 4
+Packet Forwarded: 5
+Packet Dropped: 6
+Packet Dropped: 7
+Packet Dropped: 8
+Packet Dropped: 9
+Packet Forwarded: 10
+Packet Dropped: 11
+Packet Dropped: 12
+Packet Dropped: 13
+Packet Dropped: 14
+Packet Forwarded: 15
+'''
+```
+
+### 2. Rate Limiting Algo\#2: Leaky Bucket  \| @rubrik 😖
+
+```python
+import time
+
+class LeakyBucket:
+    def __init__(self, capacity, number_of_leaks_per_unit_time, leaks_time_unit,curr_level=0):
+        self.capacity = capacity
+        self.curr_level = curr_level
+        self.number_of_leaks_per_unit_time = number_of_leaks_per_unit_time
+        self.leaks_time_unit = leaks_time_unit
+        self.last_leak_time = int(time.time()) - 1
+
+    def print_bucket(self):
+        print(f"@time  : {int(time.time())}")
+        print(f"Current level  : {self.curr_level}")
+        print(f"last_leak_time : {self.last_leak_time}")
+
+    def allowed_to_proceed(self) -> bool:
+        # drop curr_level due to leaks
+        level_dropped_due_to_leakage = (
+            (int(time.time()) - self.last_leak_time) // self.leaks_time_unit
+        ) * self.number_of_leaks_per_unit_time
+        
+        if level_dropped_due_to_leakage > 0:
+            self.curr_level = max(0, self.curr_level - level_dropped_due_to_leakage)
+            self.last_leak_time = int(time.time())
+
+        if self.curr_level + 1 <= self.capacity:
+            self.curr_level += 1
+            print("Request Processed")
+            return True
+
+        print("Request Rejected")
+        return False
+
+
+if __name__ == "__main__":
+    b = LeakyBucket(10, 2, 1,6)
+    b.print_bucket()
+    b.print_bucket()
+    print('======================== @t =======================')
+    for _ in range(8):
+        b.allowed_to_proceed()
+    print('======================== @t+10 =======================')
+    b.print_bucket()
+    time.sleep(1)
+    b.print_bucket()
+    time.sleep(1)
+    print('======================== @t+20 =======================')
+    for _ in range(5):
+        b.allowed_to_proceed()
+    b.print_bucket()
+
+'''
+@time  : 1633569135
+Current level  : 6
+last_leak_time : 1633569134
+@time  : 1633569135
+Current level  : 6
+last_leak_time : 1633569134
+======================== @t =======================
+Request Processed
+Request Processed
+Request Processed
+Request Processed
+Request Processed
+Request Processed
+Request Rejected
+Request Rejected
+======================== @t+10 =======================
+@time  : 1633569135
+Current level  : 10
+last_leak_time : 1633569135
+@time  : 1633569136
+Current level  : 10
+last_leak_time : 1633569135
+======================== @t+20 =======================
+Request Processed
+Request Processed
+Request Processed
+Request Processed
+Request Rejected
+@time  : 1633569137
+Current level  : 10
+last_leak_time : 1633569137
+'''
+```
 
 ### 
 
-### 
+### 3. Rate Limiting Algo\#3: Fixed Window \| [link](https://dev.to/satrobit/rate-limiting-using-the-fixed-window-algorithm-2hgm)
 
-### x. Rate Limiter\(leaky bucket\)
+* Every time-window has fixed capacity
+
+![fixed window](../.gitbook/assets/screenshot-2021-10-07-at-6.44.31-am.png)
+
+```python
+from time import time, sleep
+
+class FixedWindow:
+
+    def __init__(self, capacity, forward_callback, drop_callback):
+        self.current_time = int(time())
+        self.allowance = capacity    # We prefill a property named allowance to allow the packet to pass through in the first second
+        self.capacity = capacity
+        self.forward_callback = forward_callback
+        self.drop_callback = drop_callback
+
+    def handle(self, packet):
+        if (int(time()) != self.current_time):
+            self.current_time = int(time())
+            self.allowance = self.capacity
+
+        if (self.allowance < 1):
+            return self.drop_callback(packet)
+
+        self.allowance -= 1
+        return self.forward_callback(packet)
+
+
+def forward(packet):
+    print("Packet Forwarded: " + str(packet))
+
+
+def drop(packet):
+    print("Packet Dropped: " + str(packet))
+
+
+throttle = FixedWindow(1, forward, drop)
+
+packet = 0
+
+while True:
+    sleep(0.2)
+    throttle.handle(packet)
+    packet += 1
+```
+
+### 2. Rate Limiting Algo\#2: Sliding Window Bucket \| [link](https://dev.to/satrobit/rate-limiting-using-the-sliding-window-algorithm-5fjn)
+
+* A problem with Fixed Window was that It allowed a huge burst at the edge of windows because you can combine the capacity of the current and the next window to send a burst of requests.
+* Sliding Window tries to fix that by taking the previous counter into account, causing the flow to be more smooth.
+
+![Sliding Window](../.gitbook/assets/screenshot-2021-10-07-at-6.48.02-am.png)
+
+```python
+from time import time, sleep
+
+
+class SlidingWindow:
+
+    def __init__(self, capacity, time_unit, forward_callback, drop_callback):
+        self.capacity = capacity
+        self.time_unit = time_unit
+        self.forward_callback = forward_callback
+        self.drop_callback = drop_callback
+
+        self.cur_time = time()
+        self.pre_count = capacity
+        self.cur_count = 0
+
+    def handle(self, packet):
+
+        if (time() - self.cur_time) > self.time_unit:
+            self.cur_time = time()
+            self.pre_count = self.cur_count
+            self.cur_count = 0
+            
+        # calculate estimated_count
+        ec = (self.pre_count * (self.time_unit - (time() - self.cur_time)) / self.time_unit) + self.cur_count
+
+        if (ec > self.capacity):
+            return self.drop_callback(packet)
+
+        self.cur_count += 1
+        return self.forward_callback(packet)
+
+
+def forward(packet):
+    print("Packet Forwarded: " + str(packet))
+
+
+def drop(packet):
+    print("Packet Dropped: " + str(packet))
+
+
+throttle = SlidingWindow(5, 1, forward, drop)
+
+packet = 0
+
+while True:
+    sleep(0.1)
+    throttle.handle(packet)
+    packet += 1
+```
 
 ### 2. Scheduler Library
 
 ### 3. Logger Library
 
 ### 4. Event Bus
-
-### 5. Dining Philosopher
 
 ### 6. Sleeping Barber
 
