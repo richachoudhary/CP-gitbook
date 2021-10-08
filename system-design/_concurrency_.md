@@ -37,7 +37,7 @@ print(f'total time = {end_time - start_time}')
 * When we talk about concurrent events, it is tempting to say that they happen at the same time, or simultaneously.
 * **Two events are concurrent if we cannot tell by looking at the program which will happen first**.
 * **Non-determinism:**
-  * Concurrent programs are often non-deterministic, which means it is not possible to tell, by looking at the program, what will happen when it executes. 
+  * Concurrent programs are often **non-deterministic**, which means it is not possible to tell, by looking at the program, what will happen when it executes. 
   * E.g:            **Thread A                            Thread B**
 
                        a1 print "yes"                     b1 print "no"
@@ -65,11 +65,27 @@ print(f'total time = {end_time - start_time}')
 
 ![Concurrency vs Parallelism](../.gitbook/assets/screenshot-2021-09-30-at-1.03.43-am.png)
 
-### 5. What is Semaphore
+### 5. Blocking \| NonBlocking \| Sync \| Async
+
+* **Synchronous** means to start one after the other's result, _in a sequence._
+  * _Synchrounous eg_: I will go out only if it rains. \( dependency exists \)
+* **Asynchronous** means start together, _no sequence is guaranteed on the result_
+  * _Asynchronous eg_: I will go out. It can rain. \( independent events, does't matter when they occur 
+* **Blocking** means something that causes an _obstruction_ to perform the next step.
+  * _Blocking eg_: I knock on the door and wait till they open it. \( I am idle here \)
+* **Non-blocking** means something that keeps running without waiting for anything, _overcoming_ _the_ _obstruction_.
+  * _Non-Blocking eg_: I knock on the door, if they open it instantly, I greet them, go inside, etc. If they do not open instantly, I go to the next house and knock on it. \( I am doing something or the other, not idle \)
+* **===&gt; Synchronous or Asynchronous, both can be blocking or non-blocking and vice versa**
+
+  \_\_
+
+  \_\_
+
+### 6. What is Semaphore
 
 * A semaphore is **like an integer, with three differences**:
 
-1. When you create the semaphore, you can initialize its value to any integer, but after that the only operations you are allowed to perform are increment \(+= 1\) and decrement \(-= 1\). You cannot read the current value of the semaphore.
+1. When you create the semaphore, you can initialize its value to any integer, but after that the only operations you are allowed to perform are increment \(+= 1\) and decrement \(-= 1\). You cannot read the current value of the semaphore \(_but, `threading.Semaphore` allows it -&gt; **`sem._value`**\)_
 2. When a thread decrements the semaphore, if the result is **negative**, the **thread blocks itself** and cannot continue until another thread increments the semaphore.
 3. If the value of the semaphore is negative and a thread increments it, one of the threads that is waiting gets **woken up**.
 
@@ -80,9 +96,9 @@ print(f'total time = {end_time - start_time}')
 
   semaphore = Semaphore()  # default value is 1
 
-  semaphore.acquire()
+  semaphore.acquire()    # i.e. semaphore.wait()
   # do something...
-  semaphore.release()
+  semaphore.release()    # i.e. semaphore.signal()
   ```
 
 ## `multiprocessing` module \| [playlist](https://www.youtube.com/watch?v=RR4SoktDQAw&list=PL5tcWHG-UPH3SX16DI6EP1FlEibgxkg_6&index=1&ab_channel=LucidProgramming)
@@ -115,8 +131,15 @@ print(f'total time = {end_time - start_time}')
     * **I/O operation:** It waits till the I/O operation is completed & does not schedule another process. This might increase the execution time. 
     * Uses FIFO scheduler.
 * Ways for **sharing data between multiple processed** functions:
+
   * **Queue**
-  * Pipe
+    * A [`Queue()`](http://docs.python.org/library/multiprocessing.html#multiprocessing.Queue) can have multiple producers and consumers
+    * **WHEN TO USE:** If you need more than two points to communicate, use a [`Queue()`](http://docs.python.org/library/multiprocessing.html#multiprocessing.Queue).
+  * **Pipe**
+
+    * A [`Pipe()`](http://docs.python.org/library/multiprocessing.html#multiprocessing.Pipe) can only have **two** endpoints.
+    * **WHEN TO USE:** If you need absolute performance, a [`Pipe()`](http://docs.python.org/library/multiprocessing.html#multiprocessing.Pipe) is much faster because `Queue()` is built on top of `Pipe()`.
+
 * **`multiprocessing` lib vs `threading` lib**
 
   **Multiprocessing**
