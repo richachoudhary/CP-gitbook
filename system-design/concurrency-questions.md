@@ -16,9 +16,7 @@
 '''
 taken from educative
 '''
-from threading import Thread
-from threading import Condition
-from threading import current_thread
+from threading import Thread, Condition, current_thread
 import time
 import random
 
@@ -27,14 +25,14 @@ class BlockingQueue:
 
     def __init__(self, max_size):
         self.max_size = max_size
-        self.curr_size = 0
+        self.curr_size = 0    # queue size
         self.cond = Condition()
         self.q = []
 
     def dequeue(self):
 
         self.cond.acquire()
-        while self.curr_size == 0:
+        while self.curr_size == 0:    # there are no events to read from
             self.cond.wait()
 
         item = self.q.pop(0)
@@ -263,7 +261,7 @@ Consumer consumed item :  20
 {% endtab %}
 {% endtabs %}
 
-### 2. Readers-Writers Problem
+### ✅2. Readers-Writers Problem
 
 * There is a shared data which can be accessed by multiple processes. 
 * There are two types of processes in the system i.e a **reader** and a **writer**. 
@@ -375,7 +373,7 @@ Writing data.....
 ```python
 class LightSwitch:
 	"""An auxiliary "light switch"-like object. The first thread turns on the 
-	"switch", the last one turns it off (see [1, sec. 4.2.2] for details)."""
+	"switch", the last one turns it off """
 	def __init__(self):
 		self.counter = 0
 		self.mutex = threading.Lock()
@@ -471,7 +469,7 @@ class DiningPhilosophers:
 #
 # This solution make odd positioned philosophers righties and even positioned lefties
 # This guarantees no deadlock and make the solution as fair as possible with maximum philosophers even
-# The Solution is completely fair with even number of philosophers but is slightly unfair when the number is odd where to righties sit next to each other (1st and last)
+# The Solution is completely fair with even number of philosophers but is slightly unfair when the number is odd where 2 righties sit next to each other (1st and last)
 # This code is deadlock free.
 
 
@@ -980,20 +978,20 @@ searchSwitch = Lightswitch()
 insertSwitch = Lightswitch()
 
 def searcher():
-				  searchSwitch.wait(noSearcher)
+				  searchSwitch.acquire(noSearcher)
 					# critical section
-					searchSwitch.signal(noSearcher)
+					searchSwitch.release(noSearcher)
 				        
 def inserter():
 		  insertSwitch.wait(noInserter) 
 		  insertMutex.wait()
 			# critical section
-			insertMutex.signal()
+			insertMutex.release()
 			insertSwitch.signal(noInserter)
 
 def deleter():
-    noSearcher.wait()
-	  noInserter.wait()
+    noSearcher.acquire()
+	  noInserter.acquire()
 	  # critical section 4 noInserter.signal() 
 	  noSearcher.signal()
 ```
@@ -2425,6 +2423,32 @@ with MessagingService() as ms:
 ### ✅1.LC [1114. Print in Order](https://leetcode.com/problems/print-in-order/) 
 
 {% tabs %}
+{% tab title="1114- 2: Semaphore✅" %}
+```python
+'''
+Start with two closed gates represented by 0-value semaphores. Second and third thread are waiting behind these gates. When the first thread prints, it opens the gate for the second thread. When the second thread prints, it opens the gate for the third thread.
+'''
+from threading import Semaphore
+
+class Foo:
+    def __init__(self):
+        self.gates = (Semaphore(0),Semaphore(0))
+        
+    def first(self, printFirst):
+        printFirst()
+        self.gates[0].release()
+        
+    def second(self, printSecond):
+        with self.gates[0]:
+            printSecond()
+            self.gates[1].release()
+            
+    def third(self, printThird):
+        with self.gates[1]:
+            printThird()
+```
+{% endtab %}
+
 {% tab title="1114-1 : Lock" %}
 ```python
 '''
@@ -2460,32 +2484,6 @@ class Foo:
             printThird()
         finally:
             self.locks[1].release()
-```
-{% endtab %}
-
-{% tab title="1114- 2: Semaphore" %}
-```python
-'''
-Start with two closed gates represented by 0-value semaphores. Second and third thread are waiting behind these gates. When the first thread prints, it opens the gate for the second thread. When the second thread prints, it opens the gate for the third thread.
-'''
-from threading import Semaphore
-
-class Foo:
-    def __init__(self):
-        self.gates = (Semaphore(0),Semaphore(0))
-        
-    def first(self, printFirst):
-        printFirst()
-        self.gates[0].release()
-        
-    def second(self, printSecond):
-        with self.gates[0]:
-            printSecond()
-            self.gates[1].release()
-            
-    def third(self, printThird):
-        with self.gates[1]:
-            printThird()
 ```
 {% endtab %}
 
@@ -2590,6 +2588,34 @@ class Foo:
 ### ✅2. LC [1115. Print FooBar Alternately](https://leetcode.com/problems/print-foobar-alternately/) 
 
 {% tabs %}
+{% tab title=" 2: Semaphore✅" %}
+```python
+'''
+Use two Semaphores just as we used two locks. 
+The foo_gate semaphore starts with a value of 1 because we want foo to print first.
+'''
+from threading import Semaphore
+
+class FooBar:
+    def __init__(self, n):
+        self.n = n
+        self.foo_gate = Semaphore(1)
+        self.bar_gate = Semaphore(0)
+
+    def foo(self, printFoo):
+        for i in range(self.n):
+            self.foo_gate.acquire()
+            printFoo()
+            self.bar_gate.release()
+
+    def bar(self, printBar):
+        for i in range(self.n):
+            self.bar_gate.acquire()
+            printBar()
+            self.foo_gate.release()
+```
+{% endtab %}
+
 {% tab title="1 : Lock" %}
 ```python
 '''
@@ -2616,34 +2642,6 @@ class FooBar:
             self.bar_lock.acquire()
             printBar()
             self.bar_lock.release()
-```
-{% endtab %}
-
-{% tab title=" 2: Semaphore" %}
-```python
-'''
-Use two Semaphores just as we used two locks. 
-The foo_gate semaphore starts with a value of 1 because we want foo to print first.
-'''
-from threading import Semaphore
-
-class FooBar:
-    def __init__(self, n):
-        self.n = n
-        self.foo_gate = Semaphore(1)
-        self.bar_gate = Semaphore(0)
-
-    def foo(self, printFoo):
-        for i in range(self.n):
-            self.foo_gate.acquire()
-            printFoo()
-            self.bar_gate.release()
-
-    def bar(self, printBar):
-        for i in range(self.n):
-            self.bar_gate.acquire()
-            printBar()
-            self.foo_gate.release()
 ```
 {% endtab %}
 
