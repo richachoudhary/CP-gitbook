@@ -324,7 +324,98 @@ Processing 10000 numbers took 2.190778970718384 time using serial processing.
 '''
 ```
 
-### 3. Queue
+### 3. Lock\(synonym = Mutex\)
+
+* **WHAT is Lock/Mutex:** 
+  * A lock or mutex is a **synchronisation mechanism** to **enforce limits** on **access to a resource** in an environment where there are **many threads of execution**.
+* **Without Lock \(**on shared variable**\)**
+  * output is random values every time; because `add` & `subtract` methods are accessing the shared variable randomly
+
+```python
+import time 
+from multiprocessing import Process, Lock, Value
+
+def add_500_no_lock(total):
+    for _ in range(500):
+        time.sleep(.01)
+        total.value += 5
+        
+def sub_500_no_lock(total):
+    for _ in range(500):
+        time.sleep(.01)
+        total.value -= 5
+
+if __name__ == '__main__':
+    
+    total = Value('i', 500)
+    #lock = Lock()    # lock not used
+    
+    add_process = Process(target=add_500_no_lock, args=(total,))
+    sub_process = Process(target=sub_500_no_lock, args=(total,))
+    
+    add_process.start()
+    sub_process.start()
+    
+    add_process.join()
+    sub_process.join()
+    
+    print(total.value)
+    
+'''
+Output: (outputs random values of target)
+360
+705
+510
+......
+'''
+```
+
+* **WITH Lock**
+
+```python
+import time 
+from multiprocessing import Process, Lock, Value
+
+def add_500_lock(total,lock):
+    for _ in range(500):
+        time.sleep(.01)
+        lock.acquire()    # locking the critical/shared section
+        total.value += 5
+        lock.release()
+        
+def sub_500_lock(total,lock):
+    for _ in range(500):
+        time.sleep(.01)
+        lock.acquire()    # locking the critical/shared section
+        total.value -= 5
+        lock.release()
+
+if __name__ == '__main__':
+    
+    total = Value('i', 500)
+    lock = Lock()
+    
+    add_process = Process(target=add_500_lock, args=(total,lock))
+    sub_process = Process(target=sub_500_lock, args=(total,lock))
+    
+    add_process.start()
+    sub_process.start()
+    
+    add_process.join()
+    sub_process.join()
+    
+    print(total.value)
+    
+'''
+Output: prints 500(as expected) all the time => Atomic tranactions
+
+500
+'''
+```
+
+
+
+### 4. Queue \| `multiprocessing.Queue`
 
 * One of the ways for **sharing data between multi-processed functions**
 * Using the multiprocessing **`Queue`** class to communicate between different processes
@@ -466,95 +557,40 @@ print('done............')
 {% endtab %}
 {% endtabs %}
 
-### 
-
-### 3. Lock\(synonym = Mutex\)
-
-* **WHAT is Lock/Mutex:** 
-  * A lock or mutex is a **synchronisation mechanism** to **enforce limits** on **access to a resource** in an environment where there are **many threads of execution**.
-* **Without Lock \(**on shared variable**\)**
-  * output is random values every time; because `add` & `subtract` methods are accessing the shared variable randomly
+### 5. Pipe \| `multiprocessing.Pipe`
 
 ```python
-import time 
-from multiprocessing import Process, Lock, Value
+from multiprocessing import Process, Pipe
+import time
 
-def add_500_no_lock(total):
-    for _ in range(500):
-        time.sleep(.01)
-        total.value += 5
-        
-def sub_500_no_lock(total):
-    for _ in range(500):
-        time.sleep(.01)
-        total.value -= 5
+def reader_proc(pipe):
+    ## Read from the pipe; this will be spawned as a separate Process
+    p_output, p_input = pipe
+    p_input.close()    # We are only reading
+    while True:
+        msg = p_output.recv()    # Read from the output pipe and do nothing
+        if msg=='DONE':
+            break
 
-if __name__ == '__main__':
-    
-    total = Value('i', 500)
-    #lock = Lock()    # lock not used
-    
-    add_process = Process(target=add_500_no_lock, args=(total,))
-    sub_process = Process(target=sub_500_no_lock, args=(total,))
-    
-    add_process.start()
-    sub_process.start()
-    
-    add_process.join()
-    sub_process.join()
-    
-    print(total.value)
-    
-'''
-Output: (outputs random values of target)
-360
-705
-510
-......
-'''
-```
+def writer(count, p_input):
+    for ii in range(0, count):
+        p_input.send(ii)             # Write 'count' numbers into the input pipe
+    p_input.send('DONE')
 
-* **WITH Lock**
+if __name__=='__main__':
+    for count in [10**4, 10**5, 10**6]:
+        # Pipes are unidirectional with two endpoints:  p_input ------> p_output
+        p_output, p_input = Pipe()  # writer() writes to p_input from _this_ process
+        reader_p = Process(target=reader_proc, args=((p_output, p_input),))
+        reader_p.daemon = True
+        reader_p.start()     # Launch the reader process
 
-```python
-import time 
-from multiprocessing import Process, Lock, Value
-
-def add_500_lock(total,lock):
-    for _ in range(500):
-        time.sleep(.01)
-        lock.acquire()    # locking the critical/shared section
-        total.value += 5
-        lock.release()
-        
-def sub_500_lock(total,lock):
-    for _ in range(500):
-        time.sleep(.01)
-        lock.acquire()    # locking the critical/shared section
-        total.value -= 5
-        lock.release()
-
-if __name__ == '__main__':
-    
-    total = Value('i', 500)
-    lock = Lock()
-    
-    add_process = Process(target=add_500_lock, args=(total,lock))
-    sub_process = Process(target=sub_500_lock, args=(total,lock))
-    
-    add_process.start()
-    sub_process.start()
-    
-    add_process.join()
-    sub_process.join()
-    
-    print(total.value)
-    
-'''
-Output: prints 500(as expected) all the time => Atomic tranactions
-
-500
-'''
+        p_output.close()       # We no longer need this part of the Pipe()
+        _start = time.time()
+        writer(count, p_input) # Send a lot of stuff to reader_proc()
+        p_input.close()
+        reader_p.join()
+        print("Sending {0} numbers to Pipe() took {1} seconds".format(count,(time.time() - _start)))
 ```
 
 
