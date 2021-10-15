@@ -2,10 +2,10 @@
 
 ## Classical Questions
 
-### ✅1. Producer-consumer problem \| Message Bus
+### ✅1. Producer-consumer problem | Message Bus
 
 * Whenever an event occurs, a **producer thread** creates an event object and adds it to the event buffer. Concurrently, **consumer threads** take events out of the buffer and process them. In this case, the consumers are called “event handlers.”
-  * **e.g.:** event-driven programs
+  * **e.g.: **event-driven programs
 * **Constraints Requirements of System:**
   * While an item is being added to or removed from the buffer, the buffer is in an inconsistent state. Therefore, threads must have exclusive access to the buffer.
   * If a consumer thread arrives while the buffer is empty, it blocks until a producer adds a new item.
@@ -267,10 +267,10 @@ Consumer consumed item :  20
 * There are two types of processes in the system i.e a **reader** and a **writer**. 
 * **Any number of readers can read** from the shared resource simultaneously, but **only one writer can write** to the shared resource. 
 * When a **writer is writing** data to the resource, **no other process can access** the resource. 
-* A **writer cannot write** to the resource if there are **non zero number of readers** accessing the resource at that time.
+* A** writer cannot write** to the resource if there are** non zero number of readers** accessing the resource at that time.
 
 {% tabs %}
-{% tab title="simple\_reader\_writer\_soln" %}
+{% tab title="simple_reader_writer_soln" %}
 ```python
 import threading
 import time
@@ -368,7 +368,7 @@ Writing data.....
 
 ### ✅3. LightSwitch
 
-* **first person** into a room **turns on** the light \(locks the mutex\) and the **last one out** turns it **off** \(unlocks the mutex\).
+* **first person** into a room **turns on** the light (locks the mutex) and the **last one out** turns it **off** (unlocks the mutex).
 
 ```python
 class LightSwitch:
@@ -393,7 +393,7 @@ class LightSwitch:
 		self.mutex.release()
 ```
 
-### 
+###
 
 ### ✅4. Dining Philosophers
 
@@ -401,11 +401,11 @@ class LightSwitch:
 * **PROBLEM**: A philosopher can take the fork on their right or the one on their left as they become available, but cannot start eating before getting both forks.
 * **SOLUTION**:
 * If a philosopher picks up 2 forks, then they will set them down after. So a philosopher could only really get stuck on 0 or 1 forks.
-* **WHEN CAN DEADLOCK HAPPEN:** Its easy to see that this means a deadlock only occurs if 5 forks are picked up \(1 for each philosopher\).
+* **WHEN CAN DEADLOCK HAPPEN: **Its easy to see that this means a deadlock only occurs if 5 forks are picked up (1 for each philosopher).
   * **WHAT ENSURES DEADLOCK WONT HAPPEN**: if max number of forks lifts are allowed = 5 -1 = **4**
 
 {% tabs %}
-{% tab title="leetcode\_soln" %}
+{% tab title="leetcode_soln" %}
 ```python
 '''
 SOLUITON 1: 
@@ -463,7 +463,7 @@ class DiningPhilosophers:
 ```
 {% endtab %}
 
-{% tab title="full\_soln\_from\_book" %}
+{% tab title="full_soln_from_book" %}
 ```python
 # The Dining Philosophers Problem solved using alternating lefties and righties
 #
@@ -525,8 +525,14 @@ def put_forks(i):
 * For example, if the agent puts out tobacco and paper, the smoker with the matches should pick up both ingredients, make a cigarette, and then signal the agent.
 * To explain the premise, the agent represents an operating system that allocates resources, and the smokers represent applications that need resources.
 * **SOLN:**
-*  ****Vendor routine: 1. Generate two items randomly and put them on table. 2. Broadcast the information to all the smokers. 3. Go to sleep till the particular smoker, creates cigarette and is done with smoking.
-* Smokers routine: 1. Wait for the two ingredients to be made available on table. 2. create the cigarette and smoke. 3. Wakeup the sleeping vendor.
+* ** **Vendor routine:\
+  1\. Generate two items randomly and put them on table.\
+  2\. Broadcast the information to all the smokers.\
+  3\. Go to sleep till the particular smoker, creates cigarette and is done with smoking.
+* Smokers routine:\
+  1\. Wait for the two ingredients to be made available on table.\
+  2\. create the cigarette and smoke.\
+  3\. Wakeup the sleeping vendor.
 
 ```python
 # Cigarette Smokers Problem Solution
@@ -684,7 +690,7 @@ if __name__ == "__main__":
 ### ✅2. The Barbershop/Sleeping Barber Problem
 
 * A barbershop consists of a waiting room with n chairs, and the barber room containing the barber chair. If there are no customers to be served, the barber goes to sleep. If a customer enters the barbershop and all chairs are occupied, then the customer leaves the shop. If the barber is busy, but chairs are available, then the customer sits in one of the free chairs. If the barber is asleep, the customer wakes up the barber. Write a program to coordinate the barber and the customers.
-* **SOLVE:** The barber waits on customer until a customer enters the shop, then the customer waits on barber until the barber signals him to take a seat.
+* **SOLVE: **The barber waits on customer until a customer enters the shop, then the customer waits on barber until the barber signals him to take a seat.
 
 ```python
 from threading import Thread
@@ -791,19 +797,17 @@ if __name__ == '__main__':
 
 ### 3. Santa Claus Problem
 
-* Stand Claus sleeps in his shop at the North Pole and can only be awakened by either \(1\) all nine reindeer being back from their vaca- tion in the South Pacific, or \(2\) some of the elves having difficulty making toys; to allow Santa to get some sleep, the elves can only wake him when three of them have problems. When three elves are having their problems solved, any other elves wishing to visit Santa must wait for those elves to return. If Santa wakes up to find three elves waiting at his shop’s door, along with the last reindeer having come back from the tropics, Santa has decided that the elves can wait until after Christmas, because it is more important to get his sleigh ready. \(It is assumed that the reindeer do not want to leave the tropics, and therefore they stay there until the last possible mo- ment.\) The last reindeer to arrive must get Santa while the others wait in a warming hut before being harnessed to the sleigh.
+* Stand Claus sleeps in his shop at the North Pole and can only be awakened by either (1) all nine reindeer being back from their vaca- tion in the South Pacific, or (2) some of the elves having difficulty making toys; to allow Santa to get some sleep, the elves can only wake him when three of them have problems. When three elves are having their problems solved, any other elves wishing to visit Santa must wait for those elves to return. If Santa wakes up to find three elves waiting at his shop’s door, along with the last reindeer having come back from the tropics, Santa has decided that the elves can wait until after Christmas, because it is more important to get his sleigh ready. (It is assumed that the reindeer do not want to leave the tropics, and therefore they stay there until the last possible mo- ment.) The last reindeer to arrive must get Santa while the others wait in a warming hut before being harnessed to the sleigh.
 * Here are some addition specifications:
-  * After the ninth reindeer arrives, Santa must invoke prepareSleigh, and
+  *   After the ninth reindeer arrives, Santa must invoke prepareSleigh, and
 
-    then all nine reindeer must invoke getHitched.
+      then all nine reindeer must invoke getHitched.
+  *   After the third elf arrives, Santa must invoke helpElves. Concurrently,
 
-  * After the third elf arrives, Santa must invoke helpElves. Concurrently,
+      all three elves should invoke getHelp.
+  *   All three elves must invoke getHelp before any additional elves enter
 
-    all three elves should invoke getHelp.
-
-  * All three elves must invoke getHelp before any additional elves enter
-
-    \(increment the elf counter\).
+      (increment the elf counter).
 
 ```python
 import random
@@ -916,14 +920,13 @@ main()
 
 ### 4. River Crossing Problem
 
-* Somewhere near Redmond, Washington there is a rowboat that is used by both Linux hackers and Microsoft employees \(serfs\) to cross a river. The ferry can hold exactly four people; it won’t leave the shore with more or fewer. To guarantee the safety of the passengers, it is not permissible to put one hacker in the boat with three serfs, or to put one serf with three hackers. Any other combination is safe.
+*   Somewhere near Redmond, Washington there is a rowboat that is used by both Linux hackers and Microsoft employees (serfs) to cross a river. The ferry can hold exactly four people; it won’t leave the shore with more or fewer. To guarantee the safety of the passengers, it is not permissible to put one hacker in the boat with three serfs, or to put one serf with three hackers. Any other combination is safe.
 
-  As each thread boards the boat it should invoke a function called board. You must guarantee that all four threads from each boatload invoke board before any of the threads from the next boatload do.
+    As each thread boards the boat it should invoke a function called board. You must guarantee that all four threads from each boatload invoke board before any of the threads from the next boatload do.
 
-  After all four threads have invoked board, exactly one of them should call a function named rowBoat, indicating that that thread will take the oars. It doesn’t matter which thread calls the function, as long as one does.
+    After all four threads have invoked board, exactly one of them should call a function named rowBoat, indicating that that thread will take the oars. It doesn’t matter which thread calls the function, as long as one does.
 
-  Don’t worry about the direction of travel. Assume we are only interested in traffic going in one of the directions.
-
+    Don’t worry about the direction of travel. Assume we are only interested in traffic going in one of the directions.
 * **SOLUTION:**
   * The basic idea of this solution is that each arrival updates one of the counters and then checks whether it makes a full complement, either by being the fourth of its kind or by completing a mixed pair of pairs.
 
@@ -963,9 +966,9 @@ if isCaptain:
 
 ### 1. LinkedList search-insert-delete problem
 
-* **Descript**io**n:** Three kinds of threads share access to a singly-linked list: searchers, inserters and deleters. Searchers merely examine the list; hence they can execute concurrently with each other. Inserters add new items to the end of the list; insertions must be mutually exclusive to preclude two inserters from inserting new items at about the same time. However, one insert can proceed in parallel with any number of searches. Finally, deleters remove items from anywhere in the list. At most one deleter process can access the list at a time, and deletion must also be mutually exclusive with searches and insertions.
-* **TODO:** write code for searchers, inserters and deleters that enforces this kind of threeway categorical mutual exclusion.
-* **Solution:** 
+* **Descript**io**n: **Three kinds of threads share access to a singly-linked list: searchers, inserters and deleters. Searchers merely examine the list; hence they can execute concurrently with each other. Inserters add new items to the end of the list; insertions must be mutually exclusive to preclude two inserters from inserting new items at about the same time. However, one insert can proceed in parallel with any number of searches. Finally, deleters remove items from anywhere in the list. At most one deleter process can access the list at a time, and deletion must also be mutually exclusive with searches and insertions.
+* **TODO: **write code for searchers, inserters and deleters that enforces this kind of threeway categorical mutual exclusion.
+* **Solution: **
 
 ```python
 insertMutex = Semaphore(1)	# insertMutex ensures that only one inserter is in its critical section at a time.
@@ -1002,7 +1005,7 @@ def deleter():
 * There should never be more than **three** employees squandering company time in the bathroom.
 
 {% tabs %}
-{% tab title="implemented\_using\_conditon\_obj" %}
+{% tab title="implemented_using_conditon_obj" %}
 ```python
 import logging, threading, random, time
 
@@ -1158,7 +1161,7 @@ else:
 
 ## SysD Heavy Questions
 
-### ✅1.1. Rate Limiting Algo\#1: Token Bucket \| [link](https://dev.to/satrobit/rate-limiting-using-the-token-bucket-algorithm-3cjh)
+### ✅1.1. Rate Limiting Algo#1: Token Bucket | [link](https://dev.to/satrobit/rate-limiting-using-the-token-bucket-algorithm-3cjh)
 
 * How does it work
   1. Picture a bucket in your mind.
@@ -1238,7 +1241,7 @@ Packet Forwarded: 15
 '''
 ```
 
-### ✅1.2. Rate Limiting Algo\#2: Leaky Bucket  \| @rubrik 😖
+### ✅1.2. Rate Limiting Algo#2: Leaky Bucket  | @rubrik 😖
 
 ```python
 import time
@@ -1327,9 +1330,9 @@ last_leak_time : 1633569137
 '''
 ```
 
-### 
+###
 
-### ✅1.3. Rate Limiting Algo\#3: Fixed Window \| [link](https://dev.to/satrobit/rate-limiting-using-the-fixed-window-algorithm-2hgm)
+### ✅1.3. Rate Limiting Algo#3: Fixed Window | [link](https://dev.to/satrobit/rate-limiting-using-the-fixed-window-algorithm-2hgm)
 
 * Every time-window has fixed capacity
 
@@ -1377,7 +1380,7 @@ while True:
     packet += 1
 ```
 
-### ✅1.4. Rate Limiting Algo\#2: Sliding Window Bucket \| [link](https://dev.to/satrobit/rate-limiting-using-the-sliding-window-algorithm-5fjn) \| [logic](https://nlogn.in/design-a-scalable-rate-limiting-algorithm-system-design/)
+### ✅1.4. Rate Limiting Algo#2: Sliding Window Bucket | [link](https://dev.to/satrobit/rate-limiting-using-the-sliding-window-algorithm-5fjn) | [logic](https://nlogn.in/design-a-scalable-rate-limiting-algorithm-system-design/)
 
 * A problem with Fixed Window was that It **allowed a huge burst at the edge of windows** because you can combine the capacity of the current and the next window to send a burst of requests.
 * Sliding Window tries to fix that by taking the previous counter into account, causing the flow to be more smooth.
@@ -1435,12 +1438,12 @@ while True:
     packet += 1
 ```
 
-### ✅2. Scheduler Library \| using`threading.Timer` 
+### ✅2. Scheduler Library | using`threading.Timer` 
 
-* Syntax: **`t = threading.Timer(n,func_name)`** 
+* Syntax:**` t = threading.Timer(n,func_name)`** 
   * will run the **`func_name`** function **`after n`** milli-seconds
 
-```text
+```
 #Question
 Implement following method of ScheduledExecutorService interface in Java
 
@@ -1457,7 +1460,7 @@ Creates and executes a periodic action that becomes enabled first after the give
 ```
 
 {% tabs %}
-{% tab title="\[easy\]:timer-threadsafe out of the box; relies on 3P" %}
+{% tab title="[easy]:timer-threadsafe out of the box; relies on 3P" %}
 ```python
 import time
 from threading import Timer
@@ -1486,7 +1489,7 @@ for x in range(5):    # will run all possible jobs in 0-5 seconds
 ```
 {% endtab %}
 
-{% tab title="\[diff\]: theadsafe" %}
+{% tab title="[diff]: theadsafe" %}
 ```python
 import time
 from threading import Timer, Lock
@@ -1552,7 +1555,7 @@ finally:
 
 
 
-#### \#\#\# &gt;&gt; Used pattern: [Chain of responsibility](https://www.tutorialspoint.com/design_pattern/chain_of_responsibility_pattern.htm)
+#### ### >> Used pattern: [Chain of responsibility](https://www.tutorialspoint.com/design_pattern/chain_of_responsibility_pattern.htm)
 
 * **Chain of responsibility** pattern creates a **chain of receiver objects for a request**. This pattern decouples sender and receiver of a request based on type of request
 * In this pattern, normally each receiver contains reference to another receiver. 
@@ -1564,7 +1567,7 @@ finally:
 
 {% tabs %}
 {% tab title="Classes" %}
-```text
+```
 Enum Level:
 ------Info
 ------Warn
@@ -1740,7 +1743,7 @@ emit_log(Level.INFO, 'local','some info err')
 
 
 
-### ✅4. Pub/Sub \| Event Bus
+### ✅4. Pub/Sub | Event Bus
 
 * Here: [https://dev.to/mandrewcito/lazy-pub-sub-python-implementation-3fi8](https://dev.to/mandrewcito/lazy-pub-sub-python-implementation-3fi8)
 
@@ -1908,7 +1911,7 @@ class AtomicInteger():
             return self._value
 ```
 
-### 
+###
 
 ### ✅6. Multithreaded Merge Sort
 
@@ -2129,7 +2132,7 @@ public void seatDemocrat() throws InterruptedException, BrokenBarrierException {
 
 
 
-### 7: Multithreaded Pub-Sub Queue Like Kafka \| no need; as already done ABOVE\(\#4\)
+### 7: Multithreaded Pub-Sub Queue Like Kafka | no need; as already done ABOVE(#4)
 
 {% tabs %}
 {% tab title="Kakfa" %}
@@ -2740,10 +2743,10 @@ class FooBar:
 {% endtab %}
 {% endtabs %}
 
-### ✅3. \[Queue\] LC [1188.Design Bounded Blocking Queue](https://leetcode.libaoj.in/design-bounded-blocking-queue.html) \| @rubrik
+### ✅3. \[Queue] LC [1188.Design Bounded Blocking Queue](https://leetcode.libaoj.in/design-bounded-blocking-queue.html) | @rubrik
 
 * Follow up: **Does it matter if we use `notify()` or `notifyAll()` method in our implementation?**
-* In both the `enqueue()` and `dequeue()` methods we use the `notifyAll()` method instead of the `notify()` method. The reason behind the choice is very crucial to understand. Consider a situation with **two producer threads and one consumer thread** all working with a queue of size one. It's possible that when an item is added to the queue by one of the producer threads, the other two threads are blocked waiting on the condition variable. If the producer thread after adding an item invokes `notify()` it is possible that the other producer thread is chosen by the system to resume execution. The woken-up producer thread would find the queue full and go back to waiting on the condition variable, causing a deadlock. Invoking `notifyAll()` assures that the consumer thread also gets a chance to wake up and resume execution.
+* In both the `enqueue()` and `dequeue()` methods we use the `notifyAll()` method instead of the `notify()` method. The reason behind the choice is very crucial to understand. Consider a situation with** two producer threads and one consumer thread** all working with a queue of size one. It's possible that when an item is added to the queue by one of the producer threads, the other two threads are blocked waiting on the condition variable. If the producer thread after adding an item invokes `notify()` it is possible that the other producer thread is chosen by the system to resume execution. The woken-up producer thread would find the queue full and go back to waiting on the condition variable, causing a deadlock. Invoking `notifyAll()` assures that the consumer thread also gets a chance to wake up and resume execution.
 
 {% tabs %}
 {% tab title="@Producer-consumer" %}
@@ -2912,10 +2915,10 @@ print('done............')
 {% endtab %}
 {% endtabs %}
 
-### ✅4. \[Stack\] Design Threadsafe stack using LinkedList \| @Rubrik
+### ✅4. \[Stack] Design Threadsafe stack using LinkedList | @Rubrik
 
 {% tabs %}
-{% tab title="with\_threadsafe" %}
+{% tab title="with_threadsafe" %}
 ```python
 import time
 from threading import Thread,Condition
@@ -3125,7 +3128,7 @@ print('================ FINISHED ======================')
 ```
 {% endtab %}
 
-{% tab title="without\_threadsafe" %}
+{% tab title="without_threadsafe" %}
 ```python
 class Node:
     # Class to create nodes of linked list
@@ -3231,7 +3234,7 @@ print('================ FINISHED ======================')
 {% endtab %}
 {% endtabs %}
 
-### ✅5. LC [1117. Building H2O](https://leetcode.com/problems/building-h2o/) \| barrier+semaphore
+### ✅5. LC [1117. Building H2O](https://leetcode.com/problems/building-h2o/) | barrier+semaphore
 
 {% tabs %}
 {% tab title="1117" %}
@@ -3270,7 +3273,7 @@ class H2O:
 
 ### ✅6. LC  [1195. Fizz Buzz Multithreaded](https://leetcode.com/problems/fizz-buzz-multithreaded/)
 
-* Modify the given class to output the series `[1, 2, "Fizz", 4, "Buzz", ...]` where the `ith` token \(**1-indexed**\) of the series is:
+* Modify the given class to output the series `[1, 2, "Fizz", 4, "Buzz", ...]` where the `ith` token (**1-indexed**) of the series is:
   * `"FizzBuzz"` if `i` is divisible by `3` and `5`,
   * `"Fizz"` if `i` is divisible by `3` and not `5`,
   * `"Buzz"` if `i` is divisible by `5` and not `3`, or
@@ -3337,5 +3340,4 @@ class FizzBuzz:
 {% endtab %}
 {% endtabs %}
 
-## 
-
+##

@@ -5,9 +5,9 @@
 * LC 588. [Design In-Memory File System](https://leetfree.com/problems/design-in-memory-file-system)
 * [339. Evaluate Division](https://leetcode.com/problems/evaluate-division/) 
 * **Textbook Buy Sell**
-* \*\*\*\*[**CurrencyConversion**](https://leetcode.com/discuss/interview-question/483660/google-phone-currency-conversion)\*\*\*\*
+* ****[**CurrencyConversion**](https://leetcode.com/discuss/interview-question/483660/google-phone-currency-conversion)****
 * **Currency Arbitrage**: Now given any two currencies x and y. Find the best conversion rate. Basically a graph problem you will have to traverse all paths from x to y because you want the best conversion rate.
-  * **follow up** - Rather than hardcoding the data use two apis - 1.\) [https://api.pro.coinbase.com/products](https://api.pro.coinbase.com/products) to get the id like USD-EUR aka currency pair and 2.\) [https://api.pro.coinbase.com/products/](https://api.pro.coinbase.com/products/)" + id + "/book to fetch the ask and bid price for each one of them. response = request.get\(url\) is enough to handle the GET calls + response.json\(\) is enough to parse the response.
+  * **follow up** - Rather than hardcoding the data use two apis - 1.) [https://api.pro.coinbase.com/products](https://api.pro.coinbase.com/products) to get the id like USD-EUR aka currency pair and 2.) [https://api.pro.coinbase.com/products/](https://api.pro.coinbase.com/products/)" + id + "/book to fetch the ask and bid price for each one of them. response = request.get(url) is enough to handle the GET calls + response.json() is enough to parse the response.
 
 {% tabs %}
 {% tab title="588.MyFileSys" %}
@@ -109,7 +109,7 @@ if __name__ == "__main__":
 ```
 {% endtab %}
 
-{% tab title="\(posh\)588.FileSys" %}
+{% tab title="(posh)588.FileSys" %}
 ```python
 # l is the path length, 
 # k is the number of entries in the last level directory
@@ -443,10 +443,10 @@ The Bellman-Ford algorithm can detect negative cycles. So if we run Bellman-Ford
 
 * **Slack**
   * how will you mark the message read. 
-  * API + storage layer \(main focus\), 
+  * API + storage layer (main focus), 
   * how will you push notifications. 
   * How will you show "someone is typing.." kinda feature
-    * =&gt; Mostly like whoever is typing send updates to cache with the timestamp and then UI can fetch cache data. Not a very efficient approach because later the interviewer told me that Spotify actually open Websockets for each client. It doesn't depend on long polling method. I didn't verify the interviewer's claim. Actually, in all the notification services based interviews, I have seen the crux is how do you send the data from server to the client. Usually, the interviewers are happy with long polling strategy or fixed interval-based check.
+    * \=> Mostly like whoever is typing send updates to cache with the timestamp and then UI can fetch cache data. Not a very efficient approach because later the interviewer told me that Spotify actually open Websockets for each client. It doesn't depend on long polling method. I didn't verify the interviewer's claim. Actually, in all the notification services based interviews, I have seen the crux is how do you send the data from server to the client. Usually, the interviewers are happy with long polling strategy or fixed interval-based check.
 * **Stock Exchange**
   * Design a ordering system for stocks. Users will place orders and cancel orders. Think about race conditions when trying to cancel an order before executed. Users can also schedule orders in the future.
 
@@ -458,7 +458,7 @@ Onsite: 2 pair programming and 1 system design.
 
 First pair programming was an OOP related question with some minor algorithms. The focus here is on getting a working solution and communicating clearly.
 
-Second pair programming was actually pretty heavily algorithm involved although you also needed some OOP principles. \(I signed an NDA so I can't disclose Coinbase questions\)
+Second pair programming was actually pretty heavily algorithm involved although you also needed some OOP principles. (I signed an NDA so I can't disclose Coinbase questions)
 
 The system design was very generic and I think watching enough Youtube videos would be enough help here.I can't disclose exactly but on a high-level it was essentially like designing a system that periodically fetches data from an API and uses it in the system.
 
@@ -466,25 +466,25 @@ I received an offer only 2 days after!
 
 
 
-_3rd round \(1 hour\):_  
-This was a coding interview. The question was given a list of buy and sell orders, try to find the maximum profit a trader can make?  
-After solving the question, I was given few practical real world problems a cryptocurrency exchange faces and was asked how I would solve it.  
+_3rd round (1 hour):_\
+This was a coding interview. The question was given a list of buy and sell orders, try to find the maximum profit a trader can make?\
+After solving the question, I was given few practical real world problems a cryptocurrency exchange faces and was asked how I would solve it.\
 After a week I got a reject.
 
-On-site Round 1: System Design. Design Slack. Question regarding how will you mark the message read. API + storage layer \(main focus\), how will you push notifications. How will you show "someone is typing.." kinda feature.
+On-site Round 1: System Design. Design Slack. Question regarding how will you mark the message read. API + storage layer (main focus), how will you push notifications. How will you show "someone is typing.." kinda feature.
 
 
 
 **Phone Screen**
 
 * a way for users to buy and sell stocks
-* match buyers with the lowest seler \(&lt;= buyer's price\)
-* match sellers with the highest buyer \(&gt;= seller's price\)
+* match buyers with the lowest seler (<= buyer's price)
+* match sellers with the highest buyer (>= seller's price)
 
-**Onsite**  
+**Onsite**\
 Currency Exchange
 
-* a list of currency relationships with exchange values. \(BTC - USD\)
+* a list of currency relationships with exchange values. (BTC - USD)
 * find the best exchange rate from currency1 to currency2
 
 Game
@@ -494,7 +494,7 @@ Game
 
 System Design
 
-* design slack and slack related features \(show "some one is typing" etc\)
+* design slack and slack related features (show "some one is typing" etc)
 
 Behavioral
 
@@ -503,9 +503,9 @@ Behavioral
 
 
 
-## Pair Programing\#2
+## Pair Programing#2
 
-### 
+###
 
 ## Question Bank:
 
@@ -514,7 +514,7 @@ Behavioral
 
 ## 0. Dependency Injec**ti**on
 
-Dependency injection is a principle that helps to decrease coupling and increase cohesion.![../\_images/coupling-cohesion.png](https://python-dependency-injector.ets-labs.org/_images/coupling-cohesion.png)
+Dependency injection is a principle that helps to decrease coupling and increase cohesion.![../\_images/coupling-cohesion.png](https://python-dependency-injector.ets-labs.org/\_images/coupling-cohesion.png)
 
 What is coupling and cohesion?
 
@@ -523,7 +523,7 @@ Coupling and cohesion are about how tough the components are tied.
 * **High coupling**. If the coupling is high it’s like using a superglue or welding. No easy way to disassemble.
 * **High cohesion**. High cohesion is like using the screws. Very easy to disassemble and assemble back or assemble a different way. It is an opposite to high coupling.
 
-**Without Dependency Injection \(DI\):**
+**Without Dependency Injection (DI):**
 
 ```java
 class Car{
@@ -536,7 +536,7 @@ class Car{
 
 **After using dependency injection:**
 
-Here, we are **injecting** the **dependencies** \(Wheel and Battery\) at runtime. Hence the term : _Dependency Injection._ We normally rely on DI frameworks such as Spring, Guice, Weld to create the dependencies and inject where needed.
+Here, we are **injecting** the **dependencies** (Wheel and Battery) at runtime. Hence the term : _Dependency Injection._ We normally rely on DI frameworks such as Spring, Guice, Weld to create the dependencies and inject where needed.
 
 ```java
 class Car{
@@ -557,7 +557,7 @@ class Car{
 
 {% tabs %}
 {% tab title="problem.txt" %}
-```text
+```
 Imagine we have an image. We'll represent this image as a simple 2D array where every pixel is a 1 or a 0.
 
 There are N shapes made up of 0s in the image. They are not necessarily rectangles -- they are odd shapes ("islands"). Find them.
@@ -673,13 +673,13 @@ if __name__ == "__main__":
 {% endtab %}
 {% endtabs %}
 
-## 2. Task By Level \| cook sleep 
+## 2. Task By Level | cook sleep 
 
-* \(Similar: FindLeaves, [LeetCode 366](https://leetfree.com/problems/find-leaves-of-binary-tree)\)
+* (Similar: FindLeaves, [LeetCode 366](https://leetfree.com/problems/find-leaves-of-binary-tree))
 
 {% tabs %}
 {% tab title="problem.txt" %}
-```text
+```
 input = {
 {"cook", "eat"},   // do "cook" before "eat"
 {"study", "eat"},
@@ -773,7 +773,7 @@ if __name__ == "__main__":
 
 {% tabs %}
 {% tab title="problem.txt" %}
-```text
+```
 # Pt1: ===============================================================
 We are working on a security system for a badged-access room in our company's building. 
 Given an ordered list of employees who used their badge to enter or exit the room, 
@@ -835,7 +835,7 @@ Paul: 1315 1355 1405
 ```
 {% endtab %}
 
-{% tab title="solution\_p1 .py" %}
+{% tab title="solution_p1 .py" %}
 ```python
 def solve(records):
 
@@ -894,7 +894,7 @@ if __name__ == "__main__":
 ```
 {% endtab %}
 
-{% tab title="solution\_pt2.py" %}
+{% tab title="solution_pt2.py" %}
 ```python
 from collections import defaultdict
 def solve(records):
@@ -962,11 +962,11 @@ if __name__ == "__main__":
 
 
 
-## 4. Merge Intervals \| LC-252,253 & LC.56
+## 4. Merge Intervals | LC-252,253 & LC.56
 
 {% tabs %}
 {% tab title="problem.txt" %}
-```text
+```
 # Pt1: ===============================================================
 
 Similar to Meeting Rooms(LeetCode 252, *try 253!)
@@ -982,7 +982,7 @@ notice also output 0 - first start time.
 ```
 {% endtab %}
 
-{% tab title="solution\_p1 .py" %}
+{% tab title="solution_p1 .py" %}
 ```python
 function canSchedule(meetings, start, end) {
   for (const meeting of meetings) {
@@ -999,7 +999,7 @@ function canSchedule(meetings, start, end) {
 ```
 {% endtab %}
 
-{% tab title="solution\_pt2.py" %}
+{% tab title="solution_pt2.py" %}
 ```python
 function spareTime(meetings) {
   if (!meetings || meetings.length === 0) {
@@ -1039,7 +1039,7 @@ function mergeMeetings(meetings) {
 
 {% tabs %}
 {% tab title="problem.txt" %}
-```text
+```
 # Pt1: ===============================================================
 
 You are a developer for a university. Your current project is to develop a system for students to find courses they share with friends. The university has a system for querying courses students are enrolled in, returned as a list of (ID, course) pairs.
@@ -1127,7 +1127,7 @@ Sample output (in any order):
 ```
 {% endtab %}
 
-{% tab title="solution\_p1 .py" %}
+{% tab title="solution_p1 .py" %}
 ```python
 from collections import defaultdict
 
@@ -1193,7 +1193,7 @@ if __name__ == "__main__":
 ```
 {% endtab %}
 
-{% tab title="solution\_pt2.py" %}
+{% tab title="solution_pt2.py" %}
 ```python
 n, m = I()
 adj = defaultdict(list)
@@ -1241,11 +1241,11 @@ return
 
 
 
-## 6. Domain Visit \| LC [811](https://leetcode.com/problems/subdomain-visit-count/) , 718
+## 6. Domain Visit | LC [811](https://leetcode.com/problems/subdomain-visit-count/) , 718
 
 {% tabs %}
 {% tab title="problem.txt" %}
-```text
+```
 # Pt1: ===============================================================
 
 cpdomains = ["9001 discuss.leetcode.com"]
@@ -1318,7 +1318,7 @@ were from users who made a purchase.
 ```
 {% endtab %}
 
-{% tab title="solution\_p1 .py" %}
+{% tab title="solution_p1 .py" %}
 ```python
 count = collections.Counter()
 for cd in cpdomains:
@@ -1331,7 +1331,7 @@ return ["%d %s" % (count[k], k) for k in count]
 ```
 {% endtab %}
 
-{% tab title="solution\_pt2.py" %}
+{% tab title="solution_pt2.py" %}
 ```python
 from collections import defaultdict
 
@@ -1381,7 +1381,7 @@ if __name__ == "__main__":
 ```
 {% endtab %}
 
-{% tab title="ad\_conversion.py" %}
+{% tab title="ad_conversion.py" %}
 ```python
 
 from collections import defaultdict
@@ -1448,11 +1448,11 @@ if __name__ == "__main__":
 
 
 
-## 7. Basic Calculator \| [LC 224](https://leetcode.com/problems/basic-calculator/)
+## 7. Basic Calculator | [LC 224](https://leetcode.com/problems/basic-calculator/)
 
 {% tabs %}
 {% tab title="problem.txt" %}
-```text
+```
 # Pt1: ===============================================================
 
  Calculator without parenthesis, only +, -, non-negative ints
@@ -1465,7 +1465,7 @@ Output: 23
 ```
 {% endtab %}
 
-{% tab title="solution\_p1 .py" %}
+{% tab title="solution_p1 .py" %}
 ```python
 public static int basicCalculator1(String expression){
     int num = 0, sum = 0, sign = 1; // 1 for +, -1 for -
@@ -1486,7 +1486,7 @@ public static int basicCalculator1(String expression){
 ```
 {% endtab %}
 
-{% tab title="solution\_pt2.py" %}
+{% tab title="solution_pt2.py" %}
 ```python
 def calculate(self, s: str) -> int:
     num=0
@@ -1519,8 +1519,6 @@ def calculate(self, s: str) -> int:
 ```
 {% endtab %}
 {% endtabs %}
-
-
 
 
 

@@ -32,7 +32,7 @@ b = list(map(lambda arg: arg + 1, a)) #[2, 3, 4, 5, 6]
 hori_sum = sum(map(max, grid))
 ```
 
-## `zip()` & Unzip
+## `zip() `& Unzip
 
 ```python
 numbers = [1, 2, 3]
@@ -59,8 +59,8 @@ transpose = list(zip(*grid)) # [(1, 3), (2, 4)]
 ## `bisect()` :binary search
 
 * `import bisect`
-* first element **"greater than or equal to x"**  -&gt; `index = bisect.bisect_left(arr, x)`
-* first element **"greater than x"**                      -&gt; `index = bisect.bisect_right(arr, x)`
+* first element **"greater than or equal to x"**  -> `index = bisect.bisect_left(arr, x)`
+* first element **"greater than x" **                     -> `index = bisect.bisect_right(arr, x)`
 
 ```python
 
@@ -71,8 +71,6 @@ idx1 = bisect.bisect(li,4)          # => 5
 idx2 = bisect.bisect_left(li,4)     # => 2
 idx3 = bisect.bisect_right(li,4)    # => 4
 ```
-
-
 
 
 

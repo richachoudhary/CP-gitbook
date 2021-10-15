@@ -1,6 +1,6 @@
 # About@me
 
-## \#Links
+## #Links
 
 * SHEET: [SeekAfterFlipkart@me: Interviews](https://docs.google.com/spreadsheets/d/1ukY4tJwG0tesZvy0WNjkhBH0n-n9yPut4axQHoHP4ns/edit#gid=0)
 * [How to get international calls from India](https://leetcode.com/discuss/career/1448733/how-to-get-international-calls-from-india)
@@ -14,21 +14,21 @@
 #### Razorpay
 
 * Post that, I joined Razorpay.
-* **&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;** Razorpay is basically **payment gateway as a service**.
+* **>>>>>>>>>>>>> **Razorpay is basically **payment gateway as a service**.
 * Here, I worked with various **banks & 3rd parties directly**; as they were **integrating** with more & more banks to **increase** the market reach.
-* I was also a part of **Razorpay Capital-** their new initiative for providing short-term loans to small merchants & facilitate **instant refunds.**
+*   I was also a part of **Razorpay Capital-** their new initiative for providing short-term loans to small merchants & facilitate **instant refunds.**
 
- 
+     
 
 #### Flipkart
 
 * For about past 1.5 years, I've been in Flipkart.
 * Here, my team is a part of Flipkart's overall **Real-time advertisement** business.
-* **&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; As you have seen** on Flipkart's site; there are so many discounts, sales & other ad campaigns running all the time.
+* **>>>>>>>>>>>> As you have seen **on Flipkart's site; there are so many discounts, sales & other ad campaigns running all the time.
 * My team, in particularly, handles the **processing** of data related to the **tracking & reporting** the **performance** of these advertisement campaigns.
-* \(opt\)....................
-* \(opt\)The job involves developing & maintaining various pipelines for data **ingestion**, **processing** & eventually **serving** it to multiple dashboards, where the advertisers can view their ads' **performance**.
-* \(opt\) I majorly on the **optimisation** & **performance improvement** for these pipelines.
+* (opt)....................
+* (opt)The job involves developing & maintaining various pipelines for data **ingestion**, **processing** & eventually **serving** it to multiple dashboards, where the advertisers can view their ads' **performance**.
+* (opt) I majorly on the **optimisation** & **performance improvement** for these pipelines.
 
 #### Finisher
 
@@ -44,14 +44,14 @@
 #### Notes:
 
 * M3:
-  * **Marketing**: showing our ad on 3rd party\(hotstar\)
-  * **Monetizing**: showing 3rd party's ads on flipkart page\(nike\)
+  * **Marketing**: showing our ad on 3rd party(hotstar)
+  * **Monetizing**: showing 3rd party's ads on flipkart page(nike)
   * **Merchantizing**: self-products and promotion on its page
 * **process data specific to tracking & reporting of these ads's performance on Flipkart.**
 * **Ingestion, Processing, Reporting:**
-  * **Ingestion**: writing kafka's messages to HDFS\(goblin & camus\) in json : processing done in 30 min buckets, new folder for each 30 min
-  * **Processing**: `fact`\(processed data of user\) is created and summarized
-  * **Reporting**: aggregate, compute & pushing data to **mysql,Druid,Clickhouse DBs** or any other place where it can be viewed=&gt; involves aggregations of data
+  * **Ingestion**: writing kafka's messages to HDFS(goblin & camus) in json : processing done in 30 min buckets, new folder for each 30 min
+  * **Processing**: `fact`(processed data of user) is created and summarized
+  * **Reporting**: aggregate, compute & pushing data to **mysql,Druid,Clickhouse DBs** or any other place where it can be viewed=> involves aggregations of data
 * At Flipkart, I am currently working as a part of a team that handles the Data Processing Pipelines for Advertisements. My role has the following responsibilities:
   1. Developing and maintaining a Data processing platform that generates Facts and Reports.
   2. Designing, developing, end-to-end testing, deployment, and monitoring jobs/modules.
@@ -95,7 +95,7 @@
 * SWiFiIC stabilization / porting and creating new APIs. 
 * Project Link : www.swifiic.in
 
-#### BITSPILANIDATALAB \|UndergradResearcher  
+#### BITSPILANIDATALAB |UndergradResearcher  
 
 * Research study to implement Apriori Algorithm on large student timetable database of 3 years to:
 * Determine the favourite electives in each department. Publication submitted.
@@ -103,5 +103,4 @@
 
 
 
-## 
-
+##

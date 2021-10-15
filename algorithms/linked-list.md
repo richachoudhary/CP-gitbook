@@ -14,7 +14,7 @@ class ListNode:
 
 ## 1. Common Problems
 
-* [x] [148.Sort List](https://leetcode.com/problems/sort-list/) \| **MergeSort ✅✅**
+* [x] [148.Sort List](https://leetcode.com/problems/sort-list/) | **MergeSort ✅✅**
 * [x] [83. Remove Duplicates from Sorted List](https://leetcode.com/problems/remove-duplicates-from-sorted-list/) 🌟
 * [x] [82.Remove Duplicates from Sorted List II](https://leetcode.com/problems/remove-duplicates-from-sorted-list-ii/) 🌟 🏴‍☠️
 
@@ -136,7 +136,6 @@ return helper(head,None)
 
 {% tab title="reverse II" %}
 ```python
-
 ```
 {% endtab %}
 
@@ -271,7 +270,7 @@ def mergeKLists(self, lists: List[ListNode]) -> ListNode:
 ```
 {% endtab %}
 
-{% tab title="287💪 \| ShareChat" %}
+{% tab title="287💪 | ShareChat" %}
 ```python
 def findDuplicate(self, nums):
         
@@ -319,13 +318,12 @@ def findDuplicate(self, nums):
 * [x] [2.Add Two Numbers](https://leetcode.com/problems/add-two-numbers/) ✅🚀
 * [x] [141.Linked List Cycle](https://leetcode.com/problems/linked-list-cycle/) ✅🚀
 * [ ] [142.Linked List Cycle II](https://leetcode.com/problems/linked-list-cycle-ii/)
-* [x] [138.Copy List with Random Pointer](https://leetcode.com/problems/copy-list-with-random-pointer/) \| Deep copy \| chillar
-* [x] 23. [Merge k Sorted Lists](https://leetcode.com/problems/merge-k-sorted-lists/) 🍪🍪🍪✅
-* [x] LC [287. Find the Duplicate Number](https://leetcode.com/problems/find-the-duplicate-number/) \| **Rabbit-Tortoise** method on array \| had me failed **@ShareChat** back then 💪 \| also see in `BinarySearch`
+* [x] [138.Copy List with Random Pointer](https://leetcode.com/problems/copy-list-with-random-pointer/) | Deep copy | chillar
+* [x] 23\. [Merge k Sorted Lists](https://leetcode.com/problems/merge-k-sorted-lists/) 🍪🍪🍪✅
+* [x] LC [287. Find the Duplicate Number](https://leetcode.com/problems/find-the-duplicate-number/) | **Rabbit-Tortoise **method on array | had me failed **@ShareChat** back then 💪 | also see in `BinarySearch`
 
 ## 2. All Problems
 
 
 
 * [ ] GfG: [Remove duplicates from Unsorted List](https://www.geeksforgeeks.org/remove-duplicates-from-an-unsorted-linked-list/)
-

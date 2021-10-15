@@ -5,7 +5,7 @@
 * LC [146.LRU Cache](https://leetcode.com/problems/lru-cache/)
 
 {% tabs %}
-{% tab title="OrderdDict\(FAST\)" %}
+{% tab title="OrderdDict(FAST)" %}
 ```python
 # O(1) ===========================================================
 # IDEA: the last guy in OrderdDict() is the least recently used one
@@ -51,7 +51,7 @@ lRUCache.get(4);    // return 4
 ```
 {% endtab %}
 
-{% tab title="deque\(SLOW\)" %}
+{% tab title="deque(SLOW)" %}
 ```python
 # O(N) ======================================
 # JHANDU APPROACH --------------------------- XXXX
@@ -102,7 +102,7 @@ least_recently_used      most_recently_used
 
 ## 2. LFU Cache ✅😅
 
-* LC [460.LFU Cache](https://leetcode.com/problems/lfu-cache/) \| [video.py](https://www.youtube.com/watch?v=Jn4mbZVkeik&ab_channel=babybear4812)
+* LC [460.LFU Cache](https://leetcode.com/problems/lfu-cache/) | [video.py](https://www.youtube.com/watch?v=Jn4mbZVkeik\&ab_channel=babybear4812)
 
 {% tabs %}
 {% tab title="LFU" %}
@@ -193,7 +193,7 @@ class LFUCache(object):
 ## From LC:
 
 * [x] LC [1600. Throne Inheritance](https://leetcode.com/problems/throne-inheritance/)
-* [x] LC [855. Exam Room ](https://leetcode.com/problems/exam-room/)\| based on \#LC.849 \| **@google \|** 🐽🐽
+* [x] LC [855. Exam Room ](https://leetcode.com/problems/exam-room/)| based on #LC.849 | **@google | **🐽🐽
 * [x] LC [295. Find median from a data stream](https://leetcode.com/problems/find-median-from-data-stream/)
 * [x] LC [480. Sliding Window Median](https://leetcode.com/problems/sliding-window-median/)
 
@@ -345,4 +345,3 @@ def medianSlidingWindow(self, nums, k):
 ```
 {% endtab %}
 {% endtabs %}
-

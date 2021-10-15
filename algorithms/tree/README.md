@@ -1,12 +1,12 @@
-# Tree
+# --->Tree
 
 ## Notes:
 
 * **DFS vs BFS:: How to Pick One?**
-  1. Extra Space can be one factor \(Explained below\)
+  1. Extra Space can be one factor (Explained below)
   2. **Depth First Traversals** are typically recursive and recursive code requires **function call overheads**.
-  3. The most important points is, BFS starts visiting nodes from root while DFS starts visiting nodes from leaves. So if our problem is to search something that is more likely to **closer to root,** we would prefer **BFS**. And if the target node is **close to a leaf**, we would prefer **DFS**.
-* **Rooting A tTee**: is like picking up the tree by a specific node and having all the edges point downwards
+  3. The most important points is, BFS starts visiting nodes from root while DFS starts visiting nodes from leaves. So if our problem is to search something that is more likely to** closer to root,** we would prefer **BFS**. And if the target node is **close to a leaf**, we would prefer **DFS**.
+* **Rooting A Tree**: is like picking up the tree by a specific node and having all the edges point downwards
   * Res: [https://towardsdatascience.com/graph-theory-rooting-a-tree-fb2287b09779](https://towardsdatascience.com/graph-theory-rooting-a-tree-fb2287b09779)
 * Node:
 
@@ -24,15 +24,15 @@ root = TreeNode(x)
 
 ## 1. Regular Tree Problems
 
-* [x] \*\*\*\*[**Inorder Successor in Binary Search Tree**](https://www.geeksforgeeks.org/inorder-successor-in-binary-search-tree/) ✅💪
-* [x] 501. [Find Mode in Binary Search Tree](https://leetcode.com/problems/find-mode-in-binary-search-tree/) \| MindTickle!
-* [x] 236. [Find LCA in Binary Tree](https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/) \| **DnQ** \| Standard ✅✅
+* [x] ****[**Inorder Successor in Binary Search Tree**](https://www.geeksforgeeks.org/inorder-successor-in-binary-search-tree/) ✅💪
+* [x] 501\. [Find Mode in Binary Search Tree](https://leetcode.com/problems/find-mode-in-binary-search-tree/) | MindTickle!
+* [x] 236\. [Find LCA in Binary Tree](https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/) | **DnQ** | Standard ✅✅
 * [x] Distance b/w 2 nodes in Tree: **`dist(a,b) = depth(a) + depth(b) - 2*depth(c) ; where c = lca(a,b)`**
-* [x] LCA of N-ary tree \([article](https://medium.com/@sahilawasthi9560460170/lowest-common-ancestor-of-n-ary-tree-107fa772a939)\)
+* [x] LCA of N-ary tree ([article](https://medium.com/@sahilawasthi9560460170/lowest-common-ancestor-of-n-ary-tree-107fa772a939))
 * [x] 1367.[ Linked List in Binary Tree](https://leetcode.com/problems/linked-list-in-binary-tree/)
 
 {% tabs %}
-{% tab title="InO\_Succ✅" %}
+{% tab title="InO_Succ✅" %}
 ```python
 # Method 1: (Uses Parent Pointer) 
 '''
@@ -209,31 +209,33 @@ where N = tree size, H = tree height, L = list length.
 {% endtab %}
 {% endtabs %}
 
-![LCA of N-ary Tree](../.gitbook/assets/screenshot-2021-09-10-at-1.56.31-pm.png)
+![LCA of N-ary Tree](../../.gitbook/assets/screenshot-2021-09-10-at-1.56.31-pm.png)
 
-##  2. DP on Trees  ✅                        :          // does the job in O\(N\) 
+##  2. DP on Trees  ✅                        :          // does the job in O(N) 
 
 * [CF tutorial](https://codeforces.com/blog/entry/20935?locale=en)
 
 ### 2.1 Trivial Questions
 
-* [x] **BOOK\#1: Number of nodes in subtree**
+* [x] **BOOK#1: Number of nodes in subtree**
 
-![](../.gitbook/assets/screenshot-2021-09-10-at-12.43.41-pm.png)
+![](../../.gitbook/assets/screenshot-2021-09-10-at-12.43.41-pm.png)
 
-* [x] **BOOK\#2: Counting the number of paths till node X**
+* [x] **BOOK#2: Counting the number of paths till node X**
 
-![](../.gitbook/assets/screenshot-2021-09-10-at-1.13.22-pm.png)
+![](../../.gitbook/assets/screenshot-2021-09-10-at-1.13.22-pm.png)
 
-* [x] **CF\#1**: [Find max coins s.t. no two adjacent edges get collected](https://codeforces.com/blog/entry/20935?locale=en)
+*   [x] **CF#1**: [Find max coins s.t. no two adjacent edges get collected](https://codeforces.com/blog/entry/20935?locale=en)
 
-  * Do **`dfs()`** & build our dp1 & dp2
+    * Do **`dfs()`** & build our dp1 & dp2
 
-![CF\#1](../.gitbook/assets/screenshot-2021-09-12-at-2.07.09-am.png)
 
-* [x] CSES:[ Tree Diameter](https://cses.fi/problemset/task/1131) ✅✅ \| Basic level Tree DP \| AdityaVerma \| [KartikArora- N-ary tree](https://www.youtube.com/watch?v=qNObsKl0GGY&list=PLb3g_Z8nEv1j_BC-fmZWHFe6jmU_zv-8s&index=3&ab_channel=KartikArora)
-* [x] CSES: [Tree Distances I](https://cses.fi/problemset/task/1132) \| aka. **`All Longest Paths`** \| Same code as TreeDiameter=&gt; use 2 dfs to get endpoints of dia ==&gt; dfs b/w them \| [underrated amazing video by HiteshTripathi](https://www.youtube.com/watch?v=Rnv4qvoxsTo&ab_channel=HiteshTripathi) 🚀✅✅🚀 \| **must\_do**
-* [x] LC: [Diameter of N-ary tree](http://leetcode.libaoj.in/diameter-of-n-ary-tree.html) \| `TreeDistances I 's` code works here too
+
+![CF#1](../../.gitbook/assets/screenshot-2021-09-12-at-2.07.09-am.png)
+
+* [x] CSES:[ Tree Diameter](https://cses.fi/problemset/task/1131) ✅✅ | Basic level Tree DP | AdityaVerma | [KartikArora- N-ary tree](https://www.youtube.com/watch?v=qNObsKl0GGY\&list=PLb3g_Z8nEv1j_BC-fmZWHFe6jmU_zv-8s\&index=3\&ab_channel=KartikArora)
+* [x] CSES: [Tree Distances I](https://cses.fi/problemset/task/1132) | aka. **`All Longest Paths`** | Same code as TreeDiameter=> use 2 dfs to get endpoints of dia ==> dfs b/w them | [underrated amazing video by HiteshTripathi](https://www.youtube.com/watch?v=Rnv4qvoxsTo\&ab_channel=HiteshTripathi) 🚀✅✅🚀 | **must_do**
+* [x] LC: [Diameter of N-ary tree](http://leetcode.libaoj.in/diameter-of-n-ary-tree.html) | `TreeDistances I 's` code works here too
 
 {% tabs %}
 {% tab title="template" %}
@@ -254,7 +256,7 @@ def f(node):
 ```
 {% endtab %}
 
-{% tab title="CF\#1." %}
+{% tab title="CF#1." %}
 ```cpp
 / =====================================Complexity is O(N).
 
@@ -456,7 +458,7 @@ def solve(node):
 ```
 {% endtab %}
 
-{% tab title="BOOk\#2" %}
+{% tab title="BOOk#2" %}
 ```python
 def solve(G,N):
     adj = defaultdict(list)
@@ -500,23 +502,23 @@ print(res)
 {% endtab %}
 {% endtabs %}
 
-### 
+###
 
 ### 2.2 Not-so trivial Questions
 
 * [x] CSES: [Subordinates](https://cses.fi/problemset/task/1674) ✅
-* [x] CSES: [Tree Distances II](https://cses.fi/problemset/task/1133) \| **`Tree Rerooting` ✅✅✅💪💪💪❤️❤️❤️\|** [video](https://www.youtube.com/watch?v=lWCZOjUOjRc&t=42s)
+* [x] CSES: [Tree Distances II](https://cses.fi/problemset/task/1133) | **`Tree Rerooting` ✅✅✅💪💪💪❤️❤️❤️| **[video](https://www.youtube.com/watch?v=lWCZOjUOjRc\&t=42s)
   * **When is Rerooting DP applicable?**
-  * **===&gt;** when **given** `dp(x)`; you can calculated **`dp(y)`** for y:children\[x\]
-  * ========&gt; mane; parent ki value mei kuch adjust karke uske children ki value nikali jaa sakti ho.
-  * ========&gt; e.g. **Tree Distance \|\|\(^\)** : get sum of all nodes from node X
+  * **===> **when **given** `dp(x)`; you can calculated **`dp(y)`** for y:children\[x]
+  * \========> mane; parent ki value mei kuch adjust karke uske children ki value nikali jaa sakti ho.
+  * \========> e.g. **Tree Distance ||(^) **: get sum of all nodes from node X
   * **FINALLY SAMAJH AAYAAAAA!!!!!!!!!!!!!!!!!!!!!!!!!❤️**
-* [x] CSES: [Tree Matching](https://cses.fi/problemset/task/1130) \| [kartikArora](https://www.youtube.com/watch?v=RuNAYVTn9qM&list=PLb3g_Z8nEv1j_BC-fmZWHFe6jmU_zv-8s&index=2&ab_channel=KartikArora) ✅
-* [x] CF: [Distance in Tree](https://codeforces.com/contest/161/problem/D) \| \#nodes at dist K from each other 
-* [x] 968.[Binary Tree Cameras](https://leetcode.com/problems/binary-tree-cameras/) \| @kartikArora 📷✅✅✅✅✅✅✅✅
-* [x] 337. [House Robber III](https://leetcode.com/problems/house-robber-iii/) ✅
-* [x] 95. [Unique Binary Search Trees II](https://leetcode.com/problems/unique-binary-search-trees-ii/) ✅\| @MindTickle
-* [x] 1339. [Maximum Product of Splitted Binary Tree](https://leetcode.com/problems/maximum-product-of-splitted-binary-tree/)\| ❤️✅\| looks so complicated, yet so easy
+* [x] CSES: [Tree Matching](https://cses.fi/problemset/task/1130) | [kartikArora](https://www.youtube.com/watch?v=RuNAYVTn9qM\&list=PLb3g_Z8nEv1j_BC-fmZWHFe6jmU_zv-8s\&index=2\&ab_channel=KartikArora) ✅
+* [x] CF: [Distance in Tree](https://codeforces.com/contest/161/problem/D) | #nodes at dist K from each other 
+* [x] 968.[Binary Tree Cameras](https://leetcode.com/problems/binary-tree-cameras/) | @kartikArora 📷✅✅✅✅✅✅✅✅
+* [x] 337\. [House Robber III](https://leetcode.com/problems/house-robber-iii/) ✅
+* [x] 95\. [Unique Binary Search Trees II](https://leetcode.com/problems/unique-binary-search-trees-ii/) ✅| @MindTickle
+* [x] 1339\. [Maximum Product of Splitted Binary Tree](https://leetcode.com/problems/maximum-product-of-splitted-binary-tree/)| ❤️✅| looks so complicated, yet so easy
 * [ ] [https://leetcode.com/problems/longest-zigzag-path-in-a-binary-tree/](https://leetcode.com/problems/longest-zigzag-path-in-a-binary-tree/)
 * [ ] [https://leetcode.com/problems/maximum-sum-bst-in-binary-tree/](https://leetcode.com/problems/maximum-sum-bst-in-binary-tree/)
 * [ ] [https://leetcode.com/problems/number-of-ways-to-reorder-array-to-get-same-bst/](https://leetcode.com/problems/number-of-ways-to-reorder-array-to-get-same-bst/)
@@ -796,12 +798,12 @@ Time Complexity :  O(NlogN)
 
 ### Binary Lifting
 
-* [x] CSES\#1: [Company Queries I](https://cses.fi/problemset/task/1687) \|  **`Binary Lifting` 💪✅✅❤️**
-* [x] CSES\#2: [Company Queries II](https://cses.fi/problemset/task/1688) \| **`LCA + Binary Lifting` 🐽🐽**
-* [ ] CSES: [Planets Queries I](https://cses.fi/problemset/task/1750) \| Binary Lifting 
+* [x] CSES#1: [Company Queries I](https://cses.fi/problemset/task/1687) | **` Binary Lifting` 💪✅✅❤️**
+* [x] CSES#2: [Company Queries II](https://cses.fi/problemset/task/1688) | **`LCA + Binary Lifting` 🐽🐽**
+* [ ] CSES: [Planets Queries I](https://cses.fi/problemset/task/1750) | Binary Lifting 
 
 {% tabs %}
-{% tab title="CSES\#1: Binary Lifting 101" %}
+{% tab title="CSES#1: Binary Lifting 101" %}
 ```python
 """
 # Binary Lifting
@@ -864,7 +866,7 @@ for _ in range(q):
 ```
 {% endtab %}
 
-{% tab title="CSES\#2: LCA in LlogN" %}
+{% tab title="CSES#2: LCA in LlogN" %}
 ```cpp
 #include<bits/stdc++.h>
 using namespace std;
@@ -920,7 +922,7 @@ int main() {
 ### 3.1 Trie
 
 {% tabs %}
-{% tab title="208.\(TEMPLATE.py\)🔵🔴" %}
+{% tab title="208.(TEMPLATE.py)🔵🔴" %}
 ```python
 from collections import defaultdict
 
@@ -1060,14 +1062,14 @@ string longestCommonPrefix(vector<string>& strs) {
 {% endtab %}
 {% endtabs %}
 
-* [x] LC [208.Implement Trie \(Prefix Tree\)](https://leetcode.com/problems/implement-trie-prefix-tree/) 🔴🔵
+* [x] LC [208.Implement Trie (Prefix Tree)](https://leetcode.com/problems/implement-trie-prefix-tree/) 🔴🔵
 * [x] LC [214. Word Search II](https://leetcode.com/problems/word-search-ii/) ✅🚀
 * [x] LC [14.Longest Common Prefix](https://leetcode.com/problems/longest-common-prefix/)✅
 
-### 3.2 Segment Trees \( both: RSQ+RMQ implementations YAAAAAD honi chahiye\)
+### 3.2 Segment Trees ( both: RSQ+RMQ implementations YAAAAAD honi chahiye)
 
-* **Complexity:** Tree Construction: `O( n )` 
-* **Complexity:** Query in Range: `O( Log n )` 
+* **Complexity: **Tree Construction:`  O( n )  `
+* **Complexity: **Query in Range: `O( Log n ) `
 * **Complexity:**Updating an element: `O( Log n )`
 
 {% tabs %}
@@ -1140,7 +1142,7 @@ int query(int node, int start, int end, int l, int r)
 ```
 {% endtab %}
 
-{% tab title="IMPLEMENTATION\(RSQ\): efficient✅" %}
+{% tab title="IMPLEMENTATION(RSQ): efficient✅" %}
 ```python
 N = 100000  # Upper limit for array size
 tree = [0] * (2 * N)
@@ -1393,20 +1395,20 @@ def queryTreeRSQ(ql, qr,sl,sr,index):
 {% endtab %}
 {% endtabs %}
 
-* [x] CSES: [Range Xor Queries](https://cses.fi/problemset/task/1650/) ✅✅ \| Doable with both: prefix array & seg Tree
-* [x] CSES: [Range Update Queries](https://cses.fi/problemset/task/1651) 🚀✅ \| update on range & query on index =&gt; **hence use Lazy Propagation here**
-  * **NOTE:** Lazy propagation isnt "just an alternative approach"
-  * Normal Seg Tree implementation =&gt; update on **point** & query on **range**
-  * Lazy Seg Tree implementation      =&gt; update on **range** & query on **point**
+* [x] CSES: [Range Xor Queries](https://cses.fi/problemset/task/1650/) ✅✅ | Doable with both: prefix array & seg Tree
+* [x] CSES: [Range Update Queries](https://cses.fi/problemset/task/1651) 🚀✅ | update on range & query on index => **hence use Lazy Propagation here**
+  * **NOTE: **Lazy propagation isnt "just an alternative approach"
+  * Normal Seg Tree implementation => update on **point** & query on **range**
+  * Lazy Seg Tree implementation      => update on **range** & query on **point**
 * [ ] CSES: [Josephus Problem II](https://cses.fi/problemset/result/2607517/) 🐽✅
 * [ ] SPOJ: [MKTHNUM](https://www.spoj.com/problems/MKTHNUM/)
 
 ### 3.3 BIT 
 
 * [ ] CSES: [Nested Range Check](https://cses.fi/problemset/task/2168) 🐽
-* [ ] CSES: [Nested Range Count](https://cses.fi/problemset/task/2169) 🐽
+*   [ ] CSES: [Nested Range Count](https://cses.fi/problemset/task/2169) 🐽
 
- 
+     
 
 ## ProblemSet
 
@@ -1415,10 +1417,8 @@ def queryTreeRSQ(ql, qr,sl,sr,index):
 
 ## Resources:
 
-* Youtube playlist by **WilliamFiset**  : [here](https://www.youtube.com/watch?v=0qgaIMqOEVs&list=PLDV1Zeh2NRsDGO4--qE8yH72HFL1Km93P&index=9&ab_channel=WilliamFiset)
+* Youtube playlist by **WilliamFiset ** : [here](https://www.youtube.com/watch?v=0qgaIMqOEVs\&list=PLDV1Zeh2NRsDGO4--qE8yH72HFL1Km93P\&index=9\&ab_channel=WilliamFiset)
 * **Resources: Tree DP**
-  * ✅Kartik Arora's Playlist: [Tree DP](https://www.youtube.com/watch?v=fGznXJ-LTbI&list=PLb3g_Z8nEv1j_BC-fmZWHFe6jmU_zv-8s&ab_channel=KartikArora)
-  * Aditya Verma's Playlist: [TreeDP](https://www.youtube.com/watch?v=qZ5zayHSH2g&list=PL_z_8CaSLPWfxJPz2-YKqL9gXWdgrhvdn&ab_channel=AdityaVerma)
-
-
+  * ✅Kartik Arora's Playlist: [Tree DP](https://www.youtube.com/watch?v=fGznXJ-LTbI\&list=PLb3g_Z8nEv1j_BC-fmZWHFe6jmU_zv-8s\&ab_channel=KartikArora)
+  * Aditya Verma's Playlist: [TreeDP](https://www.youtube.com/watch?v=qZ5zayHSH2g\&list=PL_z\_8CaSLPWfxJPz2-YKqL9gXWdgrhvdn\&ab_channel=AdityaVerma)
 

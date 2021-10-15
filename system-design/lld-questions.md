@@ -1,12 +1,12 @@
 # LLD:Questions
 
-## \# Resources:
+## # Resources:
 
-* Grokking OO Interview: [Git repo + solutions \(in python\)](https://github.com/tssovi/grokking-the-object-oriented-design-interview/tree/master/object-oriented-design-case-studies)
+* Grokking OO Interview: [Git repo + solutions (in python)](https://github.com/tssovi/grokking-the-object-oriented-design-interview/tree/master/object-oriented-design-case-studies)
 
 ## 0. Template 🔖
 
-```text
+```
 # Name: <app_name>
 
 # Objective:
@@ -42,14 +42,14 @@
 
 ## 20. Meeting Scheduler
 
-* [Code\(JAVA\)](https://github.com/prabhakerau/lowlevelsystemdesgin/tree/main/MeetingScheduler/src/com/company)
+* [Code(JAVA)](https://github.com/prabhakerau/lowlevelsystemdesgin/tree/main/MeetingScheduler/src/com/company)
 * this **diag is not exactly correct**. See **ClassDiag** below for accurate
 
 ![](../.gitbook/assets/screenshot-2021-09-05-at-2.44.20-pm.png)
 
 {% tabs %}
 {% tab title="ClassDiag" %}
-```text
+```
 # Meeting Room Scheduler
 
 # Statement
@@ -215,9 +215,9 @@ controller.get_history()
 {% endtab %}
 {% endtabs %}
 
-## 21. Vending Machine \| 🟢STATE pattern 
+## 21. Vending Machine | 🟢STATE pattern 
 
-* [Code\(JAVA\)](https://github.com/prabhakerau/lowlevelsystemdesgin/tree/main/VendingMachine/src/com/lld/questions/vendingmachine)
+* [Code(JAVA)](https://github.com/prabhakerau/lowlevelsystemdesgin/tree/main/VendingMachine/src/com/lld/questions/vendingmachine)
 
 ![](../.gitbook/assets/screenshot-2021-09-05-at-2.49.43-pm.png)
 
@@ -225,19 +225,19 @@ controller.get_history()
 
 ![](../.gitbook/assets/screenshot-2021-09-07-at-11.55.25-am.png)
 
- **Advantages of using State Pattern:**
+** Advantages of using State Pattern:**
 
 * The design pattern moves all state-related logic to a separate class thus reducing the coupling with the main context class & is following the Single Responsibility Principle
 * State-related behaviour is declared in an interface. New states can be easily introduced without the need to modify & add conditional blocks of code. Code becomes open for extension & closed for modification
 
- **Disadvantages of using State Pattern:**
+** Disadvantages of using State Pattern:**
 
 * Individual states must be aware of the next states and those states need to be hardcoded
 * The pattern becomes an overkill if the design only has one or two states or the state behaviour rarely changes
 
 {% tabs %}
 {% tab title="design" %}
-```text
+```
 # Requirements =======================================
 
 * INVENTORY: Vending Machine must keep track of the inventory
@@ -693,7 +693,7 @@ class VendingMachine:
 {% endtab %}
 {% endtabs %}
 
-## 1. Parking Lot \| `🟢Singleton| OpenClose | Builder`
+## 1. Parking Lot | `🟢Singleton| OpenClose | Builder`
 
 #### System Requirements:
 
@@ -705,14 +705,14 @@ class VendingMachine:
 #### Out of Scope
 
 * Termnial 
-* ------------------------EntryTerminal : Terminal  \(multiple entry points per floor\)
-* ------------------------ExitTerminal : Terminal \(multiple exit points per floor\)
-* ParkingAssignmentStrategy \# consider **multiple entries on each floor** - **nearest dist**/**closest elevators** on floors etc 
-* Logger \# uses **Observer Pattern**
+* \------------------------EntryTerminal : Terminal  (multiple entry points per floor)
+* \------------------------ExitTerminal : Terminal (multiple exit points per floor)
+* ParkingAssignmentStrategy # consider **multiple entries on each floor** - **nearest dist**/**closest elevators** on floors etc 
+* Logger # uses **Observer Pattern**
 
 {% tabs %}
 {% tab title="schema.txt" %}
-```text
+```
 Enum VehicleType
 --------CAR
 --------BIKE
@@ -801,7 +801,7 @@ Logger # uses Observer Pattern
 ```
 {% endtab %}
 
-{% tab title="parking\_lot.py" %}
+{% tab title="parking_lot.py" %}
 ```python
 import time
 import uuid
@@ -991,18 +991,18 @@ Board.show(P)
 {% endtab %}
 {% endtabs %}
 
-#### 5.ParkingLot \(main system class\) ================================================
+#### 5.ParkingLot (main system class) ================================================
 
 * **ParkingLot**
   * name
-  * rates = \[\]
+  * rates = \[]
   * `curr_vehicle_counts`
   * `curr_active_tickets = []`
   * `generate_new_parking_ticket()`
-  * **NOTE!!!!** Our system will have only **one object of this class**. This can be enforced by using the [**Singleton**](https://en.wikipedia.org/wiki/Singleton_pattern) **pattern**. 💫🟢🟢🟢🟢
-    * **WHAT IS SINGLETON PATTERN:** is a software design pattern that **restricts the instantiation of a class to only one object**.
-    * Everywhere: entry/exit \|\| checkin/checkout: **ONLY this object CAN create new parking ticket**: using method `get_new_parking_ticket()`
-* Code from Grokking - old ....... **DONT USE**❌
+  * **NOTE!!!! **Our system will have only **one object of this class**. This can be enforced by using the [**Singleton**](https://en.wikipedia.org/wiki/Singleton_pattern)** pattern**. 💫🟢🟢🟢🟢
+    * **WHAT IS SINGLETON PATTERN:** is a software design pattern that** restricts the instantiation of a class to only one object**.
+    * Everywhere: entry/exit || checkin/checkout:** ONLY this object CAN create new parking ticket**: using method `get_new_parking_ticket()`
+* Code from Grokking - old .......** DONT USE**❌
 
 {% tabs %}
 {% tab title="constants.py" %}
@@ -1028,7 +1028,7 @@ class Person():
 ```
 {% endtab %}
 
-{% tab title="account\_types.py" %}
+{% tab title="account_types.py" %}
 ```python
 from .constants import *
 
@@ -1092,7 +1092,7 @@ class Truck(Vehicle):
 ```
 {% endtab %}
 
-{% tab title="parking\_spot.py" %}
+{% tab title="parking_spot.py" %}
 ```python
 from abc import ABC
 from .constants import  *
@@ -1137,7 +1137,7 @@ class LargeSpot(ParkingSpot):
 ```
 {% endtab %}
 
-{% tab title="parking\_lot.py🟢" %}
+{% tab title="parking_lot.py🟢" %}
 ```python
 import threading
 from .constants import *
@@ -1236,13 +1236,13 @@ class ParkingLot:
 
 ## 2. Elevator
 
-* [Code\(JAVA\)](https://github.com/prabhakerau/lowlevelsystemdesgin/tree/main/ElevatorSystem/src/com/lld/questions)
+* [Code(JAVA)](https://github.com/prabhakerau/lowlevelsystemdesgin/tree/main/ElevatorSystem/src/com/lld/questions)
 
 ![](../.gitbook/assets/screenshot-2021-09-05-at-2.56.17-pm.png)
 
 {% tabs %}
 {% tab title="Design.md" %}
-```text
+```
 # Featuers
 
 * states: up, down, idle
@@ -1606,7 +1606,7 @@ class Elevator:
 
 
 
-## 2. Splitwise \| observe.AI
+## 2. Splitwise | observe.AI
 
 {% tabs %}
 {% tab title="main.py" %}
@@ -1833,7 +1833,7 @@ u2.get_balance()
 ```
 {% endtab %}
 
-{% tab title="unit\_test.py" %}
+{% tab title="unit_test.py" %}
 ```python
 from splitwise import Expense, User
 import unittest
@@ -1880,75 +1880,75 @@ if __name__ == '__main__':
 
 #### Classes:
 
-* **NOTE:** 
+* **NOTE: **
   * For simplicity, we are not defining getter and setter functions. 
-  * **Assume** that: all class attributes are private and **accessed** through their respective **public getter methods** and **modified** only through their **public** **setter** methods function.
+  * **Assume** that: all class attributes are private and **accessed** through their respective **public getter methods** and **modified** only through their **public** **setter **methods function.
 * **Models:  ============================================================**
 * **BookReservation**
-  * creation\_date
+  * creation_date
   * status
-  * book\_item\_barcode
-  * member\_id
-  * fetch\_reservation\_details\(barcode\)
+  * book_item_barcode
+  * member_id
+  * fetch_reservation_details(barcode)
 * **BookLending**
-  * creation\_date
-  * due\_date
-  * return\_date
-  * book\_item\_barcode
-  * member\_id
-  * lend\_book\(barcode, member\_id\)
-  * fetch\_lending\_details\(barcode\)
+  * creation_date
+  * due_date
+  * return_date
+  * book_item_barcode
+  * member_id
+  * lend_book(barcode, member_id)
+  * fetch_lending_details(barcode)
 * **Fine**
-  * creation\_date
-  * book\_item\_barcode
-  * member\_id
-  * collect\_fine\(member\_id, days\)
+  * creation_date
+  * book_item_barcode
+  * member_id
+  * collect_fine(member_id, days)
 * **Book**
-  * book\_id
+  * book_id
   * title
   * subject
   * publisher
   * language
-  * authors = \[\]
-* **BookItem\(Book\)**
+  * authors = \[]
+* **BookItem(Book)**
   * barcode
   * borrowed
-  * due\_date
+  * due_date
   * price
   * status
-  * placed\_at
-  * **checkout**\(member\_id\)
-* **Reck** //optional
+  * placed_at
+  * **checkout**(member_id)
+* **Reck **//optional
   * number 
-  * location\_identifier
+  * location_identifier
 * **AccountTypes============================================================**
 * **Account:**
   * id
   * pwd
-  * status : ENUM\(ACTIVE, CLOSED, CANCELED, BLACKLISTED, NONE\)
+  * status : ENUM(ACTIVE, CLOSED, CANCELED, BLACKLISTED, NONE)
   * Person :
-* **Librarian\(Account\)**
-  * add\_book\_item\(\)
-* **Member\(Account\)**
-  * date\_of\_membership
-  * total\_books\_checkedout
-  * get\_total\_books\_checkedout\(\)
-  * **reserve\_book\_item**\(\)
-  * increment\_total\_books\_checkedout\(\)
-  * **renew\_book\_item**\(\)
-  * **checkout\_book\_item**\(\)
-  * check\_for\_fine\(\)
-  * **return\_book\_item**\(\)
-  * **renew\_book\_item**\(\)
+* **Librarian(Account)**
+  * add_book_item()
+* **Member(Account)**
+  * date_of_membership
+  * total_books_checkedout
+  * get_total_books_checkedout()
+  * **reserve_book_item**()
+  * increment_total_books_checkedout()
+  * **renew_book_item**()
+  * **checkout_book_item**()
+  * check_for_fine()
+  * **return_book_item**()
+  * **renew_book_item**()
 * **Searching Books ============================================================**
   * **Search**
-    * search\_by\_title\(\)
-    * search\_by\_author\(\)
-    * search\_by\_subject\(\)
-    * search\_by\_pub\_date\(\)
-  * **Catalog\(Search\)  -**-------&gt; implemented separately, as in future new search metrics might come up
-    * search\_by\_title\(\)
-    * search\_by\_author\(\)
+    * search_by_title()
+    * search_by_author()
+    * search_by_subject()
+    * search_by_pub_date()
+  * **Catalog(Search)  -**-------> implemented separately, as in future new search metrics might come up
+    * search_by_title()
+    * search_by_author()
 
 {% tabs %}
 {% tab title="constants.py" %}
@@ -2059,7 +2059,7 @@ class Rack:
 ```
 {% endtab %}
 
-{% tab title="account\_types.py" %}
+{% tab title="account_types.py" %}
 ```python
 from abc import ABC, abstractmethod
 from datetime import datetime
@@ -2166,7 +2166,7 @@ class Member(Account):
 ```
 {% endtab %}
 
-{% tab title="search\_books.py" %}
+{% tab title="search_books.py" %}
 ```python
 from abc import ABC
 
@@ -2217,91 +2217,91 @@ class Catalog(Search):
 
 **1.Constants ===============================================================**
 
-* **BookingStatus**: PENDING, CONFIRMED, CHECKED\_IN, CANCELED
+* **BookingStatus**: PENDING, CONFIRMED, CHECKED_IN, CANCELED
 * **SeatType**:REGULAR, PREMIUM
 * **PaymentStatus**: UNPAID, PENDING, COMPLETED, DECLINED, CANCELLED, REFUNDED
 
-**2.Acc\_Types ===============================================================**
+**2.Acc_Types ===============================================================**
 
 * **Account** - interface
   * password 
   * name 
   * email 
-  * reset\_password\(self\)
-* **Customer\(Account\)**
-  * make\_booking\(self, booking\)
-  * get\_bookings\(\)
-* **Admin\(Account\)**
-  * add\_movie\(self, movie\) 
-  * add\_show\(self, show\)
-* **Guest\(Account\)**
-  * register\(\)
+  * reset_password(self)
+* **Customer(Account)**
+  * make_booking(self, booking)
+  * get_bookings()
+* **Admin(Account)**
+  * add_movie(self, movie) 
+  * add_show(self, show)
+* **Guest(Account)**
+  * register()
 
 **3.Shows ===============================================================**
 
 * **Show**
-  * show\_id 
-  * created\_on 
-  * start\_time 
-  * end\_time 
-  * played\_at 
+  * show_id 
+  * created_on 
+  * start_time 
+  * end_time 
+  * played_at 
   * movie
 * **Movie**
   * title 
   * description 
   * duration 
   * language
-  * release\_date 
+  * release_date 
   * country 
   * genre 
-  * shows = \[\]
-  * get\_shows\(\)
+  * shows = \[]
+  * get_shows()
 
 **4.Cinema ===============================================================**
 
 * **Search** : parent
-  * search\_products\_by\_name\(self, name\)
-  * search\_products\_by\_category\(self, category\)
-* **Catalog\(Search\)**
-  * product\_names
-  * product\_categories
-  * search\_products\_by\_name\(self, name\)
-  * search\_products\_by\_category\(self, category\)
+  * search_products_by_name(self, name)
+  * search_products_by_category(self, category)
+* **Catalog(Search)**
+  * product_names
+  * product_categories
+  * search_products_by_name(self, name)
+  * search_products_by_category(self, category)
 
 **5.Search ===============================================================**
 
-* **Search :** interface
-  * search\_by\_title\(self, title\)
-  * search\_by\_language\(self, language\)
-  * search\_by\_genre\(self, genre\)
-  * search\_by\_city\(self, city\_name\)
+* **Search : **interface
+  * search_by_title(self, title)
+  * search_by_language(self, language)
+  * search_by_genre(self, genre)
+  * search_by_city(self, city_name)
 * **Catalog**
-  * movie\_titles = {}
-  * movie\_languages = {}
-  * movie\_genres = {}
-  * movie\_release\_dates = {}
-  * movie\_cities = {}
-  * search\_by\_title\(self, title\) 
-  * search\_by\_language\(self, language\) 
-  * search\_by\_city\(self, city\_name\)
+  * movie_titles = {}
+  * movie_languages = {}
+  * movie_genres = {}
+  * movie_release_dates = {}
+  * movie_cities = {}
+  * search_by_title(self, title) 
+  * search_by_language(self, language) 
+  * search_by_city(self, city_name)
 
 **6.Booking ===============================================================**
 
 * **Booking**
-  * booking\_number
-  * number\_of\_seats
-  * created\_on
+  * booking_number
+  * number_of_seats
+  * created_on
   * status
   * show
   * seats
   * payment
-  * make\_payment\(self, payment\)
-  * cancel\(self\)
-  * assign\_seats\(self, seats\)
+  * make_payment(self, payment)
+  * cancel(self)
+  * assign_seats(self, seats)
 * **Payment**
   * amount
-  * created\_on
-  * transaction\_id
+  * created_on
+  * transaction_id
   * status
 
 {% tabs %}
@@ -2321,7 +2321,7 @@ class PaymentStatus(Enum):
 ```
 {% endtab %}
 
-{% tab title="account\_types.py" %}
+{% tab title="account_types.py" %}
 ```python
 from abc import ABC
 from .constants import AccountStatus
@@ -2518,39 +2518,39 @@ class Payment:
 1. **Add/update products catalog**; Users should be able to add new products to sell.
 2. **Search** for products by their name or category.
 3. **Add/remove** product items in the **shopping cart**.
-4. **Check-out to buy** product items in the **shopping cart**.
+4. **Check-out to buy **product items in the **shopping cart**.
 5. **Make a payment** to place an order.
 6. **Add** a new **product category.**
-7. Send notifications to members with **shipment updates.**
+7. Send notifications to members with** shipment updates.**
 
 #### **Classes**
 
 **1.Constants ===============================================================**
 
-* **OrderStatus**: UNSHIPPED, PENDING, SHIPPED, COMPLETED, CANCELED, REFUND\_APPLIED
+* **OrderStatus**: UNSHIPPED, PENDING, SHIPPED, COMPLETED, CANCELED, REFUND_APPLIED
 * **ShipmentStatus**: PENDING, SHIPPED, DELIVERE
 * **PaymentStatus**: UNPAID, PENDING, COMPLETED, DECLINED, CANCELLED, REFUNDED
 
-**2.Acc\_Types ===============================================================**
+**2.Acc_Types ===============================================================**
 
 * **Account** - interface
-  * user\_name 
+  * user_name 
   * password 
   * name 
   * email 
   * phone 
-  * shipping\_address 
+  * shipping_address 
   * status 
-  * add\_product\(self, product\)
-  * add\_productReview\(self, review\)
-  * reset\_password\(self\)
-* **Customer\(Account\)**
-  * get\_shopping\_cart\(self\)
-  * add\_item\_to\_cart\(self, item\)
-  * remove\_item\_from\_cart\(self, item\)
-  * place\_order\(self, order\)
-* **Guest\(Account\)**
-  * register\(\)
+  * add_product(self, product)
+  * add_productReview(self, review)
+  * reset_password(self)
+* **Customer(Account)**
+  * get_shopping_cart(self)
+  * add_item_to_cart(self, item)
+  * remove_item_from_cart(self, item)
+  * place_order(self, order)
+* **Guest(Account)**
+  * register()
 
 **3.Products ===============================================================**
 
@@ -2562,70 +2562,70 @@ class Payment:
   * review
     * reviewer
 * **Product**
-  * product\_id
+  * product_id
   * name
   * description
   * price
   * category
-  * available\_item\_count
+  * available_item_count
   * seller
-  * get\_available\_count\(\)
-  * update\_price\(price\)
+  * get_available_count()
+  * update_price(price)
 
 **4.Search ===============================================================**
 
 * **Search** : parent
-  * search\_products\_by\_name\(self, name\)
-  * search\_products\_by\_category\(self, category\)
-* **Catalog\(Search\)**
-  * product\_names
-  * product\_categories
-  * search\_products\_by\_name\(self, name\)
-  * search\_products\_by\_category\(self, category\)
+  * search_products_by_name(self, name)
+  * search_products_by_category(self, category)
+* **Catalog(Search)**
+  * product_names
+  * product_categories
+  * search_products_by_name(self, name)
+  * search_products_by_category(self, category)
 
 **5.Shopping ===============================================================**
 
 * **Item**
-  * product\_id
+  * product_id
   * quantity
   * price
-  * update\_quantity\(quantity\)
+  * update_quantity(quantity)
 * **ShoppingCart**
-  * items = \[\]
-  * add\_item\(self, item\)
-  * remove\_item\(self, item\)
-  * update\_item\_quantity\(self, item, quantity\)
-  * get\_items\(self\)
-  * checkout\(self\)
+  * items = \[]
+  * add_item(self, item)
+  * remove_item(self, item)
+  * update_item_quantity(self, item, quantity)
+  * get_items(self)
+  * checkout(self)
 * **Order**
-  * order\_number
+  * order_number
   * status
-  * order\_date
-  * order\_log = \[\]
-  * send\_for\_shipment\(self\)
-  * make\_payment\(self, payment\)
-  * add\_order\_log\(self, order\_log\)
+  * order_date
+  * order_log = \[]
+  * send_for_shipment(self)
+  * make_payment(self, payment)
+  * add_order_log(self, order_log)
 * **OrderLogs**
-  * order\_number
-  * creation\_date
+  * order_number
+  * creation_date
   * status
 
 **6.Shipment ===============================================================**
 
 * **Shipment**
-  * shipment\_number
-  * shipment\_date
+  * shipment_number
+  * shipment_date
   * ETA
-  * shipmentLogs . = \[\]
+  * shipmentLogs . = \[]
 * **ShipmentLog**
-  * shipment\_number
+  * shipment_number
   * status
-  * creation\_date
+  * creation_date
 * **Notification**
-  * notification\_id
-  * created\_on
+  * notification_id
+  * created_on
   * content
-  * send\_notification\(account\)
+  * send_notification(account)
 
 {% tabs %}
 {% tab title="constants.py" %}
@@ -2644,7 +2644,7 @@ class PaymentStatus(Enum):
 ```
 {% endtab %}
 
-{% tab title="account\_types.py" %}
+{% tab title="account_types.py" %}
 ```python
 from abc import ABC
 from .constants import *
@@ -2850,7 +2850,7 @@ class Notification(ABC):
 {% endtab %}
 {% endtabs %}
 
-## 
+##
 
 ## 5. ATM
 
@@ -2866,7 +2866,7 @@ class Notification(ABC):
 
 **1.Constants ===============================================================**
 
-* **TransactionType**: BALANCE\_INQUIRY, DEPOSIT\_CASH, DEPOSIT\_CHECK, WITHDRAW, TRANSFER
+* **TransactionType**: BALANCE_INQUIRY, DEPOSIT_CASH, DEPOSIT_CHECK, WITHDRAW, TRANSFER
 * **TransactionStatus**: SUCCESS, FAILURE, NONE
 * **CustomerStatus:ACTIVE**, BLOCKED, UNKNOWN
 
@@ -2880,56 +2880,56 @@ class Notification(ABC):
   * status 
   * card
   * account
-  * make\_transaction\(self, transaction\) 
-  * get\_billing\_address\(self\)
+  * make_transaction(self, transaction) 
+  * get_billing_address(self)
 * **Card**
-  * card\_number 
-  * customer\_name 
-  * card\_expiry 
+  * card_number 
+  * customer_name 
+  * card_expiry 
   * pin
 * **Account**
-  * account\_number 
-  * total\_balance = 0.0 
-  * available\_balance = 0.0
+  * account_number 
+  * total_balance = 0.0 
+  * available_balance = 0.0
 
 **3.Bank ===============================================================**
 
 * **Bank**
   * name
   * ifsc
-  * install\_atm\(atm\)
+  * install_atm(atm)
 * **ATM**
-  * atm\_id 
+  * atm_id 
   * location
-  * cash\_dispenser
-  * cash\_deposit
-  * authenticate\_user\(self\) 
-  * make\_transaction\(self, customer, transaction\)
+  * cash_dispenser
+  * cash_deposit
+  * authenticate_user(self) 
+  * make_transaction(self, customer, transaction)
 * **CashDispenser**
-  * total\_amount
-  * is\_healthy\(\)
-  * dispense\_cash\(self, amount\)
+  * total_amount
+  * is_healthy()
+  * dispense_cash(self, amount)
 * **CashDeposit**
-  * total\_amount
-  * is\_healthy\(\)
-  * deposit\_cash\(self, amount\)
+  * total_amount
+  * is_healthy()
+  * deposit_cash(self, amount)
 
 **4.Transaction ===============================================================**
 
-* **Transaction :** interface
-  * transaction\_id 
-  * creation\_time 
+* **Transaction : **interface
+  * transaction_id 
+  * creation_time 
   * status
-  * make\_transation\(\)
-* **BalanceInquiry\(Transaction\)** 
-* **Deposit\(Transaction\)** 
+  * make_transation()
+* **BalanceInquiry(Transaction) **
+* **Deposit(Transaction) **
   * amount
-  * get\_amount\(\)
-* **CheckDeposit\(Deposit\)** 
-* **CashDeposit\(Deposit\)** 
-* **Transfer\(Transaction\)**
-  * destination\_account\_number
-  * get\_destination\_account\(\)
+  * get_amount()
+* **CheckDeposit(Deposit) **
+* **CashDeposit(Deposit) **
+* **Transfer(Transaction)**
+  * destination_account_number
+  * get_destination_account()
 
 {% tabs %}
 {% tab title="constants.py" %}
@@ -3119,9 +3119,9 @@ class Transfer(Transaction):
 
 **1.Constants ===============================================================**
 
-* **FlightStatus**: PENDING, CONFIRMED, CHECKED\_IN, CANCELED
-* **PaymentStatus**  :REGULAR, PREMIUM
-* **ReservationStatus** : UNPAID, PENDING, COMPLETED, DECLINED, CANCELLED, REFUNDED
+* **FlightStatus**: PENDING, CONFIRMED, CHECKED_IN, CANCELED
+* **PaymentStatus  **:REGULAR, PREMIUM
+* **ReservationStatus **: UNPAID, PENDING, COMPLETED, DECLINED, CANCELLED, REFUNDED
 * **SeatClass** : 
 * **SeatType** : 
 
@@ -3131,19 +3131,19 @@ class Transfer(Transaction):
   * password 
   * name 
   * status 
-  * reset\_password\(self\)
+  * reset_password(self)
 * **Customer**
   * name 
   * address 
   * email 
   * phone 
   * account
-* **Admin\(Account\)**
-  * add\_movie\(self, movie\) 
-  * add\_show\(self, show\)
-* **Passenger\(Customer\)**
-  * passport\_number
-  * get\_passport\_number\(\)
+* **Admin(Account)**
+  * add_movie(self, movie) 
+  * add_show(self, show)
+* **Passenger(Customer)**
+  * passport_number
+  * get_passport_number()
 
 **3.Airport ===============================================================**
 
@@ -3151,44 +3151,46 @@ class Transfer(Transaction):
   * name 
   * address 
   * code
-  * get\_flights\(\) 
+  * get_flights() 
 * **Aircraft**
   * name 
   * model 
-  * manufacturing\_year 
-  * seats = \[\]
-  * get\_flights\(\)
+  * manufacturing_year 
+  * seats = \[]
+  * get_flights()
 * **Seat**
-  * seat\_number 
+  * seat_number 
   * type 
-  * seat\_class
+  * seat_class
 * **FlightSeat**
-  * fare
+  *   fare
+
+
 
 **4.Airline Manager==============================================================**
 
 * **Flight** : 
-  * flight\_number 
+  * flight_number 
   * departure 
   * arrival 
-  * schedule = \[\]
+  * schedule = \[]
 * **FlightReservation**
-  * reservation\_number 
+  * reservation_number 
   * flight 
-  * seat\_map 
-  * creation\_date 
+  * seat_map 
+  * creation_date 
   * status
-  * fetch\_reservation\_details\(self, reservation\_number\) 
-  * get\_passengers\(self\)
+  * fetch_reservation_details(self, reservation_number) 
+  * get_passengers(self)
 * **Itinerary**
-  * customer\_id 
-  * starting\_airport 
-  * final\_airport 
-  * creation\_date 
-  * reservations = \[\]
-  * get\_reservations\(self\) 
-  * make\_reservation\(self\) 
-  * make\_payment\(self\)
+  * customer_id 
+  * starting_airport 
+  * final_airport 
+  * creation_date 
+  * reservations = \[]
+  * get_reservations(self) 
+  * make_reservation(self) 
+  * make_payment(self)
 
 {% tabs %}
 {% tab title="constants.py" %}
@@ -3291,7 +3293,7 @@ class FlightSeat(Seat):
 ```
 {% endtab %}
 
-{% tab title="airline\_manager.py" %}
+{% tab title="airline_manager.py" %}
 ```python
 class Flight:
     def __init__(self, flight_number, departure, arrival, duration_in_minutes):
@@ -3337,7 +3339,7 @@ class Itinerary:
 {% endtab %}
 {% endtabs %}
 
-## 7. Stocks Exchange \| `Singleton🟢`
+## 7. Stocks Exchange | `Singleton🟢`
 
 #### System Requirements:
 
@@ -3352,26 +3354,26 @@ class Itinerary:
 
 **1.Constants =================================================================**
 
-* **ReturnStatus**: SUCCESS, FAIL, INSUFFICIENT\_FUNDS, NO\_STOCK\_AVAILABLE
-* **OrderStatus** :OPEN, FILLED, PARTIALLY\_FILLED, CANCELLED
-* **TimeBoundOrderType**  : GOOD\_TILL\_CANCELLED, IMMEDIATE\_OR\_CANCEL, ON\_MARKET\_OPEN, ON\_MARKET\_CLOSE
+* **ReturnStatus**: SUCCESS, FAIL, INSUFFICIENT_FUNDS, NO_STOCK_AVAILABLE
+* **OrderStatus** :OPEN, FILLED, PARTIALLY_FILLED, CANCELLED
+* **TimeBoundOrderType**  : GOOD_TILL_CANCELLED, IMMEDIATE_OR_CANCEL, ON_MARKET_OPEN, ON_MARKET_CLOSE
 * **AccountStatus** : ACTIVE, CLOSED, CANCELED, BLACKLISTED, NONE
 
 **2.Orders =================================================================**
 
 * **Order** : interface
-  * order\_id 
-  * is\_buy\_order 
+  * order_id 
+  * is_buy_order 
   * status 
   * `time_bounder_order_type` 
-  * creation\_time
-  * set\_status\(self, status\) 
-  * save\_in\_DB\(self\) 
-  * add\_order\_parts\(self, parts\)
-  * cancel\_order\(\)
-  * ~~place\_order\(\)~~ =&gt; Not placed here\(placed in **stock\_exchang** as **SINGLETON**\)
-* **LimitOrder\(Order\)**
-  * price\_limit = 0.0
+  * creation_time
+  * set_status(self, status) 
+  * save_in_DB(self) 
+  * add_order_parts(self, parts)
+  * cancel_order()
+  * ~~place_order()~~ => Not placed here(placed in **stock_exchang **as **SINGLETON**)
+* **LimitOrder(Order)**
+  * price_limit = 0.0
 
 #### 3.Stock Exchange ===================================================================
 
@@ -3380,25 +3382,25 @@ class Itinerary:
 
 #### 4.Members ===============================================================
 
-* **Account:** interface
+* **Account: **interface
   * id
   * password 
   * name 
   * email 
   * phone 
   * status : AccountStatus.NONE
-  * reset\_password\(\)
-* **Member\(Account\)**
-  * available\_funds\_for\_trading = 0.0 
-  * date\_of\_membership 
-  * stock\_positions = {} 
-  * active\_orders = {}
-  * place\_sell\_limit\_order\(self, stock\_id, quantity, limit\_price, enforcement\_type\)
-  * callback\_stock\_exchange\(self, order\_id, order\_parts, status\)
+  * reset_password()
+* **Member(Account)**
+  * available_funds_for_trading = 0.0 
+  * date_of_membership 
+  * stock_positions = {} 
+  * active_orders = {}
+  * place_sell_limit_order(self, stock_id, quantity, limit_price, enforcement_type)
+  * callback_stock_exchange(self, order_id, order_parts, status)
     * this function will be invoked whenever there is an update from stock exchange against an order
 
 {% tabs %}
-{% tab title="combined\_sys.py" %}
+{% tab title="combined_sys.py" %}
 ```python
 from enum import Enum
 
@@ -3607,7 +3609,7 @@ class LimitOrder(Order):
 ```
 {% endtab %}
 
-{% tab title="stock\_exchange.py🟢" %}
+{% tab title="stock_exchange.py🟢" %}
 ```python
 from .order import Order
 
@@ -3729,65 +3731,65 @@ class Member(Account):
   * email 
   * phone
 
-**2.Acc\_Types ===============================================================**
+**2.Acc_Types ===============================================================**
 
 * **Account** - interface
   * password 
   * name 
   * email 
-  * reset\_password\(self\)
-* **Customer\(Account\)**
-  * total\_vehicles\_reserved
-  * get\_reservations\(\)
+  * reset_password(self)
+* **Customer(Account)**
+  * total_vehicles_reserved
+  * get_reservations()
 
 **3.Car Rental System ===============================================================**
 
 * **CarRentalLocation** 
   * name 
   * location
-  * get\_location
+  * get_location
 * **CarRentalSystem**
   * name
   * location
-  * add\_new\_location\(self, location\)
+  * add_new_location(self, location)
 
 **4.Vehicle ===============================================================**
 
 * **Vehicle** : parent
-  * license\_number
+  * license_number
   *  barcode status 
   * model 
-  * manufacturing\_year 
+  * manufacturing_year 
   * mileage
-  * reserve\_vehicle\(\)
-  * return\_vehicle\(\)
-* **Car\(Vehicle\)**
-* **Bike\(Vehicle\)**
+  * reserve_vehicle()
+  * return_vehicle()
+* **Car(Vehicle)**
+* **Bike(Vehicle)**
 * **VehicleReservation**
-  * reservation\_number 
-  * creation\_date 
+  * reservation_number 
+  * creation_date 
   * status 
-  * due\_date 
-  * return\_date 
-  * pickup\_location\_name 
-  * return\_location\_name
-  * customer\_id 
+  * due_date 
+  * return_date 
+  * pickup_location_name 
+  * return_location_name
+  * customer_id 
   * vehicle 
   * bill 
-  * additional\_drivers
+  * additional_drivers
   * insurances
-  * fetch\_reservation\_details\(reservation\_number\)
+  * fetch_reservation_details(reservation_number)
 
 **5.Search ===============================================================**
 
-* **Search :** interface
-  * search\_by\_type\(\) 
-  * search\_by\_model\(\)
+* **Search : **interface
+  * search_by_type() 
+  * search_by_model()
 * **VehicleInventory**
-  * vehicle\_types 
-  * vehicle\_models
-  * search\_by\_type\(\) 
-  * search\_by\_model\(\)
+  * vehicle_types 
+  * vehicle_models
+  * search_by_type() 
+  * search_by_model()
 
 {% tabs %}
 {% tab title="constants.py" %}
@@ -3832,7 +3834,7 @@ class Person():
 ```
 {% endtab %}
 
-{% tab title="account\_types.py" %}
+{% tab title="account_types.py" %}
 ```python
 from abc import ABC
 from .constants import AccountStatus
@@ -3885,7 +3887,7 @@ class Guest:
 ```
 {% endtab %}
 
-{% tab title="car\_rental.py" %}
+{% tab title="car_rental.py" %}
 ```python
 class CarRentalLocation:
     def __init__(self, name, address):
@@ -4063,10 +4065,10 @@ class Payment:
   * skills 
   * accomplishments 
   * recommendations
-  * add\_experience\(self, experience\) 
-  * add\_education\(self, education\) 
-  * add\_skill\(self, skill\) 
-  * add\_accomplishment\(self, accomplishment\)
+  * add_experience(self, experience) 
+  * add_education(self, education) 
+  * add_skill(self, skill) 
+  * add_accomplishment(self, accomplishment)
 * **Experience**
   * title 
   * company 
@@ -4075,32 +4077,32 @@ class Payment:
   * to 
   * description
 
-**3.Acc\_Types ===============================================================**
+**3.Acc_Types ===============================================================**
 
 * **Account** 
   * id 
   * password 
   * status
-  * reset\_password
+  * reset_password
 * **Person**
   * name 
   * address 
   * email 
   * phone account
-* **Member\(Person\)**
-  * date\_of\_membership
+* **Member(Person)**
+  * date_of_membership
   * headline
   * photo
-  * member\_follows
-  * member\_connections
-  * company\_follows
-  * group\_follows
+  * member_follows
+  * member_connections
+  * company_follows
+  * group_follows
   * profile
-  * send\_message\(self, message\)
-  * create\_post\(self, post\)
-  * send\_connection\_invitation\(self, connection\_invitation\)
-  * block\_user\(self, customer\)
-  * unblock\_user\(self, customer\)
+  * send_message(self, message)
+  * create_post(self, post)
+  * send_connection_invitation(self, connection_invitation)
+  * block_user(self, customer)
+  * unblock_user(self, customer)
 
 **4.Company ===============================================================**
 
@@ -4108,60 +4110,60 @@ class Payment:
   *  name
   * description
   * type
-  * company\_size
-  * active\_job\_postings
+  * company_size
+  * active_job_postings
 * **JobPosting**
-  * date\_of\_posting
+  * date_of_posting
   * description
-  * employment\_type
+  * employment_type
   * location
-  * is\_fulfilled
-* **Bike\(Vehicle\)**
+  * is_fulfilled
+* **Bike(Vehicle)**
 * **VehicleReservation**
-  * reservation\_number 
-  * creation\_date 
+  * reservation_number 
+  * creation_date 
   * status 
-  * due\_date 
-  * return\_date 
-  * pickup\_location\_name 
-  * return\_location\_name
-  * customer\_id 
+  * due_date 
+  * return_date 
+  * pickup_location_name 
+  * return_location_name
+  * customer_id 
   * vehicle 
   * bill 
-  * additional\_drivers
+  * additional_drivers
   * insurances
-  * fetch\_reservation\_details\(reservation\_number\)
+  * fetch_reservation_details(reservation_number)
 
 **5.Messagin & Posting=============================================================**
 
-* **Group :** 
+* **Group : **
   * name
   * description
-  * total\_members
-  * members = \[\]
+  * total_members
+  * members = \[]
 * **Post**
   * text 
-  * total\_likes
-  * total\_shares 
+  * total_likes
+  * total_shares 
   * owner
 * **Message**
-  * sent\_to 
-  * message\_body 
+  * sent_to 
+  * message_body 
   * media
 
 **6.Searching =============================================================**
 
-* **Search :** 
-  * search\_member\(self, name\) 
-  * search\_company\(self, name\) 
-  * search\_job\(self, title\)
-* **SearchIndex\(Search\):**
-  * member\_names 
-  * company\_names 
-  * job\_titles
-  * search\_member\(self, name\) 
-  * search\_company\(self, name\) 
-  * search\_job\(self, title\)
+* **Search : **
+  * search_member(self, name) 
+  * search_company(self, name) 
+  * search_job(self, title)
+* **SearchIndex(Search):**
+  * member_names 
+  * company_names 
+  * job_titles
+  * search_member(self, name) 
+  * search_company(self, name) 
+  * search_job(self, title)
 
 {% tabs %}
 {% tab title="constants.py" %}
@@ -4210,7 +4212,7 @@ class Experience:
 ```
 {% endtab %}
 
-{% tab title="acc\_type.py" %}
+{% tab title="acc_type.py" %}
 ```python
 from abc import ABC
 from datetime import datetime
@@ -4298,7 +4300,7 @@ class JobPosting:
 ```
 {% endtab %}
 
-{% tab title="group\_post.py" %}
+{% tab title="group_post.py" %}
 ```python
 class Group:
     def __init__(self, name, description):
@@ -4429,7 +4431,7 @@ class RunType(Enum):
 ```
 {% endtab %}
 
-{% tab title="acc\_type.py" %}
+{% tab title="acc_type.py" %}
 ```python
 # For simplicity, we are not defining getter and setter functions. The reader can
 # assume that all class attributes are private and accessed through their respective
@@ -4649,7 +4651,7 @@ class AccountStatus(Enum):
 ```
 {% endtab %}
 
-{% tab title="acc\_type.py" %}
+{% tab title="acc_type.py" %}
 ```python
 from abc import ABC
 from datetime import datetime
@@ -4953,7 +4955,7 @@ class PaymentStatus(Enum):
 ```
 {% endtab %}
 
-{% tab title="acc\_type.py" %}
+{% tab title="acc_type.py" %}
 ```python
 from abc import ABC
 from .constants import *
@@ -5094,7 +5096,7 @@ class RoomHouseKeeping:
 ```
 {% endtab %}
 
-{% tab title="room\_booking.py" %}
+{% tab title="room_booking.py" %}
 ```python
 from datetime import datetime
 from abc import ABC
@@ -5168,13 +5170,13 @@ Here are the top use cases of the Blackjack game:
   * Stands Pat: If the hand is 21 points or over, or the player chooses to stand pat, the game is over.
   * Resolve Bust: If a hand is over 21, it is resolved as a loser.
 * **Dealer plays the hand:** The dealer keeps getting a new card if the total point value of the hand is 16 or less, and stops dealing cards at the point value of 17 or more.
-  * Dealer Bust: If the dealer’s hand is over 21, the player’s wins the game. Player Hands with two cards totaling 21 \( “blackjack” \) are paid 3:2, all other hands are paid 1:1.
+  * Dealer Bust: If the dealer’s hand is over 21, the player’s wins the game. Player Hands with two cards totaling 21 ( “blackjack” ) are paid 3:2, all other hands are paid 1:1.
 * **Insurance:** If the dealer’s up card is an Ace, then the player is offered insurance:
   * Offer Even Money: If the player’s hand totals to a soft 21, a blackjack; the player is offered an even money resolution. If the player accepts, the entire game is resolved at this point. The ante is paid at even money; there is no insurance bet.
   * Offer Insurance: The player is offered insurance, which they can accept by creating a bet. For players with blackjack, this is the second offer after even money is declined. If the player declines, there are no further insurance considerations.
   * Examine Hole Card: The dealer’s hole card is examined. If it has a 10-point value, the insurance bet is resolved as a winner, and the game is over. Otherwise, the insurance is resolved as a loser, the hole card is not revealed, and play continues.
 * **Split:** If the player’s hand has both cards of equal rank, the player is offered a split. The player accepts by creating an additional Bet. The original hand is removed; The two original cards are split and then the dealer deals two extra cards to create two new Hands. There will not be any further splitting.
-* **Game Resolution:** The Player’s Hand is compared against the Dealer’s Hand, and the hand with the higher point value wins. In the case of a tie, the bet is returned. When the player wins, a winning hand with two cards totaling 21 \(“blackjack”\) is paid 3:2, any other winning hand is paid 1:1.
+* **Game Resolution:** The Player’s Hand is compared against the Dealer’s Hand, and the hand with the higher point value wins. In the case of a tie, the bet is returned. When the player wins, a winning hand with two cards totaling 21 (“blackjack”) is paid 3:2, any other winning hand is paid 1:1.
 
 {% tabs %}
 {% tab title="constants.py" %}
@@ -5203,7 +5205,7 @@ class Card:
 ```
 {% endtab %}
 
-{% tab title="blackjack\_card.py" %}
+{% tab title="blackjack_card.py" %}
 ```python
 from .card import *
 
@@ -5220,7 +5222,7 @@ class BlackjackCard(Card):
 ```
 {% endtab %}
 
-{% tab title="deck\_shoe.py" %}
+{% tab title="deck_shoe.py" %}
 ```python
 import random
 from datetime import datetime
@@ -6205,7 +6207,7 @@ class Suit:
 ```
 {% endtab %}
 
-{% tab title="war\_card\_game.py" %}
+{% tab title="war_card_game.py" %}
 ```python
 class WarCardGame:
 
@@ -6319,7 +6321,7 @@ class WarCardGame:
 {% endtab %}
 {% endtabs %}
 
-## 16. TicTacToe\(Naive\)
+## 16. TicTacToe(Naive)
 
 {% tabs %}
 {% tab title="main.py" %}
@@ -6723,13 +6725,13 @@ game = Game(10, 10)
 game.play()
 ```
 
-## 19. Logger Library 🔵 \| ChainOfResponsibility @Rippling
+## 19. Logger Library 🔵 | ChainOfResponsibility @Rippling
 
 #### Problem Stmt: [link](https://leetcode.com/discuss/interview-question/object-oriented-design/395160/Object-Oriented-design-for-Logger-Library-or-Flipkart-or-OA-2019)
 
 ![](../.gitbook/assets/screenshot-2021-08-29-at-9.49.16-pm.png)
 
-#### \#\#\# &gt;&gt; Used pattern: [Chain of responsibility](https://www.tutorialspoint.com/design_pattern/chain_of_responsibility_pattern.htm)
+#### ### >> Used pattern: [Chain of responsibility](https://www.tutorialspoint.com/design_pattern/chain_of_responsibility_pattern.htm)
 
 * **Chain of responsibility** pattern creates a **chain of receiver objects for a request**. This pattern decouples sender and receiver of a request based on type of request
 * In this pattern, normally each receiver contains reference to another receiver. 
@@ -6741,7 +6743,7 @@ game.play()
 
 {% tabs %}
 {% tab title="Classes" %}
-```text
+```
 Enum Level:
 ------Info
 ------Warn
@@ -6867,7 +6869,7 @@ class DBLogger(Logger):
 ```
 {% endtab %}
 
-{% tab title="logger\_config.py" %}
+{% tab title="logger_config.py" %}
 ```python
 from .constants import *
 from .logger import *
@@ -6891,7 +6893,7 @@ class LoggerConfig:
 ```
 {% endtab %}
 
-{% tab title="logger\_lib.py" %}
+{% tab title="logger_lib.py" %}
 ```python
 from .logger_config import *
 
@@ -6919,7 +6921,7 @@ class LoggerLib:
 
 ## 20. **Multithreaded Queue like Kafka**
 
-* Link to [video](https://www.youtube.com/watch?v=4BEzgPlLKTo&ab_channel=UditAgarwal) & [code](https://leetcode.com/discuss/interview-question/1091960/uber-l5a-interview-machine-coding-multithreaded-queue-like-kafka)
+* Link to [video](https://www.youtube.com/watch?v=4BEzgPlLKTo\&ab_channel=UditAgarwal) & [code](https://leetcode.com/discuss/interview-question/1091960/uber-l5a-interview-machine-coding-multithreaded-queue-like-kafka)
 
 {% tabs %}
 {% tab title="kafka.py" %}
@@ -7213,7 +7215,7 @@ with MessagingService() as ms:
 
 ## 22. Locker
 
-* [link](https://www.youtube.com/watch?v=O_oLtUHlrXM&ab_channel=UditAgarwal)
+* [link](https://www.youtube.com/watch?v=O_oLtUHlrXM\&ab_channel=UditAgarwal)
 
 ## 23. 2048 Game
 
@@ -7309,20 +7311,15 @@ while move != 0:
         arr=moveRight(arr)
     print_arr(arr)
     move=int(input())
-    
+
+# 24. Design Amazon Wishli
 ```
 
 
 
+Design distributed notification service
 
-
-
-
-
-
-
-
-
+Design Amazon Wishlist
 
 
 

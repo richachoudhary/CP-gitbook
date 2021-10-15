@@ -3,21 +3,21 @@
 ## Notes
 
 * **Approaches** to solve a recursive problem:
-  1. If you have to take **decisions** at every step =&gt; Make **Decision Tree** \(using **I/P O/P method**\)
-     * You'll get the answer when **i/p is empty i.e.** at the **leaves** of decision tree
-     * **Trick:** is to keep reducing input & keep increasing output::
+  1. If you have to take **decisions **at every step => Make **Decision Tree** (using **I/P O/P method**)
+     * You'll get the answer when **i/p is empty i.e. **at the **leaves** of decision tree
+     * **Trick: **is to keep reducing input & keep increasing output::
      * **`f(ip,op) => f(smaller_ip, larger_op1) , f(smaller_ip, larger_op2) ,...`** 
-     * See below:  ****`Print all subsets/powerset of a string`
-  2. If the problem requires **reducing the input** at every step =&gt; use **BHI method**
-     * I. **Hypotheses**: what will your function do \(_induction_\)
+     * See below: ** **`Print all subsets/powerset of a string`
+  2. If the problem requires **reducing the input** at every step => use **BHI method**
+     * I. **Hypotheses**: what will your function do (_induction_)
      * II. **Induction**: Apply that hypothesis on smaller input :: `main code` goes here
      * III. Write **base condition** i.e. _smallest valid input_ & include it in the beginning 
-     * e.g.: find height of tree [video](https://www.youtube.com/watch?v=aqLTbtWh40E&list=PL_z_8CaSLPWeT1ffjiImo0sYTcnLzo-wY&index=5&ab_channel=AdityaVerma')
-  3. If you've to take choices at every step: =&gt; Make **Choice Diagram** \(like **DP**\)
+     * e.g.: find height of tree [video](https://www.youtube.com/watch?v=aqLTbtWh40E\&list=PL_z\_8CaSLPWeT1ffjiImo0sYTcnLzo-wY\&index=5\&ab_channel=AdityaVerma%27)
+  3. If you've to take choices at every step: => Make **Choice Diagram** (like **DP**)
 
 ## 1. Recursion
 
-* [x] Sort An Array **OR** Sort A Stack \(using BHI method\) - for concept building : [video](https://www.youtube.com/watch?v=AZ4jEY_JAVc&list=PL_z_8CaSLPWeT1ffjiImo0sYTcnLzo-wY&index=6&ab_channel=AdityaVerma)
+* [x] Sort An Array **OR **Sort A Stack (using BHI method) - for concept building : [video](https://www.youtube.com/watch?v=AZ4jEY_JAVc\&list=PL_z\_8CaSLPWeT1ffjiImo0sYTcnLzo-wY\&index=6\&ab_channel=AdityaVerma)
 
 {% tabs %}
 {% tab title="Sort" %}
@@ -50,7 +50,7 @@ def insertMe(arr,x):  # HYPOTHESIS: fn inserts 'x' correctly inserted at its pos
 {% endtabs %}
 
 * [x] GfG: [Delete Middle Element of Stack](https://www.geeksforgeeks.org/delete-middle-element-stack/)
-* [x] GfG: [Reverse A Stack w/o Extra Space](https://www.geeksforgeeks.org/reverse-a-stack-using-recursion/)  \| [Video](https://www.youtube.com/watch?v=8YXQ68oHjAs&list=PL_z_8CaSLPWeT1ffjiImo0sYTcnLzo-wY&index=9&ab_channel=AdityaVerma) `O(1) ; not counting function stack`
+* [x] GfG: [Reverse A Stack w/o Extra Space](https://www.geeksforgeeks.org/reverse-a-stack-using-recursion/)  | [Video](https://www.youtube.com/watch?v=8YXQ68oHjAs\&list=PL_z\_8CaSLPWeT1ffjiImo0sYTcnLzo-wY\&index=9\&ab_channel=AdityaVerma) `O(1) ; not counting function stack`
 
 {% tabs %}
 {% tab title="reverseStack" %}
@@ -81,7 +81,7 @@ def insertMeAtBottom(stk,x): # HYPO: inserts 'x' at the bottom of stk
 {% endtabs %}
 
 * [x] [779. K-th Symbol in Grammar](https://leetcode.com/problems/k-th-symbol-in-grammar/)
-* [x] CSES: [Tower of Hanoi](https://cses.fi/problemset/task/2165) \| [video](https://www.youtube.com/watch?v=l45md3RYX7c&list=PL_z_8CaSLPWeT1ffjiImo0sYTcnLzo-wY&index=11&ab_channel=AdityaVerma) 
+* [x] CSES: [Tower of Hanoi](https://cses.fi/problemset/task/2165) | [video](https://www.youtube.com/watch?v=l45md3RYX7c\&list=PL_z\_8CaSLPWeT1ffjiImo0sYTcnLzo-wY\&index=11\&ab_channel=AdityaVerma) 
 
 ```python
 def solve(n,s,d,h):    # no of plats, poles: source, destination, helper
@@ -96,7 +96,7 @@ def solve(n,s,d,h):    # no of plats, poles: source, destination, helper
     solve(n-1,h,d,s)    # move those (n-1) plates h->d    
 ```
 
-* [x] Print all subsets/powerset of a string \| [video](https://www.youtube.com/watch?v=Yg5a2FxU4Fo&list=PL_z_8CaSLPWeT1ffjiImo0sYTcnLzo-wY&index=12&ab_channel=AdityaVerma) \| **Decision Tree method**
+* [x] Print all subsets/powerset of a string | [video](https://www.youtube.com/watch?v=Yg5a2FxU4Fo\&list=PL_z\_8CaSLPWeT1ffjiImo0sYTcnLzo-wY\&index=12\&ab_channel=AdityaVerma) | **Decision Tree method**
 
 ```python
 def printSubsets(ip, op):
@@ -112,15 +112,15 @@ def printSubsets(ip, op):
 printSubsets(str,'') # init with I/P & O/P
 ```
 
-* [x] [Permutation with Spaces](https://practice.geeksforgeeks.org/problems/permutation-with-spaces3627/1) \| [Video](https://www.youtube.com/watch?v=1cspuQ6qHW0&list=PL_z_8CaSLPWeT1ffjiImo0sYTcnLzo-wY&index=14&ab_channel=AdityaVerma) : **NOTE:** Sometimes you've to break-down the problem before making recursion tree
-* [x] ----------------------------- \[Medium\]---------------------------
+* [x] [Permutation with Spaces](https://practice.geeksforgeeks.org/problems/permutation-with-spaces3627/1) | [Video](https://www.youtube.com/watch?v=1cspuQ6qHW0\&list=PL_z\_8CaSLPWeT1ffjiImo0sYTcnLzo-wY\&index=14\&ab_channel=AdityaVerma) : **NOTE: **Sometimes you've to break-down the problem before making recursion tree
+* [x] \----------------------------- \[Medium]---------------------------
 * [x] [22.Generate Parentheses](https://leetcode.com/problems/generate-parentheses/) 🚀
 * [x] [1823.Find the Winner of the Circular Game](https://leetcode.com/problems/find-the-winner-of-the-circular-game/)
 * [x] [241.Different Ways to Add Parentheses](https://leetcode.com/problems/different-ways-to-add-parentheses/)
 * [x] [1545.Find Kth Bit in Nth Binary String](https://leetcode.com/problems/find-kth-bit-in-nth-binary-string/)
 * [ ] [394.Decode String](https://leetcode.com/problems/decode-string/) 🔒❌
-* [ ] -------------------------------\[Hard\]----------------------------------
-* [ ] CSES: [Josephus Problem II](https://cses.fi/problemset/task/2163) 🐽 \| KartikVarma-O\(N\*N\)...need to do better
+* [ ] \-------------------------------\[Hard]----------------------------------
+* [ ] CSES: [Josephus Problem II](https://cses.fi/problemset/task/2163) 🐽 | KartikVarma-O(N\*N)...need to do better
 * [ ] [10.Regular Expression Matching](https://leetcode.com/problems/regular-expression-matching/)
 * [ ] [44.Wildcard Matching](https://leetcode.com/problems/wildcard-matching/)
 * [ ] [1106.Parsing A Boolean Expression](https://leetcode.com/problems/parsing-a-boolean-expression/)
@@ -135,7 +135,7 @@ printSubsets(str,'') # init with I/P & O/P
 
 
 
-## 2. D&C
+## 2. D\&C
 
 {% tabs %}
 {% tab title="395." %}
@@ -194,7 +194,7 @@ print(ans)
 
 ## 3. Backtrack
 
-* [x] [52.N-Queens II](https://leetcode.com/problems/n-queens-ii/) \| CSES: [Chessboard and Queens](https://cses.fi/problemset/task/1624) ✅🚀
+* [x] [52.N-Queens II](https://leetcode.com/problems/n-queens-ii/) | CSES: [Chessboard and Queens](https://cses.fi/problemset/task/1624) ✅🚀
 
 {% tabs %}
 {% tab title="52. nQ" %}
@@ -245,7 +245,6 @@ SC: O(N*N)
 
 
 
-## \# Resources
+## # Resources
 
-* Aditya Verma's playlist on Recursion: [https://www.youtube.com/watch?v=kHi1DUhp9kM&list=PL\_z\_8CaSLPWeT1ffjiImo0sYTcnLzo-wY&ab\_channel=AdityaVerma](https://www.youtube.com/watch?v=kHi1DUhp9kM&list=PL_z_8CaSLPWeT1ffjiImo0sYTcnLzo-wY&ab_channel=AdityaVerma)
-
+* Aditya Verma's playlist on Recursion: [https://www.youtube.com/watch?v=kHi1DUhp9kM\&list=PL_z\_8CaSLPWeT1ffjiImo0sYTcnLzo-wY\&ab_channel=AdityaVerma](https://www.youtube.com/watch?v=kHi1DUhp9kM\&list=PL_z\_8CaSLPWeT1ffjiImo0sYTcnLzo-wY\&ab_channel=AdityaVerma)
