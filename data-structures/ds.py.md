@@ -1,6 +1,6 @@
 # dataStructures.py
 
-## NOTEs:
+## NOTES:
 
 * **List of Data Structures implemented in python: **[https://lei-d.gitbook.io/leetcode/data-structure](https://lei-d.gitbook.io/leetcode/data-structure)
 * implement `Stack` ---> with `list`
