@@ -3,6 +3,7 @@
 
 
 * [x] LC [56. Merge Intervals](https://leetcode.com/problems/merge-intervals/)
+* [x] LC [228. Summary Ranges](https://leetcode.com/problems/summary-ranges/)
 * [x] CSES: [Movie Festival](https://cses.fi/problemset/task/1629)
 * [x] CSES: [Movei Festival II](https://cses.fi/problemset/task/1632) ✅
 * [x] CSES: [Restaurant Customers](https://cses.fi/problemset/task/1619)
@@ -26,6 +27,35 @@
     # for the last one
     res.append((start,end))
     return res
+```
+{% endtab %}
+
+{% tab title="228" %}
+```python
+def summaryRanges(self, A: List[int]) -> List[str]:
+    ans = []
+    if len(A) == 0:
+        return ans
+    start,end = A[0],A[0]
+
+    for a in A[1:]:
+        #continue prev range
+        if a == end+1:
+            end = a
+        # start new range
+        else:
+            if start != end:
+                ans.append(str(start)+'->'+str(end))
+            else:
+                ans.append(str(start))
+            start, end = a,a
+
+    # for the last
+    if start != end:
+        ans.append(str(start)+'->'+str(end))
+    else:
+        ans.append(str(start))
+        return ans
 ```
 {% endtab %}
 

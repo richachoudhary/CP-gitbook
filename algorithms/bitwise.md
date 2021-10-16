@@ -1,8 +1,8 @@
 # Bitwise
 
-### **ANY PROBLEM IN THE WORLD CAN BE SOLVED BY BITSET(i.e. checking on all possible solutions)🟢🟢🟢**
+### 🌟**ANY PROBLEM IN THE WORLD CAN BE SOLVED BY BITSET(i.e. checking on all possible solutions)🟢🟢🟢**
 
-## **Notes:**
+## **0.Notes:**
 
 ```python
 # int to binary
@@ -28,8 +28,10 @@
 | Left Shift ( << )                                                     | <p><code>1 &#x3C;&#x3C; i = pow(2,i) : </code><strong><code>general_use</code></strong></p><p><strong><code>n&#x3C;&#x3C;k </code></strong>is equivalent to <strong>multiplying</strong> n with <span class="math">2^k </span> </p>                                                                                                                                                                                                                                                                                                |
 | Right Shift ( >> )                                                    | <p><code>i >> 1 : </code><strong><code>general_use</code></strong></p><p>16 >> 4 = 1</p><p><strong><code>n>>k </code></strong>is equivalent to <strong>dividing</strong> n with <span class="math">2^k </span> </p>                                                                                                                                                                                                                                                                                                                |
 | **Implementation: C**heck if the i-th bit is set                      | **`return x and (1<<i)`**                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
-| **TURN OFF ** the i-th bit in x                                       | **`x = x^(1<<i) `**  # xor turns that bit off                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
-| **TURN ON **the i-th bit in x                                         | **`x = x\|(1<<i)`**                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| **GET** i-th bit of x                                                 | **`return (x>>i)&1`**                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| **CLEAR/TURN OFF ** the i-th bit in x                                 | **`x = x^(1<<i) `**  # xor turns that bit off                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| **SET/TURN ON **the i-th bit in x                                     | **`x = x\|(1<<i)`**                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| **TOGGLE** the i-th bit in x                                          | **x = ` x^(1<<i)`**                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
 | **Implementation: **generate all the possible subsets                 | <p><code>for i in range(0, 1&#x3C;&#x3C;n):</code><br><code>         sub = []</code></p><p><code>         for j in range(0,n):</code></p><p><code>              if i </code><strong><code>&#x26;</code></strong><code>(1&#x3C;&#x3C;j):</code></p><p><code>                   sub.append(a[j])</code></p><p><code>         superset += sub</code></p>                                                                                                                                                                              |
 | `(x-1)`                                                               | <p>flips all the bits to the right of rightmost 1 in x and also including the rightmost 1</p><p>x = 4      = (100)<br>x - 1 = 3 = (011)</p>                                                                                                                                                                                                                                                                                                                                                                                        |
 | **Implementation: **check if a given number is a power of 2 ?         | <p><strong><code>return (x and !(x and (x-1)))</code></strong><br><code>//x will check if x == 0 and !(x and (x-1)) will check if power of two </code></p>                                                                                                                                                                                                                                                                                                                                                                         |
@@ -41,7 +43,144 @@
 
 ****
 
-## **Bitmasking**:
+## ****
+
+## 1. Problems: Bitwise
+
+* [ ] LC : [289.Game of Life](https://leetcode.com/problems/game-of-life/)
+* [ ] Missing Number: [https://leetcode.com/problems/missing-number/](https://leetcode.com/problems/missing-number/)​
+* [ ] Bitwise ORs of Subarrays: [https://leetcode.com/problems/bitwise-ors-of-subarrays/](https://leetcode.com/problems/bitwise-ors-of-subarrays/)
+* [ ] XOR Queries of a Subarray: [https://leetcode.com/problems/xor-queries-of-a-subarray/](https://leetcode.com/problems/xor-queries-of-a-subarray/)
+* [ ] Minimum Flips to Make a OR b Equal to c: [https://leetcode.com/problems/minimum-flips-to-make-a-or-b-equal-to-c/](https://leetcode.com/problems/minimum-flips-to-make-a-or-b-equal-to-c/)
+* [ ] Count Triplets That Can Form Two Arrays of Equal XOR: [https://leetcode.com/problems/count-triplets-that-can-form-two-arrays-of-equal-xor/](https://leetcode.com/problems/count-triplets-that-can-form-two-arrays-of-equal-xor/)
+* [ ] Bitwise AND of Numbers Range: [https://leetcode.com/problems/bitwise-and-of-numbers-range/](https://leetcode.com/problems/bitwise-and-of-numbers-range/)
+* [ ] Decode XORed Permutation: [https://leetcode.com/problems/decode-xored-permutation/](https://leetcode.com/problems/decode-xored-permutation/)
+* [x] CSES: [Apple Division](https://cses.fi/problemset/result/2572485/)
+* [x] LC: [29.Divide Two Integers](https://leetcode.com/problems/divide-two-integers/)
+
+{% tabs %}
+{% tab title="289." %}
+### 1. Appr#1 : SC: O(N\*M) 
+
+so damn easy
+
+```python
+def gameOfLife(self, A: List[List[int]]) -> None:
+    n,m = len(A), len(A[0])
+    dirs = [[0,1],[0,-1],[1,0],[-1,0],[1,1],[1,-1],[-1,1],[-1,-1]]
+
+    def count_neighoubrs(x,y):
+        count = 0
+        for dx,dy in dirs:
+            nx, ny = x+dx,y+dy
+            if 0<=nx<n and 0<=ny<m and A[nx][ny] == 1:
+                count += 1
+        return count
+
+    res = [[0 for _ in range(m)] for _ in range(n)]    # extra space
+
+    for i in range(n):
+        for j in range(m):
+            res[i][j] = A[i][j]
+            nei = count_neighoubrs(i,j)
+            if A[i][j] == 0:  
+                if nei == 3:     # .4 dead
+                    res[i][j] = 1
+            elif A[i][j] == 1:
+                if nei < 2 or nei > 3:
+                    res[i][j] = 0
+    A[::] = res
+```
+
+### 2. FOLLOW_UP: #1: Do in O(1) Space ---> <mark style="color:red;">bitwise</mark>
+
+**IDEA: ** 
+
+* Traverse top-left to bottom-right & store the prev_val in `0-th` bit & new val in `1st` bit. 
+* Iterate once again & assign cell values to `0-th` bit only
+
+```python
+def gameOfLife(self, A: List[List[int]]) -> None:
+    n,m = len(A), len(A[0])
+    dirs = [[0,1],[0,-1],[1,0],[-1,0],[1,1],[1,-1],[-1,1],[-1,-1]]
+
+    def count_neighoubrs(x,y):
+        count = 0
+        for dx,dy in dirs:
+            nx, ny = x+dx,y+dy
+            if 0<=nx<n and 0<=ny<m and get_ith_bit(0,nx,ny) == 1:
+                count += 1
+        return count
+
+    def set_ith_bit(i,x,y):
+        A[x][y] = A[x][y]|(1<<i)
+
+    def get_ith_bit(i,x,y):
+        return (A[x][y]>>i)&1
+
+    for i in range(n):
+        for j in range(m):
+            nei = count_neighoubrs(i,j)
+            prev_val = get_ith_bit(0,i,j)
+            if prev_val == 1 and nei == 2 or nei == 3:
+                set_ith_bit(1,i,j)
+
+    for i in range(n):
+        for j in range(m):
+            A[i][j] = get_ith_bit(1,i,j)
+```
+
+### 3. FOLLOW_UP#2: infinite board
+
+> In this question, we represent the board using a 2D array. In principle, the board is infinite, which would cause problems when the active area encroaches upon the border of the array (i.e., live cells reach the border). How would you address these problems?
+
+* When the board is infinite, we can't present the board using 2d array, because the number of rows and columns maybe too big.
+* To mimic the infinite board follow up question, I add a new method `gameOfLifeInfinite`. And in `gameOfLife`, I've just converted the **board(m, n)** into **infinite board** by storing **live cells** into the set, and the row bound **m**, column bound **n** as well in case we want to limit the boundary.
+* The output of `gameOfLifeInfinite` is the set of **live cells** after processing.
+
+```python
+class Solution:
+    def gameOfLifeInfinite(self, live: set, m: int, n: int) -> set:
+        liveNeighborsCnt = defaultdict(int)  # liveNeighborsCnt[(r, c)] is the number of live neighbors around cell (r, c)
+        for r, c in live:
+            for dr in range(-1, 2):
+                for dc in range(-1, 2):
+                    if dr == 0 and dc == 0: continue
+                    nr, nc = r + dr, c + dc
+                    if nr < 0 or nr == m or nc < 0 or nc == n: continue  # Trim cells which have position out of the board 
+                    liveNeighborsCnt[(nr, nc)] += 1
+
+        ans = set()
+        for (r, c), cnt in liveNeighborsCnt.items():
+            if cnt == 3 or cnt == 2 and (r, c) in live:
+                ans.add((r, c))
+        return ans
+
+    def gameOfLife(self, board: List[List[int]]) -> None:
+        m, n = len(board), len(board[0])
+        liveInput = set((r, c) for r in range(m) for c in range(n) if board[r][c] == 1)
+        liveOutput = self.gameOfLifeInfinite(liveInput, m, n)
+        for r in range(m):
+            for c in range(n):
+                board[r][c] = 1 if (r, c) in liveOutput else 0
+```
+
+Complexity for `gameOfLifeInfinite`:
+
+* Time: `O(K)`, where `K` is number of live cells.
+* Space: `O(K)`
+{% endtab %}
+
+{% tab title="Second Tab" %}
+
+{% endtab %}
+{% endtabs %}
+
+
+
+
+
+## **2. Bitmasking**:
 
 ```python
 
@@ -61,7 +200,7 @@ add(SUBSET,2)
 remove(SUBSET,5)
 ```
 
-### DP with Bitmasking:
+## 3. DP with Bitmasking:
 
 * check #DP section
 
@@ -69,21 +208,9 @@ remove(SUBSET,5)
 
 
 
-## Problems: Bitwise
-
-* [ ] Missing Number: [https://leetcode.com/problems/missing-number/](https://leetcode.com/problems/missing-number/)​
-* [ ] Bitwise ORs of Subarrays: [https://leetcode.com/problems/bitwise-ors-of-subarrays/](https://leetcode.com/problems/bitwise-ors-of-subarrays/)
-* [ ] XOR Queries of a Subarray: [https://leetcode.com/problems/xor-queries-of-a-subarray/](https://leetcode.com/problems/xor-queries-of-a-subarray/)
-* [ ] Minimum Flips to Make a OR b Equal to c: [https://leetcode.com/problems/minimum-flips-to-make-a-or-b-equal-to-c/](https://leetcode.com/problems/minimum-flips-to-make-a-or-b-equal-to-c/)
-* [ ] Count Triplets That Can Form Two Arrays of Equal XOR: [https://leetcode.com/problems/count-triplets-that-can-form-two-arrays-of-equal-xor/](https://leetcode.com/problems/count-triplets-that-can-form-two-arrays-of-equal-xor/)
-* [ ] Bitwise AND of Numbers Range: [https://leetcode.com/problems/bitwise-and-of-numbers-range/](https://leetcode.com/problems/bitwise-and-of-numbers-range/)
-* [ ] Decode XORed Permutation: [https://leetcode.com/problems/decode-xored-permutation/](https://leetcode.com/problems/decode-xored-permutation/)
-* [x] CSES: [Apple Division](https://cses.fi/problemset/result/2572485/)
-* [x] LC: [29.Divide Two Integers](https://leetcode.com/problems/divide-two-integers/)
 
 
-
-## ProblemSet(to be picked from here)
+## ProblemSet
 
 * [ ] CommonProblems:  [https://leetcode.com/discuss/general-discussion/1073221/All-about-Bitwise-Operations-Beginner-Intermediate](https://leetcode.com/discuss/general-discussion/1073221/All-about-Bitwise-Operations-Beginner-Intermediate)
 * [ ] LC: [https://leetcode.com/problemset/all/?topicSlugs=bit-manipulation](https://leetcode.com/problemset/all/?topicSlugs=bit-manipulation)
