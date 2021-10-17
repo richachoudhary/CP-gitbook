@@ -320,6 +320,7 @@ return calc(0)
 * [x] [1441.Build an Array With Stack Operations](https://leetcode.com/problems/build-an-array-with-stack-operations/)
 * [x] SPOJ: [STPAR - Street Parade](https://www.spoj.com/problems/STPAR/) | [Approach](http://discuss.spoj.com/t/stpar-street-parade/2022)
 * [x] LC 316. [Remove Duplicate Letters](https://leetcode.com/problems/remove-duplicate-letters/)
+* [x] [Sum of all contiguous sub-array's max difference](https://stackoverflow.com/questions/30698441/optimal-way-to-find-sums-of-all-contiguous-sub-arrays-max-difference) | **@amazon**
 
 {% tabs %}
 {% tab title="155" %}
@@ -410,6 +411,30 @@ def removeDuplicateLetters(self, s: str) -> str:
 ```
 
 soln link: [https://leetcode.com/problems/remove-duplicate-letters/discuss/889477/Python-O(n)-greedy-with-stack-explained](https://leetcode.com/problems/remove-duplicate-letters/discuss/889477/Python-O\(n\)-greedy-with-stack-explained)
+{% endtab %}
+
+{% tab title="SumOfAbsDiffSuperset" %}
+```python
+def max_sums(d):
+    stack = [(-1, float('inf'))]
+    sum_ = 0
+    for i, x in enumerate(d):
+        while x > stack[-1][1]:
+            prev_i, prev_x = stack.pop()
+            prev_prev_i, prev_prev_x = stack[-1]
+            sum_ += prev_x * (i - prev_i) * (prev_i - prev_prev_i)
+        stack.append((i, x))
+    while len(stack) > 1:
+        prev_i, prev_x = stack.pop()
+        prev_prev_i, prev_prev_x = stack[-1]
+        sum_ += prev_x * (len(d) - prev_i) * (prev_i - prev_prev_i)
+    return sum_
+
+def max_differences_sum(A):    # main function
+    return max_sums(A) + max_sums([-x for x in A])
+
+
+```
 {% endtab %}
 {% endtabs %}
 
