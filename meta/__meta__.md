@@ -4,7 +4,7 @@
 
 ### What did I do Wrong in Round#1:
 
-* <mark style="background-color:green;">**DSA**</mark>**: **lack of timed practice
+* <mark style="background-color:green;">**DSA**</mark>\*\*: \*\*lack of timed practice
   * Target:
     * \==> EasyQ: < 5 min
     * \==> MediumQ: <10mins
@@ -28,3 +28,30 @@
   * Step1: finish Data Intesnive wali book - with indepth of each topic
   * Step2: watch all the youtube links provided
   * step3: company/tech blogs
+
+## Other Links
+
+* [Companies That Hire Directly From India!](https://www.teamblind.com/post/Companies-That-Hire-Directly-From-India-XctsxzAe) 🟢
+  * Adding a list of companies which hire directly from India. Add a comment if any other companies in mind. 
+  * Amazon UK, Berlin, Dublin, 
+  * Gdansk 
+  * Google Munich 
+  * Booking.com Netherlands 
+  * Bloomberg UK 
+  * Twitter UK 
+  * Grab Singapore 
+  * Shopee Singapore 
+  * Shopify Singapore 
+  * Yelp London 
+  * Uber Netherlands 
+  * Spotify Sweden 
+  * Facebook London 
+  * Databricks Netherland and Canada 
+  * AWS Europe 
+  * Trivago Europe 
+  * Zolando Dublin, Europe 
+  * Bytedance Singapore 
+  * Stripe Canada 
+  * Epic 
+  * Transferwise London 
+  * Apple London
