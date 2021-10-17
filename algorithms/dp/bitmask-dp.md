@@ -1,7 +1,5 @@
 # Bitmask DP
 
-
-
 ### 1. From KartikArora's Playlist
 
 * [x] GfG: [Min cost for doing N jobs with N people](https://www.geeksforgeeks.org/job-assignment-problem-using-branch-and-bound/)
@@ -10,7 +8,7 @@
   * **DP**: SC: O(N\*(2^N)) , TC: O((N^2)\*(2^N))
 * [ ] CF: [Fish - Probability that i-th fish is alive at last](https://codeforces.com/contest/16/problem/E) | [Video@KartikArora](https://www.youtube.com/watch?v=d7kvyp6dfz8\&list=PLb3g_Z8nEv1icFNrtZqByO1CrWVHLlO5g\&index=5\&ab_channel=KartikArora) 😓🐽🐽
 * [ ] Codechef: **Little Elephant:** [People Wearing diff t-shrits in party](https://www.codechef.com/problems/TSHIRTS) | [Video@KartikArora](https://www.youtube.com/watch?v=Smem2tVQQXU\&list=PLb3g_Z8nEv1icFNrtZqByO1CrWVHLlO5g\&index=6\&ab_channel=KartikArora)
-* [ ] **CSES: **[**Counting Tiling**](https://cses.fi/problemset/task/2181)** : **number of ways to fill NxM board with 1x2 or 2x1 tiles** |**[** KartikArora**](https://www.youtube.com/watch?v=lPLhmuWMRag\&list=PLb3g_Z8nEv1icFNrtZqByO1CrWVHLlO5g\&index=7\&ab_channel=KartikArora)** 🐽**
+* [ ] **CSES: **[**Counting Tiling**](https://cses.fi/problemset/task/2181)** : number of ways to fill NxM board with 1x2 or 2x1 tiles |**[\*\* KartikArora\*\*](https://www.youtube.com/watch?v=lPLhmuWMRag\&list=PLb3g_Z8nEv1icFNrtZqByO1CrWVHLlO5g\&index=7\&ab_channel=KartikArora)\*\* 🐽\*\*
 
 {% tabs %}
 {% tab title="#1" %}
@@ -134,7 +132,6 @@ ANS = dp(1, (2^N))
 dp(i,mask) = dp(i+1,mask) + SUM[dp(i+1, mask-{j}) s.t. own[i][j] == true]
 */
 
-
 ```
 {% endtab %}
 
@@ -201,7 +198,7 @@ int main() {
 * [x] [464.Can I Win](https://leetcode.com/problems/can-i-win/)
 * [x] [698.Partition to K Equal Sum Subsets](https://leetcode.com/problems/partition-to-k-equal-sum-subsets/) 💯💯✅
 * [ ] CSES: [Elevator Rides](https://cses.fi/problemset/task/1653/) 🐽✅
-* [ ] CSES: [Counting Tiles ](https://cses.fi/problemset/task/2181) | [KartikArora](https://www.youtube.com/watch?v=lPLhmuWMRag\&ab_channel=KartikArora) 🐽🐽
+* [ ] CSES: [Counting Tiles ](https://cses.fi/problemset/task/2181)| [KartikArora](https://www.youtube.com/watch?v=lPLhmuWMRag\&ab_channel=KartikArora) 🐽🐽
 * [ ] 1986.[Minimum Number of Work Sessions to Finish the Tasks](https://leetcode.com/problems/minimum-number-of-work-sessions-to-finish-the-tasks/) 🐽
 * [ ] LC [847. Shortest Path Visiting All Nodes](https://leetcode.com/problems/shortest-path-visiting-all-nodes/) 🐽| BFS + bitmask
 * [ ] 804\. [Split Array With Same Average](https://leetcode.com/problems/split-array-with-same-average/) | 🐽
@@ -406,8 +403,8 @@ Space O(2^N * N)
 * [ ] [https://leetcode.com/problems/distribute-repeating-integers/](https://leetcode.com/problems/distribute-repeating-integers/)
 * [ ] [https://leetcode.com/problems/maximize-grid-happiness/](https://leetcode.com/problems/maximize-grid-happiness/)
 * [ ] [https://leetcode.com/problems/find-minimum-time-to-finish-all-jobs/](https://leetcode.com/problems/find-minimum-time-to-finish-all-jobs/)
-* [ ] [1411.Number of Ways to Paint N × 3 Grid](https://leetcode.com/problems/number-of-ways-to-paint-n-3-grid/) | 🔒| Contest-repeat! 
-* [ ] [1931.Painting a Grid With Three Different Colors](https://leetcode.com/problems/painting-a-grid-with-three-different-colors/)  | 🔒| Contest-repeat!
+* [ ] [1411.Number of Ways to Paint N × 3 Grid](https://leetcode.com/problems/number-of-ways-to-paint-n-3-grid/) | 🔒| Contest-repeat!
+* [ ] [1931.Painting a Grid With Three Different Colors](https://leetcode.com/problems/painting-a-grid-with-three-different-colors/) | 🔒| Contest-repeat!
 * [ ] [1434.Number of Ways to Wear Different Hats to Each Other](https://leetcode.com/problems/number-of-ways-to-wear-different-hats-to-each-other/) | Same as Little Elephant & T-shirts!!!!!
 
 ### 3. Resources: Bit DP

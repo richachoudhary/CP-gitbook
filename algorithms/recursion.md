@@ -3,21 +3,21 @@
 ## Notes
 
 * **Approaches** to solve a recursive problem:
-  1. If you have to take **decisions **at every step => Make **Decision Tree** (using **I/P O/P method**)
-     * You'll get the answer when **i/p is empty i.e. **at the **leaves** of decision tree
-     * **Trick: **is to keep reducing input & keep increasing output::
-     * **`f(ip,op) => f(smaller_ip, larger_op1) , f(smaller_ip, larger_op2) ,...`** 
-     * See below: ** **`Print all subsets/powerset of a string`
+  1. If you have to take \*\*decisions \*\*at every step => Make **Decision Tree** (using **I/P O/P method**)
+     * You'll get the answer when \*\*i/p is empty i.e. \*\*at the **leaves** of decision tree
+     * \*\*Trick: \*\*is to keep reducing input & keep increasing output::
+     * **`f(ip,op) => f(smaller_ip, larger_op1) , f(smaller_ip, larger_op2) ,...`**
+     * See below: \*\* \*\*`Print all subsets/powerset of a string`
   2. If the problem requires **reducing the input** at every step => use **BHI method**
      * I. **Hypotheses**: what will your function do (_induction_)
      * II. **Induction**: Apply that hypothesis on smaller input :: `main code` goes here
-     * III. Write **base condition** i.e. _smallest valid input_ & include it in the beginning 
+     * III. Write **base condition** i.e. _smallest valid input_ & include it in the beginning
      * e.g.: find height of tree [video](https://www.youtube.com/watch?v=aqLTbtWh40E\&list=PL_z\_8CaSLPWeT1ffjiImo0sYTcnLzo-wY\&index=5\&ab_channel=AdityaVerma%27)
   3. If you've to take choices at every step: => Make **Choice Diagram** (like **DP**)
 
 ## 1. Recursion
 
-* [x] Sort An Array **OR **Sort A Stack (using BHI method) - for concept building : [video](https://www.youtube.com/watch?v=AZ4jEY_JAVc\&list=PL_z\_8CaSLPWeT1ffjiImo0sYTcnLzo-wY\&index=6\&ab_channel=AdityaVerma)
+* [x] Sort An Array \*\*OR \*\*Sort A Stack (using BHI method) - for concept building : [video](https://www.youtube.com/watch?v=AZ4jEY_JAVc\&list=PL_z\_8CaSLPWeT1ffjiImo0sYTcnLzo-wY\&index=6\&ab_channel=AdityaVerma)
 
 {% tabs %}
 {% tab title="Sort" %}
@@ -50,7 +50,7 @@ def insertMe(arr,x):  # HYPOTHESIS: fn inserts 'x' correctly inserted at its pos
 {% endtabs %}
 
 * [x] GfG: [Delete Middle Element of Stack](https://www.geeksforgeeks.org/delete-middle-element-stack/)
-* [x] GfG: [Reverse A Stack w/o Extra Space](https://www.geeksforgeeks.org/reverse-a-stack-using-recursion/)  | [Video](https://www.youtube.com/watch?v=8YXQ68oHjAs\&list=PL_z\_8CaSLPWeT1ffjiImo0sYTcnLzo-wY\&index=9\&ab_channel=AdityaVerma) `O(1) ; not counting function stack`
+* [x] GfG: [Reverse A Stack w/o Extra Space](https://www.geeksforgeeks.org/reverse-a-stack-using-recursion/) | [Video](https://www.youtube.com/watch?v=8YXQ68oHjAs\&list=PL_z\_8CaSLPWeT1ffjiImo0sYTcnLzo-wY\&index=9\&ab_channel=AdityaVerma) `O(1) ; not counting function stack`
 
 {% tabs %}
 {% tab title="reverseStack" %}
@@ -81,7 +81,7 @@ def insertMeAtBottom(stk,x): # HYPO: inserts 'x' at the bottom of stk
 {% endtabs %}
 
 * [x] [779. K-th Symbol in Grammar](https://leetcode.com/problems/k-th-symbol-in-grammar/)
-* [x] CSES: [Tower of Hanoi](https://cses.fi/problemset/task/2165) | [video](https://www.youtube.com/watch?v=l45md3RYX7c\&list=PL_z\_8CaSLPWeT1ffjiImo0sYTcnLzo-wY\&index=11\&ab_channel=AdityaVerma) 
+* [x] CSES: [Tower of Hanoi](https://cses.fi/problemset/task/2165) | [video](https://www.youtube.com/watch?v=l45md3RYX7c\&list=PL_z\_8CaSLPWeT1ffjiImo0sYTcnLzo-wY\&index=11\&ab_channel=AdityaVerma)
 
 ```python
 def solve(n,s,d,h):    # no of plats, poles: source, destination, helper
@@ -112,7 +112,7 @@ def printSubsets(ip, op):
 printSubsets(str,'') # init with I/P & O/P
 ```
 
-* [x] [Permutation with Spaces](https://practice.geeksforgeeks.org/problems/permutation-with-spaces3627/1) | [Video](https://www.youtube.com/watch?v=1cspuQ6qHW0\&list=PL_z\_8CaSLPWeT1ffjiImo0sYTcnLzo-wY\&index=14\&ab_channel=AdityaVerma) : **NOTE: **Sometimes you've to break-down the problem before making recursion tree
+* [x] [Permutation with Spaces](https://practice.geeksforgeeks.org/problems/permutation-with-spaces3627/1) | [Video](https://www.youtube.com/watch?v=1cspuQ6qHW0\&list=PL_z\_8CaSLPWeT1ffjiImo0sYTcnLzo-wY\&index=14\&ab_channel=AdityaVerma) : \*\*NOTE: \*\*Sometimes you've to break-down the problem before making recursion tree
 * [x] \----------------------------- \[Medium]---------------------------
 * [x] [22.Generate Parentheses](https://leetcode.com/problems/generate-parentheses/) 🚀
 * [x] [1823.Find the Winner of the Circular Game](https://leetcode.com/problems/find-the-winner-of-the-circular-game/)
@@ -133,11 +133,70 @@ printSubsets(str,'') # init with I/P & O/P
 * [ ] [233.Number of Digit One](https://leetcode.com/problems/number-of-digit-one/)
 * [ ] [273.Integer to English Words](https://leetcode.com/problems/integer-to-english-words/)
 
-
-
 ## 2. D\&C
 
+* [x] [241.Different Ways to Add Parentheses](https://leetcode.com/problems/different-ways-to-add-parentheses/) ✅
+* [x] [240.Search a 2D Matrix II](https://leetcode.com/problems/search-a-2d-matrix-ii/) | **@Google ✅**
+* [ ] [342.Wiggle Sort II](https://leetcode.com/problems/wiggle-sort-ii/)
+* [ ] [23.Merge k Sorted Lists](https://leetcode.com/problems/merge-k-sorted-lists/)
+* [ ] [315.Count of Smaller Numbers After Self](https://leetcode.com/problems/count-of-smaller-numbers-after-self/)
+* [ ] [218.The Skyline Problem](https://leetcode.com/problems/the-skyline-problem/)
+* [ ] [4.Median of Two Sorted Arrays](https://leetcode.com/problems/median-of-two-sorted-arrays/)
+* [ ] [493.Reverse Pairs](https://leetcode.com/problems/reverse-pairs/)
+* [ ] [https://leetcode.com/problems/number-of-ships-in-a-rectangle/](https://leetcode.com/problems/number-of-ships-in-a-rectangle/)
+* [x] CSES: [Apple Division](https://cses.fi/problemset/result/2572485/) ⭐️
+* [x] LC: [395. Longest Substring with At Least K Repeating Characters](https://leetcode.com/problems/longest-substring-with-at-least-k-repeating-characters/) ✅🚀🐽
+
+
+
 {% tabs %}
+{% tab title="240" %}
+```python
+import bisect
+
+class Solution:
+    def searchMatrix(self, matrix: List[List[int]], target: int) -> bool:
+        #1. TC: O(NlogM) -----------------------------------------------------
+        
+        for row in matrix:
+            idx = bisect.bisect_left(row, target)
+            if 0<= idx < len(row) and row[idx] == target:
+                return True
+        return False
+        
+        
+        
+        #2. TC: O(N+M) -----------------------------------------------------
+        n,m = len(matrix), len(matrix[0])
+        x, y = 0, m-1   # start from top-right(TR)
+        
+        while True:
+            if matrix[x][y] == target:
+                return True
+            
+            # move down
+            if matrix[x][y] < target:
+                x += 1
+                
+            # move left
+            elif matrix[x][y] > target:
+                y -= 1
+            
+            if x >= n or y < 0:     # out of bound
+                break
+            
+        return False
+```
+
+####
+
+#### Approach#2: O(N+M) | most optimised:
+
+* start from TOP-RIGHT(**TR**) corner
+* in each step; either move down or left ; until found OR out-of-bound
+* video on approach#2: [link](https://www.youtube.com/watch?v=dcTJRw1704w\&ab_channel=AlgorithmsMadeEasy) | understand why you can solve this only by starting from **TOP-RIGHT**(**TR) **corner
+{% endtab %}
+
 {% tab title="395." %}
 ```python
 from collections import Counter
@@ -180,17 +239,9 @@ print(ans)
 {% endtab %}
 {% endtabs %}
 
-* [x] [241.Different Ways to Add Parentheses](https://leetcode.com/problems/different-ways-to-add-parentheses/) ✅
-* [ ] [240.Search a 2D Matrix II](https://leetcode.com/problems/search-a-2d-matrix-ii/)
-* [ ] [342.Wiggle Sort II](https://leetcode.com/problems/wiggle-sort-ii/)
-* [ ] [23.Merge k Sorted Lists](https://leetcode.com/problems/merge-k-sorted-lists/)
-* [ ] [315.Count of Smaller Numbers After Self](https://leetcode.com/problems/count-of-smaller-numbers-after-self/)
-* [ ] [218.The Skyline Problem](https://leetcode.com/problems/the-skyline-problem/)
-* [ ] [4.Median of Two Sorted Arrays](https://leetcode.com/problems/median-of-two-sorted-arrays/)
-* [ ] [493.Reverse Pairs](https://leetcode.com/problems/reverse-pairs/)
-* [ ] [https://leetcode.com/problems/number-of-ships-in-a-rectangle/](https://leetcode.com/problems/number-of-ships-in-a-rectangle/)
-* [x] CSES: [Apple Division](https://cses.fi/problemset/result/2572485/) ⭐️
-* [x] LC: [395. Longest Substring with At Least K Repeating Characters](https://leetcode.com/problems/longest-substring-with-at-least-k-repeating-characters/) ✅🚀🐽
+
+
+
 
 ## 3. Backtrack
 
@@ -232,18 +283,11 @@ return nQueen(0)    # place from row 0 ---> row N-1
 TC: O(N!)
 SC: O(N*N)
 '''
-
 ```
 {% endtab %}
 {% endtabs %}
 
 [https://leetcode.com/discuss/interview-question/1098081/famous-backtracking-problems](https://leetcode.com/discuss/interview-question/1098081/famous-backtracking-problems)
-
-
-
-
-
-
 
 ## # Resources
 

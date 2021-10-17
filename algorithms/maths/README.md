@@ -5,8 +5,8 @@
 ### 1.1 Notes
 
 * Heron's formula for area of triangle![\text{ Area }=\sqrt{s(s-a)(s-b)(s-c)}](https://www.gstatic.com/education/formulas2/355397047/en/heron_s_formula.svg)
-* Set theory conventions **∀ (for all) **and** ∃ (there is).** 
-  *   For example,     **`∀x(∃y(y<x))`**
+* Set theory conventions **∀ (for all) and ∃ (there is).**
+  *   For example, **`∀x(∃y(y<x))`**
 
       \===> means that **for each** element x in the set, **there is** an element y in the set **such that** y is smaller than x
 
@@ -24,7 +24,7 @@ AXB = |  x1  y1  z1 |
 
 #### 1.2.1 Easy 🧠
 
-* [x] [1266.Minimum Time Visiting All Points](https://leetcode.com/problems/minimum-time-visiting-all-points/) 
+* [x] [1266.Minimum Time Visiting All Points](https://leetcode.com/problems/minimum-time-visiting-all-points/)
 * [x] [883. Projection Area of 3D Shapes](https://leetcode.com/problems/projection-area-of-3d-shapes/)
 * [x] [1030. Matrix Cells in Distance Order](https://leetcode.com/problems/matrix-cells-in-distance-order/) ✴️
 * [x] [892. Surface Area of 3D Shapes](https://leetcode.com/problems/surface-area-of-3d-shapes/) ✴️
@@ -36,7 +36,7 @@ For problems like (**#892**) :in geometry of 3-D blocks: think in terms of subtr
 * [x] LC: [149.Max Points on a Line](https://leetcode.com/problems/max-points-on-a-line/) | just count all the slopes b/w all 2 pair points
 * [x] Check collinearity : [1232. Check If It Is a Straight Line](https://leetcode.com/problems/check-if-it-is-a-straight-line/)
   * [x] Similar: [1037.Valid Boomerang](https://leetcode.com/problems/valid-boomerang/)
-* [x] LC [218.The Skyline Problem](https://leetcode.com/problems/the-skyline-problem/) ✅🌇| uses **SortedList **
+* [x] LC [218.The Skyline Problem](https://leetcode.com/problems/the-skyline-problem/) ✅🌇| uses \*\*SortedList \*\*
 
 {% tabs %}
 {% tab title="149" %}
@@ -260,11 +260,11 @@ class Solution:
 {% endtabs %}
 
 * [x] [836.Rectangle Overlap](https://leetcode.com/problems/rectangle-overlap/) 💡
-* [x] CSES: [Point Location Test](https://cses.fi/problemset/task/2189) |  ✅✅**Cross Product**
+* [x] CSES: [Point Location Test](https://cses.fi/problemset/task/2189) | ✅✅**Cross Product**
 * [x] CSES: [Line Segment Intersection](https://cses.fi/problemset/task/2190) ✅✅ | `Boundary Box Technique` |**COVERS SO MANY CONCEPTS!**
 * [x] CSES: [Polygon Area](https://cses.fi/problemset/result/2677213/) ✅✅
 * [ ] CSES: [Point in Polygon](https://www.youtube.com/watch?v=G9QTjWtK_TQ) 🐽🐽| [video](https://www.youtube.com/watch?v=G9QTjWtK_TQ\&t=5265s)
-* [ ] CSES: [Convex Hull](https://cses.fi/problemset/task/2195) ✅✅ | [video](https://www.youtube.com/watch?v=G9QTjWtK_TQ\&t=7801s) | **Graham Scan+Jarvis Algo >> **shape of rubber band on nails boundary
+* [ ] CSES: [Convex Hull](https://cses.fi/problemset/task/2195) ✅✅ | [video](https://www.youtube.com/watch?v=G9QTjWtK_TQ\&t=7801s) | \*\*Graham Scan+Jarvis Algo >> \*\*shape of rubber band on nails boundary
 
 ### 2.3 Problemsets
 
@@ -282,17 +282,15 @@ class Solution:
 * [Al.Cash's blog](https://codeforces.com/blog/entry/48122)
 * [Handbook of geometry for competitive programmers](https://vlecomte.github.io/cp-geo.pdf)
 
-
-
 ## 2. Maths
 
 ### 2.1 Notes :
 
 ### **Fibonacci:**
 
-* **Zeckendorf’s theorem** states that every positive integer has a **unique representation as a sum of Fibonacci numbers** such that **no two numbers are equal or consecutive Fibonacci numbers**. 
+* **Zeckendorf’s theorem** states that every positive integer has a **unique representation as a sum of Fibonacci numbers** such that **no two numbers are equal or consecutive Fibonacci numbers**.
   * For example, the number 74 can be represented as the sum 55+13+5+1.
-* **Binet’s formula **for calculating **Fibonacci numbers:**
+* \*\*Binet’s formula \*\*for calculating **Fibonacci numbers:**
 
 ![](../../.gitbook/assets/screenshot-2021-08-13-at-9.32.25-am.png)
 
@@ -306,7 +304,7 @@ class Solution:
 
 ![Euler’s totient function](../../.gitbook/assets/screenshot-2021-09-10-at-2.10.08-pm.png)
 
-* **Lagrange’s theorem **states that every positive integer can be represented as a sum of four squares, i.e.,  ** **$$N = a^2 + b^2 + c^2 + d^2$$** **
+* \*\*Lagrange’s theorem \*\*states that every positive integer can be represented as a sum of four squares, i.e., \*\* $$N = a^2 + b^2 + c^2 + d^2$$ \*\*
   * For example, the number 123 can be represented as the sum $$123 = 8^2 + 5^2 + 5^2 + 3^3$$ 8
 * **Euclidean GCD**
 
@@ -317,11 +315,8 @@ def gcd(a,b):
     return gcd(b, a%b)
 ```
 
-*   **Sieve of Eratosthenes**
-
-    * **COMPLEXITY**: 
-
-     
+* **Sieve of Eratosthenes**
+  * **COMPLEXITY**:
 
 ![TC of Sieve algo](../../.gitbook/assets/screenshot-2021-09-10-at-2.08.37-pm.png)
 
@@ -347,26 +342,24 @@ return sum(x for x in primes if x)
 
 ### Combinatorics
 
-* **Catalan numbers **
-  * C(n) equals the number of** valid parenthesis expressions **that consist of n left parentheses and n right parentheses.
-  * Catalan numbers are also related to** trees**: 
+* \*\*Catalan numbers \*\*
+  * C(n) equals the number of\*\* valid parenthesis expressions \*\*that consist of n left parentheses and n right parentheses.
+  * Catalan numbers are also related to\*\* trees\*\*:
     * there are **C(n)** **binary trees** of **n nodes**
-    * there are **C(n−1)** **rooted trees **of **n nodes**
+    * there are **C(n−1)** \*\*rooted trees \*\*of **n nodes**
 
 ![](../../.gitbook/assets/screenshot-2021-09-10-at-2.22.05-pm.png)
 
 * **Derangements**
   * \==> permutations where no element remains in its original place
-    * number of derangements of elements {1, 2, . . . , n}, i.e., . 
+    * number of derangements of elements {1, 2, . . . , n}, i.e., .
     * For example, when n = 3, there are two derangements: (2, 3, 1) and (3, 1, 2)
 
 ![formula for Derangements](../../.gitbook/assets/screenshot-2021-09-10-at-2.25.10-pm.png)
 
-
-
 ### Other Imp things
 
-* **Modular Exponentiation **:
+* \*\*Modular Exponentiation \*\*:
 
 ```cpp
 int my_pow(int x,int n,int M){    //get (x^n % M)
@@ -387,13 +380,13 @@ math.pow(x,n,M)
 * [x] CSES: [Coin Piles](https://cses.fi/problemset/task/1754) | [Solution Approach](https://discuss.codechef.com/t/coin-piles-problem-from-cses/28647/3)
 * [x] CSES: [Gray Code](https://cses.fi/problemset/task/2205) | [Solution](https://www.geeksforgeeks.org/generate-n-bit-gray-codes/)
 * [x] CSES: [Missing Coin Sum](https://cses.fi/problemset/result/2583670/) | [Approach](https://discuss.codechef.com/t/cses-missing-coin-sum/84039/2) ✅
-  * **KYA SEEKHA: **At any index **i** in a sorted array **a**, currSum represents `sum(a[ 0...i ])`.We can form every possible sum from `1...currSum`, when we are at index i
+  * \*\*KYA SEEKHA: \*\*At any index **i** in a sorted array **a**, currSum represents `sum(a[ 0...i ])`.We can form every possible sum from `1...currSum`, when we are at index i
 * [x] LC: [166.Fraction to Recurring Decimal](https://leetcode.com/problems/fraction-to-recurring-decimal/submissions/) ✅| recurring decimal => reminder will repeat | [Approach](https://leetcode.com/problems/fraction-to-recurring-decimal/discuss/180004/Python-4-lines-\(32ms-beats-100\)-with-explanation)
-* [x] LC [1980.Find Unique Binary String](https://leetcode.com/problems/find-unique-binary-string/) | **Cantor's Diagonalization** | [Video@veritassium](https://www.youtube.com/watch?v=OxGsU8oIWjY) 
-  * **Some infinities(Uncountable Infinity- **party bus people**) are BIGGER than other infinities(Countable Infinities- **hotel rooms 1...inf) 
+* [x] LC [1980.Find Unique Binary String](https://leetcode.com/problems/find-unique-binary-string/) | **Cantor's Diagonalization** | [Video@veritassium](https://www.youtube.com/watch?v=OxGsU8oIWjY)
+  * \*\*Some infinities(Uncountable Infinity- **party bus people**) are BIGGER than other infinities(Countable Infinities- \*\*hotel rooms 1...inf)
   * Just watch the video; so fucking mind-blowing
 * [x] LC [1363.Largest Multiple of Three](https://leetcode.com/problems/largest-multiple-of-three/) ✅| fucking amazing question & elegant solution 🍪🍪🍪
-* [x] [**31. Next Permutation**](https://leetcode.com/problems/next-permutation/)** | ✅| A must | **interview mei aayega toh bina algo jaane, nhi kar paoge
+* [x] [**31. Next Permutation**](https://leetcode.com/problems/next-permutation/)\*\* | ✅| A must | \*\*interview mei aayega toh bina algo jaane, nhi kar paoge
 
 {% tabs %}
 {% tab title="326" %}
@@ -429,7 +422,20 @@ return str(int(''.join([str(i) for i in res])))
 ```
 {% endtab %}
 
-{% tab title="31" %}
+{% tab title="31✅" %}
+**ALGO:**
+
+* To find next permutations, we'll start from the end
+* First we'll find the first non-increasing element starting from the end.
+* there will be two cases:
+  * **CASE#1: **Our i becomes zero (This will happen if the given array is sorted decreasingly). 
+    * In this case, we'll simply reverse the sequence and will return
+  * **CASE#2: **If it's not zero then we'll find the first number grater then nums\[i-1] starting from end
+    * And We'll swap these two numbers
+    * Then We'll reverse a sequence starting from i to end
+
+
+
 ```python
 def nextPermutation(self, nums: List[int]) -> None:
     # To find next permutations, we'll start from the end
@@ -438,7 +444,8 @@ def nextPermutation(self, nums: List[int]) -> None:
     while i > 0 and nums[i-1] >= nums[i]:
         i -= 1
     # After completion of the first loop, there will be two cases
-    # 1. Our i becomes zero (This will happen if the given array is sorted decreasingly). In this case, we'll simply reverse the sequence and will return 
+    # 1. Our i becomes zero (This will happen if the given array is sorted decreasingly). 
+    # In this case, we'll simply reverse the sequence and will return 
     if i == 0:
         nums.reverse()
         return 
@@ -469,25 +476,23 @@ def nextPermutation(self, nums: List[int]) -> None:
 * [ ] [https://codeforces.com/blog/entry/78943](https://codeforces.com/blog/entry/78943)
 
 {% hint style="info" %}
-If two knight attack each other then they will be in 2\*_3 rectangle or 3\*_2 rectangle. 
+If two knight attack each other then they will be in 2\*\_3 rectangle or 3\*\_2 rectangle.
 
 * number of 2\*3 rects = #rows\*#cols = (n-1)\*(n-2)
 
-So the number of ways of placing them is (n-1)_(n-2)+(n-2)_(n-1). Also in each rectangle no ways of placing the knight is 2. So total ways of placing knight so that they attack each other will be 2_2_(n-1)_(n-2). So the number of ways such that knight do not attack each other will be n_n_(n_n-1)/2 — 4_(n-1)_(n-2)
+So the number of ways of placing them is (n-1)_(n-2)+(n-2)_(n-1). Also in each rectangle no ways of placing the knight is 2. So total ways of placing knight so that they attack each other will be 2\_2\_(n-1)_(n-2). So the number of ways such that knight do not attack each other will be n_n_(n_n-1)/2 — 4\_(n-1)\_(n-2)
 {% endhint %}
-
-
 
 ### 2.3 Problemsets
 
 * Leetcode tag=**Maths :** [https://leetcode.com/problemset/all/?topicSlugs=math](https://leetcode.com/problemset/all/?topicSlugs=math)
 * Hackerrank: [https://www.hackerrank.com/domains/mathematics?filters%5Bsubdomains%5D%5B%5D=geometry](https://www.hackerrank.com/domains/mathematics?filters%5Bsubdomains%5D%5B%5D=geometry)
 * Codeforces Tag = **combinatorics/probability**: [https://codeforces.com/problemset?tags=probabilities](https://codeforces.com/problemset?tags=probabilities)
-* Codeforces tag = **number-theory: ** [https://codeforces.com/problemset?tags=number+theory](https://codeforces.com/problemset?tags=number+theory)
+* Codeforces tag = \*\*number-theory: \*\* [https://codeforces.com/problemset?tags=number+theory](https://codeforces.com/problemset?tags=number+theory)
 
 ### 2.4 Resources: Maths
 
 * Kartik Arora's Playlist :[ Number Theory](https://www.youtube.com/watch?v=2NN5j1iF2ko\&list=PLb3g_Z8nEv1i6NHntG5l2fPKuVu853EYy\&ab_channel=KartikArora)
-* **Topcoder **:
-  * ****[**MATHEMATICS FOR TOPCODERS**](https://www.topcoder.com/thrive/articles/Mathematics%20for%20Topcoders)****
-  * ****[**BASICS OF COMBINATORICS**](https://www.topcoder.com/thrive/articles/Basics%20of%20Combinatorics)****
+* \*\*Topcoder \*\*:
+  * [**MATHEMATICS FOR TOPCODERS**](https://www.topcoder.com/thrive/articles/Mathematics%20for%20Topcoders)
+  * [**BASICS OF COMBINATORICS**](https://www.topcoder.com/thrive/articles/Basics%20of%20Combinatorics)

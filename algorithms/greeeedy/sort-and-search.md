@@ -576,7 +576,7 @@ def longestDupSubstring(self, S):
 
 ***
 
-### 2.2 Misc Problems
+### 2.2 Modified  Binary Search Problems
 
 * [ ] [1044. Longest Duplicate Substring](https://leetcode.com/problems/longest-duplicate-substring/) ⚡️ - learn [this approach](https://leetcode.com/problems/longest-duplicate-substring/discuss/695029/python-binary-search-with-rabin-karp-o\(n-log-n\)-explained) => **Rolling Hash/Rabin Karp**
 * [ ] [658.Find K Closest Elements](https://leetcode.com/problems/find-k-closest-elements/) | [Soln](https://leetcode.com/problems/find-k-closest-elements/discuss/915047/Finally-I-understand-it-and-so-can-you.)
@@ -585,7 +585,6 @@ def longestDupSubstring(self, S):
 * [x] LC: \*\*4. \*\*[Median of Two Sorted Arrays](https://leetcode.com/problems/median-of-two-sorted-arrays/) 🐽🐽✅
 * [x] LC 33: [Search in Rotated Sorted Array](https://leetcode.com/problems/search-in-rotated-sorted-array/) ☑️
 * [x] LC [34.Find First and Last Position of Element in Sorted Array](https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/) ✅
-* [x] LC [162.Find Peak Element](https://leetcode.com/problems/find-peak-element/) | ⭐️🤯✅
 
 {% tabs %}
 {% tab title="Concert Tickets:: CPP" %}
@@ -715,45 +714,59 @@ def searchRange(self, nums: List[int], target: int) -> List[int]:
     return [-1,-1]
 ```
 {% endtab %}
+{% endtabs %}
 
-{% tab title="162.🤯" %}
+
+
+* [x] LC [162.Find Peak Element](https://leetcode.com/problems/find-peak-element/) | ⭐️🤯✅| **@google**
+* [x] ..
+
+{% tabs %}
+{% tab title="162🤯" %}
+![the three cases](<../../.gitbook/assets/Screenshot 2021-10-18 at 1.50.38 AM.png>)
+
+above solution [link](https://leetcode.com/problems/find-peak-element/discuss/1290642/intuition-behind-conditions-complete-explanation-diagram-binary-search)
+
 ```python
 def findPeakElement(self, nums):
-        left = 0
-        right = len(nums)-1
+    n = len(nums)
+    if n == 1: return 0 # single element
 
-        # handle condition 3
-        while left < right-1:
-            mid = (left+right)//2
-            if nums[mid] > nums[mid+1] and nums[mid] > nums[mid-1]:
-                return mid
+    # check if 0th/n-1th index is the peak element
+    if nums[0] > nums[1]: return 0
+    if nums[n-1] > nums[n-2] : return n-1
 
-            if nums[mid] < nums[mid+1]:
-                left = mid+1
-            else:
-                right = mid-1
+    # search in the remaining array
+    left = 1
+    right = n-2
 
-        #handle condition 1 and 2
-        return left if nums[left] >= nums[right] else right
+    while left <= right:
+        mid = (left+right)//2
 
-'''
-    Basic Idea: Binary search
+        # if mid == peak ( case 2 )
+        if nums[mid] > nums[mid+1] and nums[mid] > nums[mid-1]:
+            return mid
 
-Elaboration: 
- if an element(not the right-most one) is smaller than its right neighbor, then there must be a peak element on its right, because the elements on its right is either 
-   1. always increasing  -> the right-most element is the peak
-   2. always decreasing  -> the left-most element is the peak
-   3. first increasing then decreasing -> the pivot point is the peak
-   4. first decreasing then increasing -> the left-most element is the peak  
+        # downward slope and search space left side ( case 1)
+        elif nums[mid] < nums[mid-1]: right = mid - 1
 
-   Therefore, we can find the peak only on its right elements( cut the array to half)
+        #  upward slope and search space right side ( case 3 )
+        elif nums[mid] < nums[mid+1]: left = mid + 1
 
-   The same idea applies to that an element(not the left-most one) is smaller than its left neighbor.
-
-'''
+    return -1   # dummy return statement
 ```
 {% endtab %}
+
+{% tab title="Second Tab" %}
+
+{% endtab %}
 {% endtabs %}
+
+
+
+
+
+
 
 {% hint style="danger" %}
 **NOTE**: there is no O(logN) search based multiset data structure in python : [https://stackoverflow.com/questions/17346905/is-there-a-python-equivalent-for-c-multisetint](https://stackoverflow.com/questions/17346905/is-there-a-python-equivalent-for-c-multisetint)

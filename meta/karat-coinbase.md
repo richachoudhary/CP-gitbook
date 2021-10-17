@@ -3,9 +3,9 @@
 ## DSA
 
 * LC 588. [Design In-Memory File System](https://leetfree.com/problems/design-in-memory-file-system)
-* [339. Evaluate Division](https://leetcode.com/problems/evaluate-division/) 
+* [339. Evaluate Division](https://leetcode.com/problems/evaluate-division/)
 * **Textbook Buy Sell**
-* ****[**CurrencyConversion**](https://leetcode.com/discuss/interview-question/483660/google-phone-currency-conversion)****
+* [**CurrencyConversion**](https://leetcode.com/discuss/interview-question/483660/google-phone-currency-conversion)
 * **Currency Arbitrage**: Now given any two currencies x and y. Find the best conversion rate. Basically a graph problem you will have to traverse all paths from x to y because you want the best conversion rate.
   * **follow up** - Rather than hardcoding the data use two apis - 1.) [https://api.pro.coinbase.com/products](https://api.pro.coinbase.com/products) to get the id like USD-EUR aka currency pair and 2.) [https://api.pro.coinbase.com/products/](https://api.pro.coinbase.com/products/)" + id + "/book to fetch the ask and bid price for each one of them. response = request.get(url) is enough to handle the GET calls + response.json() is enough to parse the response.
 
@@ -437,20 +437,16 @@ The Bellman-Ford algorithm can detect negative cycles. So if we run Bellman-Ford
 {% endtab %}
 {% endtabs %}
 
-
-
 ## HLD:
 
 * **Slack**
-  * how will you mark the message read. 
-  * API + storage layer (main focus), 
-  * how will you push notifications. 
+  * how will you mark the message read.
+  * API + storage layer (main focus),
+  * how will you push notifications.
   * How will you show "someone is typing.." kinda feature
     * \=> Mostly like whoever is typing send updates to cache with the timestamp and then UI can fetch cache data. Not a very efficient approach because later the interviewer told me that Spotify actually open Websockets for each client. It doesn't depend on long polling method. I didn't verify the interviewer's claim. Actually, in all the notification services based interviews, I have seen the crux is how do you send the data from server to the client. Usually, the interviewers are happy with long polling strategy or fixed interval-based check.
 * **Stock Exchange**
   * Design a ordering system for stocks. Users will place orders and cancel orders. Think about race conditions when trying to cancel an order before executed. Users can also schedule orders in the future.
-
-
 
 1st technical screen was an LC medium, nothing too crazy, I think most people could do it here if they know about arrays. It is very important to display 'clear communication' during these rounds as it is one of Coinbase's core values.
 
@@ -464,16 +460,12 @@ The system design was very generic and I think watching enough Youtube videos wo
 
 I received an offer only 2 days after!
 
-
-
 _3rd round (1 hour):_\
 This was a coding interview. The question was given a list of buy and sell orders, try to find the maximum profit a trader can make?\
 After solving the question, I was given few practical real world problems a cryptocurrency exchange faces and was asked how I would solve it.\
 After a week I got a reject.
 
 On-site Round 1: System Design. Design Slack. Question regarding how will you mark the message read. API + storage layer (main focus), how will you push notifications. How will you show "someone is typing.." kinda feature.
-
-
 
 **Phone Screen**
 
@@ -500,8 +492,6 @@ Behavioral
 
 * cross team collaboration
 * career aspiration etc.
-
-
 
 ## Pair Programing#2
 
@@ -668,12 +658,11 @@ def run_tests():
 
 if __name__ == "__main__":
     run_tests()
-
 ```
 {% endtab %}
 {% endtabs %}
 
-## 2. Task By Level | cook sleep 
+## 2. Task By Level | cook sleep
 
 * (Similar: FindLeaves, [LeetCode 366](https://leetfree.com/problems/find-leaves-of-binary-tree))
 
@@ -689,7 +678,6 @@ output (steps of a workflow):
 {{"sleep", "cook"},.
 {"study"},
 {"eat"}}
-
 ```
 {% endtab %}
 
@@ -762,12 +750,9 @@ def run_tests():
 
 if __name__ == "__main__":
     run_tests()
-
 ```
 {% endtab %}
 {% endtabs %}
-
-
 
 ## 3. Badge Access
 
@@ -831,7 +816,6 @@ badge_records =[
 Expected output:
 John: 830 835 855 915 930
 Paul: 1315 1355 1405
-
 ```
 {% endtab %}
 
@@ -890,7 +874,6 @@ def run_tests():
 
 if __name__ == "__main__":
     run_tests()
-
 ```
 {% endtab %}
 
@@ -955,12 +938,9 @@ def run_tests():
 
 if __name__ == "__main__":
     run_tests()
-
 ```
 {% endtab %}
 {% endtabs %}
-
-
 
 ## 4. Merge Intervals | LC-252,253 & LC.56
 
@@ -976,7 +956,6 @@ Similar to Meeting Rooms(LeetCode 252, *try 253!)
 Similar to Merge Intervals(LeetCode 56), but the output is different, 
 now you are required to output idle time after time intervals merged, 
 notice also output 0 - first start time.
-
 
 
 ```
@@ -1032,8 +1011,6 @@ function mergeMeetings(meetings) {
 ```
 {% endtab %}
 {% endtabs %}
-
-
 
 ## 5. Course Schedule
 
@@ -1123,7 +1100,6 @@ Sample output (in any order):
 
 
 # Pt3: ===============================================================
-
 ```
 {% endtab %}
 
@@ -1189,7 +1165,6 @@ def run_tests():
 
 if __name__ == "__main__":
     run_tests()
-
 ```
 {% endtab %}
 
@@ -1238,8 +1213,6 @@ return
 ```
 {% endtab %}
 {% endtabs %}
-
-
 
 ## 6. Domain Visit | LC [811](https://leetcode.com/problems/subdomain-visit-count/) , 718
 
@@ -1314,7 +1287,6 @@ were from users who made a purchase.
  1 of 2  2017 Pet Mittens
  0 of 1  The Best Hollywood Coats
  3 of 3  Buy wool coats for your pet
-
 ```
 {% endtab %}
 
@@ -1377,13 +1349,11 @@ def run_tests():
 
 if __name__ == "__main__":
     run_tests()
-
 ```
 {% endtab %}
 
 {% tab title="ad_conversion.py" %}
 ```python
-
 from collections import defaultdict
 
 def solve(completed_purchase_user_ids,ad_clicks,all_user_ips):
@@ -1441,12 +1411,9 @@ def run_tests():
 
 if __name__ == "__main__":
     run_tests()
-
 ```
 {% endtab %}
 {% endtabs %}
-
-
 
 ## 7. Basic Calculator | [LC 224](https://leetcode.com/problems/basic-calculator/)
 
@@ -1460,7 +1427,6 @@ if __name__ == "__main__":
 # Pt2: ===============================================================
 Input: s = "(1+(4+5+2)-3)+(6+8)"
 Output: 23
-
 
 ```
 {% endtab %}
@@ -1482,7 +1448,6 @@ public static int basicCalculator1(String expression){
     if(num != 0) sum += sign * num;
     return sum;
 }
-
 ```
 {% endtab %}
 
@@ -1519,10 +1484,3 @@ def calculate(self, s: str) -> int:
 ```
 {% endtab %}
 {% endtabs %}
-
-
-
-
-
-
-

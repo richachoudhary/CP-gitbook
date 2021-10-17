@@ -1,17 +1,15 @@
 # Heap | Map-Set | SortedContainer
 
-
-
 ## 1. Map-set Problems
 
-* [x] LC [218.The Skyline Problem](https://leetcode.com/problems/the-skyline-problem/) ✅🌇| uses **SortedList **
+* [x] LC [218.The Skyline Problem](https://leetcode.com/problems/the-skyline-problem/) ✅🌇| uses \*\*SortedList \*\*
 * [x] LC[ 146. LRU Cache](https://leetcode.com/problems/lru-cache/) ✅✅✅
 * [x] [1700.Number of Students Unable to Eat Lunch](https://leetcode.com/problems/number-of-students-unable-to-eat-lunch/)
-* [x] LC: [480 Sliding Window Median](https://leetcode.com/problems/sliding-window-median/)  ✅✅⭐️🚀 // `O(logK)` **NOTE: Dont skip w/o doing it!!!!!!!**
+* [x] LC: [480 Sliding Window Median](https://leetcode.com/problems/sliding-window-median/) ✅✅⭐️🚀 // `O(logK)` **NOTE: Dont skip w/o doing it!!!!!!!**
   * Video: [link](https://www.youtube.com/watch?v=UGs_kQxJNPk\&ab_channel=ARSLONGAVITABREVIS)
 * [x] CSES: [Sliding Cost](https://cses.fi/problemset/task/1077/) | very similar to Sliding Medium; jst keep two sums: `upperSum` & `lowerSum`
 * [x] CSES: [Maximum Subarray Sum II](https://cses.fi/problemset/task/1644/) | idea [here](https://discuss.codechef.com/t/help-with-maximum-subarray-sum-ii-from-cses/73404) 🐽
-* [x] LC [315.Count of Smaller Numbers After Self](https://leetcode.com/problems/count-of-smaller-numbers-after-self/) 🍪🍪🍪| **SortedList | **BST | MergeSort
+* [x] LC [315.Count of Smaller Numbers After Self](https://leetcode.com/problems/count-of-smaller-numbers-after-self/) 🍪🍪🍪| \*\*SortedList | \*\*BST | MergeSort
 * [x] LC [1347. Minimum Number of Steps to Make Two Strings Anagram](https://leetcode.com/problems/minimum-number-of-steps-to-make-two-strings-anagram/) | **@google ✅💪**
 
 {% tabs %}
@@ -184,7 +182,6 @@ def medianSlidingWindow(self, nums, k):
     def convert(self, heap1, heap2): # convert min-heap1 to max-heap2
         element, index = heapq.heappop(heap1)
         heapq.heappush(heap2, (-element, index))
-
 ```
 {% endtab %}
 
@@ -323,7 +320,7 @@ print(f("leetcode","practice")) #5
 
 ###
 
-* [x] LC 388. [Longest Absolute File Path](https://leetcode.com/problems/longest-absolute-file-path/) |** @google**
+* [x] LC 388. [Longest Absolute File Path](https://leetcode.com/problems/longest-absolute-file-path/) |\*\* @google\*\*
 * [ ] ...
 
 {% tabs %}
@@ -358,9 +355,7 @@ line :                          file2.ext
 """
 ```
 
-
-
-### #2: Stack Based
+#### #2: Stack Based
 
 ```python
 class Solution(object):
@@ -392,6 +387,3 @@ class Solution(object):
 ```
 {% endtab %}
 {% endtabs %}
-
-
-

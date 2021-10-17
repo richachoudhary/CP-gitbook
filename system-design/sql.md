@@ -14,7 +14,7 @@
 
 | Symbol | Description                                         | Example                                            |
 | ------ | --------------------------------------------------- | -------------------------------------------------- |
-| %      | Represents zero or more characters                  | **bl%** finds** bl, black, blue, and blob**        |
+| %      | Represents zero or more characters                  | **bl%** finds\*\* bl, black, blue, and blob\*\*    |
 | \_     | Represents a single character                       | **h_t** finds **hot, hat**, and **hit**            |
 | \[]    | Represents any single character within the brackets | **h\[oa]t** finds **hot** and **hat**, but not hit |
 | ^      | Represents any character not in the brackets        | **h\[^oa]t** finds **hit**, but not hot and hat    |
@@ -32,7 +32,7 @@
 
 * **REGEX**
   * Practiced from [regexone.com](https://regexone.com/lesson/misc_meta_characters?)
-  * Using regex in SQL queries: 
+  * Using regex in SQL queries:
     * `select distinct city from station where city `**`regexp`**` '^[aeiou]';`
 
 | Regex      | Matches                        |
@@ -62,11 +62,11 @@
 | (.\*)      | Capture all                    |
 | (abc\|def) | Matches abc or def             |
 
-## Questions: 
+## Questions:
 
 ### 1. SELECT
 
-* ****[**Weather Observation Station 5**](https://www.hackerrank.com/challenges/weather-observation-station-5/problem)** | **Query the two cities in **STATION** with the shortest and longest _CITY_ names, as well as their respective lengths
+* \*\*[**Weather Observation Station 5**](https://www.hackerrank.com/challenges/weather-observation-station-5/problem) | \*\*Query the two cities in **STATION** with the shortest and longest _CITY_ names, as well as their respective lengths
 
 ```sql
 SELECT CITY,LENGTH(CITY)  FROM STATION 
@@ -77,7 +77,7 @@ SELECT CITY ,LENGTH(CITY) FROM STATION
     ORDER BY CITY ASC LIMIT 1;
 ```
 
-* ****[**Weather Observation Station 9**](https://www.hackerrank.com/challenges/weather-observation-station-9/problem?h_r=next-challenge\&h_v=zen\&h_r=next-challenge\&h_v=zen\&h_r=next-challenge\&h_v=zen\&h_r=next-challenge\&h_v=zen)** | **Query the list of _CITY_ names starting DOES NOT with vowels (i.e., `a`, `e`, `i`, `o`, or `u`) from **STATION**
+* \*\*[**Weather Observation Station 9**](https://www.hackerrank.com/challenges/weather-observation-station-9/problem?h_r=next-challenge\&h_v=zen\&h_r=next-challenge\&h_v=zen\&h_r=next-challenge\&h_v=zen\&h_r=next-challenge\&h_v=zen) | \*\*Query the list of _CITY_ names starting DOES NOT with vowels (i.e., `a`, `e`, `i`, `o`, or `u`) from **STATION**
 
 ```sql
  --> starts with ke liye
@@ -88,7 +88,7 @@ select distinct city from station where left(city,1) not in ('a','e','i','o','u'
 select distinct city from station where city not regexp '^[aeiou]';
 ```
 
-* ****[**Type of Triangle**](https://www.hackerrank.com/challenges/what-type-of-triangle/problem)** | **query identifying the _type_ of each record in the **TRIANGLES** table using its three side lengths** | UAGE: `CASE `✅**
+* [**Type of Triangle**](https://www.hackerrank.com/challenges/what-type-of-triangle/problem)** | query identifying the **_**type**_** of each record in the TRIANGLES table using its three side lengths | UAGE: `CASE `✅**
 
 ```sql
 SELECT CASE
@@ -100,7 +100,7 @@ SELECT CASE
 FROM TRIANGLES
 ```
 
-* ****[**The PADS**](https://www.hackerrank.com/challenges/the-pads/problem)** | ✅✅**
+* [**The PADS**](https://www.hackerrank.com/challenges/the-pads/problem)** | ✅✅**
   * Query an _alphabetically ordered_ list of all names in **OCCUPATIONS**, immediately followed by the first letter of each profession as a parenthetical (i.e.: enclosed in parentheses). For example: `AnActorName(A)`, `ADoctorName(D)`, `AProfessorName(P)`, and `ASingerName(S)`.
   * \#2. Query the number of ocurrences of each occupation in **OCCUPATIONS**. Sort the occurrences in _ascending order_, and output them in the following format:\
     `There are a total of [occupation_count] [occupation]s.`
@@ -119,7 +119,7 @@ GROUP BY OCCUPATION
 ORDER BY COUNT(OCCUPATION);
 ```
 
-*   ****[**The Blunder**](https://www.hackerrank.com/challenges/the-blunder/problem)** | **'0' key was broken. Calculate correct average
+*   \*\*[**The Blunder**](https://www.hackerrank.com/challenges/the-blunder/problem) | \*\*'0' key was broken. Calculate correct average
 
     ```sql
     SELECT CEIL(AVG(Salary)-AVG(REPLACE(Salary,'0',''))) FROM EMPLOYEES;
@@ -127,7 +127,7 @@ ORDER BY COUNT(OCCUPATION);
 
 ### 2. JOINS
 
-*   ****[**Population Census **](https://www.hackerrank.com/challenges/asian-population/problem)| learn syntax
+*   \*\*\*\*[\*\*Population Census \*\*](https://www.hackerrank.com/challenges/asian-population/problem)| learn syntax
 
     ```sql
     SELECT SUM(CITY.POPULATION)
@@ -135,7 +135,7 @@ ORDER BY COUNT(OCCUPATION);
     ON CITY.COUNTRYCODE = COUNTRY.CODE
     WHERE COUNTRY.CONTINENT = 'Asia';
     ```
-*   ****[**The Report**](https://www.hackerrank.com/challenges/the-report/problem)** | **join on range ✅
+*   \*\*[**The Report**](https://www.hackerrank.com/challenges/the-report/problem) | \*\*join on range ✅
 
     ```sql
     --1st way
@@ -152,7 +152,7 @@ ORDER BY COUNT(OCCUPATION);
     JOIN Grades G ON S.Marks BETWEEN G.Min_Mark AND G.Max_Mark
     ORDER BY G.Grade DESC, NameOrNull ASC, S.Marks ASC;
     ```
-*   ****[**Top Competitors**](https://www.hackerrank.com/challenges/full-score/problem)** | **join on multiple tables. MOST IMP QUESTION ON JOINS!! ✅✅🚀⭐️
+*   \*\*[**Top Competitors**](https://www.hackerrank.com/challenges/full-score/problem) | \*\*join on multiple tables. MOST IMP QUESTION ON JOINS!! ✅✅🚀⭐️
 
     ```sql
     select h.hacker_id, h.name
@@ -168,7 +168,7 @@ ORDER BY COUNT(OCCUPATION);
         having count(s.hacker_id) > 1
     order by count(s.hacker_id) desc, s.hacker_id asc
     ```
-*   ****[**Ollivander's Inventory**](https://www.hackerrank.com/challenges/harry-potter-and-wands/problem)** **
+*   \*\*[**Ollivander's Inventory**](https://www.hackerrank.com/challenges/harry-potter-and-wands/problem) \*\*
 
     ```sql
     select w.id, p.age, w.coins_needed, w.power from Wands w
@@ -180,7 +180,7 @@ ORDER BY COUNT(OCCUPATION);
     group by p.age, w.power ) s on s.age = p.age and s.power = w.power and s.coins = w.coins_needed
     order by w.power desc, p.age desc
     ```
-*   ****[**Placements**](https://www.hackerrank.com/challenges/placements/problem)** **
+*   \*\*[**Placements**](https://www.hackerrank.com/challenges/placements/problem) \*\*
 
     ```sql
     SELECT s.name
@@ -194,7 +194,7 @@ ORDER BY COUNT(OCCUPATION);
         WHERE p.salary < p2.salary
     ORDER BY p2.salary;
     ```
-*   **LC.181. **[**Employees Earning More Than Their Managers**](https://leetcode.com/problems/employees-earning-more-than-their-managers/)** | **Join the table with itself, for each row compare the salaries of employee and manager.
+*   \*\*LC.181. [**Employees Earning More Than Their Managers**](https://leetcode.com/problems/employees-earning-more-than-their-managers/) | \*\*Join the table with itself, for each row compare the salaries of employee and manager.
 
     ```sql
     Select a.Name
@@ -202,7 +202,7 @@ ORDER BY COUNT(OCCUPATION);
     ON a.ManagerId = b.Id
     Where a.Salary > b.Salary;
     ```
-*   **LC.183. **[**Customers Who Never Order**](https://leetcode.com/problems/customers-who-never-order/)****
+*   **LC.183. **[**Customers Who Never Order**](https://leetcode.com/problems/customers-who-never-order/)
 
     ```sql
     select customers.name as 'Customers'
@@ -212,7 +212,7 @@ ORDER BY COUNT(OCCUPATION);
         select customerid from orders
     );
     ```
-*   **LC.184. **[**Department Highest Salary**](https://leetcode.com/problems/department-highest-salary/)****
+*   **LC.184. **[**Department Highest Salary**](https://leetcode.com/problems/department-highest-salary/)
 
     ```sql
     select d.Name as Department, e.Name as Employee, e.Salary
@@ -230,14 +230,14 @@ ORDER BY COUNT(OCCUPATION);
 
 ### 3. RANK :: learn more about it ☑️
 
-*   **LC.176. **[**Second Highest Salary**](https://leetcode.com/problems/second-highest-salary/)****
+*   **LC.176. **[**Second Highest Salary**](https://leetcode.com/problems/second-highest-salary/)
 
     ```sql
     Select Max(Salary) AS SecondHighestSalary
     From Employee
     Where Salary < (Select Max(Salary) From Employee);
     ```
-*   **LC.177. **[**Nth Highest Salary**](https://leetcode.com/problems/nth-highest-salary/)****
+*   **LC.177. **[**Nth Highest Salary**](https://leetcode.com/problems/nth-highest-salary/)
 
     ```sql
     CREATE FUNCTION getNthHighestSalary(N INT) RETURNS INT
@@ -259,14 +259,14 @@ ORDER BY COUNT(OCCUPATION);
 
 ### 4. Basics
 
-*   **182. **[**Duplicate Emails**](https://leetcode.com/problems/duplicate-emails/)****
+*   **182. **[**Duplicate Emails**](https://leetcode.com/problems/duplicate-emails/)
 
     ```sql
     Select Email From Person
     Group by Email
     Having count(*) > 1;
     ```
-*   **196. **[**Delete Duplicate Emails**](https://leetcode.com/problems/delete-duplicate-emails/)****
+*   **196. **[**Delete Duplicate Emails**](https://leetcode.com/problems/delete-duplicate-emails/)
 
     ```sql
     /* retain the unique emails*/
@@ -291,6 +291,6 @@ ORDER BY COUNT(OCCUPATION);
 
 ## RESOURCES:
 
-* **\[x] **[**Summary of SQL Questions on Leetcode**](https://byrony.github.io/summary-of-sql-questions-on-leetcode.html)****
-* **\[.] **[**shawlu95**](https://github.com/shawlu95)**/**[**Beyond-LeetCode-SQL**](https://github.com/shawlu95/Beyond-LeetCode-SQL)****
-* ****[**mrinal1704**](https://github.com/mrinal1704)**/**[**SQL-Leetcode-Challenge**](https://github.com/mrinal1704/SQL-Leetcode-Challenge)****
+* **\[x] **[**Summary of SQL Questions on Leetcode**](https://byrony.github.io/summary-of-sql-questions-on-leetcode.html)
+* **\[.] **[**shawlu95**](https://github.com/shawlu95)**/**[**Beyond-LeetCode-SQL**](https://github.com/shawlu95/Beyond-LeetCode-SQL)\*\*\*\*
+* [**mrinal1704**](https://github.com/mrinal1704)**/**[**SQL-Leetcode-Challenge**](https://github.com/mrinal1704/SQL-Leetcode-Challenge)
