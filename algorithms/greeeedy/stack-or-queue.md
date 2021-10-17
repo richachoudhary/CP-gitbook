@@ -1,7 +1,5 @@
 # Stack | Queue
 
-
-
 ### Notes:
 
 * How to identify **stack** problem: there'll be an dependent second nested loop. EG:
@@ -22,11 +20,11 @@ for i in range(0,N):
 #### NGL variants:
 
 * [x] GfG: [Next Greatest Element](https://www.geeksforgeeks.org/next-greater-element/) | **NGL**
-* [x] [901. Online Stock Span](https://leetcode.com/problems/online-stock-span/discuss/168311/C++JavaPython-O\(1\)) | similar to NGL |  | system design heavy🔒
+* [x] [901. Online Stock Span](https://leetcode.com/problems/online-stock-span/discuss/168311/C++JavaPython-O\(1\)) | similar to NGL | | system design heavy🔒
 * [x] [84. Largest Rectangle in Histogram](https://leetcode.com/problems/largest-rectangle-in-histogram/) | simple implementation of `NSL+NSR` ❤️
   * **NOTE**: dont cram that single stack traversal method. This one is easy to derive on your own
   * `area = abs(nsr[i] - nsl[i] - 1)*h[i]`
-* [x] [85.Maximal Rectangle Area In Binary Matrix](https://leetcode.com/problems/maximal-rectangle/) **`NSL+NSR` **add heights for every row\&apply #84's code😎
+* [x] [85.Maximal Rectangle Area In Binary Matrix](https://leetcode.com/problems/maximal-rectangle/) \*\*`NSL+NSR` \*\*add heights for every row\&apply #84's code😎
 
 {% tabs %}
 {% tab title="NGL" %}
@@ -145,8 +143,8 @@ def maximalRectangle(self, matrix: List[List[str]]):
 
 * [x] [42. Trapping Rain Water](https://leetcode.com/problems/trapping-rain-water/) `res += min(mxl[i],mxr[i]) - h[i]`
 * [x] [227. Basic Calculator II](https://leetcode.com/problems/basic-calculator-ii/)
-* [x] [224. Basic Calculator](https://leetcode.com/problems/basic-calculator/) ✅ 
-* [x] ****[**772. Basic Calculator III**](https://ttzztt.gitbooks.io/lc/content/quant-dev/basic-calculator-iii.html)** 🐽 | **[**approach**](https://leetcode.com/problems/basic-calculator-ii/discuss/658480/python-basic-calculator-i-ii-iii-easy-solution-detailed-explanation)****
+* [x] [224. Basic Calculator](https://leetcode.com/problems/basic-calculator/) ✅
+* [x] [**772. Basic Calculator III**](https://ttzztt.gitbooks.io/lc/content/quant-dev/basic-calculator-iii.html)** 🐽 | **[**approach**](https://leetcode.com/problems/basic-calculator-ii/discuss/658480/python-basic-calculator-i-ii-iii-easy-solution-detailed-explanation)
 
 {% tabs %}
 {% tab title="42" %}
@@ -315,16 +313,17 @@ return calc(0)
 ### 4.2 Rest of the problems
 
 * [x] [391. Next Greater Element I](https://leetcode.com/problems/next-greater-element-i/)
-* [x] [503. Next Greater Element II](https://leetcode.com/problems/next-greater-element-ii/) |  for circular array 🚀
+* [x] [503. Next Greater Element II](https://leetcode.com/problems/next-greater-element-ii/) | for circular array 🚀
 * [ ] [556.Next Greater Element III](https://leetcode.com/problems/next-greater-element-iii/) 🍪🍪🍪
 * [x] [155. Min Stack](https://leetcode.com/problems/min-stack/) : instead of 2 stacks, use single stack & insert pairs in it: `ele,min_ele`
   * Regular approach of `O(1)` => [Aditya Verma](https://www.youtube.com/watch?v=ZvaRHYYI0-4\&list=PL_z\_8CaSLPWdeOezg68SKkeLN4-T_jNHd\&index=11\&ab_channel=AdityaVerma)
 * [x] [1441.Build an Array With Stack Operations](https://leetcode.com/problems/build-an-array-with-stack-operations/)
 * [x] SPOJ: [STPAR - Street Parade](https://www.spoj.com/problems/STPAR/) | [Approach](http://discuss.spoj.com/t/stpar-street-parade/2022)
+* [x] LC 316. [Remove Duplicate Letters](https://leetcode.com/problems/remove-duplicate-letters/)
 
 {% tabs %}
 {% tab title="155" %}
-### Approach#1: Standard | single stack + var | O(1) 
+#### Approach#1: Standard | single stack + var | O(1)
 
 ```python
 def __init__(self):
@@ -353,12 +352,11 @@ def top(self) -> int:
 def getMin(self) -> int:
     if self.stack:
         return self.min_
-
 ```
 
-###
+####
 
-### Approach#2: Smart | stack of tuple | O(1)
+#### Approach#2: Smart | stack of tuple | O(1)
 
 ```python
 class MinStack:
@@ -387,6 +385,31 @@ class MinStack:
     def getMin(self) -> int:
         return self.stk[-1][1]
 ```
+{% endtab %}
+
+{% tab title="316" %}
+```python
+def removeDuplicateLetters(self, s: str) -> str:
+    last_occ = {}
+    for i,c in enumerate(s):
+        last_occ[c] = i
+
+    stk = []
+    vis = set()
+
+    for i,c in enumerate(s):
+        if c in vis:continue
+
+        while stk and stk[-1] > c and last_occ[stk[-1]] > i:
+            vis.remove(stk[-1])
+            stk.pop()
+        stk.append(c)
+        vis.add(c)
+    return ''.join(stk)
+
+```
+
+soln link: [https://leetcode.com/problems/remove-duplicate-letters/discuss/889477/Python-O(n)-greedy-with-stack-explained](https://leetcode.com/problems/remove-duplicate-letters/discuss/889477/Python-O\(n\)-greedy-with-stack-explained)
 {% endtab %}
 {% endtabs %}
 

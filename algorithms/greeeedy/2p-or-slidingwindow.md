@@ -1,15 +1,13 @@
 # 2P | SlidingWindow
 
-
-
 ## 1.Two Pointers
 
-* [x] **CSES: **[Subarray Sums I](https://cses.fi/problemset/task/1660) 🌟✅ | count the number of subarrays having sum x
-* [x] **CSES: **[Apartments](https://cses.fi/problemset/task/1084) ⭐️💪
-* [x] CSES: [Ferris Wheel](https://cses.fi/problemset/task/1090) 
+* [x] \*\*CSES: \*\*[Subarray Sums I](https://cses.fi/problemset/task/1660) 🌟✅ | count the number of subarrays having sum x
+* [x] \*\*CSES: \*\*[Apartments](https://cses.fi/problemset/task/1084) ⭐️💪
+* [x] CSES: [Ferris Wheel](https://cses.fi/problemset/task/1090)
 * [x] CSES: [Subarray Distinct Values](https://cses.fi/problemset/result/2649112/)
 * [ ] CF [814 C. An impassioned circulation of affection](https://codeforces.com/problemset/problem/814/C) 🐽🐽
-*
+* [ ] LC 345.[Reverse Vowels of a String](https://leetcode.com/problems/reverse-vowels-of-a-string/)
 
 {% tabs %}
 {% tab title="Subarray Sums I🌟" %}
@@ -139,17 +137,36 @@ for r in range(n):
 print(res) 
 ```
 {% endtab %}
+
+{% tab title="345" %}
+```python
+def reverseVowels(self, s: str) -> str:
+    vow = set(list('aeiouAEIOU'))
+    
+    l,r = 0, len(s)-1
+    s = list(s)        # as strings are immutable
+    while l<r:      
+        while l<r and s[l] not in vow:
+            l += 1
+        while l<r and s[r] not in vow:
+            r -= 1
+        s[l],s[r] = s[r], s[l]
+        l += 1
+        r -= 1
+    return ''.join(s)
+```
+{% endtab %}
 {% endtabs %}
 
 ## 2.Sliding Window
 
 * **Fixed Size: How I do it?**
 *
-  1. Create first window 
+  1. Create first window
   2. iterate in array for next window onwards
 
 {% hint style="info" %}
-**Dynamic Size: **WHEN DOES SLIDING WINDOW WORK?
+\*\*Dynamic Size: \*\*WHEN DOES SLIDING WINDOW WORK?
 
 ONLY when you're working with all negative or positives or if your input is sorted
 {% endhint %}
@@ -160,7 +177,7 @@ ONLY when you're working with all negative or positives or if your input is sort
 * [x] GfG#2 [First negative integer in every window of size k](https://www.geeksforgeeks.org/first-negative-integer-every-window-size-k/#:\~:text=Recommended%3A%20Please%20solve%20it%20on,the%20current%20subarray\(window\).)
 * [x] [438.Find All Anagrams in a String](https://leetcode.com/problems/find-all-anagrams-in-a-string/) 🚀
 * [x] [239. Sliding Window Maximum](https://leetcode.com/problems/sliding-window-maximum/) 🍪🍪🍪
-* [x] 849\. [Maximize Distance to Closest Person](https://leetcode.com/problems/maximize-distance-to-closest-person/) 🤯🐽| ~~unable to get the 2P method!!!! ~~not needed
+* [x] 849\. [Maximize Distance to Closest Person](https://leetcode.com/problems/maximize-distance-to-closest-person/) 🤯🐽| \~\~unable to get the 2P method!!!! \~\~not needed
   * [x] 855.[Exam Room](https://leetcode.com/problems/exam-room/) | design problem based on this | **@Google!!!!!🐽**
 
 {% tabs %}
@@ -341,10 +358,10 @@ def maxDistToClosest(self, A: List[int]) -> int:
 
 ### 2.2 Dynamic Size Window
 
-* [x] ****[**3. Longest Substring Without Repeating Characters**](https://leetcode.com/problems/longest-substring-without-repeating-characters/)** | @rubrik | doob maro sharam se behanchodd**
+* [x] [**3. Longest Substring Without Repeating Characters**](https://leetcode.com/problems/longest-substring-without-repeating-characters/)** | @rubrik | doob maro sharam se behanchodd**
   * [x] CSES: [Playlist](https://cses.fi/problemset/task/1141) similar
 * [x] [560.Subarray Sum Equals K](https://leetcode.com/problems/subarray-sum-equals-k/)✅
-  * **NOTE: **Sliding window technique works only for all positive/all negative (i.e. not for arr with both pos & neg numbers).So soln#1 below gets WA
+  * \*\*NOTE: \*\*Sliding window technique works only for all positive/all negative (i.e. not for arr with both pos & neg numbers).So soln#1 below gets WA
 * [x] GfG#1: [Longest substring with k unique characters](https://www.geeksforgeeks.org/find-the-longest-substring-with-k-unique-characters-in-a-given-string/) ❤️
   * [x] SIMILAR: [904.Fruit Into Baskets](https://leetcode.com/problems/fruit-into-baskets/submissions/)
 * [x] [424.Longest Repeating Character Replacement ](https://leetcode.com/problems/longest-repeating-character-replacement/)(similar to #1) 🚀🚀
@@ -537,7 +554,6 @@ def solve():
 
 if __name__ == "__main__":
     solve()
-
 ```
 {% endtab %}
 
