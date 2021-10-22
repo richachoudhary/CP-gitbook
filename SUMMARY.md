@@ -4,11 +4,11 @@
 
 ## META
 
-* [\__meta\_\_](meta/\__meta\_\_.md)
+* [\_\_meta\_\_](meta/\_\_meta\_\_.md)
 * [About@me](meta/about-me.md)
 * [HM Round](meta/hm-round.md)
 * [Karat@Coinbase](meta/karat-coinbase.md)
-* [DSA_PRACTICE](meta/dsa_practice.md)
+* [DSA\_PRACTICE](meta/dsa\_practice.md)
 
 ## Algorithms
 
@@ -59,7 +59,9 @@
 * [concurrency: Questions](system-design/concurrency-questions.md)
 * [SQL](system-design/sql.md)
 * [LLD:Theory](system-design/lld.md)
-* [LLD:Questions](system-design/lld-questions.md)
+* [LLD:Questions](system-design/lld-questions/README.md)
+  * [Google Calendar](system-design/lld-questions/google-calendar.md)
+  * [Ludo](system-design/lld-questions/ludo.md)
 * [HLD](system-design/hld.md)
 * [HLD:Questions](system-design/hld-questions/README.md)
   * [1. TinyURL](system-design/hld-questions/1.-tinyurl.md)
