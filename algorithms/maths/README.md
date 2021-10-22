@@ -4,7 +4,7 @@
 
 ### 1.1 Notes
 
-* Heron's formula for area of triangle![\text{ Area }=\sqrt{s(s-a)(s-b)(s-c)}](https://www.gstatic.com/education/formulas2/355397047/en/heron_s_formula.svg)
+* Heron's formula for area of triangle![\text{ Area }=\sqrt{s(s-a)(s-b)(s-c)}](https://www.gstatic.com/education/formulas2/355397047/en/heron\_s\_formula.svg)
 * Set theory conventions **∀ (for all) and ∃ (there is).**
   *   For example, **`∀x(∃y(y<x))`**
 
@@ -263,8 +263,8 @@ class Solution:
 * [x] CSES: [Point Location Test](https://cses.fi/problemset/task/2189) | ✅✅**Cross Product**
 * [x] CSES: [Line Segment Intersection](https://cses.fi/problemset/task/2190) ✅✅ | `Boundary Box Technique` |**COVERS SO MANY CONCEPTS!**
 * [x] CSES: [Polygon Area](https://cses.fi/problemset/result/2677213/) ✅✅
-* [ ] CSES: [Point in Polygon](https://www.youtube.com/watch?v=G9QTjWtK_TQ) 🐽🐽| [video](https://www.youtube.com/watch?v=G9QTjWtK_TQ\&t=5265s)
-* [ ] CSES: [Convex Hull](https://cses.fi/problemset/task/2195) ✅✅ | [video](https://www.youtube.com/watch?v=G9QTjWtK_TQ\&t=7801s) | \*\*Graham Scan+Jarvis Algo >> \*\*shape of rubber band on nails boundary
+* [ ] CSES: [Point in Polygon](https://www.youtube.com/watch?v=G9QTjWtK\_TQ) 🐽🐽| [video](https://www.youtube.com/watch?v=G9QTjWtK\_TQ\&t=5265s)
+* [ ] CSES: [Convex Hull](https://cses.fi/problemset/task/2195) ✅✅ | [video](https://www.youtube.com/watch?v=G9QTjWtK\_TQ\&t=7801s) | \*\*Graham Scan+Jarvis Algo >> \*\*shape of rubber band on nails boundary
 
 ### 2.3 Problemsets
 
@@ -273,7 +273,7 @@ class Solution:
 
 ### 1.3 Resources: Geometry
 
-* [CSES Steam by Errichto](https://www.youtube.com/watch?v=G9QTjWtK_TQ) 🚀⭐️
+* [CSES Steam by Errichto](https://www.youtube.com/watch?v=G9QTjWtK\_TQ) 🚀⭐️
 * [Geometric Algorithms](https://www.cs.princeton.edu/\~rs/AlgsDS07/16Geometric.pdf)
 * Topcoder:
   * [GEOMETRY CONCEPTS PART 1: BASIC CONCEPTS](https://www.topcoder.com/thrive/articles/Geometry%20Concepts%20part%201:%20Basic%20Concepts)
@@ -376,7 +376,7 @@ math.pow(x,n,M)
 ### 2.2 Problems: Maths
 
 * [x] LC [326.Power of Three](https://leetcode.com/problems/power-of-three/)
-* [x] CSES: [Two Sets](https://cses.fi/problemset/task/1092) | four consecutive numbers can be divided into 2 sets of equal sums | [link to solution approach](https://www.reddit.com/r/learnprogramming/comments/n9ql5a/cses_problem_two_sets/) ⭐️
+* [x] CSES: [Two Sets](https://cses.fi/problemset/task/1092) | four consecutive numbers can be divided into 2 sets of equal sums | [link to solution approach](https://www.reddit.com/r/learnprogramming/comments/n9ql5a/cses\_problem\_two\_sets/) ⭐️
 * [x] CSES: [Coin Piles](https://cses.fi/problemset/task/1754) | [Solution Approach](https://discuss.codechef.com/t/coin-piles-problem-from-cses/28647/3)
 * [x] CSES: [Gray Code](https://cses.fi/problemset/task/2205) | [Solution](https://www.geeksforgeeks.org/generate-n-bit-gray-codes/)
 * [x] CSES: [Missing Coin Sum](https://cses.fi/problemset/result/2583670/) | [Approach](https://discuss.codechef.com/t/cses-missing-coin-sum/84039/2) ✅
@@ -387,6 +387,7 @@ math.pow(x,n,M)
   * Just watch the video; so fucking mind-blowing
 * [x] LC [1363.Largest Multiple of Three](https://leetcode.com/problems/largest-multiple-of-three/) ✅| fucking amazing question & elegant solution 🍪🍪🍪
 * [x] [**31. Next Permutation**](https://leetcode.com/problems/next-permutation/)\*\* | ✅| A must | \*\*interview mei aayega toh bina algo jaane, nhi kar paoge
+* [ ] LC [166. Fraction to Recurring Decimal](https://leetcode.com/problems/fraction-to-recurring-decimal/) | @google
 
 {% tabs %}
 {% tab title="326" %}
@@ -428,7 +429,7 @@ return str(int(''.join([str(i) for i in res])))
 * To find next permutations, we'll start from the end
 * First we'll find the first non-increasing element starting from the end.
 * there will be two cases:
-  * **CASE#1: **Our i becomes zero (This will happen if the given array is sorted decreasingly). 
+  * **CASE#1: **Our i becomes zero (This will happen if the given array is sorted decreasingly).&#x20;
     * In this case, we'll simply reverse the sequence and will return
   * **CASE#2: **If it's not zero then we'll find the first number grater then nums\[i-1] starting from end
     * And We'll swap these two numbers
@@ -480,7 +481,7 @@ If two knight attack each other then they will be in 2\*\_3 rectangle or 3\*\_2 
 
 * number of 2\*3 rects = #rows\*#cols = (n-1)\*(n-2)
 
-So the number of ways of placing them is (n-1)_(n-2)+(n-2)_(n-1). Also in each rectangle no ways of placing the knight is 2. So total ways of placing knight so that they attack each other will be 2\_2\_(n-1)_(n-2). So the number of ways such that knight do not attack each other will be n_n_(n_n-1)/2 — 4\_(n-1)\_(n-2)
+So the number of ways of placing them is (n-1)_(n-2)+(n-2)_(n-1). Also in each rectangle no ways of placing the knight is 2. So total ways of placing knight so that they attack each other will be 2\_2\_(n-1)_(n-2). So the number of ways such that knight do not attack each other will be n\_n_(n\_n-1)/2 — 4\_(n-1)\_(n-2)
 {% endhint %}
 
 ### 2.3 Problemsets
@@ -492,7 +493,7 @@ So the number of ways of placing them is (n-1)_(n-2)+(n-2)_(n-1). Also in each r
 
 ### 2.4 Resources: Maths
 
-* Kartik Arora's Playlist :[ Number Theory](https://www.youtube.com/watch?v=2NN5j1iF2ko\&list=PLb3g_Z8nEv1i6NHntG5l2fPKuVu853EYy\&ab_channel=KartikArora)
+* Kartik Arora's Playlist :[ Number Theory](https://www.youtube.com/watch?v=2NN5j1iF2ko\&list=PLb3g\_Z8nEv1i6NHntG5l2fPKuVu853EYy\&ab\_channel=KartikArora)
 * \*\*Topcoder \*\*:
   * [**MATHEMATICS FOR TOPCODERS**](https://www.topcoder.com/thrive/articles/Mathematics%20for%20Topcoders)
   * [**BASICS OF COMBINATORICS**](https://www.topcoder.com/thrive/articles/Basics%20of%20Combinatorics)

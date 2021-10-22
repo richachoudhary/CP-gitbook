@@ -12,12 +12,12 @@
      * I. **Hypotheses**: what will your function do (_induction_)
      * II. **Induction**: Apply that hypothesis on smaller input :: `main code` goes here
      * III. Write **base condition** i.e. _smallest valid input_ & include it in the beginning
-     * e.g.: find height of tree [video](https://www.youtube.com/watch?v=aqLTbtWh40E\&list=PL_z\_8CaSLPWeT1ffjiImo0sYTcnLzo-wY\&index=5\&ab_channel=AdityaVerma%27)
+     * e.g.: find height of tree [video](https://www.youtube.com/watch?v=aqLTbtWh40E\&list=PL\_z\_8CaSLPWeT1ffjiImo0sYTcnLzo-wY\&index=5\&ab\_channel=AdityaVerma%27)
   3. If you've to take choices at every step: => Make **Choice Diagram** (like **DP**)
 
 ## 1. Recursion
 
-* [x] Sort An Array \*\*OR \*\*Sort A Stack (using BHI method) - for concept building : [video](https://www.youtube.com/watch?v=AZ4jEY_JAVc\&list=PL_z\_8CaSLPWeT1ffjiImo0sYTcnLzo-wY\&index=6\&ab_channel=AdityaVerma)
+* [x] Sort An Array \*\*OR \*\*Sort A Stack (using BHI method) - for concept building : [video](https://www.youtube.com/watch?v=AZ4jEY\_JAVc\&list=PL\_z\_8CaSLPWeT1ffjiImo0sYTcnLzo-wY\&index=6\&ab\_channel=AdityaVerma)
 
 {% tabs %}
 {% tab title="Sort" %}
@@ -50,7 +50,7 @@ def insertMe(arr,x):  # HYPOTHESIS: fn inserts 'x' correctly inserted at its pos
 {% endtabs %}
 
 * [x] GfG: [Delete Middle Element of Stack](https://www.geeksforgeeks.org/delete-middle-element-stack/)
-* [x] GfG: [Reverse A Stack w/o Extra Space](https://www.geeksforgeeks.org/reverse-a-stack-using-recursion/) | [Video](https://www.youtube.com/watch?v=8YXQ68oHjAs\&list=PL_z\_8CaSLPWeT1ffjiImo0sYTcnLzo-wY\&index=9\&ab_channel=AdityaVerma) `O(1) ; not counting function stack`
+* [x] GfG: [Reverse A Stack w/o Extra Space](https://www.geeksforgeeks.org/reverse-a-stack-using-recursion/) | [Video](https://www.youtube.com/watch?v=8YXQ68oHjAs\&list=PL\_z\_8CaSLPWeT1ffjiImo0sYTcnLzo-wY\&index=9\&ab\_channel=AdityaVerma) `O(1) ; not counting function stack`
 
 {% tabs %}
 {% tab title="reverseStack" %}
@@ -81,7 +81,7 @@ def insertMeAtBottom(stk,x): # HYPO: inserts 'x' at the bottom of stk
 {% endtabs %}
 
 * [x] [779. K-th Symbol in Grammar](https://leetcode.com/problems/k-th-symbol-in-grammar/)
-* [x] CSES: [Tower of Hanoi](https://cses.fi/problemset/task/2165) | [video](https://www.youtube.com/watch?v=l45md3RYX7c\&list=PL_z\_8CaSLPWeT1ffjiImo0sYTcnLzo-wY\&index=11\&ab_channel=AdityaVerma)
+* [x] CSES: [Tower of Hanoi](https://cses.fi/problemset/task/2165) | [video](https://www.youtube.com/watch?v=l45md3RYX7c\&list=PL\_z\_8CaSLPWeT1ffjiImo0sYTcnLzo-wY\&index=11\&ab\_channel=AdityaVerma)
 
 ```python
 def solve(n,s,d,h):    # no of plats, poles: source, destination, helper
@@ -96,7 +96,7 @@ def solve(n,s,d,h):    # no of plats, poles: source, destination, helper
     solve(n-1,h,d,s)    # move those (n-1) plates h->d    
 ```
 
-* [x] Print all subsets/powerset of a string | [video](https://www.youtube.com/watch?v=Yg5a2FxU4Fo\&list=PL_z\_8CaSLPWeT1ffjiImo0sYTcnLzo-wY\&index=12\&ab_channel=AdityaVerma) | **Decision Tree method**
+* [x] Print all subsets/powerset of a string | [video](https://www.youtube.com/watch?v=Yg5a2FxU4Fo\&list=PL\_z\_8CaSLPWeT1ffjiImo0sYTcnLzo-wY\&index=12\&ab\_channel=AdityaVerma) | **Decision Tree method**
 
 ```python
 def printSubsets(ip, op):
@@ -112,7 +112,7 @@ def printSubsets(ip, op):
 printSubsets(str,'') # init with I/P & O/P
 ```
 
-* [x] [Permutation with Spaces](https://practice.geeksforgeeks.org/problems/permutation-with-spaces3627/1) | [Video](https://www.youtube.com/watch?v=1cspuQ6qHW0\&list=PL_z\_8CaSLPWeT1ffjiImo0sYTcnLzo-wY\&index=14\&ab_channel=AdityaVerma) : \*\*NOTE: \*\*Sometimes you've to break-down the problem before making recursion tree
+* [x] [Permutation with Spaces](https://practice.geeksforgeeks.org/problems/permutation-with-spaces3627/1) | [Video](https://www.youtube.com/watch?v=1cspuQ6qHW0\&list=PL\_z\_8CaSLPWeT1ffjiImo0sYTcnLzo-wY\&index=14\&ab\_channel=AdityaVerma) : \*\*NOTE: \*\*Sometimes you've to break-down the problem before making recursion tree
 * [x] \----------------------------- \[Medium]---------------------------
 * [x] [22.Generate Parentheses](https://leetcode.com/problems/generate-parentheses/) 🚀
 * [x] [1823.Find the Winner of the Circular Game](https://leetcode.com/problems/find-the-winner-of-the-circular-game/)
@@ -137,6 +137,7 @@ printSubsets(str,'') # init with I/P & O/P
 
 * [x] [241.Different Ways to Add Parentheses](https://leetcode.com/problems/different-ways-to-add-parentheses/) ✅
 * [x] [240.Search a 2D Matrix II](https://leetcode.com/problems/search-a-2d-matrix-ii/) | **@Google ✅**
+* [x] [280. Wiggle Sort I](https://leetfree.com/problems/wiggle-sort) | **@Google ✅**
 * [ ] [342.Wiggle Sort II](https://leetcode.com/problems/wiggle-sort-ii/)
 * [ ] [23.Merge k Sorted Lists](https://leetcode.com/problems/merge-k-sorted-lists/)
 * [ ] [315.Count of Smaller Numbers After Self](https://leetcode.com/problems/count-of-smaller-numbers-after-self/)
@@ -194,7 +195,7 @@ class Solution:
 
 * start from TOP-RIGHT(**TR**) corner
 * in each step; either move down or left ; until found OR out-of-bound
-* video on approach#2: [link](https://www.youtube.com/watch?v=dcTJRw1704w\&ab_channel=AlgorithmsMadeEasy) | understand why you can solve this only by starting from **TOP-RIGHT**(**TR) **corner
+* video on approach#2: [link](https://www.youtube.com/watch?v=dcTJRw1704w\&ab\_channel=AlgorithmsMadeEasy) | understand why you can solve this only by starting from **TOP-RIGHT**(**TR) **corner
 {% endtab %}
 
 {% tab title="395." %}
@@ -237,7 +238,111 @@ ans = f(0,0,0)
 print(ans)
 ```
 {% endtab %}
+
+{% tab title="WiggleSort(280+342)" %}
+### [LC 280. Wiggle Sort I](https://leetfree.com/problems/wiggle-sort)
+
+```
+nums[i-1] <= nums[i] >= nums[i + 1] where i is an odd number
+```
+
+
+
+* App#1(naive): sort🙅‍♂️ TC:O(nlogn) , SC: O(N)
+* App#2: in-place swap: TC:O(N), SC: O(1)
+
+```python
+def wiggleSort(self, nums: List[int]) -> None:
+
+    #1. NAIVE: Sorting: TC : O(NlogN), SC: O(N) ================================
+    nums.sort()
+    n = len(nums)
+
+    first_half, second_half = nums[:n//2] , nums[n//2:]
+    second_half.reverse()
+
+    print(first_half)
+    print(second_half)
+
+    i,j = 0,0
+    res = []
+    while i<len(first_half) and j <len(second_half):
+        res.append(first_half[i])
+        res.append(second_half[j])
+        i += 1
+        j += 1
+
+    while i<len(first_half):
+        res.append(first_half[i])
+        i += 1
+
+    while j<len(second_half):
+        res.append(second_half[j])
+        j += 1
+    nums[::] = res
+
+    """
+    Example nums = [1,2,...,7]      Example nums = [1,2,...,8] 
+
+    Small half:  4 . 3 . 2 . 1      Small half:  4 . 3 . 2 . 1 .
+    Large half:  . 7 . 6 . 5 .      Large half:  . 8 . 7 . 6 . 5
+    --------------------------      --------------------------
+    Together:    4 7 3 6 2 5 1      Together:    4 8 3 7 2 6 1 5
+    """
+
+    # 2. In Place Sort:: TC: O(N), SC: O(1) ========================================
+
+    n = len(nums)
+    i = 0
+
+    while i < n:
+        if i> 0 and nums[i] <= nums[i-1]:
+            nums[i],nums[i-1] = nums[i-1], nums[i]
+        if i<n-1 and nums[i] <= nums[i+1]:
+            nums[i],nums[i+1] = nums[i+1], nums[i]
+
+        i += 2
+
+
+    '''
+    IDEA: move to odd indices & try to create local maxima(by swapping)
+    video: https://www.youtube.com/watch?v=di7gNqxfU1g&ab_channel=CodingBlocks
+
+    '''
+```
+
+### LC 324. [Wiggle Sort II](https://leetcode.com/problems/wiggle-sort-ii/)
+
+#### How is it different from Wiggle Sort I?
+
+* Wiggle sort 1 is `nums[i-1] <= nums[i] >= nums[i + 1]` where i is an odd number
+* This question is `nums[i-1] < nums[i] > nums[i + 1]` where i is an odd number.
+* The **difference** is that, in this question, when two elements are equal, you have to move one of the two elements somewhere else, and the difficulty is how to achieve moving all the duplicate elements to their correct positions in O(N) time such that the final array has a wiggle pattern.
+
+```python
+
+
+
+
+
+
+
+
+
+
+??????????????????????????????????? 
+TODO:
+
+
+
+
+
+
+```
+{% endtab %}
 {% endtabs %}
+
+
 
 
 
@@ -291,4 +396,4 @@ SC: O(N*N)
 
 ## # Resources
 
-* Aditya Verma's playlist on Recursion: [https://www.youtube.com/watch?v=kHi1DUhp9kM\&list=PL_z\_8CaSLPWeT1ffjiImo0sYTcnLzo-wY\&ab_channel=AdityaVerma](https://www.youtube.com/watch?v=kHi1DUhp9kM\&list=PL_z\_8CaSLPWeT1ffjiImo0sYTcnLzo-wY\&ab_channel=AdityaVerma)
+* Aditya Verma's playlist on Recursion: [https://www.youtube.com/watch?v=kHi1DUhp9kM\&list=PL\_z\_8CaSLPWeT1ffjiImo0sYTcnLzo-wY\&ab\_channel=AdityaVerma](https://www.youtube.com/watch?v=kHi1DUhp9kM\&list=PL\_z\_8CaSLPWeT1ffjiImo0sYTcnLzo-wY\&ab\_channel=AdityaVerma)

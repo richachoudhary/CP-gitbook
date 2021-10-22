@@ -115,8 +115,6 @@ def deleteDuplicates(head):
 {% endtab %}
 {% endtabs %}
 
-
-
 * [x] [206.Reverse Linked List](https://leetcode.com/problems/reverse-linked-list/)
 * [ ] [92.Reverse Linked List II](https://leetcode.com/problems/reverse-linked-list-ii/)
 
@@ -320,10 +318,9 @@ def findDuplicate(self, nums):
 * [ ] [142.Linked List Cycle II](https://leetcode.com/problems/linked-list-cycle-ii/)
 * [x] [138.Copy List with Random Pointer](https://leetcode.com/problems/copy-list-with-random-pointer/) | Deep copy | chillar
 * [x] 23\. [Merge k Sorted Lists](https://leetcode.com/problems/merge-k-sorted-lists/) 🍪🍪🍪✅
-* [x] LC [287. Find the Duplicate Number](https://leetcode.com/problems/find-the-duplicate-number/) | **Rabbit-Tortoise **method on array | had me failed **@ShareChat** back then 💪 | also see in `BinarySearch`
+* [x] LC [287. Find the Duplicate Number](https://leetcode.com/problems/find-the-duplicate-number/) | \*\*Rabbit-Tortoise \*\*method on array | had me failed **@ShareChat** back then 💪 | also see in `BinarySearch`
+* [ ] `341. `[Flatten Nested List Iterator](https://leetcode.com/problems/flatten-nested-list-iterator/) | **@Google**
 
 ## 2. All Problems
-
-
 
 * [ ] GfG: [Remove duplicates from Unsorted List](https://www.geeksforgeeks.org/remove-duplicates-from-an-unsorted-linked-list/)

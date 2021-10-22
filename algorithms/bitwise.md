@@ -57,7 +57,8 @@
 * [ ] Decode XORed Permutation: [https://leetcode.com/problems/decode-xored-permutation/](https://leetcode.com/problems/decode-xored-permutation/)
 * [x] CSES: [Apple Division](https://cses.fi/problemset/result/2572485/)
 * [x] LC: [29.Divide Two Integers](https://leetcode.com/problems/divide-two-integers/)
-* [x] LC 421. [Maximum XOR of Two Numbers in an Array](https://leetcode.com/problems/maximum-xor-of-two-numbers-in-an-array/) | <mark style="color:orange;">`standardQ`</mark> | **@google | must_do✅**
+* [x] LC 421. [Maximum XOR of Two Numbers in an Array](https://leetcode.com/problems/maximum-xor-of-two-numbers-in-an-array/) | <mark style="color:orange;">`standardQ`</mark> | **@google | must\_do✅**
+* [x] LC 318. [Maximum Product of Word Lengths](https://leetcode.com/problems/maximum-product-of-word-lengths/) | **@google**
 
 {% tabs %}
 {% tab title="289." %}
@@ -93,11 +94,11 @@ def gameOfLife(self, A: List[List[int]]) -> None:
     A[::] = res
 ```
 
-#### 2. FOLLOW_UP: #1: Do in O(1) Space ---> <mark style="color:red;">bitwise</mark>
+#### 2. FOLLOW\_UP: #1: Do in O(1) Space ---> <mark style="color:red;">bitwise</mark>
 
 \*\*IDEA: \*\*
 
-* Traverse top-left to bottom-right & store the prev_val in `0-th` bit & new val in `1st` bit.
+* Traverse top-left to bottom-right & store the prev\_val in `0-th` bit & new val in `1st` bit.
 * Iterate once again & assign cell values to `0-th` bit only
 
 ```python
@@ -131,7 +132,7 @@ def gameOfLife(self, A: List[List[int]]) -> None:
             A[i][j] = get_ith_bit(1,i,j)
 ```
 
-#### 3. FOLLOW_UP#2: infinite board
+#### 3. FOLLOW\_UP#2: infinite board
 
 > In this question, we represent the board using a 2D array. In principle, the board is infinite, which would cause problems when the active area encroaches upon the border of the array (i.e., live cells reach the border). How would you address these problems?
 
@@ -175,8 +176,8 @@ Complexity for `gameOfLifeInfinite`:
 {% tab title="421✅" %}
 #### Videos:
 
-* To understand logic: [this](https://www.youtube.com/watch?v=I7sUjln2Fjw\&ab_channel=HellgeekArena)
-* To understand code: [this](https://www.youtube.com/watch?v=jCu-Pd0IjIA\&ab_channel=CodingNinjas)
+* To understand logic: [this](https://www.youtube.com/watch?v=I7sUjln2Fjw\&ab\_channel=HellgeekArena)
+* To understand code: [this](https://www.youtube.com/watch?v=jCu-Pd0IjIA\&ab\_channel=CodingNinjas)
 
 ### Approach:
 
@@ -282,7 +283,7 @@ remove(SUBSET,5)
 
 * [ ] CommonProblems: [https://leetcode.com/discuss/general-discussion/1073221/All-about-Bitwise-Operations-Beginner-Intermediate](https://leetcode.com/discuss/general-discussion/1073221/All-about-Bitwise-Operations-Beginner-Intermediate)
 * [ ] LC: [https://leetcode.com/problemset/all/?topicSlugs=bit-manipulation](https://leetcode.com/problemset/all/?topicSlugs=bit-manipulation)
-* [ ] CF: [https://codeforces.com/problemset?order=BY_SOLVED_DESC\&tags=bitmasks%2C1200-1500](https://codeforces.com/problemset?order=BY_SOLVED_DESC\&tags=bitmasks%2C1200-1500)
+* [ ] CF: [https://codeforces.com/problemset?order=BY\_SOLVED\_DESC\&tags=bitmasks%2C1200-1500](https://codeforces.com/problemset?order=BY\_SOLVED\_DESC\&tags=bitmasks%2C1200-1500)
 
 ## Resources:
 
