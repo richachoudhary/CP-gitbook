@@ -1,5 +1,7 @@
 # HM Round
 
+### Detailed [LC post](https://leetcode.com/discuss/interview-experience/1532708/tips-for-answering-few-tricky-behaviourial-interview-questions)✅
+
 ## DONT LIE .......|......... Everything should be in STAR framework
 
 ### 1.Situation
@@ -9,6 +11,77 @@
 ### 3.Action
 
 ### 4.Result
+
+
+
+## Typical Questions
+
+#### **1. Why do you want to quit your current job ?**
+
+* The job is becoming more data-engineering intensive; as things are progressing in the ecosystem.But I dont want to switch the domain from Software Developer to completely DE. -> this was the key factor I decided to start looking out.
+* and unable to switch teams due to internal policies.&#x20;
+* <mark style="color:green;">not learning anything new as product is in a saturated state,</mark>&#x20;
+* <mark style="color:green;">NEVER EVER talk about bad boss, politics etc - it will backfire bigtime.</mark>
+
+#### 2.**What has been the biggest failure of your career till now ?** OR **What is the most critical feedback received from your boss in your entire career ?**
+
+* **WHAT: **brand & category enrichment in BSS
+  * new platform | first time occurence during the Independence Day Sale
+  * typecast mismatch from Java's **`List`** to Sark's **`Wrapped Array`**
+    * `WrappedArray` wraps an `Array` to give it extra functionality. It also have a bunch of types while array extends only serializable and cloneable, This allows an array to be wrapped so it can be used in places where some generic collection type like `Seq` is required.
+*   **CORRECTIVE MEASURES:**
+
+    * fixed the bug in one night(during sale oncall) collaborating with the ingestion team & serving team
+    * (post fix)
+    * published Detailed RCA in tech-session with&#x20;
+      * debugging steps &&#x20;
+      * increased learning of spark & how spark's typecasting work
+    * Implemented the same type-safety in pipeline's code & added UTs for the same
+
+
+* **IMPACT:**
+  * Even though we missed the SLA for the first night of sale(Early Access); we fixed the issue on time for the smoother sale.
+
+****
+
+#### **3. What would you like to improve at your current workplace ?** OR **What do you dislike/hate at your current job/workplace ?**
+
+* <mark style="color:green;">a trap - if you badmouth your current employer or use any words like</mark> <mark style="color:green;">**hate**</mark> <mark style="color:green;">or</mark> <mark style="color:green;">**dislike**</mark><mark style="color:green;">, it is guaranteed to go against you.</mark>
+* Talk about generic things like -&#x20;
+  * sometimes code reviews take a long time due to senior developers being busy&#x20;
+    * probably that can be streamlined.
+  * Or say - we should invest more in enhancing the** test automation infrastructure**, which often takes a backseat due to various constraints
+  * (!) too many senior people leaving - has resulted in a knowledge bottleneck
+* <mark style="color:green;">Basically, try to stay around technical things, and avoid talking about poor cafeteria or no free cab pickup-drop services etc.</mark>
+* <mark style="color:green;">The motive is to show your passion towards work related things and not focus on secondary things like cafeteria or cabs or playgrounds etc.</mark>
+
+#### 4. **Are you happy at your current job ?**
+
+* <mark style="color:green;">This is also a big trap.</mark>\ <mark style="color:green;">If you talk only about goody-goody positive things, then this question will be immediately followed by -</mark> <mark style="color:green;">**if you like your job, then why are you looking around for another job**</mark><mark style="color:green;">?</mark>
+* <mark style="color:green;">So, answer it diplomatically around point 1 of this post. Talk about good things like - I have gotten to learn a lot.</mark>
+  * Got to explore data side
+  * Worked on such big scale
+* <mark style="color:green;">Then talk about negatives - again in polished way</mark>
+  * Domain shift
+
+**5. What would you do if you find your senior or boss doing something unethical or violating a company policy ?**
+
+Always talk about that you would gently point out to that person directly, and request that person to follow the correct process. In case the violations continue, then I would like to know about the violation reporting policy of your company.
+
+Here, you can turnaround the interview by **cross-questioning** your interviewer - "**by the way, can you give a brief insight into policy violation reporting mechanism which exists in this company ?**"
+
+
+
+#### **6. What is your greatest weakness ?** 
+
+* <mark style="color:green;">No, NO, NO - please do not talk about</mark> <mark style="color:green;">**being impatient or pushing your team hard etc etc**</mark><mark style="color:green;">. These are all very very well-known answers.</mark>
+* <mark style="color:green;">Talk about something more genuine and possibly not related to work -</mark> I am not so good at remembering names of people I interact with for first few times.
+* <mark style="color:green;">But be prepared to answer -</mark> **what are you doing to overcome this weakness** ?
+* <mark style="color:green;">Possible answers to above examples may be -</mark> **Hi X**, I am using this technique to use the name of the person I am interacting with first time in conversation\
+  \
+
+
+Being culturally sensitive is very very important for working in any MNC.
 
 * Have you ever faced any challenges/conflicts with colleagues.
   * \=>
