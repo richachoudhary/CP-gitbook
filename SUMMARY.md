@@ -65,4 +65,5 @@
 * [HLD](system-design/hld.md)
 * [HLD:Questions](system-design/hld-questions/README.md)
   * [1. TinyURL](system-design/hld-questions/1.-tinyurl.md)
+  * [8. Dropbox/Drive |@CoinBase](system-design/hld-questions/8.-dropbox-drive-or-coinbase.md)
 * [Resources](system-design/resources.md)
