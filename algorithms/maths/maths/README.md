@@ -1,29 +1,63 @@
 # Maths
 
+## 0.0.1 Calculus Formulae
 
+### **1. Series Expansions**
 
-## 0. Notes :
+#### **Taylor Series & **Maclaurin Series
+
+![](<../../../.gitbook/assets/Screenshot 2021-10-23 at 2.01.20 PM.png>) ![](<../../../.gitbook/assets/Screenshot 2021-10-23 at 2.01.29 PM.png>)
+
+### 2. Applications of Maclaurin Series
+
+![e^x](<../../../.gitbook/assets/Screenshot 2021-10-23 at 2.07.02 PM.png>) ![log(1+x) => to be used for log(x)](<../../../.gitbook/assets/Screenshot 2021-10-23 at 2.07.06 PM (1).png>)
+
+![](<../../../.gitbook/assets/Screenshot 2021-10-23 at 2.07.11 PM (2).png>)
+
+![](<../../../.gitbook/assets/Screenshot 2021-10-23 at 2.07.23 PM (1).png>)
+
+![](<../../../.gitbook/assets/Screenshot 2021-10-23 at 2.10.46 PM.png>)
+
+### 3. Useful Graphs
+
+![](<../../../.gitbook/assets/Screenshot 2021-10-23 at 2.13.13 PM (1).png>)
+
+![](<../../../.gitbook/assets/Screenshot 2021-10-23 at 2.13.19 PM (1).png>)
+
+![](<../../../.gitbook/assets/Screenshot 2021-10-23 at 2.13.24 PM (1).png>)
+
+![](<../../../.gitbook/assets/Screenshot 2021-10-23 at 2.13.35 PM.png>)
+
+### 4. Trigonometric Graphs & Table
+
+![](<../../../.gitbook/assets/Screenshot 2021-10-23 at 2.17.06 PM.png>)
+
+![](<../../../.gitbook/assets/Screenshot 2021-10-23 at 2.19.10 PM.png>)
+
+## 0.0.2 Other Notes :
 
 ### **0.1 Fibonacci:**
 
-* **Zeckendorf’s theorem** states that every positive integer has a **unique representation as a sum of Fibonacci numbers** such that **no two numbers are equal or consecutive Fibonacci numbers**.
+* <mark style="color:orange;">**Zeckendorf’s theorem**</mark> states that every positive integer has a **unique representation as a sum of Fibonacci numbers** such that **no two numbers are equal or consecutive Fibonacci numbers**.
   * For example, the number 74 can be represented as the sum 55+13+5+1.
-* \*\*Binet’s formula \*\*for calculating **Fibonacci numbers:**
+* <mark style="color:orange;">**Binet’s formula**</mark> for calculating **Fibonacci numbers:**
 
-![](../../.gitbook/assets/screenshot-2021-08-13-at-9.32.25-am.png)
+![](../../../.gitbook/assets/screenshot-2021-08-13-at-9.32.25-am.png)
 
 ### **0.2 Primes & Factors**
 
-![](../../.gitbook/assets/screenshot-2021-09-10-at-2.04.29-pm.png)
+![](<../../../.gitbook/assets/Screenshot 2021-10-23 at 1.48.23 PM.png>)
 
-![](../../.gitbook/assets/screenshot-2021-09-10-at-2.06.28-pm.png)
+![](../../../.gitbook/assets/screenshot-2021-09-10-at-2.04.29-pm.png)
 
-![Wilson’s theorem to check whether a number is prime or not](../../.gitbook/assets/screenshot-2021-09-10-at-2.14.35-pm.png)
+![](../../../.gitbook/assets/screenshot-2021-09-10-at-2.06.28-pm.png)
 
-![Euler’s totient function](../../.gitbook/assets/screenshot-2021-09-10-at-2.10.08-pm.png)
+![Wilson’s theorem to check whether a number is prime or not](../../../.gitbook/assets/screenshot-2021-09-10-at-2.14.35-pm.png)
 
-* \*\*Lagrange’s theorem \*\*states that every positive integer can be represented as a sum of four squares, i.e., \*\* $$N = a^2 + b^2 + c^2 + d^2$$ \*\*
-  * For example, the number 123 can be represented as the sum $$123 = 8^2 + 5^2 + 5^2 + 3^3$$ 8
+![Euler’s totient function](../../../.gitbook/assets/screenshot-2021-09-10-at-2.10.08-pm.png)
+
+* <mark style="color:orange;">**Lagrange’s theorem**</mark> states that every positive integer can be represented as a sum of four squares, i.e.,  <mark style="color:yellow;"></mark>$$N = a^2 + b^2 + c^2 + d^2$$ <mark style="color:yellow;"></mark>
+  * For example, the number 123 can be represented as the sum $$123 = 8^2 + 5^2 + 5^2 + 3^3$$&#x20;
 
 ### **0.3 Euclidean GCD**
 
@@ -34,20 +68,20 @@ def gcd(a,b):
     return gcd(b, a%b)
 ```
 
-* **Sieve of Eratosthenes**
-  * **COMPLEXITY**:
+### **0.4 Sieve of Eratosthenes**
 
-![TC of Sieve algo](../../.gitbook/assets/screenshot-2021-09-10-at-2.08.37-pm.png)
+* **COMPLEXITY**:
+
+![TC of Sieve algo](../../../.gitbook/assets/screenshot-2021-09-10-at-2.08.37-pm.png)
 
 {% tabs %}
 {% tab title="Sieve_Algo.py" %}
-```cpp
+```python
 if n <= 1:
     return 0
 
-primes = [True for _ in range(n+1)]
+primes = [True for _ in range(n+1)]    ## True: is prime, False: not a prime
 primes[0] = False
-
 primes[1] = False
 for i in range(2,int(sqrt(n+1))+1):
     if primes[i]:
@@ -67,14 +101,14 @@ return sum(x for x in primes if x)
     * there are **C(n)** **binary trees** of **n nodes**
     * there are **C(n−1)** \*\*rooted trees \*\*of **n nodes**
 
-![](../../.gitbook/assets/screenshot-2021-09-10-at-2.22.05-pm.png)
+![](../../../.gitbook/assets/screenshot-2021-09-10-at-2.22.05-pm.png)
 
 * **Derangements**
   * \==> permutations where no element remains in its original place
     * number of derangements of elements {1, 2, . . . , n}, i.e., .
     * For example, when n = 3, there are two derangements: (2, 3, 1) and (3, 1, 2)
 
-![formula for Derangements](../../.gitbook/assets/screenshot-2021-09-10-at-2.25.10-pm.png)
+![formula for Derangements](../../../.gitbook/assets/screenshot-2021-09-10-at-2.25.10-pm.png)
 
 ### 0.5 Modular Exponentiation :
 
