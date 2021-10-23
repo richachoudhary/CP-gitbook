@@ -26,8 +26,8 @@ AXB = |  x1  y1  z1 |
 
 * [x] [1266.Minimum Time Visiting All Points](https://leetcode.com/problems/minimum-time-visiting-all-points/)
 * [x] [883. Projection Area of 3D Shapes](https://leetcode.com/problems/projection-area-of-3d-shapes/)
-* [x] [1030. Matrix Cells in Distance Order](https://leetcode.com/problems/matrix-cells-in-distance-order/) ✴️
-* [x] [892. Surface Area of 3D Shapes](https://leetcode.com/problems/surface-area-of-3d-shapes/) ✴️
+* [x] [1030. Matrix Cells in Distance Order](https://leetcode.com/problems/matrix-cells-in-distance-order/) ✴
+* [x] [892. Surface Area of 3D Shapes](https://leetcode.com/problems/surface-area-of-3d-shapes/) ✴️⏯(pause)
 
 {% hint style="info" %}
 For problems like (**#892**) :in geometry of 3-D blocks: think in terms of subtracting the overlap, not adding each block one-by-one.
@@ -39,6 +39,24 @@ For problems like (**#892**) :in geometry of 3-D blocks: think in terms of subtr
 * [x] LC [218.The Skyline Problem](https://leetcode.com/problems/the-skyline-problem/) ✅🌇| uses \*\*SortedList \*\*
 
 {% tabs %}
+{% tab title="892" %}
+```python
+# Intution: 
+# * For each tower, its surface area is 4 * v + 2
+# * However, 2 adjacent tower will hide the area of connected part.
+# * The hidden part is min(v1, v2) and we need just minus this area * 2 :
+#     * This is because each of the two prisms is double counting the face that touches, e.g. the face that represents the minimum of the two heights
+
+n, res = len(grid), 0
+for i in range(n):
+    for j in range(n):
+        if grid[i][j]: res += 2 + grid[i][j] * 4
+        if i: res -= min(grid[i][j], grid[i - 1][j]) * 2
+        if j: res -= min(grid[i][j], grid[i][j - 1]) * 2
+return res
+```
+{% endtab %}
+
 {% tab title="149" %}
 ```python
 #2. count slopes ==========================
@@ -89,6 +107,53 @@ return True
 ```
 {% endtab %}
 
+{% tab title="218.🌇" %}
+```python
+from sortedcontainers import SortedList
+class Solution:
+    def getSkyline(self, buildings: List[List[int]]) -> List[List[int]]:
+        events = []
+        
+        for l,r,h in buildings:
+            events.append((l,h,-1)) #starting event
+            events.append((r,h,1))  #ending event
+            
+        events.sort()   #sort by X cordinate
+        n = len(events)
+        
+        res = []
+        active_heights = SortedList([0]) #min heap of curr all hights in current window
+        
+        i = 0
+        while i<n:
+            curr_x = events[i][0]
+            
+            #process all events with same X together
+            while i<n and events[i][0] == curr_x:
+                x,h,t = events[i]
+                
+                if t == -1:                      #starting event
+                    active_heights.add(h)
+                else:
+                    active_heights.remove(h)    #ending event
+                i += 1
+                
+            #check if biggest height has changed in window due to this event
+            if len(res) == 0 or (len(res) > 0 and res[-1][1] != active_heights[-1]):
+                res.append((curr_x, active_heights[-1]))
+        return res
+```
+{% endtab %}
+{% endtabs %}
+
+* [x] [836.Rectangle Overlap](https://leetcode.com/problems/rectangle-overlap/) 💡
+* [x] CSES: [Point Location Test](https://cses.fi/problemset/task/2189) | ✅✅**Cross Product**
+* [x] CSES: [Line Segment Intersection](https://cses.fi/problemset/task/2190) ✅✅ | `Boundary Box Technique` |**COVERS SO MANY CONCEPTS!**
+* [x] CSES: [Polygon Area](https://cses.fi/problemset/result/2677213/) ✅✅
+* [ ] CSES: [Point in Polygon](https://www.youtube.com/watch?v=G9QTjWtK\_TQ) 🐽🐽| [video](https://www.youtube.com/watch?v=G9QTjWtK\_TQ\&t=5265s)
+* [ ] CSES: [Convex Hull](https://cses.fi/problemset/task/2195) ✅✅ | [video](https://www.youtube.com/watch?v=G9QTjWtK\_TQ\&t=7801s) | \*\*Graham Scan+Jarvis Algo >> \*\*shape of rubber band on nails boundary
+
+{% tabs %}
 {% tab title="PointLocationTest" %}
 ```python
 '''
@@ -219,52 +284,9 @@ def solve():
     
 ```
 {% endtab %}
-
-{% tab title="218.🌇" %}
-```python
-from sortedcontainers import SortedList
-class Solution:
-    def getSkyline(self, buildings: List[List[int]]) -> List[List[int]]:
-        events = []
-        
-        for l,r,h in buildings:
-            events.append((l,h,-1)) #starting event
-            events.append((r,h,1))  #ending event
-            
-        events.sort()   #sort by X cordinate
-        n = len(events)
-        
-        res = []
-        active_heights = SortedList([0]) #min heap of curr all hights in current window
-        
-        i = 0
-        while i<n:
-            curr_x = events[i][0]
-            
-            #process all events with same X together
-            while i<n and events[i][0] == curr_x:
-                x,h,t = events[i]
-                
-                if t == -1:                      #starting event
-                    active_heights.add(h)
-                else:
-                    active_heights.remove(h)    #ending event
-                i += 1
-                
-            #check if biggest height has changed in window due to this event
-            if len(res) == 0 or (len(res) > 0 and res[-1][1] != active_heights[-1]):
-                res.append((curr_x, active_heights[-1]))
-        return res
-```
-{% endtab %}
 {% endtabs %}
 
-* [x] [836.Rectangle Overlap](https://leetcode.com/problems/rectangle-overlap/) 💡
-* [x] CSES: [Point Location Test](https://cses.fi/problemset/task/2189) | ✅✅**Cross Product**
-* [x] CSES: [Line Segment Intersection](https://cses.fi/problemset/task/2190) ✅✅ | `Boundary Box Technique` |**COVERS SO MANY CONCEPTS!**
-* [x] CSES: [Polygon Area](https://cses.fi/problemset/result/2677213/) ✅✅
-* [ ] CSES: [Point in Polygon](https://www.youtube.com/watch?v=G9QTjWtK\_TQ) 🐽🐽| [video](https://www.youtube.com/watch?v=G9QTjWtK\_TQ\&t=5265s)
-* [ ] CSES: [Convex Hull](https://cses.fi/problemset/task/2195) ✅✅ | [video](https://www.youtube.com/watch?v=G9QTjWtK\_TQ\&t=7801s) | \*\*Graham Scan+Jarvis Algo >> \*\*shape of rubber band on nails boundary
+
 
 ## 2. Problemsets
 
