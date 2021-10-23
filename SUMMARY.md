@@ -13,8 +13,8 @@
 ## Algorithms
 
 * [--->Maths | Geometry](algorithms/maths/README.md)
-  * [Maths](algorithms/maths/maths/README.md)
-    * [Geometry](algorithms/maths/maths/geometry.md)
+  * [Maths](algorithms/maths/maths.md)
+  * [Geometry](algorithms/maths/geometry.md)
 * [--->Data Structures](algorithms/greater-than-data-structures/README.md)
   * [Stack | Queue](algorithms/greater-than-data-structures/stack-or-queue.md)
   * [Heap](algorithms/greater-than-data-structures/heap.md)

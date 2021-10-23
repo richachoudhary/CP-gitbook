@@ -6,33 +6,33 @@
 
 #### **Taylor Series & **Maclaurin Series
 
-![](<../../../.gitbook/assets/Screenshot 2021-10-23 at 2.01.20 PM.png>) ![](<../../../.gitbook/assets/Screenshot 2021-10-23 at 2.01.29 PM.png>)
+![](<../../.gitbook/assets/Screenshot 2021-10-23 at 2.01.20 PM.png>) ![](<../../.gitbook/assets/Screenshot 2021-10-23 at 2.01.29 PM.png>)
 
 ### 2. Applications of Maclaurin Series
 
-![e^x](<../../../.gitbook/assets/Screenshot 2021-10-23 at 2.07.02 PM.png>) ![log(1+x) => to be used for log(x)](<../../../.gitbook/assets/Screenshot 2021-10-23 at 2.07.06 PM (1).png>)
+![e^x](<../../.gitbook/assets/Screenshot 2021-10-23 at 2.07.02 PM.png>) ![log(1+x) => to be used for log(x)](<../../.gitbook/assets/Screenshot 2021-10-23 at 2.07.06 PM (1).png>)
 
-![](<../../../.gitbook/assets/Screenshot 2021-10-23 at 2.07.11 PM (2).png>)
+![](<../../.gitbook/assets/Screenshot 2021-10-23 at 2.07.11 PM (2).png>)
 
-![](<../../../.gitbook/assets/Screenshot 2021-10-23 at 2.07.23 PM (1).png>)
+![](<../../.gitbook/assets/Screenshot 2021-10-23 at 2.07.23 PM (1).png>)
 
-![](<../../../.gitbook/assets/Screenshot 2021-10-23 at 2.10.46 PM.png>)
+![](<../../.gitbook/assets/Screenshot 2021-10-23 at 2.10.46 PM.png>)
 
 ### 3. Useful Graphs
 
-![](<../../../.gitbook/assets/Screenshot 2021-10-23 at 2.13.13 PM (1).png>)
+![](<../../.gitbook/assets/Screenshot 2021-10-23 at 2.13.13 PM (1).png>)
 
-![](<../../../.gitbook/assets/Screenshot 2021-10-23 at 2.13.19 PM (1).png>)
+![](<../../.gitbook/assets/Screenshot 2021-10-23 at 2.13.19 PM (1).png>)
 
-![](<../../../.gitbook/assets/Screenshot 2021-10-23 at 2.13.24 PM (1).png>)
+![](<../../.gitbook/assets/Screenshot 2021-10-23 at 2.13.24 PM (1).png>)
 
-![](<../../../.gitbook/assets/Screenshot 2021-10-23 at 2.13.35 PM.png>)
+![](<../../.gitbook/assets/Screenshot 2021-10-23 at 2.13.35 PM.png>)
 
 ### 4. Trigonometric Graphs & Table
 
-![](<../../../.gitbook/assets/Screenshot 2021-10-23 at 2.17.06 PM.png>)
+![](<../../.gitbook/assets/Screenshot 2021-10-23 at 2.17.06 PM.png>)
 
-![](<../../../.gitbook/assets/Screenshot 2021-10-23 at 2.19.10 PM.png>)
+![](<../../.gitbook/assets/Screenshot 2021-10-23 at 2.19.10 PM.png>)
 
 ## 0.0.2 Other Notes :
 
@@ -42,19 +42,19 @@
   * For example, the number 74 can be represented as the sum 55+13+5+1.
 * <mark style="color:orange;">**Binet’s formula**</mark> for calculating **Fibonacci numbers:**
 
-![](../../../.gitbook/assets/screenshot-2021-08-13-at-9.32.25-am.png)
+![](../../.gitbook/assets/screenshot-2021-08-13-at-9.32.25-am.png)
 
 ### **0.2 Primes & Factors**
 
-![](<../../../.gitbook/assets/Screenshot 2021-10-23 at 1.48.23 PM.png>)
+![](<../../.gitbook/assets/Screenshot 2021-10-23 at 1.48.23 PM.png>)
 
-![](../../../.gitbook/assets/screenshot-2021-09-10-at-2.04.29-pm.png)
+![](../../.gitbook/assets/screenshot-2021-09-10-at-2.04.29-pm.png)
 
-![](../../../.gitbook/assets/screenshot-2021-09-10-at-2.06.28-pm.png)
+![](../../.gitbook/assets/screenshot-2021-09-10-at-2.06.28-pm.png)
 
-![Wilson’s theorem to check whether a number is prime or not](../../../.gitbook/assets/screenshot-2021-09-10-at-2.14.35-pm.png)
+![Wilson’s theorem to check whether a number is prime or not](../../.gitbook/assets/screenshot-2021-09-10-at-2.14.35-pm.png)
 
-![Euler’s totient function](../../../.gitbook/assets/screenshot-2021-09-10-at-2.10.08-pm.png)
+![Euler’s totient function](../../.gitbook/assets/screenshot-2021-09-10-at-2.10.08-pm.png)
 
 * <mark style="color:orange;">**Lagrange’s theorem**</mark> states that every positive integer can be represented as a sum of four squares, i.e.,  <mark style="color:yellow;"></mark>$$N = a^2 + b^2 + c^2 + d^2$$ <mark style="color:yellow;"></mark>
   * For example, the number 123 can be represented as the sum $$123 = 8^2 + 5^2 + 5^2 + 3^3$$&#x20;
@@ -70,9 +70,9 @@ def gcd(a,b):
 
 ### **0.4 Sieve of Eratosthenes**
 
-* **COMPLEXITY**:
+* **COMPLEXITY**: <mark style="color:yellow;">**\~O(N)**</mark>
 
-![TC of Sieve algo](../../../.gitbook/assets/screenshot-2021-09-10-at-2.08.37-pm.png)
+![TC of Sieve algo ==> O(N)](../../.gitbook/assets/screenshot-2021-09-10-at-2.08.37-pm.png)
 
 {% tabs %}
 {% tab title="Sieve_Algo.py" %}
@@ -95,20 +95,20 @@ return sum(x for x in primes if x)
 
 ### 0.4 Combinatorics
 
-* \*\*Catalan numbers \*\*
-  * C(n) equals the number of\*\* valid parenthesis expressions \*\*that consist of n left parentheses and n right parentheses.
-  * Catalan numbers are also related to\*\* trees\*\*:
-    * there are **C(n)** **binary trees** of **n nodes**
-    * there are **C(n−1)** \*\*rooted trees \*\*of **n nodes**
+* <mark style="color:orange;">**Catalan numbers**</mark>
+  * C(n) equals the number of <mark style="color:yellow;">**valid parenthesis**</mark>** expressions **that consist of n left parentheses and n right parentheses.
+  * Catalan numbers are also related to **trees**:
+    * there are **C(n)** <mark style="color:yellow;">**binary trees**</mark> of **n nodes**
+    * there are **C(n−1)** <mark style="color:yellow;">**rooted trees **</mark>of **n nodes**
 
-![](../../../.gitbook/assets/screenshot-2021-09-10-at-2.22.05-pm.png)
+![](../../.gitbook/assets/screenshot-2021-09-10-at-2.22.05-pm.png)
 
-* **Derangements**
+* <mark style="color:orange;">**Derangements**</mark>
   * \==> permutations where no element remains in its original place
     * number of derangements of elements {1, 2, . . . , n}, i.e., .
     * For example, when n = 3, there are two derangements: (2, 3, 1) and (3, 1, 2)
 
-![formula for Derangements](../../../.gitbook/assets/screenshot-2021-09-10-at-2.25.10-pm.png)
+![formula for Derangements](../../.gitbook/assets/screenshot-2021-09-10-at-2.25.10-pm.png)
 
 ### 0.5 Modular Exponentiation :
 
@@ -131,14 +131,16 @@ math.pow(x,n,M)
 * [x] CSES: [Coin Piles](https://cses.fi/problemset/task/1754) | [Solution Approach](https://discuss.codechef.com/t/coin-piles-problem-from-cses/28647/3)
 * [x] CSES: [Gray Code](https://cses.fi/problemset/task/2205) | [Solution](https://www.geeksforgeeks.org/generate-n-bit-gray-codes/)
 * [x] CSES: [Missing Coin Sum](https://cses.fi/problemset/result/2583670/) | [Approach](https://discuss.codechef.com/t/cses-missing-coin-sum/84039/2) ✅
-  * \*\*KYA SEEKHA: \*\*At any index **i** in a sorted array **a**, currSum represents `sum(a[ 0...i ])`.We can form every possible sum from `1...currSum`, when we are at index i
-* [x] LC: [166.Fraction to Recurring Decimal](https://leetcode.com/problems/fraction-to-recurring-decimal/submissions/) ✅| recurring decimal => reminder will repeat | [Approach](https://leetcode.com/problems/fraction-to-recurring-decimal/discuss/180004/Python-4-lines-\(32ms-beats-100\)-with-explanation)
+  * KYA SEEKHA: At any index **i** in a sorted array **a**, currSum represents `sum(a[ 0...i ])`.We can form every possible sum from `1...currSum`, when we are at index i
+*   [x] LC: [166.Fraction to Recurring Decimal](https://leetcode.com/problems/fraction-to-recurring-decimal/submissions/) ✅| recurring decimal => reminder will repeat | @google&#x20;
+
+    \--->  [Approach](https://leetcode.com/problems/fraction-to-recurring-decimal/discuss/180004/Python-4-lines-\(32ms-beats-100\)-with-explanation)
 * [x] LC [1980.Find Unique Binary String](https://leetcode.com/problems/find-unique-binary-string/) | **Cantor's Diagonalization** | [Video@veritassium](https://www.youtube.com/watch?v=OxGsU8oIWjY)
-  * \*\*Some infinities(Uncountable Infinity- **party bus people**) are BIGGER than other infinities(Countable Infinities- \*\*hotel rooms 1...inf)
+  * Some infinities(Uncountable Infinity- **party bus people**) are BIGGER than other infinities(Countable Infinities- hotel rooms 1...inf)
   * Just watch the video; so fucking mind-blowing
 * [x] LC [1363.Largest Multiple of Three](https://leetcode.com/problems/largest-multiple-of-three/) ✅| fucking amazing question & elegant solution 🍪🍪🍪
 * [x] [**31. Next Permutation**](https://leetcode.com/problems/next-permutation/)\*\* | ✅| A must | \*\*interview mei aayega toh bina algo jaane, nhi kar paoge
-* [ ] LC [166. Fraction to Recurring Decimal](https://leetcode.com/problems/fraction-to-recurring-decimal/) | @google
+* [ ] LC [166. Fraction to Recurring Decimal](https://leetcode.com/problems/fraction-to-recurring-decimal/) |&#x20;
 
 {% tabs %}
 {% tab title="326" %}
@@ -151,7 +153,158 @@ def isPowerOfThree(self, n: int) -> bool:
 ```
 {% endtab %}
 
+{% tab title="Two Sets" %}
+Firstly notice that any four consecutive natural numbers can be split into two sets with equal sums Example: If my starting number is say x, and I consider 4 consecutive numbers then sum(x, x + 3) = sum(x + 1, x +2).
+
+1. So if n is divisible by 4 you can group them using the above approach by considering the remainders.
+2. Suppose n when divided by 4 leaves remainder 3. Even then we should be able to divide into two sets since three numbers (x + 1, x + 2, x + 3) such that x is divisible by 4 contain two additional odd numbers (x + 1, x + 3) (x is even since it is divisible by 4). Another point to notice is that 1+2 = 3 is the only triplet (x, x+1, x+2) such that two elements add up to third. So start with sets A = {1, 2} B = {3}. Since n % 4 = 3, count of remaining numbers is divisible by 4. So now apply the first property that given 4 numbers x, x + 1, x + 2, x + 3, sum of the numbers in the middle is equal to that of those at the extremities.
+
+```python
+n = int(input())
+'''
+n = 12
+1 2 3 | 4 5 6 | 7 8 9 | 10 11 12
+
+n = 7
+4 5 6 7
+[1,2,4,7]
+[3,5,6]
+
+'''
+
+if n%4 == 0:
+    print('YES')
+    a, b = [],[]
+    # [1.........................N]
+    # |  x |  x+1 |  x+2  |  x+3  |
+    # 1    k      2k      3k      4k
+    
+    # put {x,x+3} in a[] & put {x+1,x+2} in b[]
+    k = (n)//4
+    print(' k = ',k)
+    
+    for i in range(1, k+1):
+        a.append(i)
+    for i in range(3*k + 1, n+1):
+        a.append(i)
+    
+    for i in range(k+1,3*k + 1):
+        b.append(i)
+        
+    print(sorted(a), ' sum = ', sum(a))
+    print(sorted(b), ' sum = ', sum(b))
+    
+elif n%4 == 3:
+    print('YES')
+    a, b = [], []
+    # [1,2,3,4..........................N]
+    #        |  x |  x+1 |  x+2  |  x+3  |
+    #        4   4+k    4+2k    4+3k    4+4k
+    
+    # (1+2) = 3
+    # put {1,2,x,x+3} in a[] & put {3,x+1,x+2} in b[]
+    a.append(1)
+    a.append(2)
+    b.append(3)
+    
+    k = (n)//4
+    print(' k = ',k)
+    
+    for i in range(4, k+4):
+        a.append(i)
+    for i in range(4 + 3*k , n+1):
+        a.append(i)
+    
+    for i in range(k+4,3*k + 4):
+        b.append(i)
+    print(sorted(a), ' sum = ', sum(a))
+    print(sorted(b), ' sum = ', sum(b))
+else:
+    print('NO')
+
+```
+{% endtab %}
+
+{% tab title="Coin Piles" %}
+```python
+T = int(input())
+ 
+# 1. DP based: O(N**2)==================================== [TLE]
+MEMO = {}
+ 
+def f(a,b):
+    if a==0 and b == 0:
+        MEMO[(a,b)] = True
+        return True
+ 
+    if (a,b) in MEMO:
+        return MEMO[(a,b)]
+    res = False
+    #1. a-1, b-2
+    if a>=1 and b>=2:
+        res = res or f(a-1,b-2)
+    #2. a-2, b-1
+    if a>=2 and b>=1:
+        res = res or f(a-2,b-1)
+    MEMO[(a,b)] = res
+    return res
+ 
+# 2. Maths based: O(1)==================================== 
+for t in range(T):
+    a,b = map(int,input().split())
+ 
+    if a<b: 
+        a,b = b,a
+    
+    #1. x must be >=0
+    if a > 2*b:
+        print("NO")
+    #2. x and y must be multiple of 3
+    elif (a+b)%3 == 0:
+        print("YES")
+    else:
+        print("NO")
+ 
+'''
+Lets say x times we take 2 from a , and 1 from b
+and y times we take 2 from b and 1 from a
+ 
+meaning:
+a = 2x + 1y
+b = 1x + 2y
+ 
+on solving for a and b
+ 
+2a - b = 3x
+2b - a = 3y
+ 
+x and y should be non negative , and from here we can derive (a+b)%3==0.
+'''
+```
+{% endtab %}
+
 {% tab title="1363" %}
+#### **Basic Math**
+
+999....999 % 3 == 0\
+1000....000 % 3 == 1\
+a000....000 % 3 == a % 3\
+abcdefghijk % 3 == (a+b+c+..+i+j+k) % 3
+
+#### **Explanation**
+
+1. Calculate the sum of digits `total = sum(A)`
+2. If `total % 3 == 0`, we got it directly
+3. If `total % 3 == 1` and we have one of 1,4,7 in A:\
+   we try to remove one digit of 1,4,7
+4. If `total % 3 == 2` and we have one of 2,5,8 in A:\
+   we try to remove one digit of 2,5,8
+5. If `total % 3 == 2`:\
+   we try to remove two digits of 1,4,7
+6. If `total % 3 == 1`:\
+   we try to remove two digits of 2,5,8
+7. Submit
+
 ```python
 d1 = sorted([i for i in d if i%3 ==1])
 d2 = sorted([i for i in d if i%3 ==2])
@@ -182,7 +335,7 @@ return str(int(''.join([str(i) for i in res])))
 * there will be two cases:
   * **CASE#1: **Our i becomes zero (This will happen if the given array is sorted decreasingly).&#x20;
     * In this case, we'll simply reverse the sequence and will return
-  * **CASE#2: **If it's not zero then we'll find the first number grater then nums\[i-1] starting from end
+  * **CASE#2: **If it's not zero then we'll find the first number greater than nums\[i-1] starting from end
     * And We'll swap these two numbers
     * Then We'll reverse a sequence starting from i to end
 
