@@ -285,6 +285,7 @@ def fullJustify(self, words: List[str], maxWidth: int):
 {% endtabs %}
 
 * [x] CF: [C.Unstable String](https://codeforces.com/problemset/problem/1535/C)
+* [x] LC [**Minimum Swaps to Group All 1's Together**](https://leetcode.com/discuss/interview-question/344778/find-the-minimum-number-of-swaps-required-such-that-all-the-0s-and-all-the-1s-are-together)** | **[**gfg**](https://www.geeksforgeeks.org/minimum-swaps-required-sort-binary-array/)**|  @CareemHackerrank**
 
 {% tabs %}
 {% tab title="UnstableStr" %}
@@ -313,6 +314,62 @@ while t:
     t -= 1
     s = str(input())
     print(solve(s))
+```
+{% endtab %}
+
+{% tab title="Group1's" %}
+Firstly, count how many 0's in the entire array (suppose the number of 0's is p), then count how many 1's before index p, which is the answer(since those 1's has to be moved to place where index is larger than p-1).
+
+```python
+int minSwap(int[] array){
+    int p = 0;
+    for(int i=0;i<array.length;i++){
+        if(array[i]==0){
+            p++;
+        }
+    }
+    
+    int count = 0;
+    for(int i=0;i<p;i++){
+        if(array[i]==1){
+            count++;
+        }
+    }
+
+    return count;
+}
+```
+
+A modified version is below, which also considers the case to move all zeros to the right.
+
+```java
+int minSwapBinaryArray(int[] arr)
+{
+	int countZero = 0;
+	int countOne = 0;
+	for (int num : arr)
+	{
+		num == 0 ? countZero++ : countOne++;
+	}
+	if (countZero * countOne == 0)
+	{
+		return 0;
+	}
+	int swapZeroToLeft = 0;
+	int swapZeroToRight = 0;
+	for (int i = 0; i < countZero; i++)
+	{
+		if (arr[i] == 1)
+		{
+			swapZeroToLeft++;
+		}
+		if (arr[arr.length - 1 - i] == 1)
+		{
+			swapZeroToRight++;
+		}
+	}
+	return Math.min(swapZeroToLeft, swapZeroToRight);
+}
 ```
 {% endtab %}
 {% endtabs %}

@@ -140,7 +140,7 @@ math.pow(x,n,M)
   * Just watch the video; so fucking mind-blowing
 * [x] LC [1363.Largest Multiple of Three](https://leetcode.com/problems/largest-multiple-of-three/) ✅| fucking amazing question & elegant solution 🍪🍪🍪
 * [x] [**31. Next Permutation**](https://leetcode.com/problems/next-permutation/)\*\* | ✅| A must | \*\*interview mei aayega toh bina algo jaane, nhi kar paoge
-* [ ] LC [166. Fraction to Recurring Decimal](https://leetcode.com/problems/fraction-to-recurring-decimal/) |&#x20;
+* [ ] LC [780. Reaching Points](https://leetcode.com/problems/reaching-points/) | **@CareemHackerrank**
 
 {% tabs %}
 {% tab title="326" %}
@@ -367,6 +367,43 @@ def nextPermutation(self, nums: List[int]) -> None:
     # We'll reverse a sequence strating from i to end
     nums[i:]= nums[len(nums)-1:i-1:-1]
     # We don't need to return anything as we've modified nums in-place
+```
+{% endtab %}
+
+{% tab title="780" %}
+```python
+def reachingPoints(self, sx: int, sy: int, tx: int, ty: int) -> bool:
+    # 1. DP ===================================== TLE
+    DP = {}
+    def solve(sx,sy,tx,ty):
+        if sx > tx or sy > ty:
+            return False
+        if sx == tx and sy == ty:
+            return True
+
+        if (sx,sy) in DP:
+            return DP[(sx,sy)]
+        op1 = solve(sx+sy,sy,tx,ty)
+        op2 = solve(sx,sx+sy,tx,ty)
+        DP[(sx,sy)] = op1 or op2
+        return DP[(sx,sy)]
+
+    return solve(sx,sy,tx,ty)
+    # 2. Maths ========================================
+    while ty  >= sy + tx or  tx >= ty +sx :
+        if tx > ty:
+            tx = sx + (tx-sx)%ty
+        elif ty > tx: 
+            ty = sy + (ty-sy)%tx
+    return tx == sx and ty == sy
+
+'''
+Core Idea: 
+Keep subtracting the smaller of (tx, ty) from the larger of (tx, ty) 
+and stop if tx becomes less than sx or ty becomes less than sy 
+and then if tx == sx and ty == sy return true.
+
+'''
 ```
 {% endtab %}
 {% endtabs %}

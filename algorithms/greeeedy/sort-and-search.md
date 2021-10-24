@@ -12,9 +12,10 @@
 * [x] CSES: [Reading Books](https://cses.fi/problemset/task/1631) | [why max(sum,2\*last\_ele) works](https://codeforces.com/blog/entry/79238)
 * [x] [220. Contains Duplicate III](https://leetcode.com/problems/contains-duplicate-iii/) | Bucket sort strategy
 * [x] LC 406. [Queue Reconstruction by Height](https://leetcode.com/problems/queue-reconstruction-by-height/)
+* [x] LC [945. Minimum Increment to Make Array Unique](https://leetcode.com/problems/minimum-increment-to-make-array-unique/) | @**careemHackrrank**
 
 {% tabs %}
-{% tab title="973.QuickSortBased" %}
+{% tab title="973" %}
 ```python
 '''
 Time complexity is O(N^2) worst case. (come up with Quick sort)
@@ -62,7 +63,7 @@ return A[:k]
 ```
 {% endtab %}
 
-{% tab title="Traffic Lights" %}
+{% tab title="TraffLigh" %}
 ```python
 # ======================== NOOB: O(N*N(logN))
 segments = [0,x]
@@ -97,7 +98,7 @@ for t in trafficLights:
 ```
 {% endtab %}
 
-{% tab title="Room Allocation" %}
+{% tab title="RoomAlloc" %}
 ```cpp
 /*
 CANT DO WITH PYTHON: AS #NOTE.
@@ -189,6 +190,33 @@ def reconstructQueue(self, people: List[List[int]]) -> List[List[int]]:
     res = []
     for p in people:
         res.insert(p[1],p)
+    return res
+```
+{% endtab %}
+
+{% tab title="945" %}
+Based on: **W**ater Level Simulation
+
+
+
+Keep a variable: level, to represent a new unique value we will give to each position in sorted array A.
+
+During iteration:
+
+1. If level < current element of sorted(A), it means we find a new unique value for this position, just make level equal to this element and don't need make increment;
+2. If level >= current element of sorted(A), it must be one scenario that sorted(A)\[i] == sorted(A)\[i-1], just make one simple increment of level to make it unique for current postion and add the difference between incremented level and current value to result.
+
+```python
+def minIncrementForUnique(self, A: List[int]) -> int:
+    level = -1
+    res = 0
+
+    for a in sorted(A):
+        if level < a:
+            level = a
+        elif level >= a:
+            level += 1
+            res += level - a
     return res
 ```
 {% endtab %}
