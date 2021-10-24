@@ -9,6 +9,7 @@
 * [HM Round](meta/hm-round.md)
 * [Karat@Coinbase](meta/karat-coinbase.md)
 * [DSA\_PRACTICE](meta/dsa\_practice.md)
+* [Uber\_prev\_Qs](meta/uber\_prev\_qs.md)
 
 ## Algorithms
 
@@ -20,10 +21,10 @@
   * [2P | SlidingWindow](algorithms/greeeedy/2p-or-slidingwindow.md)
   * [Intervals](algorithms/greeeedy/intervals.md)
   * [Sort & Search](algorithms/greeeedy/sort-and-search.md)
-  * [Stack | Queue⏯](algorithms/greeeedy/stack-or-queue.md)
+  * [Stack | Queue](algorithms/greeeedy/stack-or-queue.md)
   * [Heap | Map-Set | SortedContainer](algorithms/greeeedy/heap-or-map-set-or-sortedcontainer.md)
   * [List | String](algorithms/greeeedy/list-or-string.md)
-* [Bitwise](algorithms/bitwise.md)
+* [Bitwise⏯](algorithms/bitwise.md)
 * [Recursion 💪](algorithms/recursion.md)
 * [---> DP](algorithms/dp/README.md)
   * [Vanilla](algorithms/dp/vanilla.md)
