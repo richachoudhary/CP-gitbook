@@ -6,7 +6,7 @@
 * [x] LC[ 146. LRU Cache](https://leetcode.com/problems/lru-cache/) ✅✅✅
 * [x] [1700.Number of Students Unable to Eat Lunch](https://leetcode.com/problems/number-of-students-unable-to-eat-lunch/)
 * [x] LC: [480 Sliding Window Median](https://leetcode.com/problems/sliding-window-median/) ✅✅⭐️🚀 // `O(logK)` **NOTE: Dont skip w/o doing it!!!!!!!**
-  * Video: [link](https://www.youtube.com/watch?v=UGs_kQxJNPk\&ab_channel=ARSLONGAVITABREVIS)
+  * Video: [link](https://www.youtube.com/watch?v=UGs\_kQxJNPk\&ab\_channel=ARSLONGAVITABREVIS)
 * [x] CSES: [Sliding Cost](https://cses.fi/problemset/task/1077/) | very similar to Sliding Medium; jst keep two sums: `upperSum` & `lowerSum`
 * [x] CSES: [Maximum Subarray Sum II](https://cses.fi/problemset/task/1644/) | idea [here](https://discuss.codechef.com/t/help-with-maximum-subarray-sum-ii-from-cses/73404) 🐽
 * [x] LC [315.Count of Smaller Numbers After Self](https://leetcode.com/problems/count-of-smaller-numbers-after-self/) 🍪🍪🍪| \*\*SortedList | \*\*BST | MergeSort
@@ -387,3 +387,245 @@ class Solution(object):
 ```
 {% endtab %}
 {% endtabs %}
+
+
+
+## 2. Heap
+
+### 2.0 Notes
+
+* **Complexity** with Heap(of size K) :` O(nlogK)` // while with sort it'll be `O(nlogn)`
+* \*\*NOTE: \*\*if sorting is the only better way & asked to **do better than `O(nlogn)`** , heap is the way!
+* \*\*How to identify \*\*if its a heap question? look for this keyword: `smallest/largest K elements`
+* Which heap to choose when:(hint: _opposite_, logic: we can pop the top element but not the bottom)
+  * if **smallest K** elements => use **max heap**
+  * if\*\* largest K **elements => use** min heap\*\*
+
+### 2.1 Standard Problems
+
+**Top K Pattern**
+
+* [x] [215.Kth Largest Element in an Array](https://leetcode.com/problems/kth-largest-element-in-an-array/)
+* [x] GfG: [Sort a nearly sorted (or K sorted) array](https://www.geeksforgeeks.org/nearly-sorted-algorithm/)
+* [x] [658.Find K Closest Elements](https://leetcode.com/problems/find-k-closest-elements/)
+* [x] [347.Top K Frequent Elements](https://leetcode.com/problems/top-k-frequent-elements/)
+* [x] [1636.Sort Array by Increasing Frequency](https://leetcode.com/problems/sort-array-by-increasing-frequency/) | using 2 keys in heappush(if 1st key same, sort by 2nd)🚀
+* [x] [973.K Closest Points to Origin](https://leetcode.com/problems/k-closest-points-to-origin/)
+
+{% tabs %}
+{% tab title="658" %}
+```python
+from heapq import heapify, heappush, heappop
+
+def findClosestElements(arr, k, x) -> List[int]:
+    # 1. subtract x from all arr ele
+    # 2. return K smallest ele - the usual maxHeap way
+    h = []      # contains tuple (dist,idx)
+    res = []
+    for i in range(len(arr)):
+        heappush(h,(abs(x-arr[i]),i)) 
+        if len(h) > k:
+            heappop(h)
+            
+    while h:
+        res.append(arr[heappop(h)[1]])
+    res.reverse()
+    return res
+```
+{% endtab %}
+
+{% tab title="347" %}
+```python
+from heapq import heappush, heappop
+from collections import Counter
+
+def topKFrequent(nums: List[int], k: int) -> List[int]:
+    count = Counter(nums)
+    h = []
+    for x in count:
+        heappush(h,(count[x],x))
+        if len(h) > k:
+            heappop(h)
+    res = []
+    while h:
+        res.append(heappop(h)[1])
+    return res
+```
+{% endtab %}
+
+{% tab title="1636" %}
+```python
+from heapq import heappop, heappush, heapify
+
+def frequencySort(self, A):
+    count = collections.Counter(A)
+    # =================== 1. sorting : O(NlogN) ==============================
+    return sorted(A, key=lambda x: (count[x], -x))
+    #2. ================ 2. min_heap: O(NlogK) , K = #unique elements =========
+    h, res = [], []
+    C = collections.Counter(A)
+    for k, c in C.items():
+        for _ in range(c):
+            # "If multiple values have the same frequency, sort them in decreasing order"
+            heappush(h, (c, -k)) 
+    while h:
+        res.append(-heappop(h)[1])
+    return res
+        
+```
+{% endtab %}
+
+{% tab title="973" %}
+```python
+from heapq import heappop, heappush
+
+def kClosest(self, points: List[List[int]], k: int) -> List[List[int]]:
+    def dist(point):
+        return math.sqrt(point[0]**2 + point[1]**2)
+    
+    #1. === Sort : O(NlogN) ==============================================
+    points.sort(key = lambda x: dist(x))
+    return points[:k]
+    
+    #2. === MaxHeap: O(NlogK) ===========================================
+    heap = []
+    for point in points:
+        heappush(heap, (-dist(point),point))
+        if len(heap) > k:
+            heappop(heap)
+    res = []
+    while heap:
+        res.append(heappop(heap)[1])
+    return res
+    #3. ============ QuickSort : avg case: O(N), worst: O(N^2) ===========
+    dist = lambda x: A[x][0]**2 + A[x][1]**2
+    
+    def partition(l,r, pvt):
+        # 1. move pivot to end
+        A[pvt],A[r] = A[r],A[pvt]
+        
+        # 2. move all smaller elements in start
+        start = l
+        for i in range(l,r):
+            if dist(i) < dist(pvt):
+                A[start], A[i] = A[i],A[start]
+                start += 1
+        
+        # 3. move pivot(now @r) ele to its correct position
+        A[start],A[r] = A[r],A[start]
+        return start
+
+    n = len(A)
+    lo, hi = 0, n-1
+    while lo<hi:
+        #step 1 in quick sort : pick a pivot
+        pvt = hi        
+        # pvt = random.randint(lo,hi) # to avoid the worst case of O(N^2)
+        #step 2 in quick sort: partition
+        pvt = partition(lo,hi,pvt)  # now; after partition pvt element is ats correct position
+        if pvt < k:
+            lo = pvt+1
+        elif pvt > k:
+            hi = pvt - 1
+        else:
+            break
+    return A[:k]
+```
+{% endtab %}
+{% endtabs %}
+
+* [x] GfG: [Sum of all elements between k1’th and k2’th smallest elements](https://www.geeksforgeeks.org/sum-elements-k1th-k2th-smallest-elements/)
+* [x] [1337.The K Weakest Rows in a Matrix](https://leetcode.com/problems/the-k-weakest-rows-in-a-matrix/)
+* [ ] [LC #692](https://leetcode.com/problems/top-k-frequent-words) - Top k frequent words
+* [ ] [LC #264](https://leetcode.com/problems/ugly-number-ii/) - Ugly Number II
+* [ ] [LC #451](https://leetcode.com/problems/sort-characters-by-frequency/) - Frequency Sort
+* [ ] [LC #703](https://leetcode.com/problems/kth-largest-element-in-a-stream/) - Kth largest number in a stream
+* [ ] [LC #719](https://leetcode.com/problems/find-k-th-smallest-pair-distance/) - Kth smallest distance among all pairs
+* [ ] [LC #767](https://leetcode.com/problems/reorganize-string/) - Reorganize String
+* [ ] [LC #358](https://leetcode.com/problems/rearrange-string-k-distance-apart) - Rearrange string K distance apart
+* [ ] [LC #1439](https://leetcode.com/problems/find-the-kth-smallest-sum-of-a-matrix-with-sorted-rows/) - Kth smallest sum of a matrix with sorted rows
+
+**Merge K sorted pattern**
+
+* [ ] [LC #23](https://leetcode.com/problems/merge-k-sorted-lists) - Merge K sorted
+* [ ] [LC #373](https://leetcode.com/problems/find-k-pairs-with-smallest-sums/) - K pairs with the smallest sum
+* [ ] [LC #378](https://leetcode.com/problems/kth-smallest-element-in-a-sorted-matrix/) - K smallest numbers in M-sorted lists
+
+**Two Heaps Pattern**
+
+* [x] [LC #295](https://leetcode.com/problems/find-median-from-data-stream) - Find median from a data stream 🌟
+* [x] [LC #480](https://leetcode.com/problems/sliding-window-median/) - Sliding window Median
+* [ ] [LC #502](https://leetcode.com/problems/ipo/) - Maximize Capital/IPO
+
+**Minimum number Pattern**
+
+* [ ] [LC #1167](https://leetcode.com/problems/minimum-cost-to-connect-sticks/) - Minimum Cost to connect sticks/ropes
+* [ ] [LC #253](https://leetcode.com/problems/meeting-rooms-ii) - Meeting Rooms II
+* [ ] [LC #759](https://leetcode.com/problems/employee-free-time) - Employee free time
+* [ ] [LC #857](https://leetcode.com/problems/minimum-cost-to-hire-k-workers/) - Minimumcost to hire K workers
+* [ ] [LC #621](https://leetcode.com/problems/task-scheduler/) - Minimum number of CPU (Task scheduler)
+* [ ] [LC #871](https://leetcode.com/problems/minimum-number-of-refueling-stops/) - Minimum number of Refueling stops
+
+### 2.2 Rest of the Problems
+
+* [x] [1046.Last Stone Weight](https://leetcode.com/problems/last-stone-weight/)
+* [x] CSES: [Josephus Problem I](https://cses.fi/problemset/task/2162)
+
+{% tabs %}
+{% tab title="Josephus I" %}
+```python
+n = int(input())
+d = deque([i for i in range(1,n+1)])
+
+while d:
+    bach_gya = d.popleft()
+    d.append(bach_gya) # bachao
+    gya = d.popleft()
+    print(gya)
+```
+{% endtab %}
+
+{% tab title="295" %}
+```python
+from heapq import *
+
+'''
+O(log n) : add, O(1) : find
+
+When we have new element num, we always put it to small heap, 
+and then normalize our heaps:
+     remove biggest element from the small heap 
+     and put it to the large heap. 
+ After this operation we can be sure that 
+ we have the property that 
+ the largest element in small heap is smaller than smaller elements in large heap.
+'''
+class MedianFinder:
+    def __init__(self):
+        self.small = []  # the smaller half of the list, max heap (invert min-heap)
+        self.large = []  # the larger half of the list, min heap
+
+    def addNum(self, num):
+        if len(self.small) == len(self.large):
+            # push to small
+            heappush(self.small, -num)
+            # rebalance
+            heappush(self.large, -heappop(self.small))
+        else:
+            # push to large
+            heappush(self.large, num)
+            # rebalance
+            heappush(self.small, -heappop(self.large))
+
+    def findMedian(self):
+        
+        if len(self.small) == len(self.large):
+            return float(self.large[0] + (-self.small[0])) / 2.0
+        else:
+            return float(self.large[0])
+        
+```
+{% endtab %}
+{% endtabs %}
+
+faf

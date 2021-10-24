@@ -2,15 +2,15 @@
 
 ## 1.Two Pointers
 
-* [x] \*\*CSES: \*\*[Subarray Sums I](https://cses.fi/problemset/task/1660) 🌟✅ | count the number of subarrays having sum x
-* [x] \*\*CSES: \*\*[Apartments](https://cses.fi/problemset/task/1084) ⭐️💪
+* [x] CSES: [Subarray Sums I](https://cses.fi/problemset/task/1660) 🌟✅ | (only +ve numbers allowed)
+* [x] CSES: [Apartments](https://cses.fi/problemset/task/1084) ⭐️💪
 * [x] CSES: [Ferris Wheel](https://cses.fi/problemset/task/1090)
 * [x] CSES: [Subarray Distinct Values](https://cses.fi/problemset/result/2649112/)
 * [ ] CF [814 C. An impassioned circulation of affection](https://codeforces.com/problemset/problem/814/C) 🐽🐽
-* [ ] LC 345.[Reverse Vowels of a String](https://leetcode.com/problems/reverse-vowels-of-a-string/)
+* [x] LC 345.[Reverse Vowels of a String](https://leetcode.com/problems/reverse-vowels-of-a-string/)
 
 {% tabs %}
-{% tab title="Subarray Sums I🌟" %}
+{% tab title="SubarrSumsI" %}
 ```python
 # =================================== 1: Hashmap
 n,x = I()
@@ -77,7 +77,7 @@ a: 45 60 60 80
 ```
 {% endtab %}
 
-{% tab title="Ferris Wheel" %}
+{% tab title="FerrisWh" %}
 ```python
 import bisect
  
@@ -110,7 +110,7 @@ if __name__ == "__main__":
 ```
 {% endtab %}
 
-{% tab title="Subarray Distinct Values" %}
+{% tab title="SubarrayDistcVal" %}
 ```python
 I = lambda : map(int, input().split())
 n,k = I()
@@ -166,7 +166,7 @@ def reverseVowels(self, s: str) -> str:
   2. iterate in array for next window onwards
 
 {% hint style="info" %}
-\*\*Dynamic Size: \*\*WHEN DOES SLIDING WINDOW WORK?
+\*\*Dynamic Size\*\* WHEN DOES SLIDING WINDOW WORK?
 
 ONLY when you're working with all negative or positives or if your input is sorted
 {% endhint %}
@@ -178,7 +178,7 @@ ONLY when you're working with all negative or positives or if your input is sort
 * [x] [438.Find All Anagrams in a String](https://leetcode.com/problems/find-all-anagrams-in-a-string/) 🚀
 * [x] [239. Sliding Window Maximum](https://leetcode.com/problems/sliding-window-maximum/) 🍪🍪🍪
 * [x] 849\. [Maximize Distance to Closest Person](https://leetcode.com/problems/maximize-distance-to-closest-person/) 🤯🐽| \~\~unable to get the 2P method!!!! \~\~not needed
-  * [x] 855.[Exam Room](https://leetcode.com/problems/exam-room/) | design problem based on this | **@Google!!!!!🐽**
+  * [x] 855.[Exam Room](https://leetcode.com/problems/exam-room/) | design problem based on this | **@Google!!!!!💪**
 
 {% tabs %}
 {% tab title="#1" %}
@@ -340,18 +340,64 @@ def maxDistToClosest(self, A: List[int]) -> int:
             dists[i] = 0
     return max(dists)
 
-    # 2. ======================== 2Pointer Approach, single pass :: O(N)
-    prev, max_len = 0, 0
-    for cur, seat in enumerate(A):
-        if seat:
-            if A[prev]:
-                max_len = max(max_len, (cur - prev) // 2)       # [...10001....]
+    # 2. Eff. Approach ============================================ TC: O(N), SC: O(1)
+    # src: https://www.youtube.com/watch?v=93LkD_YwU8M&ab_channel=SaiAnishMalla
+    max_dist = 0
+    prev_seat = None
+    
+    for i,seat in enumerate(seats):
+        if seat == 1:
+            # check for boundary positions
+            if prev_seat == None:
+                dist = i
             else:
-                max_len = max(max_len, (cur - prev))            # [1000...
-            prev = cur
-    if A[prev]: 
-        max_len = max(max_len, len(A) - 1 - prev)                # ...10000]
-    return max_len
+                dist = (i-prev_seat)//2
+            max_dist = max(max_dist,dist)
+            prev_seat = i
+    # check for last idx
+    max_dist = max(max_dist, len(seats)-1-prev_seat)
+    return max_dist
+```
+{% endtab %}
+
+{% tab title="855" %}
+```python
+class ExamRoom:
+
+    def __init__(self, N):
+        self.seated = []    # records all the occupied positions
+        self.N = N 
+        
+
+    def seat(self):
+        if not self.seated:
+            self.seated.append(0)
+            return 0
+        
+        max_dist = opt_pos = 0
+        
+        for i in range(1, len(self.seated)):
+            l, r = self.seated[i - 1], self.seated[i]
+            if (r - l) // 2 > max_dist:
+                max_dist = (r - l) // 2
+                opt_pos = l + max_dist
+                
+        # Boundary cases: @start & @end                
+        if self.seated[-1] != self.N-1 and self.N - 1 - self.seated[-1] > max_dist:
+            max_dist = self.N - 1 - self.seated[-1]
+            opt_pos = self.N - 1
+            
+        if self.seated[0] >= max_dist:
+            max_dist = self.seated[0]
+            opt_pos = 0
+            
+        self.seated.append(opt_pos)
+        self.seated.sort()
+        return opt_pos
+        
+        
+    def leave(self, p):
+        self.seated.remove(p)
 ```
 {% endtab %}
 {% endtabs %}
@@ -403,25 +449,6 @@ for r in range(n):
     D[a[r]] = r
     ans = max(ans, r-l+1)
 print(ans)
-```
-{% endtab %}
-
-{% tab title="Playlist" %}
-```python
-n= int(input())
-A = list(map(int,input().split()))
-
-res = 0
-l = 0
-s = set()
-s.add(A[0])
-for r in range(1,n):
-    while l<r and A[r] in s:
-        s.remove(A[l])
-        l += 1
-    s.add(A[r])
-    res = max(res, r-l+1)
-print(res)
 ```
 {% endtab %}
 
@@ -502,7 +529,7 @@ def characterReplacement(self, s: str, k: int) -> int:
 ```
 {% endtab %}
 
-{% tab title="ShortestSubsequence" %}
+{% tab title="ShortestSubseq" %}
 ```python
 '''
 Taken from CF: https://codeforces.com/blog/entry/82174
@@ -557,7 +584,7 @@ if __name__ == "__main__":
 ```
 {% endtab %}
 
-{% tab title="" %}
+{% tab title="1658" %}
 ```python
 l = 0
 curr = 0

@@ -20,14 +20,14 @@ AXB = |  x1  y1  z1 |
 '''
 ```
 
-## 1. Problems
+## 1. Problems     &#x20;
 
-#### 1.2.1 Easy 🧠
+#### 1.2.1 Easy 🧠    &#x20;
 
-* [x] [1266.Minimum Time Visiting All Points](https://leetcode.com/problems/minimum-time-visiting-all-points/)
-* [x] [883. Projection Area of 3D Shapes](https://leetcode.com/problems/projection-area-of-3d-shapes/)
-* [x] [1030. Matrix Cells in Distance Order](https://leetcode.com/problems/matrix-cells-in-distance-order/) ✴
-* [x] [892. Surface Area of 3D Shapes](https://leetcode.com/problems/surface-area-of-3d-shapes/) ✴️⏯(pause)
+* [x] [1266.Minimum Time Visiting All Points](https://leetcode.com/problems/minimum-time-visiting-all-points/)  &#x20;
+* [x] [883. Projection Area of 3D Shapes](https://leetcode.com/problems/projection-area-of-3d-shapes/) &#x20;
+* [x] [1030. Matrix Cells in Distance Order](https://leetcode.com/problems/matrix-cells-in-distance-order/)&#x20;
+* [x] [892. Surface Area of 3D Shapes](https://leetcode.com/problems/surface-area-of-3d-shapes/)&#x20;
 
 {% hint style="info" %}
 For problems like (**#892**) :in geometry of 3-D blocks: think in terms of subtracting the overlap, not adding each block one-by-one.

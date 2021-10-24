@@ -102,7 +102,7 @@ least_recently_used      most_recently_used
 
 ## 2. LFU Cache ✅😅
 
-* LC [460.LFU Cache](https://leetcode.com/problems/lfu-cache/) | [video.py](https://www.youtube.com/watch?v=Jn4mbZVkeik\&ab_channel=babybear4812)
+* LC [460.LFU Cache](https://leetcode.com/problems/lfu-cache/) | [video.py](https://www.youtube.com/watch?v=Jn4mbZVkeik\&ab\_channel=babybear4812)
 
 {% tabs %}
 {% tab title="LFU" %}
@@ -193,7 +193,6 @@ class LFUCache(object):
 ## From LC:
 
 * [x] LC [1600. Throne Inheritance](https://leetcode.com/problems/throne-inheritance/)
-* [x] LC [855. Exam Room ](https://leetcode.com/problems/exam-room/)| based on #LC.849 | **@google | **🐽🐽
 * [x] LC [295. Find median from a data stream](https://leetcode.com/problems/find-median-from-data-stream/)
 * [x] LC [480. Sliding Window Median](https://leetcode.com/problems/sliding-window-median/)
 
@@ -226,35 +225,6 @@ class ThroneInheritance:
     
 # TC:
 # birth() -> O(1) || death -> O(1) || getInheritance -> O(N)
-```
-{% endtab %}
-
-{% tab title="885" %}
-```python
-class ExamRoom:
-    def __init__(self, N):
-        self.seated, self.n = [], N - 1
-        
-    def seat(self):
-        if not self.seated:
-            self.seated += 0,
-            return 0
-        mx = ind = 0
-        for i in range(1, len(self.seated)):
-            l, r = self.seated[i - 1], self.seated[i]
-            if (r - l) // 2 > mx:
-                mx = (r - l) // 2
-                ind = l + mx
-        if self.seated[-1] != self.n and self.n - self.seated[-1] > mx:
-            mx, ind = self.n - self.seated[-1], self.n
-        if self.seated[0] >= mx:
-            mx, ind = self.seated[0], 0
-        self.seated.append(ind)
-        self.seated.sort()
-        return ind
-        
-    def leave(self, p):
-        self.seated.remove(p)
 ```
 {% endtab %}
 
@@ -341,7 +311,6 @@ def medianSlidingWindow(self, nums, k):
     def convert(self, heap1, heap2): # convert min-heap1 to max-heap2
         element, index = heapq.heappop(heap1)
         heapq.heappush(heap2, (-element, index))
-
 ```
 {% endtab %}
 {% endtabs %}

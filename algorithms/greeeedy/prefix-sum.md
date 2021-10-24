@@ -4,16 +4,17 @@
 
 * 1D array:
   * `prefix[k]=prefix[k−1]+arr[k]`
-  * `arr[i]=prefix[R]−prefix[L−1]` 
+  * `arr[i]=prefix[R]−prefix[L−1]`
 * 2D matrix:
   * `prefix[i][j] = prefix[i-1][j] + prefix[i][j-1] − prefix[i-1][j-1] + arr[i][j]`
   * `arr[i][j] = prefix[A][B] − prefix[a-1][B] − prefix[A][b-1] + prefix[a-1][b-1]`
 
-## 1.  Questions
+## 1. Questions
 
-* [x] CSES: [Subarray Sums II](https://cses.fi/problemset/task/1661)
+* [x] CSES: [Subarray Sums II](https://cses.fi/problemset/task/1661) (negative numbers also allowed)
+  * [x] CSES: [Subarray Sums I](https://cses.fi/problemset/task/1660) 🌟✅ | (only +ve numbers allowed)
 * [x] CSES: [Subarray Divisibility](https://cses.fi/problemset/task/1662) ✅
-* [ ] CF: [1398C. Good Subarrays](https://codeforces.com/contest/1398/problem/C) 
+* [ ] CF: [1398C. Good Subarrays](https://codeforces.com/contest/1398/problem/C)
 * [x] CSES: [Forest Queries](https://cses.fi/problemset/task/1652) | 2D matrix | direct implementation 🌟
 *
 
@@ -50,6 +51,41 @@ for _ in range(1):
     2  1 4 9 7  
  
 '''
+```
+{% endtab %}
+
+{% tab title="SubarrSumsI" %}
+```python
+# =================================== 1: Hashmap
+n,x = I()
+A = list(I())
+
+s = set()
+s.add(0)
+cnt = 0
+curr = 0
+
+for e in A:
+    curr += e
+    if curr - x in s:
+        cnt += 1
+    s.add(curr)
+print(cnt)
+# =================================== 2: Two Pointer
+n,x = I()
+A = list(I())
+
+ans = 0
+l = 0
+curr = 0
+for i in range(n):
+    curr += A[i]
+    while curr > x:
+        curr -= A[l]
+        l += 1
+    if curr == x:
+        ans += 1
+print(ans)
 ```
 {% endtab %}
 
@@ -98,6 +134,3 @@ for i in range(1,n+1):
 ```
 {% endtab %}
 {% endtabs %}
-
-
-
