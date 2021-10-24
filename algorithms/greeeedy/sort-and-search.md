@@ -7,9 +7,9 @@
 * [x] Learn Quicksort for LC [973.K Closest Points to Origin](https://leetcode.com/problems/k-closest-points-to-origin/) | [O(N) quicksort approach](https://leetcode.com/problems/k-closest-points-to-origin/discuss/219442/Python-with-quicksort-algorithm) | **@uber**
   * Sort OR Heap se koi bhi kar lega, koi na poorch rha interview mei ye approach!!!
 * [x] CSES: [Stick Lengths](https://cses.fi/problemset/result/2583535/)✅ | standard problem |use **MEDIAN** not **MEAN**
-* [x] CSES: [Traffic Lights](https://cses.fi/problemset/task/1163) : 🐽🐽✅✅ | [Youtube](ttps://www.youtube.com/watch?v=4HKXdh_LHps\&ab_channel=ARSLONGAVITABREVIS) | [Stackoverflow](https://stackoverflow.com/questions/63329220/i-tried-solving-traffic-lights-problem-in-the-cses-problem-set-my-approach-seem)
+* [x] CSES: [Traffic Lights](https://cses.fi/problemset/task/1163) : 🐽🐽✅✅ | [Youtube](ttps://www.youtube.com/watch?v=4HKXdh\_LHps\&ab\_channel=ARSLONGAVITABREVIS) | [Stackoverflow](https://stackoverflow.com/questions/63329220/i-tried-solving-traffic-lights-problem-in-the-cses-problem-set-my-approach-seem)
 * [x] CSES: [Room Allocation](https://cses.fi/problemset/task/1164) ✅ | LC: [1942.The Number of the Smallest Unoccupied Chair](https://leetcode.com/problems/the-number-of-the-smallest-unoccupied-chair/discuss/1360146/python-heap-easy-implementation-faster-than-100) -> my first editorial!!
-* [x] CSES: [Reading Books](https://cses.fi/problemset/task/1631) | [why max(sum,2\*last_ele) works](https://codeforces.com/blog/entry/79238)
+* [x] CSES: [Reading Books](https://cses.fi/problemset/task/1631) | [why max(sum,2\*last\_ele) works](https://codeforces.com/blog/entry/79238)
 * [x] [220. Contains Duplicate III](https://leetcode.com/problems/contains-duplicate-iii/) | Bucket sort strategy
 * [x] LC 406. [Queue Reconstruction by Height](https://leetcode.com/problems/queue-reconstruction-by-height/)
 
@@ -284,7 +284,7 @@ def searchInsert(self, nums: List[int], target: int) -> int:
 {% endtabs %}
 
 * [x] [**1011. Capacity To Ship Packages Within D Days \[Medium\]**](https://leetcode.com/problems/capacity-to-ship-packages-within-d-days/)** ✅**
-* [x] \*\*[**410. Split Array Largest Sum \[Hard\]**](https://leetcode.com/problems/split-array-largest-sum/) \*\*// ditto same as `1011`
+* [x] [**410. Split Array Largest Sum \[Hard\]**](https://leetcode.com/problems/split-array-largest-sum/) / ditto same as `1011`
 * [x] [**875. Koko Eating Bananas \[Medium\]**](https://leetcode.com/problems/koko-eating-bananas/)
 * [x] [**1482. Minimum Number of Days to Make m Bouquets \[Medium\]**](https://leetcode.com/problems/minimum-number-of-days-to-make-m-bouquets/)
 * [x] [**475. Heaters \[Medium\]**](https://leetcode.com/problems/heaters/)** ✅💪**
@@ -580,8 +580,8 @@ def longestDupSubstring(self, S):
 
 * [ ] [1044. Longest Duplicate Substring](https://leetcode.com/problems/longest-duplicate-substring/) ⚡️ - learn [this approach](https://leetcode.com/problems/longest-duplicate-substring/discuss/695029/python-binary-search-with-rabin-karp-o\(n-log-n\)-explained) => **Rolling Hash/Rabin Karp**
 * [ ] [658.Find K Closest Elements](https://leetcode.com/problems/find-k-closest-elements/) | [Soln](https://leetcode.com/problems/find-k-closest-elements/discuss/915047/Finally-I-understand-it-and-so-can-you.)
-* [x] CSES:[ Digit Queries](https://cses.fi/problemset/result/2573072/) | s[oln video](https://www.youtube.com/watch?v=QAcH8qD9Pe0\&ab_channel=ARSLONGAVITABREVIS) ✅✅🐽
-* [x] CSES: [Concert Tickets](https://cses.fi/problemset/task/1091) | [WilliamLin](https://www.youtube.com/watch?v=dZ\_6MS14Mg4\&t=3436s\&ab_channel=WilliamLin)✅⭐️⭐️✅ | **Kuch naya sikha ke gya ye Q**
+* [x] CSES:[ Digit Queries](https://cses.fi/problemset/result/2573072/) | s[oln video](https://www.youtube.com/watch?v=QAcH8qD9Pe0\&ab\_channel=ARSLONGAVITABREVIS) ✅✅🐽
+* [x] CSES: [Concert Tickets](https://cses.fi/problemset/task/1091) | [WilliamLin](https://www.youtube.com/watch?v=dZ\_6MS14Mg4\&t=3436s\&ab\_channel=WilliamLin)✅⭐️⭐️✅ | **Kuch naya sikha ke gya ye Q**
 * [x] LC: \*\*4. \*\*[Median of Two Sorted Arrays](https://leetcode.com/problems/median-of-two-sorted-arrays/) 🐽🐽✅
 * [x] LC 33: [Search in Rotated Sorted Array](https://leetcode.com/problems/search-in-rotated-sorted-array/) ☑️
 * [x] LC [34.Find First and Last Position of Element in Sorted Array](https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/) ✅
@@ -766,12 +766,14 @@ def findPeakElement(self, nums):
 
 
 
+## 3. String Search
+
 
 
 {% hint style="danger" %}
 **NOTE**: there is no O(logN) search based multiset data structure in python : [https://stackoverflow.com/questions/17346905/is-there-a-python-equivalent-for-c-multisetint](https://stackoverflow.com/questions/17346905/is-there-a-python-equivalent-for-c-multisetint)
 
-i.e. with python you cant implement m.lower_bound() for a multimap 'm'. (closest D.S. to multiset is **collections.Counter)**\
+i.e. with python you cant implement m.lower\_bound() for a multimap 'm'. (closest D.S. to multiset is **collections.Counter)**\
 \*\*\*\*So for this question, you \*\*HAVE TO GO WITH C++ \*\*
 
 \*\*(\*\*cant use Counters either, because of case: when just prev elemnent has freq = 0 & you've to keep searching back for prev lowest ele)
