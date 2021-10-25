@@ -1,13 +1,13 @@
 # Vanilla
 
-## Solved
+## 1. Generic
 
 * [x] 70\. [Climbing Stairs](https://leetcode.com/problems/climbing-stairs/) | easy | `standard`
   * [x] Similar: LC [1269.Number of Ways to Stay in the Same Place After Some Steps](https://leetcode.com/problems/number-of-ways-to-stay-in-the-same-place-after-some-steps/) 🍪🍪
-* [x] 198.[ House Robber](https://leetcode.com/problems/house-robber/) 
+* [x] 198.[ House Robber](https://leetcode.com/problems/house-robber/)
 * [x] 213.[ House Robber II](https://leetcode.com/problems/house-robber-ii/) | circular 💪
 * [x] 337\. [House Robber III](https://leetcode.com/problems/house-robber-iii/) | Tree
-* [x] CSES: [Projects](https://cses.fi/problemset/task/1140) | [Kartik Arora](https://www.youtube.com/watch?v=MJn3ogwsUbo\&ab_channel=KartikArora) ✅🐽🚀
+* [x] CSES: [Projects](https://cses.fi/problemset/task/1140) | [Kartik Arora](https://www.youtube.com/watch?v=MJn3ogwsUbo\&ab\_channel=KartikArora) ✅🐽🚀
   * Binary Search!!!! Dont skip!
   * Dekhke lagta nhi ki DP lagegi!!!
 * [x] LC: [1340.Jump Game V](https://leetcode.com/problems/jump-game-v/)
@@ -191,11 +191,10 @@ def solve(A):
 {% endtab %}
 {% endtabs %}
 
-
-
 * [x] CSES: [Grid Paths](https://cses.fi/problemset/task/1638/)
-* [ ] CSES: [Array Description](https://cses.fi/problemset/task/1746) | [KartikArora](https://www.youtube.com/watch?v=d1H5JylYG4I\&ab_channel=KartikArora) .🐽✅🐽 
+* [ ] CSES: [Array Description](https://cses.fi/problemset/task/1746) | [KartikArora](https://www.youtube.com/watch?v=d1H5JylYG4I\&ab\_channel=KartikArora) .🐽✅🐽
 * [x] Egg Dropping puzzle: [gfg](https://www.geeksforgeeks.org/egg-dropping-puzzle-dp-11/) 🥚🏣✅
+* [x] CSES: [Removal Game](https://cses.fi/problemset/task/1097/) | **standard**
 
 {% tabs %}
 {% tab title="GridPaths" %}
@@ -281,14 +280,8 @@ def superEggDrop(self, K, N):
         if dp[m][K] >= N: return m
 ```
 {% endtab %}
-{% endtabs %}
 
-
-
-* [x] CSES: [Removal Game](https://cses.fi/problemset/task/1097/)
-
-{% tabs %}
-{% tab title="RemovalGame" %}
+{% tab title="Removal Game" %}
 ```python
 def dp(l,r,a):
     if l == r: 
@@ -312,15 +305,18 @@ def f():
 {% endtab %}
 {% endtabs %}
 
+
+
 ## 2. String DP
 
-* [x] LC 5. [Longest Palindromic Substring](https://leetcode.com/problems/longest-palindromic-substring/) | [Video](https://www.youtube.com/watch?v=0CKUjDcUYYA) | **NOT A DP Problem!!! **| expand from all mid pts✅🚀✅
-* [x] LC 44: [Wildcard Matching](https://leetcode.com/problems/wildcard-matching/) ✅ | very similar to **Edit Distance!!**
-* [x] LC 10: [Regular Expression Matching](https://leetcode.com/problems/regular-expression-matching/) ✅✅| **diff from #44**. Freq asked in FAANG!! | [**TusharRoy**](https://www.youtube.com/watch?v=l3hda49XcDE)****
+* [x] LC 5. [Longest Palindromic Substring](https://leetcode.com/problems/longest-palindromic-substring/) | [Video](https://www.youtube.com/watch?v=0CKUjDcUYYA) | \*\*NOT A DP Problem!!! \*\*| expand from all mid pts✅🚀✅
+* [x] LC [72. Edit Distance](https://leetcode.com/problems/edit-distance/) | **standard | **@Fk | levenshtein's algo | keyword targeting
+* [x] LC 44: [Wildcard Matching](https://leetcode.com/problems/wildcard-matching/)  | very similar to **Edit Distance!!**
+* [x] LC 10: [Regular Expression Matching](https://leetcode.com/problems/regular-expression-matching/) ✅✅| **diff from #44**. Freq asked in FAANG!! | regex matching [**TusharRoy**](https://www.youtube.com/watch?v=l3hda49XcDE)\*\*\*\*
 * [x] LC 90: [Decode Ways](https://leetcode.com/problems/decode-ways/)
 * [x] LC [140. Word Break II](https://leetcode.com/problems/word-break-ii/) 🚀 | **`startswith`**
   * [x] LC: [139.Word Break](https://leetcode.com/problems/word-break/)
-* [x] LC [87. Scramble String](https://leetcode.com/problems/scramble-string/) 🤯💪😎✅| must_do
+* [x] LC [87. Scramble String](https://leetcode.com/problems/scramble-string/) 🤯💪😎✅| must\_do
 
 {% tabs %}
 {% tab title="5.✅" %}
@@ -357,6 +353,28 @@ for i in range(n-1):
         r += 1
     
 return ress
+```
+{% endtab %}
+
+{% tab title="72.👅" %}
+```python
+def editDistance(self, s: str, t: str) -> int:
+    n,m = len(s), len(t)
+    dp = [[0 for _ in range(m+1)] for _ in range(n+1)]
+
+    for i in range(n+1):
+        dp[i][0] = i
+
+    for j in range(m+1):
+        dp[0][j] = j
+
+    for i in range(1,n+1):
+        for j in range(1,m+1):
+            if s[i-1]==t[j-1]:
+                dp[i][j]=dp[i-1][j-1]
+            else:
+                dp[i][j] = 1+min(dp[i-1][j],dp[i][j-1],dp[i-1][j-1])
+    return dp[-1][-1]
 ```
 {% endtab %}
 
@@ -430,7 +448,6 @@ def recur(s,i):
 
 {% tab title="140.✅" %}
 ```python
-
 # 139. Word Break I ======================================
  def wordBreak(self, s: str, wordDict: List[str]) -> bool:
         MEMO = {}
@@ -478,7 +495,6 @@ def wordBreak(self, s: str, wordDict: List[str]) -> List[str]:
         return res
     
     return recur(s, wordDict, {})
-
 ```
 {% endtab %}
 
@@ -512,14 +528,10 @@ return recur(s1,s2)
 {% endtab %}
 {% endtabs %}
 
-
-
 * [x] 97.[Interleaving String](https://leetcode.com/problems/interleaving-string/) | standarddddddddddddddddddd | Do it nowwwwwwwwwww ✅✅✅💪💪
 * [x] 1977\. [Number of Ways to Separate Numbers](https://leetcode.com/problems/number-of-ways-to-separate-numbers/) | contest | 🍪🍪🍪✅
 * [x] **@shrechat:** Find all the possible combination of making a sentence from it in the same order.
 * [x] LC 22. [Generate Parentheses](https://leetcode.com/problems/generate-parentheses/)
-
-
 
 {% tabs %}
 {% tab title="97.✅💪Interleaved string" %}
@@ -625,107 +637,4 @@ def generateParenthesis(self, n: int) -> List[str]:
 ```
 {% endtab %}
 {% endtabs %}
-
-
-
-* [ ] [https://leetcode.com/problems/is-subsequence/](https://leetcode.com/problems/is-subsequence/)
-* [ ] [https://leetcode.com/problems/palindrome-partitioning/](https://leetcode.com/problems/palindrome-partitioning/)
-* [ ] [https://leetcode.com/problems/palindrome-partitioning-ii/](https://leetcode.com/problems/palindrome-partitioning-ii/)
-* [ ] [https://leetcode.com/problems/word-break/](https://leetcode.com/problems/word-break/)
-* [ ] [https://leetcode.com/problems/unique-substrings-in-wraparound-string/](https://leetcode.com/problems/unique-substrings-in-wraparound-string/)
-* [ ] [https://leetcode.com/problems/minimum-ascii-delete-sum-for-two-strings/](https://leetcode.com/problems/minimum-ascii-delete-sum-for-two-strings/)
-* [ ] [https://leetcode.com/problems/longest-string-chain/](https://leetcode.com/problems/longest-string-chain/)
-* [ ] [https://leetcode.com/problems/longest-happy-string/](https://leetcode.com/problems/longest-happy-string/)
-* [ ] [https://leetcode.com/problems/longest-valid-parentheses/](https://leetcode.com/problems/longest-valid-parentheses/)
-* [ ] [https://leetcode.com/problems/distinct-subsequences/](https://leetcode.com/problems/distinct-subsequences/)
-* [ ] [https://leetcode.com/problems/count-the-repetitions/](https://leetcode.com/problems/count-the-repetitions/)
-* [ ] [https://leetcode.com/problems/concatenated-words/](https://leetcode.com/problems/concatenated-words/)
-* [ ] [https://leetcode.com/problems/count-different-palindromic-subsequences/](https://leetcode.com/problems/count-different-palindromic-subsequences/)
-* [ ] [https://leetcode.com/problems/distinct-subsequences-ii/](https://leetcode.com/problems/distinct-subsequences-ii/)
-* [ ] [https://leetcode.com/problems/longest-chunked-palindrome-decomposition/](https://leetcode.com/problems/longest-chunked-palindrome-decomposition/)
-* [ ] [https://leetcode.com/problems/palindrome-partitioning-iii/](https://leetcode.com/problems/palindrome-partitioning-iii/)
-* [ ] [https://leetcode.com/problems/find-all-good-strings/](https://leetcode.com/problems/find-all-good-strings/)
-* [ ] [https://leetcode.com/problems/string-compression-ii/](https://leetcode.com/problems/string-compression-ii/)
-* [ ] [https://leetcode.com/problems/number-of-ways-to-form-a-target-string-given-a-dictionary/](https://leetcode.com/problems/number-of-ways-to-form-a-target-string-given-a-dictionary/)
-
-##
-
-## Yet To Solve
-
-* [ ] [https://leetcode.com/problems/divisor-game/](https://leetcode.com/problems/divisor-game/)
-* [ ] [https://leetcode.com/problems/unique-binary-search-trees/](https://leetcode.com/problems/unique-binary-search-trees/)
-* [ ] [https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-cooldown/](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-cooldown/)
-* [ ] [https://leetcode.com/problems/counting-bits/](https://leetcode.com/problems/counting-bits/)
-* [ ] [https://leetcode.com/problems/integer-break/](https://leetcode.com/problems/integer-break/)
-* [ ] [https://leetcode.com/problems/count-numbers-with-unique-digits/](https://leetcode.com/problems/count-numbers-with-unique-digits/)
-* [ ] [https://leetcode.com/problems/wiggle-subsequence/](https://leetcode.com/problems/wiggle-subsequence/)
-* [ ] [https://leetcode.com/problems/maximum-length-of-pair-chain/](https://leetcode.com/problems/maximum-length-of-pair-chain/)
-* [ ] [https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-transaction-fee/](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-transaction-fee/)
-* [ ] [https://leetcode.com/problems/delete-and-earn/](https://leetcode.com/problems/delete-and-earn/)
-* [ ] [https://leetcode.com/problems/domino-and-tromino-tiling/](https://leetcode.com/problems/domino-and-tromino-tiling/)
-* [ ] [https://leetcode.com/problems/knight-dialer/](https://leetcode.com/problems/knight-dialer/)
-* [ ] [https://leetcode.com/problems/minimum-cost-for-tickets/](https://leetcode.com/problems/minimum-cost-for-tickets/)
-* [ ] [https://leetcode.com/problems/partition-array-for-maximum-sum/](https://leetcode.com/problems/partition-array-for-maximum-sum/)
-* [ ] [https://leetcode.com/problems/filling-bookcase-shelves/](https://leetcode.com/problems/filling-bookcase-shelves/)
-* [ ] [https://leetcode.com/problems/longest-arithmetic-subsequence-of-given-difference/](https://leetcode.com/problems/longest-arithmetic-subsequence-of-given-difference/)
-* [ ] [https://leetcode.com/problems/greatest-sum-divisible-by-three/](https://leetcode.com/problems/greatest-sum-divisible-by-three/)
-* [ ] [https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iii/](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iii/)
-* [ ] [https://leetcode.com/problems/student-attendance-record-ii/](https://leetcode.com/problems/student-attendance-record-ii/)
-* [ ] [https://leetcode.com/problems/decode-ways-ii/](https://leetcode.com/problems/decode-ways-ii/)
-* [ ] [https://leetcode.com/problems/triples-with-bitwise-and-equal-to-zero/](https://leetcode.com/problems/triples-with-bitwise-and-equal-to-zero/)
-* [ ] [https://leetcode.com/problems/maximum-profit-in-job-scheduling/](https://leetcode.com/problems/maximum-profit-in-job-scheduling/)
-* [ ] [https://leetcode.com/problems/minimum-number-of-taps-to-open-to-water-a-garden/](https://leetcode.com/problems/minimum-number-of-taps-to-open-to-water-a-garden/)
-* [ ] [https://leetcode.com/problems/count-all-valid-pickup-and-delivery-options/](https://leetcode.com/problems/count-all-valid-pickup-and-delivery-options/)
-* [ ] [https://leetcode.com/problems/stone-game-iii/](https://leetcode.com/problems/stone-game-iii/)
-* [ ] [https://leetcode.com/problems/restore-the-array/](https://leetcode.com/problems/restore-the-array/)
-* [ ] [https://leetcode.com/problems/form-largest-integer-with-digits-that-add-up-to-target/](https://leetcode.com/problems/form-largest-integer-with-digits-that-add-up-to-target/)
-* [ ] [https://leetcode.com/problems/stone-game-iv/](https://leetcode.com/problems/stone-game-iv/)
-
-
-
-* [ ] [https://leetcode.com/problems/triangle/](https://leetcode.com/problems/triangle/)
-* [ ] [https://leetcode.com/problems/combination-sum-iv/](https://leetcode.com/problems/combination-sum-iv/)
-* [ ] [https://leetcode.com/problems/out-of-boundary-paths/](https://leetcode.com/problems/out-of-boundary-paths/)
-* [ ] [https://leetcode.com/problems/knight-probability-in-chessboard/](https://leetcode.com/problems/knight-probability-in-chessboard/)
-* [ ] [https://leetcode.com/problems/champagne-tower/](https://leetcode.com/problems/champagne-tower/)
-* [ ] [https://leetcode.com/problems/largest-sum-of-averages/](https://leetcode.com/problems/largest-sum-of-averages/)
-* [ ] [https://leetcode.com/problems/minimum-falling-path-sum/](https://leetcode.com/problems/minimum-falling-path-sum/)
-* [ ] [https://leetcode.com/problems/video-stitching/](https://leetcode.com/problems/video-stitching/)
-* [ ] [https://leetcode.com/problems/longest-arithmetic-subsequence/](https://leetcode.com/problems/longest-arithmetic-subsequence/)
-* [ ] [https://leetcode.com/problems/stone-game-ii/](https://leetcode.com/problems/stone-game-ii/)
-* [ ] [https://leetcode.com/problems/number-of-dice-rolls-with-target-sum/](https://leetcode.com/problems/number-of-dice-rolls-with-target-sum/)
-* [ ] [https://leetcode.com/problems/dice-roll-simulation/](https://leetcode.com/problems/dice-roll-simulation/)
-* [ ] [https://leetcode.com/problems/number-of-sets-of-k-non-overlapping-line-segments/](https://leetcode.com/problems/number-of-sets-of-k-non-overlapping-line-segments/)
-* [ ] [https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iv/](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iv/)
-* [ ] [https://leetcode.com/problems/create-maximum-number/](https://leetcode.com/problems/create-maximum-number/)
-* [ ] [https://leetcode.com/problems/frog-jump/](https://leetcode.com/problems/frog-jump/)
-* [ ] [https://leetcode.com/problems/split-array-largest-sum/](https://leetcode.com/problems/split-array-largest-sum/)
-* [ ] [https://leetcode.com/problems/freedom-trail/](https://leetcode.com/problems/freedom-trail/)
-* [ ] [https://leetcode.com/problems/minimum-number-of-refueling-stops/](https://leetcode.com/problems/minimum-number-of-refueling-stops/)
-* [ ] [https://leetcode.com/problems/number-of-music-playlists/](https://leetcode.com/problems/number-of-music-playlists/)
-* [ ] [https://leetcode.com/problems/count-vowels-permutation/](https://leetcode.com/problems/count-vowels-permutation/)
-* [ ] [https://leetcode.com/problems/minimum-falling-path-sum-ii/](https://leetcode.com/problems/minimum-falling-path-sum-ii/)
-* [ ] [https://leetcode.com/problems/minimum-distance-to-type-a-word-using-two-fingers/](https://leetcode.com/problems/minimum-distance-to-type-a-word-using-two-fingers/)
-* [ ] [https://leetcode.com/problems/minimum-difficulty-of-a-job-schedule/](https://leetcode.com/problems/minimum-difficulty-of-a-job-schedule/)
-* [ ] [https://leetcode.com/problems/number-of-ways-to-paint-n-3-grid/](https://leetcode.com/problems/number-of-ways-to-paint-n-3-grid/)
-* [ ] [https://leetcode.com/problems/build-array-where-you-can-find-the-maximum-exactly-k-comparisons/](https://leetcode.com/problems/build-array-where-you-can-find-the-maximum-exactly-k-comparisons/)
-* [ ] [https://leetcode.com/problems/number-of-ways-of-cutting-a-pizza/](https://leetcode.com/problems/number-of-ways-of-cutting-a-pizza/)
-* [ ] [https://leetcode.com/problems/paint-house-iii/](https://leetcode.com/problems/paint-house-iii/)
-* [ ] [https://leetcode.com/problems/count-all-possible-routes/](https://leetcode.com/problems/count-all-possible-routes/)
-* [ ] [https://leetcode.com/problems/guess-number-higher-or-lower-ii/](https://leetcode.com/problems/guess-number-higher-or-lower-ii/)
-* [ ] [https://leetcode.com/problems/arithmetic-slices/](https://leetcode.com/problems/arithmetic-slices/)
-* [ ] [https://leetcode.com/problems/predict-the-winner/](https://leetcode.com/problems/predict-the-winner/)
-* [ ] [https://leetcode.com/problems/palindromic-substrings/](https://leetcode.com/problems/palindromic-substrings/)
-* [ ] [https://leetcode.com/problems/stone-game/](https://leetcode.com/problems/stone-game/)
-* [ ] [https://leetcode.com/problems/minimum-score-triangulation-of-polygon/](https://leetcode.com/problems/minimum-score-triangulation-of-polygon/)
-* [ ] [https://leetcode.com/problems/minimum-cost-tree-from-leaf-values/](https://leetcode.com/problems/minimum-cost-tree-from-leaf-values/)
-* [ ] [https://leetcode.com/problems/stone-game-vii/](https://leetcode.com/problems/stone-game-vii/)
-* [ ] [https://leetcode.com/problems/burst-balloons/](https://leetcode.com/problems/burst-balloons/)
-* [ ] [https://leetcode.com/problems/remove-boxes/](https://leetcode.com/problems/remove-boxes/)
-* [ ] [https://leetcode.com/problems/strange-printer/](https://leetcode.com/problems/strange-printer/)
-* [ ] [https://leetcode.com/problems/valid-permutations-for-di-sequence/](https://leetcode.com/problems/valid-permutations-for-di-sequence/)
-* [ ] [https://leetcode.com/problems/minimum-cost-to-merge-stones/](https://leetcode.com/problems/minimum-cost-to-merge-stones/)
-* [ ] [https://leetcode.com/problems/allocate-mailboxes/](https://leetcode.com/problems/allocate-mailboxes/)
-* [ ] [https://leetcode.com/problems/minimum-cost-to-cut-a-stick/](https://leetcode.com/problems/minimum-cost-to-cut-a-stick/)
-* [ ] [https://leetcode.com/problems/stone-game-v/](https://leetcode.com/problems/stone-game-v/)
 

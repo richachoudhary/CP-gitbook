@@ -7,6 +7,7 @@
 * [x] CSES: [Movei Festival II](https://cses.fi/problemset/task/1632) ✅
 * [x] CSES: [Restaurant Customers](https://cses.fi/problemset/task/1619)
 * [x] LC [715. Range Module](https://leetcode.com/problems/range-module/) | \<hard>
+* [x] LC [636. Exclusive Time of Functions](https://leetcode.com/problems/exclusive-time-of-functions/) | **@Microsoft**
 
 {% tabs %}
 {% tab title="56" %}
@@ -154,6 +155,37 @@ class RangeModule:
 
     def removeRange(self, left, right):
         self.addRange(left, right, False)
+```
+{% endtab %}
+
+{% tab title="Untitled" %}
+
+
+Intuition:
+
+1. similar to the closing openning backet problems, where there's nesting, stack is required
+2. nested function time need to be deducted from the parent time, therefore update the parent function with negative children's time
+3. Each time a function finishes, the time span needs to be added to the function slot in the outputs array
+
+```python
+def exclusiveTime(self, n, logs):
+    
+    outputs = [0]*n
+    stack = [] # holds f_id, time stamp
+    
+    for s in logs:
+        tokens = s.split(":")
+        f_id, state, time = int(tokens[0]), tokens[1], int(tokens[2])
+        if state == "start":
+            stack.append((f_id, time))
+        else:
+            f_id_end, time_start = stack.pop()
+            time_diff = time - time_start + 1
+            outputs[f_id_end] += time_diff
+            if len(stack) > 0:
+                # deduct from previous fn time 
+                outputs[stack[-1][0]] += -time_diff
+    return outputs 
 ```
 {% endtab %}
 {% endtabs %}

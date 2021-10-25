@@ -2,19 +2,17 @@
 
 ## 1. 0/1 Knapsack
 
-
-
 * [x] GfG: [Subset Sum Problem](https://www.geeksforgeeks.org/subset-sum-problem-dp-25/)
 * [x] [416.Partition Equal Subset Sum](https://leetcode.com/problems/partition-equal-subset-sum/)
 * [x] [GfG:: Count of subsets sum with a Given sum](https://www.geeksforgeeks.org/count-of-subsets-with-sum-equal-to-x/)
   * Replace `or` with `+` in Subset Sum Problem
 * [x] [GfG: Sum of subset differences](https://www.geeksforgeeks.org/partition-a-set-into-two-subsets-such-that-the-difference-of-subset-sums-is-minimum/)
-  * [x] **Similar: ** [1049.Last Stone Weight II](https://leetcode.com/problems/last-stone-weight-ii/submissions/)
-* [x] [494.Target Sum](https://leetcode.com/problems/target-sum/)  🎖
+  * [x] \*\*Similar: \*\* [1049.Last Stone Weight II](https://leetcode.com/problems/last-stone-weight-ii/submissions/)
+* [x] [494.Target Sum](https://leetcode.com/problems/target-sum/) 🎖
 * [x] CSES: [Book Shop](https://cses.fi/problemset/task/1158/)
 * [x] CSES: [Money Sums](https://cses.fi/problemset/task/1745/) | Aisa Knapsack jo pehchaan na pao ✅⭐️💪💪🚀 | **MUST DO**
 * [x] CSES: [Two Sets II](https://cses.fi/problemset/task/1093)
-* [x] **Rubrik#1**. [Maximum Sum of numerically non-consecutive numbers in Arr](https://leetcode.com/discuss/interview-question/959412/Rubrik-or-Phone-Interview-or-Maximum-Sum) | **@rubrilk** ✅
+* [x] **Rubrik#1**. [Maximum Sum of numerically non-consecutive numbers in Arr](https://leetcode.com/discuss/interview-question/959412/Rubrik-or-Phone-Interview-or-Maximum-Sum) | **@rubrik** ✅
 
 {% tabs %}
 {% tab title="Knapsack" %}
@@ -35,39 +33,6 @@ def knapsack(wt, val, W):    #NOTE: wt is sorted here; if not->first sort
                 
     n = len(wt)
     return recur(wt,val,W,n)
-```
-{% endtab %}
-
-{% tab title="MoneySums.cpp" %}
-```cpp
-int n;
-cin >> n;
-int max_sum = n*1000;
-vector<int> x(n);
-for (int&v : x) cin >> v;
-vector<vector<bool> > dp(n+1,vector<bool>(max_sum+1,false));
-dp[0][0] = true;
-for (int i = 1; i <= n; i++) {
-    for (int j = 0; j <= max_sum; j++) {
-        dp[i][j] = dp[i-1][j];
-        int left = j-x[i-1];
-        if (left >= 0 && dp[i-1][left]) {
-            dp[i][j] = true;
-        }
-    }
-}
-
-vector<int> possible;
-for (int j = 1; j <= max_sum; j++) {
-    if (dp[n][j]) {
-        possible.push_back(j);
-    }
-}
-cout << possible.size() << endl;
-for (int v : possible) {
-    cout << v << ' ';
-}
-cout << endl;
 ```
 {% endtab %}
 
@@ -160,20 +125,7 @@ print(dp(0,-1))
 
 
 
-#### 2.1.2  Problems: 0/1 Knapsack 
-
-* [ ] [https://leetcode.com/problems/ones-and-zeroes/](https://leetcode.com/problems/ones-and-zeroes/)
-* [ ] [https://leetcode.com/problems/target-sum/](https://leetcode.com/problems/target-sum/)
-* [ ] [https://leetcode.com/problems/shopping-offers/](https://leetcode.com/problems/shopping-offers/)
-* [ ] [https://leetcode.com/problems/2-keys-keyboard/](https://leetcode.com/problems/2-keys-keyboard/)
-* [ ] [https://leetcode.com/problems/minimum-swaps-to-make-sequences-increasing/](https://leetcode.com/problems/minimum-swaps-to-make-sequences-increasing/)
-* [ ] [https://leetcode.com/problems/best-team-with-no-conflicts/](https://leetcode.com/problems/best-team-with-no-conflicts/)
-* [ ] [https://leetcode.com/problems/profitable-schemes/](https://leetcode.com/problems/profitable-schemes/)
-* [ ] [https://leetcode.com/problems/tallest-billboard/](https://leetcode.com/problems/tallest-billboard/)
-* [ ] [https://leetcode.com/problems/pizza-with-3n-slices/](https://leetcode.com/problems/pizza-with-3n-slices/)
-* [ ] [https://leetcode.com/problems/reducing-dishes/](https://leetcode.com/problems/reducing-dishes/)
-
-## 2. Unbounded Knapsack 
+## 2. Unbounded Knapsack
 
 * [x] CSES: [Minimizing Coins](https://cses.fi/problemset/task/1634/)
 * [x] CSES: [Coin Combinations 1](https://cses.fi/problemset/task/1635/) ✅ (unordered)
@@ -181,7 +133,7 @@ print(dp(0,-1))
   * [ ] **NOTE**: Switch the order of loops from 1 to get 2
 * [x] [322.Coin Change](https://leetcode.com/problems/coin-change/) 🌟
 * [x] [518.Coin Change 2](https://leetcode.com/problems/coin-change-2/)
-* [x] GfG: [Rod Cutting Problem](https://www.geeksforgeeks.org/cutting-a-rod-dp-13/)         
+* [x] GfG: [Rod Cutting Problem](https://www.geeksforgeeks.org/cutting-a-rod-dp-13/)
   * [ ] Similar(but Hard)[1547. Minimum Cost to Cut a Stick](https://leetcode.com/problems/minimum-cost-to-cut-a-stick/)
 * [ ] [279. Perfect Squares](https://leetcode.com/problems/perfect-squares/)
 
