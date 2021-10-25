@@ -33,7 +33,6 @@
 * [ ] Design a photo sharing application like instagram
 * [ ] chat system like whatsapp | with ticks
 * [ ] Design Amazon Wishlist
-* [ ] Google doc | [What’s different about the new Google Docs: Making collaboration fast](https://drive.googleblog.com/2010/09/whats-different-about-new-google-docs.html)
 
 
 

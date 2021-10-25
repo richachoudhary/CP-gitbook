@@ -82,7 +82,45 @@ def insertMeAtBottom(stk,x): # HYPO: inserts 'x' at the bottom of stk
 
 * [x] [779. K-th Symbol in Grammar](https://leetcode.com/problems/k-th-symbol-in-grammar/)
 * [x] CSES: [Tower of Hanoi](https://cses.fi/problemset/task/2165) | [video](https://www.youtube.com/watch?v=l45md3RYX7c\&list=PL\_z\_8CaSLPWeT1ffjiImo0sYTcnLzo-wY\&index=11\&ab\_channel=AdityaVerma)
+* [x] [22.Generate Parentheses](https://leetcode.com/problems/generate-parentheses/) 🚀
 
+{% tabs %}
+{% tab title="779" %}
+Pascal Tree **type **structure banega
+
+```python
+def kthGrammar(self, n: int, k: int) -> int:
+
+    def recur(n,k):
+        if n==0:
+            return 0
+        else:
+            prev = recur(n-1,k//2)
+            # print(" n = {} , k = {} , prev = {}".format(n,k,prev))
+            if prev == 0:
+                return 1 if (k&1) else 0
+            else:
+                return 0 if (k&1) else 1
+
+    res = recur(n-1,k-1)
+
+    return res
+
+
+    # Just make the fucking (pascal like) tree!!!!!!
+    # f(n,k) = f(n-1, k//2) == 0 ::
+    #                             if k&1 : 1
+    #                             else   : 0
+    #                       == 1 ::
+     #                             if k&1 : 0
+    #                              else   : 1
+    #
+
+    # Aditya Verma : https://www.youtube.com/watch?v=5P84A0YCo_Y&list=PL_z_8CaSLPWeT1ffjiImo0sYTcnLzo-wY&index=10&ab_channel=AdityaVerma
+```
+{% endtab %}
+
+{% tab title="Tower Of Hanoi" %}
 ```python
 def solve(n,s,d,h):    # no of plats, poles: source, destination, helper
     # BC
@@ -93,8 +131,30 @@ def solve(n,s,d,h):    # no of plats, poles: source, destination, helper
     solve(n-1,s,h,d)    # move (n-1) plates s->h
     print('moving plate {} from {} to {}'.format(n,s,d)) # move n-th plate s->d
     moves += 1
-    solve(n-1,h,d,s)    # move those (n-1) plates h->d    
+    solve(n-1,h,d,s)    # move those (n-1) plates h->d  
 ```
+{% endtab %}
+
+{% tab title="22" %}
+```python
+def generateParenthesis(self, n: int) -> List[str]:
+    ans = []
+    def f(op,cl,s):
+        # print(f'op = {op}, cl = {cl} , s = {s}')
+        if cl == 0:
+            ans.append(s)
+            return
+
+        if op > 0: f(op-1,cl,s+'(')
+        if cl > 0 and op < cl:f(op,cl-1,s+')')
+
+    f(n,n,'')
+    return ans
+```
+{% endtab %}
+{% endtabs %}
+
+&#x20;&#x20;
 
 * [x] Print all subsets/powerset of a string | [video](https://www.youtube.com/watch?v=Yg5a2FxU4Fo\&list=PL\_z\_8CaSLPWeT1ffjiImo0sYTcnLzo-wY\&index=12\&ab\_channel=AdityaVerma) | **Decision Tree method**
 
@@ -114,9 +174,7 @@ printSubsets(str,'') # init with I/P & O/P
 
 * [x] [Permutation with Spaces](https://practice.geeksforgeeks.org/problems/permutation-with-spaces3627/1) | [Video](https://www.youtube.com/watch?v=1cspuQ6qHW0\&list=PL\_z\_8CaSLPWeT1ffjiImo0sYTcnLzo-wY\&index=14\&ab\_channel=AdityaVerma) : \*\*NOTE: \*\*Sometimes you've to break-down the problem before making recursion tree
 * [x] \----------------------------- \[Medium]---------------------------
-* [x] [22.Generate Parentheses](https://leetcode.com/problems/generate-parentheses/) 🚀
 * [x] [1823.Find the Winner of the Circular Game](https://leetcode.com/problems/find-the-winner-of-the-circular-game/)
-* [x] [241.Different Ways to Add Parentheses](https://leetcode.com/problems/different-ways-to-add-parentheses/)
 * [x] [1545.Find Kth Bit in Nth Binary String](https://leetcode.com/problems/find-kth-bit-in-nth-binary-string/)
 * [ ] [394.Decode String](https://leetcode.com/problems/decode-string/) 🔒❌
 * [ ] \-------------------------------\[Hard]----------------------------------
@@ -135,7 +193,8 @@ printSubsets(str,'') # init with I/P & O/P
 
 ## 2. D\&C
 
-* [x] [241.Different Ways to Add Parentheses](https://leetcode.com/problems/different-ways-to-add-parentheses/) ✅
+* [x] [95. Unique Binary Search Trees II](https://leetcode.com/problems/unique-binary-search-trees-ii/) ✅| **standard\_Q**
+* [x] [241.Different Ways to Add Parentheses](https://leetcode.com/problems/different-ways-to-add-parentheses/) ✅ | similar to #95
 * [x] [240.Search a 2D Matrix II](https://leetcode.com/problems/search-a-2d-matrix-ii/) | **@Google ✅**
 * [x] [280. Wiggle Sort I](https://leetfree.com/problems/wiggle-sort) | **@Google ✅**
 * [ ] [342.Wiggle Sort II](https://leetcode.com/problems/wiggle-sort-ii/)
@@ -151,6 +210,69 @@ printSubsets(str,'') # init with I/P & O/P
 
 
 {% tabs %}
+{% tab title="95" %}
+```python
+def generateTrees(self, n: int) -> List[TreeNode]:
+
+    def solve(arr):
+        #Base conditions
+        if len(arr) < 1:
+            return [None]
+        if len(arr) == 1:
+            return [TreeNode(arr[0])]
+
+        ret = []
+        for i,item in enumerate(arr):
+            leftTrees = f(arr[0:i])
+            rightTrees = f(arr[i+1:])
+
+            for lt in leftTrees:
+                for rt in rightTrees:
+                    r = TreeNode(arr[i])
+                    r.left = lt
+                    r.right = rt
+                    ret.append(r)
+        return ret
+
+    return solve(list(range(1,n+1)))
+```
+{% endtab %}
+
+{% tab title="241" %}
+
+
+```python
+def diffWaysToCompute(self, s: str) -> List[int]:
+    MEMO = {}
+
+    def f(s):
+        if s in MEMO:
+            return MEMO[s]
+        if s.isdigit():
+            MEMO[s] = [int(s)]
+            return MEMO[s]
+        res = []
+        for i,c in enumerate(s):
+            if c in '+-*':
+                l = f(s[:i])
+                r = f(s[i+1:])
+                for _l in l:
+                    for _r in r:
+                        if c == '+':
+                            res.append(_l + _r)
+                        elif c == '-':
+                            res.append(_l - _r)
+                        else:
+                            res.append(_l * _r)
+        MEMO[s] = res
+        return res
+    return f(s)
+    '''
+    Complexity: w/o MEMO: O(2^n)
+    '''
+```
+{% endtab %}
+
 {% tab title="240" %}
 ```python
 import bisect
@@ -198,12 +320,12 @@ class Solution:
 * video on approach#2: [link](https://www.youtube.com/watch?v=dcTJRw1704w\&ab\_channel=AlgorithmsMadeEasy) | understand why you can solve this only by starting from **TOP-RIGHT**(**TR) **corner
 {% endtab %}
 
-{% tab title="395." %}
+{% tab title="395" %}
 ```python
 from collections import Counter
 def longestSubstring(self, s: str, k: int) -> int:
     
-    cnt = collections.Counter(s)
+    cnt = Counter(s)
     st = 0
     maxst = 0
     for i, c in enumerate(s):
@@ -222,7 +344,7 @@ and for each part we should check the requirement again
 ```
 {% endtab %}
 
-{% tab title="Apple Division" %}
+{% tab title="AppleDivi" %}
 ```python
 x,y = 0,0
 # MEMO = {}
@@ -239,7 +361,7 @@ print(ans)
 ```
 {% endtab %}
 
-{% tab title="WiggleSort(280+342)" %}
+{% tab title="WiggleSort280+342" %}
 ### [LC 280. Wiggle Sort I](https://leetfree.com/problems/wiggle-sort)
 
 ```
@@ -353,7 +475,7 @@ TODO:
 * [x] [52.N-Queens II](https://leetcode.com/problems/n-queens-ii/) | CSES: [Chessboard and Queens](https://cses.fi/problemset/task/1624) ✅🚀
 
 {% tabs %}
-{% tab title="52. nQ" %}
+{% tab title="52. n Queens" %}
 ```python
 board = [[0 for _ in range(n)]for _ in range(n)]
 def canPlace(row,col):
