@@ -24,7 +24,7 @@
   * [Stack | Queue](algorithms/greeeedy/stack-or-queue.md)
   * [Heap | Map-Set | SortedContainer](algorithms/greeeedy/heap-or-map-set-or-sortedcontainer.md)
   * [List | String](algorithms/greeeedy/list-or-string.md)
-* [Bitwise⏯](algorithms/bitwise.md)
+* [Bitwise](algorithms/bitwise.md)
 * [Recursion 💪](algorithms/recursion.md)
 * [---> DP](algorithms/dp/README.md)
   * [Vanilla](algorithms/dp/vanilla.md)
