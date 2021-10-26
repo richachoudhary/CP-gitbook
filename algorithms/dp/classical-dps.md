@@ -1,4 +1,4 @@
-# Classical DPs
+# Classical DPs⏯
 
 ## 1. Kadane's Algorithm
 
@@ -8,7 +8,7 @@
 * [x] 1186.[Maximum Subarray Sum with One Deletion](https://leetcode.com/problems/maximum-subarray-sum-with-one-deletion/) | so similar to Kaden's; yet the so simple approach is unthinkable | [approach\_with\_diag](https://leetcode.com/problems/maximum-subarray-sum-with-one-deletion/discuss/377522/C%2B%2B-forward-and-backward-solution-with-explanation-and-picture) | must do baby ✅💪
 * [x] 368\. [Largest Divisible Subset](https://leetcode.com/problems/largest-divisible-subset/submissions/) 🐽
 * [x] 1191\. [K-Concatenation Maximum Sum](https://leetcode.com/problems/k-concatenation-maximum-sum/)
-* [x] 1014.[ Best Sightseeing Pair](https://leetcode.com/problems/best-sightseeing-pair/)
+* [x] 1014.[ Best Sightseeing Pair](https://leetcode.com/problems/best-sightseeing-pair/) | recommended by **@lee215**
   * It's similar to [Best Time to Buy and Sell Stock](https://leetcode.com/problems/best-time-to-buy-and-sell-stock/), but instead of min price, we track max value, and our max value decays every step due to the distance penalty
 * [ ] [https://leetcode.com/problems/bitwise-ors-of-subarrays/](https://leetcode.com/problems/bitwise-ors-of-subarrays/)
 * [ ] [https://leetcode.com/problems/longest-turbulent-subarray/](https://leetcode.com/problems/longest-turbulent-subarray/)
@@ -110,21 +110,28 @@ def largestDivisibleSubset(self, nums: List[int]) -> List[int]:
 {% endtab %}
 
 {% tab title="1191" %}
+The key is to figure out couple of cases that the answer could be derived from.\
+Case 1: when k == 1, => return kaden's . \
+Case 2: when k > 1:
+
+* Case2(1): when sum >= 0: we can use ((k - 2) \* sum of array) as 'free' sum since they are positive and why not add them to our answer. Then, only add max prefix sum and max suffix sum from the rest two arrays to add to our final answer.
+* Case2(2): when sum < 0: if sum < 0, there's no need to add any of (k - 2) 'free' sum, they are only going to make our final answer smaller. So we only pick the max prefix sum + max suffix sum as our answer.
+* Note that for both cases in case2, we need also compare final answer with kaden.
+
 ```python
 MOD = (10**9)+7
 
 def kaden(A):
     curr, ans = A[0],A[0]
     for i in range(1,len(A)):
-        curr = max(curr+A[i], A[i])
-✅        ans = max(ans,curr)
+        curr = max(curr+A[i], A[i])        ans = max(ans,curr)
     return max(ans,0)
 
 
 def solve(A,k):
     if k <= 1:
         return kaden(A)
-    return (max(sum(A)*(k-2),0) + kaden(A*2))%MOD
+    return (max(  sum(A)*(k-2),0  ) + kaden(A*2))%MOD
 
 return solve(A,k)
 ```
@@ -159,7 +166,7 @@ def maxScoreSightseeingPair(self, A: List[int]) -> int:
 * [ ] [https://leetcode.com/problems/max-dot-product-of-two-subsequences/](https://leetcode.com/problems/max-dot-product-of-two-subsequences/)
 
 {% tabs %}
-{% tab title="72.EditDist" %}
+{% tab title="72" %}
 ```python
 def minDistance(self, s: str, t: str) -> int:
     n,m = len(s), len(t)
@@ -181,7 +188,7 @@ def minDistance(self, s: str, t: str) -> int:
 ```
 {% endtab %}
 
-{% tab title="1143.LCS" %}
+{% tab title="1143" %}
 ```python
 def longestCommonSubsequence(self, text1: str, text2: str) -> int:
        
@@ -198,7 +205,7 @@ def longestCommonSubsequence(self, text1: str, text2: str) -> int:
 ```
 {% endtab %}
 
-{% tab title="718.| print the LCS🤯😎" %}
+{% tab title="718" %}
 ```python
 def lcs(h1,h2) -> int:
     n,m = len(h1), len(h2)
@@ -221,7 +228,7 @@ def lcs(h1,h2) -> int:
 ```
 {% endtab %}
 
-{% tab title="516. LPS" %}
+{% tab title="516" %}
 ```python
 t = s[::-1]
 
@@ -241,7 +248,7 @@ return max_cnt
 ```
 {% endtab %}
 
-{% tab title="10🐽✅" %}
+{% tab title="10" %}
 ```python
 s, p = ' '+ s, ' '+ p
 lenS, lenP = len(s), len(p)
@@ -263,7 +270,7 @@ return bool(dp[-1][-1])
 ```
 {% endtab %}
 
-{% tab title="44.🐽✅" %}
+{% tab title="44" %}
 ```python
 n,m = len(s), len(p)
         
@@ -338,13 +345,13 @@ return res + A[i:] + B[j:]
 
 ## 3. LIS
 
-* [ ] **LIS in O(NlogN)** : [KartikArora](https://www.youtube.com/watch?v=66w10xKzbRM\&ab\_channel=KartikArora) | [Leetcode Post](https://leetcode.com/problems/longest-increasing-subsequence/discuss/74824/JavaPython-Binary-search-O\(nlogn\)-time-with-explanation) => Maintain Tails arr
+* [x] **LIS in O(NlogN)** : [KartikArora](https://www.youtube.com/watch?v=66w10xKzbRM\&ab\_channel=KartikArora) | [Leetcode Post](https://leetcode.com/problems/longest-increasing-subsequence/discuss/74824/JavaPython-Binary-search-O\(nlogn\)-time-with-explanation) => Maintain Tails arr
 * [ ] `Tails` arr contains all the **starting** points of all **LISs**(aptly named)=> use `bisect_left` for LIS
 * [ ] `Tails` arr contains all the **ending** points of all **LIDs**(aptly named) => use `bisect_right` for LDS
 * [x] CSES: [Towers](https://cses.fi/problemset/task/1073) ✅=> Longest Decreasing Sequence: (exactly same as LIS) | **just use** `bisect_right`
 * [x] [300.Longest Increasing Subsequence](https://leetcode.com/problems/longest-increasing-subsequence/)
 * [x] 673\. [Number of Longest Increasing Subsequence](https://leetcode.com/problems/number-of-longest-increasing-subsequence/) ✅💪| ye na kar paoge khud se implement|**`must_do`**
-* [x] 354\. [Russian Doll Envelopes](https://leetcode.com/problems/russian-doll-envelopes/) | must do!! 🪆🪆❤️ | **@Observer.AI | fuck\_yaaar!**
+* [x] 354\. [Russian Doll Envelopes](https://leetcode.com/problems/russian-doll-envelopes/) | must do!! 🪆🪆❤️ | **@Observer.AI | fuc\_yaaar!**
 * [ ] [https://leetcode.com/problems/delete-columns-to-make-sorted-iii/](https://leetcode.com/problems/delete-columns-to-make-sorted-iii/)
 * [ ] [https://leetcode.com/problems/minimum-number-of-removals-to-make-mountain-array/](https://leetcode.com/problems/minimum-number-of-removals-to-make-mountain-array/)
 * [ ] [https://leetcode.com/problems/maximum-height-by-stacking-cuboids/](https://leetcode.com/problems/maximum-height-by-stacking-cuboids/)
@@ -444,6 +451,13 @@ def maxEnvelopes(self, A: List[List[int]]) -> int:
     # to avoid this: sort by dec order of heights
     # s.t. the first envelope encountered for any given width would be 
     # the largest one.
+    # Why? 
+    # This makes sure that when we calculate the LIS, 
+        # we don't have a case such 
+        # as [3, 4] [3, 5] 
+    # (we could increase the LIS but this would be wrong 
+    # as the width is the same. 
+    # It can't happen when [3, 5] comes first in the ordering).
     
     A.sort(key=lambda x: (x[0], -x[1]))
     tails = []
@@ -599,20 +613,7 @@ for i in range(m-1, -1, -1):
         else:
             dungeon[i][j] = max(min(dungeon[i][j+1], dungeon[i+1][j]) - dungeon[i][j], 1)
 return dungeon[0][0]
-
-
-'''
-The first step is to calculate how much hp is required to save the princess upon reaching dungeon[m-1][n-1]:
-* dungeon[i][j] = min(dungeon[i][j], 0) * -1 + 1
-* For example:
-* If dungeon[m-1][n-1] == -5, then we need 6 hp.
-* If dungeon[m-1][n-1] >= 0 then we only need 1 hp.
-
-For every other cell we find the minimum hp required to reach the princess by going either down or right.
-We subtract this minimum hp from the current cell's value to find how much hp would be needed to reach the princess from the current cell.
-If this value is <=0, we change it to 1 because that means there is an abundance of hp in this cell and our minimum hp can never be <=0.
-
-'''    
+n   
 ```
 {% endtab %}
 
@@ -762,14 +763,6 @@ return solve(0,0,0,m-1)
 ```
 {% endtab %}
 {% endtabs %}
-
-
-
-
-
-
-
-
 
 
 

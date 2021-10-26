@@ -29,7 +29,7 @@
 * [---> DP](algorithms/dp/README.md)
   * [Vanilla](algorithms/dp/vanilla.md)
   * [Knapsack Based](algorithms/dp/knapsack-based.md)
-  * [Classical DPs](algorithms/dp/classical-dps.md)
+  * [Classical DPs⏯](algorithms/dp/classical-dps.md)
   * [DP on Tree](algorithms/dp/dp-on-tree.md)
   * [DP on Graph](algorithms/dp/dp-on-graph.md)
   * [Maths+Geometry](algorithms/dp/maths+geometry.md)
