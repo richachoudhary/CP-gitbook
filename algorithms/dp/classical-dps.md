@@ -1,4 +1,4 @@
-# Classical DPs⏯
+# Classical DPs
 
 ## 1. Kadane's Algorithm
 
@@ -16,7 +16,7 @@
 * [ ] [https://leetcode.com/problems/k-concatenation-maximum-sum/](https://leetcode.com/problems/k-concatenation-maximum-sum/)
 
 {% tabs %}
-{% tab title="53.(Kaden" %}
+{% tab title="53.🌟" %}
 ```python
 if n == 0:
     return 0
@@ -460,6 +460,8 @@ def maxEnvelopes(self, A: List[List[int]]) -> int:
 
 ## 4. 2D Grid Traversal
 
+### 4.1 Standard Qs
+
 * [x] LC [62. Unique Paths](https://leetcode.com/problems/unique-paths/) | **standard\_question\_of\_dp | robot traveling down the matrix**
 * [x] **LC **[**63.**Unique Paths II](https://leetcode.com/problems/unique-paths-ii/) ✅
 * [x] LC [64. Minimum Path Sum](https://leetcode.com/problems/minimum-path-sum/) | **standard ✅**
@@ -561,17 +563,345 @@ def minimumTotal(self, triangle: List[List[int]]) -> int:
 {% endtab %}
 {% endtabs %}
 
+### 4.2 Thode Tricky Qs
+
+* [x] LC[ 174.Dungeon Game](https://leetcode.com/problems/dungeon-game/) | standard | **must\_do** ✅
+* [x] LC [1706.Where Will the Ball Fall](https://leetcode.com/problems/where-will-the-ball-fall/)
+* [x] LC [741.Cherry Pickup](https://leetcode.com/problems/cherry-pickup/) | mazaa aa gya bhaisahaab | 🍒+🐞🐞
+  * [x] LC [1463. Cherry Pickup II](https://leetcode.com/problems/cherry-pickup-ii/)
 * [ ] [https://leetcode.com/problems/maximum-non-negative-product-in-a-matrix/](https://leetcode.com/problems/maximum-non-negative-product-in-a-matrix/)
-* [ ] [https://leetcode.com/problems/where-will-the-ball-fall/](https://leetcode.com/problems/where-will-the-ball-fall/)
-* [ ] [https://leetcode.com/problems/dungeon-game/](https://leetcode.com/problems/dungeon-game/)
-* [ ] [https://leetcode.com/problems/cherry-pickup/](https://leetcode.com/problems/cherry-pickup/)
 * [ ] [https://leetcode.com/problems/number-of-paths-with-max-score/](https://leetcode.com/problems/number-of-paths-with-max-score/)
-* [ ] [https://leetcode.com/problems/cherry-pickup-ii/](https://leetcode.com/problems/cherry-pickup-ii/)
 * [ ] [https://leetcode.com/problems/kth-smallest-instructions/](https://leetcode.com/problems/kth-smallest-instructions/)
 
+{% tabs %}
+{% tab title="174✅" %}
+raversing from bottom-right to top-left, we calculate how much hp is required to reach the princess from the current cell.
+
+* The first step is to calculate how much hp is required to save the princess **upon reaching `dungeon[m-1][n-1]`**:
+  * `dungeon[i][j] = min(dungeon[i][j], 0) * -1 + 1`\
+    For example
+  * If `dungeon[m-1][n-1] == -5`, then we need 6 hp.
+  * If `dungeon[m-1][n-1] >= 0` then we only need 1 hp.
+* **For every other cell** we find the minimum hp required to reach the princess by going either down or right.\
+  We subtract this minimum hp from the current cell's value to find how much hp would be needed to reach the princess from the current cell.\
+  If this value is <=0, we change it to 1 because that means there is an abundance of hp in this cell and our minimum hp can never be <=0.
+
+```python
+m, n = len(dungeon), len(dungeon[0])
+for i in range(m-1, -1, -1):
+    for j in range(n-1, -1, -1):
+        if i == m-1 and j == n-1:
+            dungeon[i][j] = min(dungeon[i][j], 0) * -1 + 1
+        elif i == m-1:
+            dungeon[i][j] = max(dungeon[i][j+1] - dungeon[i][j], 1)
+        elif j == n-1:
+            dungeon[i][j] = max(dungeon[i+1][j] - dungeon[i][j], 1)
+        else:
+            dungeon[i][j] = max(min(dungeon[i][j+1], dungeon[i+1][j]) - dungeon[i][j], 1)
+return dungeon[0][0]
 
 
-## 5. Cumulative Sum
+'''
+The first step is to calculate how much hp is required to save the princess upon reaching dungeon[m-1][n-1]:
+* dungeon[i][j] = min(dungeon[i][j], 0) * -1 + 1
+* For example:
+* If dungeon[m-1][n-1] == -5, then we need 6 hp.
+* If dungeon[m-1][n-1] >= 0 then we only need 1 hp.
+
+For every other cell we find the minimum hp required to reach the princess by going either down or right.
+We subtract this minimum hp from the current cell's value to find how much hp would be needed to reach the princess from the current cell.
+If this value is <=0, we change it to 1 because that means there is an abundance of hp in this cell and our minimum hp can never be <=0.
+
+'''    
+```
+{% endtab %}
+
+{% tab title="1706" %}
+very beautiful question, but kaafi help lagi solutions se
+
+```python
+def findBall(self, grid: List[List[int]]) -> List[int]:
+    n,m = len(grid), len(grid[0])
+    ans = [1]*m
+
+    for c in range(m):
+        c_copy = c
+        is_reachable_for_this_col = True
+        for r in range(n):
+            y = c + grid[r][c]
+            if y < 0 or y >= m or grid[r][c] != grid[r][y]:
+                ans[c_copy] = -1
+                is_reachable_for_this_col = False
+                break
+            c = y   # move to next row
+        if is_reachable_for_this_col:
+            ans[c_copy] = c
+    return ans
+
+
+'''
+IDEA: Check if the corresponding slope of its neighbor is same: if yes, go to next row, otherwise stuck.
+
+https://leetcode.com/problems/where-will-the-ball-fall/discuss/988195/JavaPython-3-Check-the-corresponding-slope-of-its-neighbor-w-brief-explanation-and-analysis..
+
+''' 
+```
+{% endtab %}
+
+{% tab title="741💪🍒🐞🐞" %}
+
+
+### What the Question wants:
+
+* Collect max cherries on TWO right/down fashion traversals
+* HINT: sum collected in way down == sum collected in way up
+
+### How to solve it?
+
+* assume 2 bugs are left from (x1=0,y1=0) & (x2=0,y2=0)
+* at every step they can go: (down,down), (right,right), (down,right), (right,down)
+* collect max cherries possible by both of them combined
+* NOTE: keep track of duplicates: i.e. 1 cherry can only be picked by 1 bug
+
+```python
+n, m = len(grid), len(grid[0])
+
+DP = {}
+
+def solve(x1,y1,x2,y2):
+    # BCs
+    if x1 == n or x2 == n or y1 == m or y2 == m or grid[x1][y1] == -1 or grid[x2][y2] == -1:
+        return float('-inf')
+
+    # break-away(only one bug) at bottom-right
+    if x1 == n-1 and y1 == m-1:
+        if grid[x1][y1] == -1:
+            return float('-inf')
+        else: return grid[x1][y1]
+
+    if (x1,y1,x2,y2) in DP:
+        return DP[(x1,y1,x2,y2)]
+
+    cherries_collected = 0
+
+     # avoiding duplicates : 1 cherry can be picked by EITHER Of the 
+    if x1 == x2 and y1 == y2:  
+        cherries_collected = grid[x1][y1]   
+    else:
+        cherries_collected = grid[x1][y1] + grid[x2][y2]
+
+    res = cherries_collected + max(
+        solve(x1+1,y1,x2+1,y2),  # (down,down)
+        solve(x1,y1+1,x2,y2+1),  # (right,right)
+        solve(x1+1,y1,x2,y2+1),  # (down,right)
+        solve(x1,y1+1,x2+1,y2)   # (right,down)
+    )
+
+    DP[(x1,y1,x2,y2)] = res
+    return res
+
+
+ans = solve(0,0,0,0)
+
+if ans < 0: return 0
+return ans
+
+
+
+'''
+TC: O(N^4)
+'''
+```
+{% endtab %}
+
+{% tab title="1463" %}
+```python
+n,m = len(grid), len(grid[0])
+
+DP = {}
+def solve(x1,y1,x2,y2):
+    # BCs : no need for rows, duh!
+    if y1 < 0 or y1 >= m or y2 < 0 or y2 >= m:
+        return float('-inf')
+
+    # break : Both robots should reach the bottom row in the grid
+    if x1 == n and x2 == n:
+        return 0
+
+    if (x1,y1,x2,y2) in DP:
+        return DP[(x1,y1,x2,y2)]
+
+    cherries_collected = 0
+    if x1 == x2 and y1 == y2:
+        cherries_collected = grid[x1][y1]
+    else:
+        cherries_collected = grid[x1][y1] + grid[x2][y2]
+
+    res = cherries_collected + max(
+        solve(x1+1,y1-1,x2+1,y2-1),     # (L,L)
+        solve(x1+1,y1-1,x2+1,y2),       # (L,B)
+        solve(x1+1,y1-1,x2+1,y2+1),     # (L,R)
+        solve(x1+1,y1,x2+1,y2-1),       # (B,L)
+        solve(x1+1,y1,x2+1,y2),         # (B,B)
+        solve(x1+1,y1,x2+1,y2+1),       # (B,R)
+        solve(x1+1,y1+1,x2+1,y2-1),     # (R,L)
+        solve(x1+1,y1+1,x2+1,y2),       # (R,B)
+        solve(x1+1,y1+1,x2+1,y2+1)      # (R,R)
+    )
+    DP[(x1,y1,x2,y2)] = res
+    return res
+
+
+return solve(0,0,0,m-1)
+
+'''
+* same as cherry pickup 1
+* no thornes
+* 9 choices: [L,B,R]x[L,B,R]
+''' 
+```
+{% endtab %}
+{% endtabs %}
+
+
+
+
+
+
+
+
+
+
+
+## 5. Buy & Sell Stocks set
+
+* [x] LC [121. Best Time to Buy and Sell Stock](https://leetcode.com/problems/best-time-to-buy-and-sell-stock/) | single transaction allowed
+* [x] LC [122.Best Time to Buy and Sell Stock II](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-ii/) | as many transactions as you want
+* [x] LC [309.Best Time to Buy and Sell Stock with Cooldown](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-cooldown/) | as many trans with cooldown✅
+* [x] LC [188.Best Time to Buy and Sell Stock IV](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iv/) | **atmost K transactions** allowed✅
+  * [x] LC [123.Best Time to Buy and Sell Stock III](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iii/) | k = 2
+
+{% tabs %}
+{% tab title="121" %}
+```python
+def maxProfit(self, prices: List[int]) -> int:
+    min_p, max_prof = prices[0],0
+
+    for p in prices:
+        max_prof = max(max_prof, p-min_p)
+        min_p = min(min_p, p)
+    return max_prof
+```
+{% endtab %}
+
+{% tab title="122" %}
+![sum of local maximas(A+B+C) == Global maxima(D)](<../../.gitbook/assets/Screenshot 2021-10-27 at 12.26.58 AM.png>)
+
+```python
+def maxProfit(self, prices):
+    profit = 0
+
+    for i in range(len(prices)-1):
+        if prices[i+1] > prices[i]:
+            profit += prices[i+1] - prices[i]
+
+    return profit
+```
+{% endtab %}
+
+{% tab title="309" %}
+````python
+def maxProfit(self, prices: List[int]) -> int:
+    MEMO = {}
+    def solve(i, own, under_cooldown):
+        if i >= len(prices):
+            return 0
+
+        if (i,own,under_cooldown) in MEMO:
+            return MEMO[ (i,own,under_cooldown) ]
+        if own:
+            # dont sell OR sell
+            opt1 = solve(i+1,True, False)
+            opt2 = prices[i] + solve(i+1, False, True) #cooldown started
+            MEMO[ (i,own,under_cooldown) ] =  max(opt1, opt2)
+        else:
+            # dont buy OR buy(if not under cooldown)
+            opt1 = solve(i+1, False, False)
+            opt2 = 0
+            if not under_cooldown:
+                opt2 = -prices[i] + solve(i+1,True,False) #no cooldown on sell
+            MEMO[ (i,own,under_cooldown) ] =  max(opt1,opt2)
+        return MEMO[ (i,own,under_cooldown) ]
+
+    return solve(0,False,False)
+'''
+TC: O(N*2*2) => O(N)
+'''```ypy
+````
+{% endtab %}
+
+{% tab title="188" %}
+```python
+
+MEMO = {}
+def solve(i,own,k):
+    if i>= len(prices) or k<0:
+        return 0
+
+    if (i,own, k) in MEMO:
+        return MEMO[(i,own, k)]
+    if own:
+        # sell or dont sell
+        opt1 = 0
+        if k > 0:
+            opt1 = prices[i] + solve(i+1, False, k-1)
+        opt2 = solve(i+1,True, k)
+        MEMO[(i,own, k)] =  max(opt1, opt2)
+    else:
+        # buy or dont buy
+        opt1 = -prices[i] + solve(i+1,True,k)
+        opt2 = solve(i+1, False,k)
+        MEMO[(i,own, k)] = max(opt1, opt2)
+    return MEMO[(i,own, k)]    
+
+n = len(prices)
+k = min(k,n//2)    # k can never be > n//2
+
+return solve(0,False,k)
+```
+{% endtab %}
+
+{% tab title="123" %}
+```python
+MEMO = {}
+def solve(i,own,k):
+    if i>= len(prices) or k<0:
+        return 0
+
+    if (i,own, k) in MEMO:
+        return MEMO[(i,own, k)]
+    if own:
+        # sell or dont sell
+        opt1 = 0
+        if k > 0:
+            opt1 = prices[i] + solve(i+1, False, k-1)
+        opt2 = solve(i+1,True, k)
+        MEMO[(i,own, k)] =  max(opt1, opt2)
+    else:
+        # buy or dont buy
+        opt1 = -prices[i] + solve(i+1,True,k)
+        opt2 = solve(i+1, False,k)
+        MEMO[(i,own, k)] = max(opt1, opt2)
+    return MEMO[(i,own, k)]    
+
+n = len(prices)
+k = 2
+return solve(0,False,k)
+```
+{% endtab %}
+{% endtabs %}
+
+## 6. Cumulative Sum
 
 * [ ] [https://leetcode.com/problems/range-sum-query-immutable/](https://leetcode.com/problems/range-sum-query-immutable/)
 * [ ] [https://leetcode.com/problems/maximal-square/](https://leetcode.com/problems/maximal-square/)
@@ -590,5 +920,7 @@ def minimumTotal(self, triangle: List[List[int]]) -> int:
 * [ ] [https://leetcode.com/problems/maximum-sum-of-3-non-overlapping-subarrays/](https://leetcode.com/problems/maximum-sum-of-3-non-overlapping-subarrays/)
 * [ ] [https://leetcode.com/problems/number-of-submatrices-that-sum-to-target/](https://leetcode.com/problems/number-of-submatrices-that-sum-to-target/)
 * [ ] [https://leetcode.com/problems/get-the-maximum-score/](https://leetcode.com/problems/get-the-maximum-score/)
+
+
 
 ###
