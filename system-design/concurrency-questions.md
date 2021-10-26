@@ -5,7 +5,7 @@
 ### ✅1. Producer-consumer problem | Message Bus
 
 * Whenever an event occurs, a **producer thread** creates an event object and adds it to the event buffer. Concurrently, **consumer threads** take events out of the buffer and process them. In this case, the consumers are called “event handlers.”
-  * **e.g.: **event-driven programs
+  * \*\*e.g.: \*\*event-driven programs
 * **Constraints Requirements of System:**
   * While an item is being added to or removed from the buffer, the buffer is in an inconsistent state. Therefore, threads must have exclusive access to the buffer.
   * If a consumer thread arrives while the buffer is empty, it blocks until a producer adds a new item.
@@ -263,11 +263,11 @@ Consumer consumed item :  20
 
 ### ✅2. Readers-Writers Problem
 
-* There is a shared data which can be accessed by multiple processes. 
-* There are two types of processes in the system i.e a **reader** and a **writer**. 
-* **Any number of readers can read** from the shared resource simultaneously, but **only one writer can write** to the shared resource. 
-* When a **writer is writing** data to the resource, **no other process can access** the resource. 
-* A** writer cannot write** to the resource if there are** non zero number of readers** accessing the resource at that time.
+* There is a shared data which can be accessed by multiple processes.
+* There are two types of processes in the system i.e a **reader** and a **writer**.
+* **Any number of readers can read** from the shared resource simultaneously, but **only one writer can write** to the shared resource.
+* When a **writer is writing** data to the resource, **no other process can access** the resource.
+* A\*\* writer cannot write\*\* to the resource if there are\*\* non zero number of readers\*\* accessing the resource at that time.
 
 {% tabs %}
 {% tab title="simple_reader_writer_soln" %}
@@ -279,14 +279,15 @@ class ReaderWriter():
     def __init__(self):
         self.rd = threading.Semaphore()
         self.wrt = threading.Semaphore()  
-        self.readCount = 0   #initializing number of reader present
+        self.curr_reader_count = 0   #initializing number of reader present
+        self.MAX_READERS_ALLOWED = 10        
 
     def reader(self):
         while True:
             self.rd.acquire()      #wait on read semaphore 
-            self.readCount+=1       #increase count for reader by 1
+            self.curr_reader_count+=1       #increase count for reader by 1
 
-            if self.readCount == 1: #since reader is present, prevent writing on data
+            if self.curr_reader_count == 1: #since reader is present, prevent writing on data
                 self.wrt.acquire()  #wait on write semaphore
             self.rd.release()     #sinal on read semaphore
 
@@ -294,9 +295,9 @@ class ReaderWriter():
             
             #reading is done by reader
             self.rd.acquire()   #wait on read semaphore 
-            self.readCount-=1   
+            self.curr_reader_count-=1   
 
-            if self.readCount == 0: #if no reader is present allow writer to write the data
+            if self.curr_reader_count == 0: #if no reader is present allow writer to write the data
                 self.wrt.release()  # signal on write semphore, now writer can write
             self.rd.release()      #sinal on read semaphore
 
@@ -401,7 +402,7 @@ class LightSwitch:
 * **PROBLEM**: A philosopher can take the fork on their right or the one on their left as they become available, but cannot start eating before getting both forks.
 * **SOLUTION**:
 * If a philosopher picks up 2 forks, then they will set them down after. So a philosopher could only really get stuck on 0 or 1 forks.
-* **WHEN CAN DEADLOCK HAPPEN: **Its easy to see that this means a deadlock only occurs if 5 forks are picked up (1 for each philosopher).
+* \*\*WHEN CAN DEADLOCK HAPPEN: \*\*Its easy to see that this means a deadlock only occurs if 5 forks are picked up (1 for each philosopher).
   * **WHAT ENSURES DEADLOCK WONT HAPPEN**: if max number of forks lifts are allowed = 5 -1 = **4**
 
 {% tabs %}
@@ -525,7 +526,7 @@ def put_forks(i):
 * For example, if the agent puts out tobacco and paper, the smoker with the matches should pick up both ingredients, make a cigarette, and then signal the agent.
 * To explain the premise, the agent represents an operating system that allocates resources, and the smokers represent applications that need resources.
 * **SOLN:**
-* ** **Vendor routine:\
+* \*\* \*\*Vendor routine:\
   1\. Generate two items randomly and put them on table.\
   2\. Broadcast the information to all the smokers.\
   3\. Go to sleep till the particular smoker, creates cigarette and is done with smoking.
@@ -684,13 +685,12 @@ class ReaderWriter:
 if __name__ == "__main__":
     c = ReaderWriter()
     c.main()
-
 ```
 
 ### ✅2. The Barbershop/Sleeping Barber Problem
 
 * A barbershop consists of a waiting room with n chairs, and the barber room containing the barber chair. If there are no customers to be served, the barber goes to sleep. If a customer enters the barbershop and all chairs are occupied, then the customer leaves the shop. If the barber is busy, but chairs are available, then the customer sits in one of the free chairs. If the barber is asleep, the customer wakes up the barber. Write a program to coordinate the barber and the customers.
-* **SOLVE: **The barber waits on customer until a customer enters the shop, then the customer waits on barber until the barber signals him to take a seat.
+* \*\*SOLVE: \*\*The barber waits on customer until a customer enters the shop, then the customer waits on barber until the barber signals him to take a seat.
 
 ```python
 from threading import Thread
@@ -712,9 +712,9 @@ class BarberShop:
     
     def startBarberThread(self):
         t_barber = Thread(target = self.barber_working_in_barber_room)         
-    	  t_barber.start()
+    	t_barber.start()
 
-	def barber_shop_entry(self,customer): 
+    def barber_shop_entry(self,customer): 
     	print("\nCustomer {} is entering in the shop and looking for empty seats".format(customer))         
     	mutex.acquire() #Try to get access to the waiting room chairs or Enter in CS          
      	
@@ -771,9 +771,9 @@ class Customer:
         self.name = name        
     
     def get_hair_cut(self,customer):         
-		    for i in range(0,3):             
-		        print("\nCutomer {} is having haircut".format(customer))             
-  		      time.sleep(2)      
+	for i in range(0,3):             
+	    print("\nCutomer {} is having haircut".format(customer))             
+	    time.sleep(2)      
     
     def balk(self,customer):         
         print("\nWaiting Room is full. Customer {} leaves shop without hair cutting".format(customer))
@@ -966,9 +966,9 @@ if isCaptain:
 
 ### 1. LinkedList search-insert-delete problem
 
-* **Descript**io**n: **Three kinds of threads share access to a singly-linked list: searchers, inserters and deleters. Searchers merely examine the list; hence they can execute concurrently with each other. Inserters add new items to the end of the list; insertions must be mutually exclusive to preclude two inserters from inserting new items at about the same time. However, one insert can proceed in parallel with any number of searches. Finally, deleters remove items from anywhere in the list. At most one deleter process can access the list at a time, and deletion must also be mutually exclusive with searches and insertions.
-* **TODO: **write code for searchers, inserters and deleters that enforces this kind of threeway categorical mutual exclusion.
-* **Solution: **
+* **Descript**io\*\*n: \*\*Three kinds of threads share access to a singly-linked list: searchers, inserters and deleters. Searchers merely examine the list; hence they can execute concurrently with each other. Inserters add new items to the end of the list; insertions must be mutually exclusive to preclude two inserters from inserting new items at about the same time. However, one insert can proceed in parallel with any number of searches. Finally, deleters remove items from anywhere in the list. At most one deleter process can access the list at a time, and deletion must also be mutually exclusive with searches and insertions.
+* \*\*TODO: \*\*write code for searchers, inserters and deleters that enforces this kind of threeway categorical mutual exclusion.
+* \*\*Solution: \*\*
 
 ```python
 insertMutex = Semaphore(1)	# insertMutex ensures that only one inserter is in its critical section at a time.
@@ -981,9 +981,9 @@ searchSwitch = Lightswitch()
 insertSwitch = Lightswitch()
 
 def searcher():
-				  searchSwitch.acquire(noSearcher)
-					# critical section
-					searchSwitch.release(noSearcher)
+	searchSwitch.acquire(noSearcher)
+	# critical section
+	searchSwitch.release(noSearcher)
 				        
 def inserter():
 		  insertSwitch.wait(noInserter) 
@@ -1112,8 +1112,6 @@ Thread-9, 19:28, Bathroom is empty. Opening for anyone
 
 ### 4. The Modus Hall Problem
 
-
-
 ## Not remotely classical problems
 
 ### 1. The sushi bar problem
@@ -1157,8 +1155,6 @@ else:
 
 #### 6. Dining Hall problem
 
-
-
 ## SysD Heavy Questions
 
 ### ✅1.1. Rate Limiting Algo#1: Token Bucket | [link](https://dev.to/satrobit/rate-limiting-using-the-token-bucket-algorithm-3cjh)
@@ -1177,8 +1173,8 @@ import time
 class TokenBucket:
 
     def __init__(self, tokens, time_unit, forward_callback, drop_callback):
-        self.tokens = tokens    # number of tokens added to the bucket in each time unit
-        self.time_unit = time_unit    # the tokens are added in this time frame.
+        self.tokens = tokens              # number of tokens added to the bucket in each time unit
+        self.time_unit = time_unit        # the tokens are added in this time frame.
         self.forward_callback = forward_callback    # this function is called when the packet is being forwarded.
         self.drop_callback = drop_callback    # this function is called when the packet should be dropped
         self.bucket = tokens             # initial burst
@@ -1213,13 +1209,13 @@ def drop(packet):
     print("Packet Dropped: " + str(packet))
 
 
-throttle = TokenBucket(1, 1, forward, drop)
+token_bucket = TokenBucket(1, 1, forward, drop)
 
 packet = 0
 
 while True:
     time.sleep(0.2)    # We send a packet every 0.2 seconds.
-    throttle.handle(packet)
+    token_bucket.handle(packet)
     packet += 1
 '''
 Packet Forwarded: 0
@@ -1241,7 +1237,7 @@ Packet Forwarded: 15
 '''
 ```
 
-### ✅1.2. Rate Limiting Algo#2: Leaky Bucket  | @rubrik 😖
+### ✅1.2. Rate Limiting Algo#2: Leaky Bucket | @rubrik 😖
 
 ```python
 import time
@@ -1438,9 +1434,9 @@ while True:
     packet += 1
 ```
 
-### ✅2. Scheduler Library | using`threading.Timer` 
+### ✅2. Scheduler Library | using`threading.Timer`
 
-* Syntax:**` t = threading.Timer(n,func_name)`** 
+* Syntax:**` t = threading.Timer(n,func_name)`**
   * will run the **`func_name`** function **`after n`** milli-seconds
 
 ```
@@ -1541,24 +1537,20 @@ finally:
 {% endtab %}
 {% endtabs %}
 
-
-
 ### ✅3. Logger Library
 
-* There can be multiple appenders – like file, network, db etc. 
-* Should be easy to add appenders. 
-* Library should be easily configurable. 
-* Message format should be configurable. 
-* Logger should not add additional overhead. 
+* There can be multiple appenders – like file, network, db etc.
+* Should be easy to add appenders.
+* Library should be easily configurable.
+* Message format should be configurable.
+* Logger should not add additional overhead.
 * Must log to all appenders simultaneously.
 * [https://stackoverflow.com/questions/62178545/python-logging-thread-safety](https://stackoverflow.com/questions/62178545/python-logging-thread-safety)
 
-
-
-#### ### >> Used pattern: [Chain of responsibility](https://www.tutorialspoint.com/design_pattern/chain_of_responsibility_pattern.htm)
+#### ### >> Used pattern: [Chain of responsibility](https://www.tutorialspoint.com/design\_pattern/chain\_of\_responsibility\_pattern.htm)
 
 * **Chain of responsibility** pattern creates a **chain of receiver objects for a request**. This pattern decouples sender and receiver of a request based on type of request
-* In this pattern, normally each receiver contains reference to another receiver. 
+* In this pattern, normally each receiver contains reference to another receiver.
 * If one object cannot handle the request then it passes the same to the next receiver and so on.
 
 ![Chain of Responsibility Pattern for logger lib](../.gitbook/assets/screenshot-2021-08-29-at-9.52.26-pm.png)
@@ -1736,12 +1728,9 @@ def emit_log(log_level, log_namespace, log_msg):
 myconfig = LoggerConfig(Level.INFO)
 myloggerlib = LoggerLib(myconfig)
 emit_log(Level.INFO, 'local','some info err')
-
 ```
 {% endtab %}
 {% endtabs %}
-
-
 
 ### ✅4. Pub/Sub | Event Bus
 
@@ -1916,7 +1905,6 @@ class AtomicInteger():
 ### ✅6. Multithreaded Merge Sort
 
 ```python
-
 """
 This code exemplifies the Process/Pipe paradigm of parallel design.  
 
@@ -2020,10 +2008,6 @@ def main():
     -time Python's built-in sorted on the list.
     """
     N = 500000
-    
-    #the user input a list size.
-    # if len(sys.argv) > 1:  
-    #     N = int(sys.argv[1])
 
     #We want to sort the same list, so make a backup.
     lystbck = [random.random() for x in range(N)]
@@ -2129,8 +2113,6 @@ public void seatDemocrat() throws InterruptedException, BrokenBarrierException {
         }
     }
 ```
-
-
 
 ### 7: Multithreaded Pub-Sub Queue Like Kafka | no need; as already done ABOVE(#4)
 
@@ -2423,7 +2405,7 @@ with MessagingService() as ms:
 
 ## LC:
 
-### ✅1.LC [1114. Print in Order](https://leetcode.com/problems/print-in-order/) 
+### ✅1.LC [1114. Print in Order](https://leetcode.com/problems/print-in-order/)
 
 {% tabs %}
 {% tab title="1114- 2: Semaphore✅" %}
@@ -2586,9 +2568,7 @@ class Foo:
 {% endtab %}
 {% endtabs %}
 
-
-
-### ✅2. LC [1115. Print FooBar Alternately](https://leetcode.com/problems/print-foobar-alternately/) 
+### ✅2. LC [1115. Print FooBar Alternately](https://leetcode.com/problems/print-foobar-alternately/)
 
 {% tabs %}
 {% tab title=" 2: Semaphore✅" %}
@@ -2640,11 +2620,11 @@ class FooBar:
             printFoo()
             self.bar_lock.release()
 
-	def bar(self, printBar):
+    def bar(self, printBar):
         for i in range(self.n):
             self.bar_lock.acquire()
             printBar()
-            self.bar_lock.release()
+            self.foo_lock.release()
 ```
 {% endtab %}
 
@@ -2738,7 +2718,6 @@ class FooBar:
                 printBar()
                 self.bar_counter += 1
                 self.condition.notify(1)
-
 ```
 {% endtab %}
 {% endtabs %}
@@ -2746,7 +2725,7 @@ class FooBar:
 ### ✅3. \[Queue] LC [1188.Design Bounded Blocking Queue](https://leetcode.libaoj.in/design-bounded-blocking-queue.html) | @rubrik
 
 * Follow up: **Does it matter if we use `notify()` or `notifyAll()` method in our implementation?**
-* In both the `enqueue()` and `dequeue()` methods we use the `notifyAll()` method instead of the `notify()` method. The reason behind the choice is very crucial to understand. Consider a situation with** two producer threads and one consumer thread** all working with a queue of size one. It's possible that when an item is added to the queue by one of the producer threads, the other two threads are blocked waiting on the condition variable. If the producer thread after adding an item invokes `notify()` it is possible that the other producer thread is chosen by the system to resume execution. The woken-up producer thread would find the queue full and go back to waiting on the condition variable, causing a deadlock. Invoking `notifyAll()` assures that the consumer thread also gets a chance to wake up and resume execution.
+* In both the `enqueue()` and `dequeue()` methods we use the `notifyAll()` method instead of the `notify()` method. The reason behind the choice is very crucial to understand. Consider a situation with\*\* two producer threads and one consumer thread\*\* all working with a queue of size one. It's possible that when an item is added to the queue by one of the producer threads, the other two threads are blocked waiting on the condition variable. If the producer thread after adding an item invokes `notify()` it is possible that the other producer thread is chosen by the system to resume execution. The woken-up producer thread would find the queue full and go back to waiting on the condition variable, causing a deadlock. Invoking `notifyAll()` assures that the consumer thread also gets a chance to wake up and resume execution.
 
 {% tabs %}
 {% tab title="@Producer-consumer" %}
@@ -3269,9 +3248,7 @@ class H2O:
 {% endtab %}
 {% endtabs %}
 
-
-
-### ✅6. LC  [1195. Fizz Buzz Multithreaded](https://leetcode.com/problems/fizz-buzz-multithreaded/)
+### ✅6. LC [1195. Fizz Buzz Multithreaded](https://leetcode.com/problems/fizz-buzz-multithreaded/)
 
 * Modify the given class to output the series `[1, 2, "Fizz", 4, "Buzz", ...]` where the `ith` token (**1-indexed**) of the series is:
   * `"FizzBuzz"` if `i` is divisible by `3` and `5`,
