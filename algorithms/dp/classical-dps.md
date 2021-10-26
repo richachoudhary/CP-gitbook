@@ -1,16 +1,14 @@
-# Classical DPs
-
-
+# Classical DPs⏯
 
 ## 1. Kadane's Algorithm
 
-* [x] CSES: [Maximum Subarray Sum](https://cses.fi/problemset/task/1643) | LC [53. Maximum Subarray](https://leetcode.com/problems/maximum-subarray/) 
+* [x] CSES: [Maximum Subarray Sum](https://cses.fi/problemset/task/1643) | LC [53. Maximum Subarray](https://leetcode.com/problems/maximum-subarray/)
 * [x] 152.[ Maximum Product Subarray](https://leetcode.com/problems/maximum-product-subarray/) ✅| remember the swap
 * [x] 873\. [Length of Longest Fibonacci Subsequence](https://leetcode.com/problems/length-of-longest-fibonacci-subsequence/) 🍪🍪✅💪
-* [x] 1186.[Maximum Subarray Sum with One Deletion](https://leetcode.com/problems/maximum-subarray-sum-with-one-deletion/) | so similar to Kaden's; yet the so simple approach is unthinkable | [approach_with_diag](https://leetcode.com/problems/maximum-subarray-sum-with-one-deletion/discuss/377522/C%2B%2B-forward-and-backward-solution-with-explanation-and-picture) | must do baby ✅💪
+* [x] 1186.[Maximum Subarray Sum with One Deletion](https://leetcode.com/problems/maximum-subarray-sum-with-one-deletion/) | so similar to Kaden's; yet the so simple approach is unthinkable | [approach\_with\_diag](https://leetcode.com/problems/maximum-subarray-sum-with-one-deletion/discuss/377522/C%2B%2B-forward-and-backward-solution-with-explanation-and-picture) | must do baby ✅💪
 * [x] 368\. [Largest Divisible Subset](https://leetcode.com/problems/largest-divisible-subset/submissions/) 🐽
 * [x] 1191\. [K-Concatenation Maximum Sum](https://leetcode.com/problems/k-concatenation-maximum-sum/)
-* [x] 1014.[ Best Sightseeing Pair](https://leetcode.com/problems/best-sightseeing-pair/) 
+* [x] 1014.[ Best Sightseeing Pair](https://leetcode.com/problems/best-sightseeing-pair/)
   * It's similar to [Best Time to Buy and Sell Stock](https://leetcode.com/problems/best-time-to-buy-and-sell-stock/), but instead of min price, we track max value, and our max value decays every step due to the distance penalty
 * [ ] [https://leetcode.com/problems/bitwise-ors-of-subarrays/](https://leetcode.com/problems/bitwise-ors-of-subarrays/)
 * [ ] [https://leetcode.com/problems/longest-turbulent-subarray/](https://leetcode.com/problems/longest-turbulent-subarray/)
@@ -18,7 +16,7 @@
 * [ ] [https://leetcode.com/problems/k-concatenation-maximum-sum/](https://leetcode.com/problems/k-concatenation-maximum-sum/)
 
 {% tabs %}
-{% tab title="53.(Kaden's Algo)" %}
+{% tab title="53.(Kaden" %}
 ```python
 if n == 0:
     return 0
@@ -129,7 +127,6 @@ def solve(A,k):
     return (max(sum(A)*(k-2),0) + kaden(A*2))%MOD
 
 return solve(A,k)
-
 ```
 {% endtab %}
 
@@ -149,7 +146,7 @@ def maxScoreSightseeingPair(self, A: List[int]) -> int:
 ## 2. LCS
 
 * [x] 72\. Edit Distance | ✅✅| aata hai; par fir bhi dekh lo ek baar | _**the R-C initialization**_
-* [x] ****[**1143. LCS **](https://leetcode.com/problems/longest-common-subsequence/)| standard
+* [x] \*\*\*\*[\*\*1143. LCS \*\*](https://leetcode.com/problems/longest-common-subsequence/)| standard
 * [x] 718\. [Maximum Length of Repeated Subarray](https://leetcode.com/problems/maximum-length-of-repeated-subarray/) | Now find this LCS 😎🤯😎
 * [x] 5.[ Longest Palindromic Substring](https://leetcode.com/problems/longest-palindromic-substring/) | **`LPS`** | not a DP question
 * [x] 516.[ Longest Palindromic Subsequence](https://leetcode.com/problems/longest-palindromic-subsequence/) | **`LPS`** | this is a DP question | **`LCS`**`on reversed self` ✅
@@ -341,13 +338,13 @@ return res + A[i:] + B[j:]
 
 ## 3. LIS
 
-*  [ ] **LIS in O(NlogN)** : [KartikArora](https://www.youtube.com/watch?v=66w10xKzbRM\&ab_channel=KartikArora) | [Leetcode Post](https://leetcode.com/problems/longest-increasing-subsequence/discuss/74824/JavaPython-Binary-search-O\(nlogn\)-time-with-explanation) => Maintain Tails arr
-  * `Tails` arr contains all the **starting** points of all **LISs**(aptly named)=> use `bisect_left` for LIS
-  * `Tails` arr contains all the **ending** points of all **LIDs**(aptly named) => use `bisect_right` for LDS
+* [ ] **LIS in O(NlogN)** : [KartikArora](https://www.youtube.com/watch?v=66w10xKzbRM\&ab\_channel=KartikArora) | [Leetcode Post](https://leetcode.com/problems/longest-increasing-subsequence/discuss/74824/JavaPython-Binary-search-O\(nlogn\)-time-with-explanation) => Maintain Tails arr
+* [ ] `Tails` arr contains all the **starting** points of all **LISs**(aptly named)=> use `bisect_left` for LIS
+* [ ] `Tails` arr contains all the **ending** points of all **LIDs**(aptly named) => use `bisect_right` for LDS
 * [x] CSES: [Towers](https://cses.fi/problemset/task/1073) ✅=> Longest Decreasing Sequence: (exactly same as LIS) | **just use** `bisect_right`
-* [x] [300.Longest Increasing Subsequence ](https://leetcode.com/problems/longest-increasing-subsequence/)
+* [x] [300.Longest Increasing Subsequence](https://leetcode.com/problems/longest-increasing-subsequence/)
 * [x] 673\. [Number of Longest Increasing Subsequence](https://leetcode.com/problems/number-of-longest-increasing-subsequence/) ✅💪| ye na kar paoge khud se implement|**`must_do`**
-* [x] 354\. [Russian Doll Envelopes](https://leetcode.com/problems/russian-doll-envelopes/) | must do!! 🪆🪆❤️ | **@Observer.AI | fuck_yaaar!**
+* [x] 354\. [Russian Doll Envelopes](https://leetcode.com/problems/russian-doll-envelopes/) | must do!! 🪆🪆❤️ | **@Observer.AI | fuck\_yaaar!**
 * [ ] [https://leetcode.com/problems/delete-columns-to-make-sorted-iii/](https://leetcode.com/problems/delete-columns-to-make-sorted-iii/)
 * [ ] [https://leetcode.com/problems/minimum-number-of-removals-to-make-mountain-array/](https://leetcode.com/problems/minimum-number-of-removals-to-make-mountain-array/)
 * [ ] [https://leetcode.com/problems/maximum-height-by-stacking-cuboids/](https://leetcode.com/problems/maximum-height-by-stacking-cuboids/)
@@ -366,7 +363,6 @@ for num in nums:
     else: 
         tails[i] = num   # oh ok, at least we can make the ending element smaller
 return len(tails)  
-
 ```
 {% endtab %}
 
@@ -462,13 +458,109 @@ def maxEnvelopes(self, A: List[List[int]]) -> int:
 {% endtab %}
 {% endtabs %}
 
+## 4. 2D Grid Traversal
 
+* [x] LC [62. Unique Paths](https://leetcode.com/problems/unique-paths/) | **standard\_question\_of\_dp | robot traveling down the matrix**
+* [x] **LC **[**63.**Unique Paths II](https://leetcode.com/problems/unique-paths-ii/) ✅
+* [x] LC [64. Minimum Path Sum](https://leetcode.com/problems/minimum-path-sum/) | **standard ✅**
+* [x] LC [120. Triangle](https://leetcode.com/problems/triangle/) | Similar to #64 | **@uber **&#x20;
 
-## 4.  2D Grid Traversal
+{% tabs %}
+{% tab title="62" %}
+```python
+def uniquePaths(self, m: int, n: int) -> int:
+    dp = [[0 for _ in range(m)] for _ in range(n)]
 
-* [ ] [https://leetcode.com/problems/unique-paths/](https://leetcode.com/problems/unique-paths/)
-* [ ] [https://leetcode.com/problems/unique-paths-ii/](https://leetcode.com/problems/unique-paths-ii/)
-* [ ] [https://leetcode.com/problems/minimum-path-sum/](https://leetcode.com/problems/minimum-path-sum/)
+    for i in range(n):
+        for j in range(m):
+            if i == 0 or j == 0:
+                dp[i][j] = 1
+            else:
+                dp[i][j] = dp[i-1][j] + dp[i][j-1]
+    return dp[-1][-1]
+```
+{% endtab %}
+
+{% tab title="63" %}
+```python
+def uniquePathsWithObstacles(self, A: List[List[int]]) -> int:
+    n,m = len(A), len(A[0])
+    if A[0][0] == 1 or A[-1][-1] == 1: return 0
+
+    dp = [[0 for _ in range(m)] for _ in range(n)]
+
+    for i in range(n):
+        for j in range(m):
+            if A[i][j] == 0:
+                if i == 0 and j == 0:
+                    dp[i][j] = 1
+                elif i > 0 and j == 0:
+                    dp[i][j] = dp[i-1][j]
+                elif j > 0 and i == 0:
+                    dp[i][j] = dp[i][j-1]
+                else:
+                    dp[i][j] = dp[i-1][j]+dp[i][j-1]
+
+    return dp[-1][-1]
+```
+{% endtab %}
+
+{% tab title="64" %}
+```python
+def minPathSum(self, grid: List[List[int]]) -> int:
+    n,m = len(grid), len(grid[0])
+
+    # 1. TC:O(N*M) , SC: O(N*M) ====================================================
+    dp = [[0 for _ in range(m)] for _ in range(n)]  # O(N*M) space
+
+    for i in range(n):
+        for j in range(m):
+            if i == 0 and j == 0:
+                dp[i][j] = grid[i][j]
+            elif i == 0:
+                dp[i][j] = grid[i][j] + dp[i][j-1]
+            elif j == 0:
+                dp[i][j] = grid[i][j] + dp[i-1][j]
+            else:
+                dp[i][j] = grid[i][j] + min(dp[i-1][j], dp[i][j-1])
+    return dp[n-1][m-1]
+
+    # 1. TC:O(N*M) , SC: O(1) ====================================== Better SC!!!
+
+    for i in range(n):
+        for j in range(m):
+            if i == 0 and j == 0:
+                continue
+            elif i == 0 and j:
+                grid[i][j] = grid[i][j] + grid[i][j-1]
+            elif j == 0 and i:
+                grid[i][j] = grid[i][j] + grid[i-1][j]
+            else:
+                grid[i][j] = grid[i][j] + min(grid[i-1][j], grid[i][j-1])
+    return grid[n-1][m-1]
+    
+```
+{% endtab %}
+
+{% tab title="120" %}
+```python
+def minimumTotal(self, triangle: List[List[int]]) -> int:
+    n = len(triangle)
+
+    for i in range(1,n):
+        for j in range(i+1):
+            if j == 0:
+                triangle[i][j] += triangle[i-1][j]
+            elif j == i:
+                triangle[i][j] += triangle[i-1][j-1]
+            else:
+                triangle[i][j] += min(triangle[i-1][j-1],triangle[i-1][j])
+
+    return min(triangle[-1])
+```
+{% endtab %}
+{% endtabs %}
+
 * [ ] [https://leetcode.com/problems/maximum-non-negative-product-in-a-matrix/](https://leetcode.com/problems/maximum-non-negative-product-in-a-matrix/)
 * [ ] [https://leetcode.com/problems/where-will-the-ball-fall/](https://leetcode.com/problems/where-will-the-ball-fall/)
 * [ ] [https://leetcode.com/problems/dungeon-game/](https://leetcode.com/problems/dungeon-game/)
@@ -476,6 +568,8 @@ def maxEnvelopes(self, A: List[List[int]]) -> int:
 * [ ] [https://leetcode.com/problems/number-of-paths-with-max-score/](https://leetcode.com/problems/number-of-paths-with-max-score/)
 * [ ] [https://leetcode.com/problems/cherry-pickup-ii/](https://leetcode.com/problems/cherry-pickup-ii/)
 * [ ] [https://leetcode.com/problems/kth-smallest-instructions/](https://leetcode.com/problems/kth-smallest-instructions/)
+
+
 
 ## 5. Cumulative Sum
 

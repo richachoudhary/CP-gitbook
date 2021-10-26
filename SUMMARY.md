@@ -60,6 +60,7 @@
   * [2. Google Calendar](system-design/lld-questions/2.-google-calendar.md)
   * [Ludo](system-design/lld-questions/ludo.md)
   * [\_index\_](system-design/lld-questions/\_index\_.md)
+  * [1. Fare Generator Service](system-design/lld-questions/1.-fare-generator-service.md)
 * [HLD](system-design/hld.md)
 * [HLD:Questions](system-design/hld-questions/README.md)
   * [1. TinyURL](system-design/hld-questions/1.-tinyurl.md)

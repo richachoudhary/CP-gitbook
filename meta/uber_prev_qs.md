@@ -2,6 +2,7 @@
 
 ## 1. DSA
 
+* [ ] LC [465. Optimal Account Balancing](https://leetfree.com/problems/optimal-account-balancing) 🐽
 * [ ] LC [855. Exam Room](https://leetcode.com/problems/exam-room/)
 * [ ] LC [68. Text Justification](https://leetcode.com/problems/text-justification/)
 * [ ] LC [979. Distribute Coins in Binary Tree](https://leetcode.com/problems/distribute-coins-in-binary-tree/)
@@ -11,8 +12,10 @@
 
 ## 2. Machine Coding
 
+
+
+* [x] fare generation for a cab service | [Question Here](https://leetcode.com/discuss/interview-experience/682096/Uber-or-SE-2-or-Hyderabad) | @LLD:Question>1.FareGenerator
 * [ ] Design Map Reduce
-* [ ] fare generation for a cab service | [Question Here](https://leetcode.com/discuss/interview-experience/682096/Uber-or-SE-2-or-Hyderabad)
 * [ ] pub-sub with concurrency | [Interview\_exp](https://leetcode.com/discuss/interview-experience/1453593/Uber-or-L4-or-SDE-II-or-Bangalore)
 * [ ] Job Schedular | [exp](https://leetcode.com/discuss/interview-experience/951674/Uber-or-L4-or-Banglore-or-Oct-Nov-2020-Reject)
 * [ ] Design data structure to get/insert/delete an element. It should also support DeleteRandom method. All the methods should be O(1) | concurrency | [exp\_here](https://leetcode.com/discuss/interview-experience/469588/Uber-Onsite-or-L5-or-Dec-2019-or-SF-or-Reject)
@@ -33,6 +36,7 @@
 * [ ] Design a photo sharing application like instagram
 * [ ] chat system like whatsapp | with ticks
 * [ ] Design Amazon Wishlist
+* [ ] Google doc | [What’s different about the new Google Docs: Making collaboration fast](https://drive.googleblog.com/2010/09/whats-different-about-new-google-docs.html)
 
 
 
