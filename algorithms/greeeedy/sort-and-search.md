@@ -222,6 +222,58 @@ def minIncrementForUnique(self, A: List[int]) -> int:
 {% endtab %}
 {% endtabs %}
 
+* [x] LC [853.Car Fleet](https://leetcode.com/problems/car-fleet/) | mastt question | done by self **| @google**
+* [ ] **LC **[**1777.**Car Fleet II](https://leetcode.com/problems/car-fleet-ii/)
+
+{% tabs %}
+{% tab title="853" %}
+* Sort cars by the start positions `pos`
+* Loop on each car from the end to the beginning
+* Calculate its `time` needed to arrive the `target`
+* <mark style="color:orange;">`cur`</mark> <mark style="color:orange;">records the current biggest time (the slowest)</mark>
+* If another car needs less or equal time than `cur`,it can catch up this car fleet.
+* If another car needs more time,it will be the new slowest car,and becomes the new lead of a car fleet
+
+```python
+def carFleet(self, target: int, pos: List[int], v: List[int]) -> int:
+    arr = list(zip(pos,v))
+    arr.sort()
+    times = [(target-x)/y for x,y in arr]
+    # print(times)
+    fleet = curr = 0
+
+    for t in times[::-1]:
+        if t > curr:
+            fleet += 1
+            curr = t
+    return fleet
+
+'''
+target = 12, 
+
+position = [10,8,0, 5,3], 
+speed = [ 2,4,1, 1,3]
+t toreach= [ 1,1,12,8,3]
+
+
+p      = [0, 3, 5, 8, 10]
+v      = [1, 3, 1, 4,  2]
+t      = [12,3, 7, 1,  1]
+
+rev(t) = [|1, 1,|7, 3,|12] ============> 3 fleets
+'''        
+```
+{% endtab %}
+
+{% tab title="Second Tab" %}
+
+{% endtab %}
+{% endtabs %}
+
+
+
+
+
 ## 2.Binary Search 🌟
 
 ### 1.0 Notes

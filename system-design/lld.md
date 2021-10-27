@@ -2,21 +2,23 @@
 
 ## #Notes
 
-* ****[**A plain english introduction to CAP Theorem**](http://ksat.me/a-plain-english-introduction-to-cap-theorem)****
+* uuid: UUID, **Universal Unique Identifier**, is a python library which helps in generating random objects of 128 bits as ids. It provides the uniqueness as it generates ids on the basis of time, Computer hardware (MAC etc.)
+* UUID, **Universal Unique Identifier**, is a python library which helps in generating random objects of 128 bits as ids. It provides the uniqueness as it generates ids on the basis of time, Computer hardware (MAC etc.)
+* [**A plain english introduction to CAP Theorem**](http://ksat.me/a-plain-english-introduction-to-cap-theorem)
 * How to identify **classes, attributes & methods** in system? ✅⭐️🔥😎
   * **Classes => Noun**
   * **Attribute => Adjectives**
   * **Methods => Verbs**
 * [VSCode: Using Black to automatically format Python](https://dev.to/adamlombard/how-to-use-the-black-python-code-formatter-in-vscode-3lo0)
 * [Ducktyping](https://realpython.com/lessons/duck-typing/)??
-  * This term comes from the saying “If it walks like a duck, and it quacks like a duck, then it must be a duck.” (There are [other variations](https://en.wikipedia.org/wiki/Duck_test#History)).
+  * This term comes from the saying “If it walks like a duck, and it quacks like a duck, then it must be a duck.” (There are [other variations](https://en.wikipedia.org/wiki/Duck\_test#History)).
   * Duck typing is a concept related to **dynamic typing**, where the type or the class of an object is less important than the methods it defines. When you use duck typing, **you do not check types at all. Instead, you check for the presence of a given method or attribute.**
 * **In python, objects are passed by REFERENCE!!!!!!!!!!!!!!!!!!!!!!**
 * **Deployment:**
-  * for **CLI **apps: [repl.com](https://replit.com)
+  * for \*\*CLI \*\*apps: [repl.com](https://replit.com)
     * **Sharing with others**(as run-only) : append `?embed=1` in the end of url:
     * E.g: [https://replit.com/@ReaderMango/CardWars](https://replit.com/@ReaderMango/CardWars#main.py)?embed=1
-  * for **GUI **apps: django/flask
+  * for \*\*GUI \*\*apps: django/flask
 
 ## 1. Classes & Attributes
 
@@ -87,44 +89,41 @@ class Car:
     # id = property(get_id, set_id)
 ```
 
-* A Class has 2 main parts: 
-  1.  **Interface** : the "visible" part of class with which user can interact 
-     * Eg. Power **Switch** (class = Fan)
-  2. **Implementation**: the actual code level logic which performs the functionality. 
+* A Class has 2 main parts:
+  1. **Interface** : the "visible" part of class with which user can interact
+  2. Eg. Power **Switch** (class = Fan)
+  3. **Implementation**: the actual code level logic which performs the functionality.
      * Eg. Internal wiring of **fan** (class = Fan)
 * **Abstraction**: => Show only the essential attributes & hide unnecessary details from user
-* **Encapsulation **is implemented using:
+* \*\*Encapsulation \*\*is implemented using:
   * public | private
   * getters | setters
 * **Abstraction vs Encapsulation**
   * Encapsulation hides variables or some implementation that may be changed so often in a class to prevent outsiders access it directly. They must access it via getter and setter methods.
-  * Abstraction is used to hide something too, but in a higher degree (class,** interface**). Clients who use an abstract class (or interface) do not care about what it was, they just need to know what it can do.
+  * Abstraction is used to hide something too, but in a higher degree (class,\*\* interface\*\*). Clients who use an abstract class (or interface) do not care about what it was, they just need to know what it can do.
 * **How to make attributes private:**
   * (src: official doc) _actual "**private**" thing doesnt exist in python._
   * However, there is a **convention**(naming attrs as : `_attrName`) followed in codes.
   * Technically, you CAN access `_attr` , but as per coding practice; you SHOULDNT
   * 2 ways of making attributes private:
     1. By Convention => `_<attribute>`
-    2. Changing name("Name Mangling")   => `__<attribute>`  (used only for some special cases)
+    2. Changing name("Name Mangling") => `__<attribute>` (used only for some special cases)
        * Hides the attr more furhter
        * if you give two underscores in attr name (`__attrName`); python begins the process of **Name Mangling;** so you shouldnt give two underscores until you're fully sure.
        * **attr1 ==\[Name Mangling]==> \_class1**attr1
   * **NOTE**: dont use term 'private' for python(as it doesnt exist), instead use '**non-public**
-*   **@property Decorator:**
-
-    * What is **Decorator**:
-      * \=> A function that takes a function &** extends its behaviour w/o explicitly modifying it.**
-      * i.e. its a "special" function extender
-    * Why use Decorator:
-      * cleaner code
-      * easier to read/understand
-      * avoid calling `property()` directly
-    * SYNTAX:
-      * getter: `@propety`
-      * setter: `@attName.setter` (NOTE: its NOT `@property.setter` baby)
-      * deleter: `@attName.deleter`
-
-
+* **@property Decorator:**
+  * What is **Decorator**:
+    * \=> A function that takes a function &\*\* extends its behaviour w/o explicitly modifying it.\*\*
+    * i.e. its a "special" function extender
+  * Why use Decorator:
+    * cleaner code
+    * easier to read/understand
+    * avoid calling `property()` directly
+  * SYNTAX:
+    * getter: `@propety`
+    * setter: `@attName.setter` (NOTE: its NOT `@property.setter` baby)
+    * deleter: `@attName.deleter`
 
 ## 3. Abstraction
 
@@ -163,10 +162,10 @@ p.print('hahaha')
 * **Abstract Classes**
   * \=> Abstract classes are classes that contain **one or more abstract methods**.
   * Abstract classes cannot be instantiated, and require subclasses to provide implementations for the abstract methods.
-  * Python on its own doesn't provide abstract classes. Yet, Python comes with a module which provides the infrastructure for defining** Abstract Base Classes (ABCs)**
+  * Python on its own doesn't provide abstract classes. Yet, Python comes with a module which provides the infrastructure for defining\*\* Abstract Base Classes (ABCs)\*\*
 * **Section Highlights:**
-  * ` raise NotImplementedError()` or `pass` => **both **can be used; as per the needs
-  * ` from abc import ABC, abstractmethod`
+  * `raise NotImplementedError()` or `pass` => \*\*both \*\*can be used; as per the needs
+  * `from abc import ABC, abstractmethod`
 
 ## 4. Methods
 
@@ -210,7 +209,7 @@ print(f"After: items = {mycart.items}")
 ## 5. Mutation & Cloning
 
 * **Alisas**
-  * \=> Two or more references to the same memory address 
+  * \=> Two or more references to the same memory address
   * i.e. Different name, Same object
 * **Immutable Data Types in python:**
   * String
@@ -303,7 +302,6 @@ class Button(Rectangle, GUIElement):
     def __init__(self, length, width, color, text):
         Rectangle.__init__(self, length, width, color)
         self.text = text
-
 ```
 
 * **Inheritence:**
@@ -321,31 +319,31 @@ class Button(Rectangle, GUIElement):
 * **Method Overloading**
   * occurs when two methods in the same class have the same name but different parameters
   * So when you call the method, the version that is executed is determined by the data types of the arguments or by the number of arguments.
-  * **Python does not support method overloading**. 
+  * **Python does not support method overloading**.
     * The closest thing that you could think of in Python is default arguments, because you can call a method passing a different number of arguments if you want to use the default values. But this is not method overloading per se.
-  * Java does support method overloading 
+  * Java does support method overloading
     * because you need to explicitly declare the data type of each argument, so the compiler can match the number, sequence, and data types of the arguments with the number, sequence, and data types of the formal parameters to determine which version of the method it should call.
 * **Polymorphism**
   * \=> Polymorphism means that an object can take many forms.
   * Tip: Polymorphism can be achieved through **method overriding** and method overloading (method overloading is not supported in Python per se).
   * **In Python, polymorphism can be implemented through inheritance** when you **override** methods from the superclass.
-* **Section Highlight: **
+* \*\*Section Highlight: \*\*
   * `Superclass.__init__(self)`
 * What's the Object Oriented way to get rich? => Inheritance 🤣
 
 ## 7. Concurrency (py)
 
 * **GIL**(Global Interpreter Lock) =>
-  * is a part of **CPython** (a typical, mainline Python implementation) 
+  * is a part of **CPython** (a typical, mainline Python implementation)
   * its function: **No multithreading is allowed**
-    * Nevertheless;** **you **can use multithreading in python **due to** fast context switching**
+    * Nevertheless;\*\* \*\*you **can use multithreading in python due to fast context switching**
 * A **thread** is just a block of code that gets executed.
 * **1.Multithreading**: Using threads is like running multiple programs at once. Threads take turn while getting executed. And while one is getting executed; the other sleeps(until its his turn for execution)
-* **2.Multiprocessing:** In multiprocessing you leverage **multiple CPUs cores** to distribute your calculations. 
+* **2.Multiprocessing:** In multiprocessing you leverage **multiple CPUs cores** to distribute your calculations.
   * Since each of the CPUs runs in parallel, you're effectively able to run multiple tasks simultaneously.
 * **`3.asyncio`**: asyncio is a library to write **concurrent** code using the **async/await** syntax.
   * is essentially **threading** where **not the CPU but you, as a programmer (or actually your application), decide where and when does the context switch happen**.
-  *  In Python you use an `await` keyword to suspend the execution of your coroutine (defined using `async` keyword).
+  * In Python you use an `await` keyword to suspend the execution of your coroutine (defined using `async` keyword).
   * asyncio provides a set of **high-level** APIs to:
     * run Python **coroutines** concurrently and have full control over their execution;
     * perform network IO and IPC;
@@ -356,10 +354,10 @@ class Button(Rectangle, GUIElement):
     * the `request` module is blocking in nature, i.e. it runs **synchronously**.
     * so even if you use asyncio; the complete process remains synchronous
     * **===>** use **`aiohttp`** instead of `requests `, its smart enough to figure out when to await
-    * ``
+    * \`\`
 * **Which one to choose:**
-  * is it CPU Bound ?  ------------------------------------------------------------------------> USE `multiprocessing`
-  * **I/O** Bound, **Fast I/O**, **Limited** Number of Connections ? --------------> USE **`multihreading`** 
+  * is it CPU Bound ? ------------------------------------------------------------------------> USE `multiprocessing`
+  * **I/O** Bound, **Fast I/O**, **Limited** Number of Connections ? --------------> USE **`multihreading`**
   * **I/O** Bound, **Slow** I/O, **Many** connections? ------------------------------------> USE `asyncio`
 
 {% tabs %}
@@ -727,19 +725,16 @@ Done w/ nums in range 500 divisible by 3
 
 ![](../.gitbook/assets/screenshot-2021-09-06-at-1.55.50-am.png)
 
-* **Resources**: 
+* **Resources**:
   * eduvative.io : [Python Concurrency for Senior Engineering Interviews](https://www.educative.io/courses/python-concurrency-for-senior-engineering-interviews) : couldn't find on torrent!
-  *   concurrency in Python (videos): taken from [git:coding-interview-university](https://github.com/jwasham/coding-interview-university)
-
-      *  [Short series on threads](https://www.youtube.com/playlist?list=PL1H1sBF1VAKVMONJWJkmUh6\_p8g4F2oy1)
-      *  [Python Threads](https://www.youtube.com/watch?v=Bs7vPNbB9JM)
-      *  [Understanding the Python GIL (2010)](https://www.youtube.com/watch?v=Obt-vMVdM8s)
-        * [reference](http://www.dabeaz.com/GIL)
-      *  [David Beazley - Python Concurrency From the Ground Up: LIVE! - PyCon 2015](https://www.youtube.com/watch?v=MCs5OvhV9S4)
-      *  [Keynote David Beazley - Topics of Interest (Python Asyncio)](https://www.youtube.com/watch?v=ZzfHjytDceU)
-      *  [Mutex in Python](https://www.youtube.com/watch?v=0zaPs8OtyKY)
-
-
+  * concurrency in Python (videos): taken from [git:coding-interview-university](https://github.com/jwasham/coding-interview-university)
+    * [Short series on threads](https://www.youtube.com/playlist?list=PL1H1sBF1VAKVMONJWJkmUh6\_p8g4F2oy1)
+    * [Python Threads](https://www.youtube.com/watch?v=Bs7vPNbB9JM)
+    * [Understanding the Python GIL (2010)](https://www.youtube.com/watch?v=Obt-vMVdM8s)
+    * [reference](http://www.dabeaz.com/GIL)
+    * [David Beazley - Python Concurrency From the Ground Up: LIVE! - PyCon 2015](https://www.youtube.com/watch?v=MCs5OvhV9S4)
+    * [Keynote David Beazley - Topics of Interest (Python Asyncio)](https://www.youtube.com/watch?v=ZzfHjytDceU)
+    * [Mutex in Python](https://www.youtube.com/watch?v=0zaPs8OtyKY)
 
 ## 8. SOLID Design Patterns
 
@@ -810,14 +805,14 @@ with open(file) as fh:
 
 ### 8.2. OCP => Open Close Principle
 
-* **IDEA** => classes should be** OPEN for Extension, but CLOSED for Modification**
+* **IDEA** => classes should be\*\* OPEN for Extension, but CLOSED for Modification\*\*
   * i.e. after you've written a class; if a new business requirement comes => you should not modify it. You should ONLY extend it
 
 ### 8.3. LSP => Liskov Substituion Principle
 
 ### 8.4. ISP => Interface Segratation Principle
 
-*  IDEA -> Dont stick too many things(atts/methods) in an interface
+* IDEA -> Dont stick too many things(atts/methods) in an interface
 
 ### 8.5. DIP => Dependency Inversion Principle
 
@@ -861,7 +856,7 @@ if __name__ == '__main__':
   * **WARNING**: An indication that something unexpected happened, or indicative of some problem in the near future (e.g. ‘disk space low’). The software is still working as expected.
   * **ERROR**: Due to a more serious problem, the software has not been able to perform some function.
   * **CRITICAL**: A serious error, indicating that the program itself may be unable to continue running.
-* **IMPLEMENTATION: **use python's `logging` lib
+* \*\*IMPLEMENTATION: \*\*use python's `logging` lib
   * logging levels(after which level we should print the logs) can be configured in beginning
 
 {% tabs %}
@@ -1048,7 +1043,6 @@ app.create_ticket("Arjan Egges", "VSCode doesn't automatically solve my bugs.")
 
 # process the tickets
 app.process_tickets()
-
 ```
 {% endtab %}
 
@@ -1117,7 +1111,6 @@ app.create_ticket("Arjan Egges", "VSCode doesn't automatically solve my bugs.")
 
 # process the tickets
 app.process_tickets()
-
 ```
 {% endtab %}
 {% endtabs %}
@@ -1129,7 +1122,7 @@ app.process_tickets()
 * **e.g.**
   * 1 Moon (anti `1Q84` hai, par real hai)
   * 1 Sun
-* **How: **each time you want to create a new instance
+* \*\*How: \*\*each time you want to create a new instance
   * check if an instance exists => dont create another; just return it
   * if doesnt exit => create new
 * In this way; all our instances will **point to single instance.**
@@ -1159,34 +1152,34 @@ class ParkingLot:
 {% endtab %}
 {% endtabs %}
 
-### 2. [BUILDER](https://www.tutorialspoint.com/design_pattern/builder_pattern.htm)
+### 2. [BUILDER](https://www.tutorialspoint.com/design\_pattern/builder\_pattern.htm)
 
 * builds a complex object using simple objects and using a step by step approach.
 * **e.g.@Flipkart**:
-  * buildMnmFact 
+  * buildMnmFact
     * buildSupplyObj
       * buildLaudaObj
         * ...
-    * buildDemandObj 
+    * buildDemandObj
       * buildLassanObj
         * ...
 
-### 3. [FACTORY](https://www.tutorialspoint.com/design_pattern/factory_pattern.htm)
+### 3. [FACTORY](https://www.tutorialspoint.com/design\_pattern/factory\_pattern.htm)
 
 * we create object without exposing the creation logic to the client and refer to newly created object using a common interface
 
 ![Factory Pattern](../.gitbook/assets/screenshot-2021-08-30-at-12.36.38-am.png)
 
-### 4. [PROTOTYPE](https://www.tutorialspoint.com/design_pattern/prototype_pattern.htm)
+### 4. [PROTOTYPE](https://www.tutorialspoint.com/design\_pattern/prototype\_pattern.htm)
 
 * creating **duplicate** object **instead of a new one**, because creating a new obj is **costly** .
-* This pattern is used when creation of object directly is costly. 
-* For example, an object is to be created after a **costly database operation**. 
+* This pattern is used when creation of object directly is costly.
+* For example, an object is to be created after a **costly database operation**.
 * We can **cache** the object, returns its clone on next request and update the database as and when needed thus reducing database calls.
 
-### 5. [ADAPTER](https://www.tutorialspoint.com/design_pattern/adapter_pattern.htm)
+### 5. [ADAPTER](https://www.tutorialspoint.com/design\_pattern/adapter\_pattern.htm)
 
-* a single class which is responsible to **join functionalities of independent or incompatible interfaces**. 
+* a single class which is responsible to **join functionalities of independent or incompatible interfaces**.
 * e.g.: **card reader** which acts as an adapter between **memory card** and a **laptop**
 
 ### **6. BRIDGE**
@@ -1204,8 +1197,8 @@ class ParkingLot:
 
 * it consists of 2 things: **Subject** & **Observer**
   * **subject**: does things/changes things
-  * after doing things, the **subject notifies the observer **about the changes
-* Observer pattern is used when there is** one-to-many** relationship between objects such as **if one object is modified, its dependent objects are to be notified automatically**.
+  * after doing things, the \*\*subject notifies the observer \*\*about the changes
+* Observer pattern is used when there is\*\* one-to-many\*\* relationship between objects such as **if one object is modified, its dependent objects are to be notified automatically**.
 * **NOTE:** this is used in **Even Management Systems** i.e.**API calls/ UI handling /events handling etc**
 
 ### 10. STATE
@@ -1217,14 +1210,14 @@ class ParkingLot:
 * [x] Understand OOPs using Python
   * [x] **Beginner**: Udemy: [Python OOP - Object Oriented Programming for Beginners](https://razorpay.udemy.com/course/python-object-oriented-programming-oop/)
     * Implementation of OOPs concepts in python
-  * [x] **Beginner:**Udemy: [Python OOP : Four Pillars of OOP in Python 3 for Beginners](https://razorpay.udemy.com/course/python-oops-beginners/)
+  * [x] \*\*Beginner:\*\*Udemy: [Python OOP : Four Pillars of OOP in Python 3 for Beginners](https://razorpay.udemy.com/course/python-oops-beginners/)
     * `@abstractMethod`
   * [x] **Adv**: Udemy: [Advanced Python: Python OOP with 10 Real-World Programs](https://razorpay.udemy.com/course/the-python-pro-course/)
     * Structured process of LLD designing 💪
     * Deploying CLI apps([repl.com](https://replit.com))
     * APIs => Django/Flask
 * [x] Learn design principles - with implementation
-  * [x] Udemy: [Design Patterns in Python](https://razorpay.udemy.com/course/design-patterns-python/) ☑️| done** S.O.L.I.D.** | **TODO**: finish rest later
+  * [x] Udemy: [Design Patterns in Python](https://razorpay.udemy.com/course/design-patterns-python/) ☑️| done\*\* S.O.L.I.D.\*\* | **TODO**: finish rest later
   * [x] Udemy: [Pragmatic System Design](https://razorpay.udemy.com/course/pragmatic-system-design/)
 * [ ] Revise Django, Node, React, Next - & have all the working code ready for interviews
   * [x] React2025
@@ -1236,8 +1229,6 @@ class ParkingLot:
   * [ ] [Grokking the Object Oriented Design Interview](https://www.educative.io/courses/grokking-the-object-oriented-design-interview)
   * [ ] Git: [prasadgujar](https://github.com/prasadgujar)/[**low-level-design-primer**](https://github.com/prasadgujar/low-level-design-primer)
   * [ ] PDF: [Object-Oriented Design- Solutions & Algorithms](https://www.andiamogo.com/S-OOD.pdf)
-  *   [ ] [Leetcode Questions](https://leetcode.com/discuss/interview-question/object-oriented-design?currentPage=1\&orderBy=hot\&query)
-
-
+  * [ ] [Leetcode Questions](https://leetcode.com/discuss/interview-question/object-oriented-design?currentPage=1\&orderBy=hot\&query)
 
 ##
