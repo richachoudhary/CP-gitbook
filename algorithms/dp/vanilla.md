@@ -195,6 +195,7 @@ def solve(A):
 * [ ] CSES: [Array Description](https://cses.fi/problemset/task/1746) | [KartikArora](https://www.youtube.com/watch?v=d1H5JylYG4I\&ab\_channel=KartikArora) .🐽✅🐽
 * [x] Egg Dropping puzzle: [gfg](https://www.geeksforgeeks.org/egg-dropping-puzzle-dp-11/) 🥚🏣✅
 * [x] CSES: [Removal Game](https://cses.fi/problemset/task/1097/) | **standard**
+* [x] **LC **[**801.**Minimum Swaps To Make Sequences Increasing](https://leetcode.com/problems/minimum-swaps-to-make-sequences-increasing/) | 🐽
 
 {% tabs %}
 {% tab title="GridPaths" %}

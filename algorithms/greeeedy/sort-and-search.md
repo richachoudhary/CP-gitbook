@@ -662,32 +662,12 @@ def longestDupSubstring(self, S):
 * [ ] [658.Find K Closest Elements](https://leetcode.com/problems/find-k-closest-elements/) | [Soln](https://leetcode.com/problems/find-k-closest-elements/discuss/915047/Finally-I-understand-it-and-so-can-you.)
 * [x] CSES:[ Digit Queries](https://cses.fi/problemset/result/2573072/) | s[oln video](https://www.youtube.com/watch?v=QAcH8qD9Pe0\&ab\_channel=ARSLONGAVITABREVIS) ✅✅🐽
 * [x] CSES: [Concert Tickets](https://cses.fi/problemset/task/1091) | [WilliamLin](https://www.youtube.com/watch?v=dZ\_6MS14Mg4\&t=3436s\&ab\_channel=WilliamLin)✅⭐️⭐️✅ | **Kuch naya sikha ke gya ye Q**
-* [x] LC: \*\*4. \*\*[Median of Two Sorted Arrays](https://leetcode.com/problems/median-of-two-sorted-arrays/) 🐽🐽✅
+* [x] LC: 4.[Median of Two Sorted Arrays](https://leetcode.com/problems/median-of-two-sorted-arrays/) 🐽🐽✅
 * [x] LC 33: [Search in Rotated Sorted Array](https://leetcode.com/problems/search-in-rotated-sorted-array/) ☑️
 * [x] LC [34.Find First and Last Position of Element in Sorted Array](https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/) ✅
+* [x] LC [153.Find Minimum in Rotated Sorted Array](https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/) | amazon | standard | ✅
 
 {% tabs %}
-{% tab title="Concert Tickets:: CPP" %}
-```cpp
-multiset<int> tickets;
-cin >> n >> m;
-for (int i=0;i<n;++i){
-	cin >> h; tickets.insert(h);
-}
-for (int i=0;i<m;++i){
-	cin >> t;
-	auto it = tickets.upper_bound(t);
-	if (it==tickets.begin()){
-		cout << -1 << "\n";
-	}
-	else{
-		cout << *(--it) << "\n";
-		tickets.erase(it);
-	}
-}
-```
-{% endtab %}
-
 {% tab title="CounterTickets:: py TLE" %}
 ```python
 # 1. ================ TLE: O(NlogN)
@@ -792,6 +772,27 @@ def searchRange(self, nums: List[int], target: int) -> List[int]:
             if nums[start] != target: start += 1
             if nums[end] != target: end -= 1
     return [-1,-1]
+```
+{% endtab %}
+
+{% tab title="153✅" %}
+**faf**
+
+![](<../../.gitbook/assets/Screenshot 2021-10-28 at 2.36.15 PM.png>)
+
+```python
+if len(nums) == 1 or nums[0] < nums[-1]:
+    return nums[0]
+
+left, right = 0, len(nums) - 1
+while left <= right:
+    mid = left + (right - left) // 2
+    if mid > 0 and nums[mid - 1] > nums[mid]:  # The nums[mid] is the minimum number
+        return nums[mid]
+    if nums[mid] > nums[right]:  # search on the right side, because smaller elements are in the right side
+        left = mid + 1
+    else:
+        right = mid - 1  # search the minimum in the left side
 ```
 {% endtab %}
 {% endtabs %}

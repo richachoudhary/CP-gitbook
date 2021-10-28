@@ -286,6 +286,7 @@ def fullJustify(self, words: List[str], maxWidth: int):
 
 * [x] CF: [C.Unstable String](https://codeforces.com/problemset/problem/1535/C)
 * [x] LC [**Minimum Swaps to Group All 1's Together**](https://leetcode.com/discuss/interview-question/344778/find-the-minimum-number-of-swaps-required-such-that-all-the-0s-and-all-the-1s-are-together)** | **[**gfg**](https://www.geeksforgeeks.org/minimum-swaps-required-sort-binary-array/)**|  @CareemHackerrank**
+* [x] **LC **[**926. **Flip String to Monotone Increasing](https://leetcode.com/problems/flip-string-to-monotone-increasing/)
 
 {% tabs %}
 {% tab title="UnstableStr" %}
@@ -370,6 +371,34 @@ int minSwapBinaryArray(int[] arr)
 	}
 	return Math.min(swapZeroToLeft, swapZeroToRight);
 }
+```
+{% endtab %}
+
+{% tab title="926" %}
+```python
+def minFlipsMonoIncr(self, s: str) -> int:
+    min_flips = flips = s.count('0')
+    for c in s:
+        if c == '0':
+            flips -= 1
+        else:
+            flips += 1
+        min_flips = min(min_flips, flips)
+    return min_flips
+
+'''
+IDEA: 
+we assume the string after flip is s = '0'*i + '1'*j, the index of first '1' is i
+
+we just need to find the i in the initial string. We make all 1 before index i flip to 0, and make all 0 after index i flip to 1. Then, we get the right answer.
+
+
+
+for instance, s = 010110.
+if we choose the first 1(index=1) as i, we need to make all 1 before i flip to 0(all 0), make all 0 after i flip to 1(all 2),so the answer is 2.
+if we choose the second 1(index=3) as i, the answer is 1 + 1 = 2
+if we choose the third 1(index=4) as i, the answer is 2 + 1 = 3
+and so on.
 ```
 {% endtab %}
 {% endtabs %}
