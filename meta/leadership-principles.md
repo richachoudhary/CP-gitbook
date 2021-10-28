@@ -4,8 +4,6 @@
 
 \======> Situation -> Task -> Action -> Result
 
-
-
 Tell me about a time when you challenged the status quo.
 
 Tell me about a situation where you had a conflict with someone on your team. What was it about? What did you do? How did they react? What was the outcome?
@@ -98,97 +96,83 @@ Tell me about a time when you had conflicting ideas with your teammates and how 
 
 \==> answer
 
-<mark style="color:yellow;"></mark>\ <mark style="color:yellow;">a time when you faced a setback initially but still achieved the goal.</mark>\ <mark style="color:yellow;">a time when you had to cut corners to meet a deadline</mark>
+&#x20;<mark style="color:yellow;">a time when you faced a setback initially but still achieved the goal.</mark>\ <mark style="color:yellow;">a time when you had to cut corners to meet a deadline</mark>
 
-<mark style="color:yellow;">Tell me about a time when you felt under pressure that you wouldn't be able to get something done or had to take a pivot at the last minute</mark>
-\=> Linguini@Nestaway
-\       * 6 months internship; got project in the last 1.5 months
-\       * change of 3 mentors caused too much skeweness in POC (spent enough time with image processing, comparing GCP/AWS/Azure, pricing)
-\       * last 3 weeks remaind; panicked as mentor@college was asking for pre-demo & ppt
-\       * improvised & went ahead with speech-to-text + targetted-keywords matching
+#### <mark style="color:yellow;">🤨Tell me about a time when you felt under pressure that you wouldn't be able to get something done or had to take a pivot at the last minute</mark>&#x20;
+
+\==> Linguini@Nestaway&#x20;
+
+* 6 months internship; got project in the last 1.5 months&#x20;
+* change of 3 mentors caused too much skeweness in POC (spent enough time with image processing, comparing GCP/AWS/Azure, pricing) \\&#x20;
+* last 3 weeks remaind; panicked as mentor@college was asking for pre-demo & ppt&#x20;
+* improvised & went ahead with speech-to-text + targetted-keywords matching
 
 \==================================================================
-
-
-
 
 ## Things To Talk About:
 
 1. @BITS
-  * DTN project
-  * Apriori project
 
-2. @BARC
-  * Office Management System
-  * Telephone Directory
+* DTN project
+* Apriori project
 
-3. @Nestaway
-  * Linguini
+1. @BARC
 
-4. @Rzp
-  * Mozart: integration
-  * Capital: instant loans, instant refunds, KYC integration
+* Office Management System
+* Telephone Directory
 
-5. @Flipkart
-  * Keyword Targeting
-  * Sampling
-    * computation reduced by 80%
-    * real impact during  BBD sale 21
-  * Bidding Price Recommendation System
-  * Ads Merch Separation
-  * RCAs
-  * NFRs
+1. @Nestaway
 
+* Linguini
 
+1. @Rzp
 
+* Mozart: integration
+* Capital: instant loans, instant refunds, KYC integration
 
+1. @Flipkart
 
-
-
-
-
-
-
-
-
-
-
+* Keyword Targeting
+* Sampling
+  * computation reduced by 80%
+  * real impact during BBD sale 21
+* Bidding Price Recommendation System
+* Ads Merch Separation
+* RCAs
+* NFRs
 
 #### **1. Why do you want to quit your current job ?**
 
 * The job is becoming more data-engineering intensive; as things are progressing in the ecosystem.But I dont want to switch the domain from Software Developer to completely DE. -> this was the key factor I decided to start looking out.
-* and unable to switch teams due to internal policies.&#x20;
-* <mark style="color:green;">not learning anything new as product is in a saturated state,</mark>&#x20;
+* and unable to switch teams due to internal policies.
+* <mark style="color:green;">not learning anything new as product is in a saturated state,</mark>
 * <mark style="color:green;">NEVER EVER talk about bad boss, politics etc - it will backfire bigtime.</mark>
 
 #### 2.**What has been the biggest failure of your career till now ?** OR **What is the most critical feedback received from your boss in your entire career ?**
 
-* **WHAT: **brand & category enrichment in BSS
+* \*\*WHAT: \*\*brand & category enrichment in BSS
   * new platform | first time occurence during the Independence Day Sale
   * typecast mismatch from Java's **`List`** to Sark's **`Wrapped Array`**
     * `WrappedArray` wraps an `Array` to give it extra functionality. It also have a bunch of types while array extends only serializable and cloneable, This allows an array to be wrapped so it can be used in places where some generic collection type like `Seq` is required.
-*   **CORRECTIVE MEASURES:**
-
-    * fixed the bug in one night(during sale oncall) collaborating with the ingestion team & serving team
-    * (post fix)
-    * published Detailed RCA in tech-session with&#x20;
-      * debugging steps &&#x20;
-      * increased learning of spark & how spark's typecasting work
-    * Implemented the same type-safety in pipeline's code & added UTs for the same
-
-
+* **CORRECTIVE MEASURES:**
+  * fixed the bug in one night(during sale oncall) collaborating with the ingestion team & serving team
+  * (post fix)
+  * published Detailed RCA in tech-session with
+    * debugging steps &
+    * increased learning of spark & how spark's typecasting work
+  * Implemented the same type-safety in pipeline's code & added UTs for the same
 * **IMPACT:**
   * Even though we missed the SLA for the first night of sale(Early Access); we fixed the issue on time for the smoother sale.
 
-****
+***
 
 #### **3. What would you like to improve at your current workplace ?** OR **What do you dislike/hate at your current job/workplace ?**
 
 * <mark style="color:green;">a trap - if you badmouth your current employer or use any words like</mark> <mark style="color:green;">**hate**</mark> <mark style="color:green;">or</mark> <mark style="color:green;">**dislike**</mark><mark style="color:green;">, it is guaranteed to go against you.</mark>
-* Talk about generic things like -&#x20;
-  * sometimes code reviews take a long time due to senior developers being busy&#x20;
+* Talk about generic things like -
+  * sometimes code reviews take a long time due to senior developers being busy
     * probably that can be streamlined.
-  * Or say - we should invest more in enhancing the** test automation infrastructure**, which often takes a backseat due to various constraints
+  * Or say - we should invest more in enhancing the\*\* test automation infrastructure\*\*, which often takes a backseat due to various constraints
   * (!) too many senior people leaving - has resulted in a knowledge bottleneck
 * <mark style="color:green;">Basically, try to stay around technical things, and avoid talking about poor cafeteria or no free cab pickup-drop services etc.</mark>
 * <mark style="color:green;">The motive is to show your passion towards work related things and not focus on secondary things like cafeteria or cabs or playgrounds etc.</mark>
@@ -208,9 +192,7 @@ Always talk about that you would gently point out to that person directly, and r
 
 Here, you can turnaround the interview by **cross-questioning** your interviewer - "**by the way, can you give a brief insight into policy violation reporting mechanism which exists in this company ?**"
 
-
-
-#### **6. What is your greatest weakness ?** 
+#### **6. What is your greatest weakness ?**
 
 * <mark style="color:green;">No, NO, NO - please do not talk about</mark> <mark style="color:green;">**being impatient or pushing your team hard etc etc**</mark><mark style="color:green;">. These are all very very well-known answers.</mark>
 * <mark style="color:green;">Talk about something more genuine and possibly not related to work -</mark> I am not so good at remembering names of people I interact with for first few times.
