@@ -4,101 +4,152 @@
 
 \======> Situation -> Task -> Action -> Result
 
-Tell me about a time when you challenged the status quo.
+### <mark style="color:yellow;"> 🤨 -> Tell me about a time when you challenged the status quo.</mark>
+==> 
 
-Tell me about a situation where you had a conflict with someone on your team. What was it about? What did you do? How did they react? What was the outcome?
+### <mark style="color:yellow;"> 🤨 -> Tell me about a situation where you had a conflict with someone on your team. What was it about? What did you </mark>
+==> do? How did they react? What was the outcome?
 
-Give an example of when you saw a peer struggling and decided to step in and help. What was the situation and what actions did you take? What was the outcome?\
-Tell me about a time you committed a mistake?
+### <mark style="color:yellow;"> 🤨 -> Give an example of when you saw a peer struggling and decided to step in and help. What was the situation and what actions did you take? What was the outcome?\ </mark>
+==> 
+### <mark style="color:yellow;"> 🤨 -> Tell me about a time you committed a mistake?</mark>
+==> 
 
-Tell me about a time when your earned your teammate's trust?
+### <mark style="color:yellow;"> 🤨 -> Tell me about a time when your earned your teammate's trust?</mark>
+==> 
 
-Tell me about a time when you couldn't meet your deadline?
+### <mark style="color:yellow;"> 🤨 -> Tell me about a time when you couldn't meet your deadline?</mark>
+==> 
 
-Tell me about a time when your teammate didn't agree with you? What did you do?
+### <mark style="color:yellow;"> 🤨 -> Tell me about a time when your teammate didn't agree with you? What did you do?</mark>
+==> 
 
-Tell me about a time when you invented something?
+### <mark style="color:yellow;"> 🤨 -> Tell me about a time when you invented something?</mark>
+==> 
 
-Tell me about a time when you took important decision without any data?
+### <mark style="color:yellow;"> 🤨 -> Tell me about a time when you took important decision without any data?</mark>
+==> 
 
-Tell me about a time when you helped one of your teammates?
+### <mark style="color:yellow;"> 🤨 -> Tell me about a time when you helped one of your teammates?</mark>
+==> 
 
-Have you ever been in a situation where you had to make a choice among a few options, but did not have a lot of time to explore each option
+### <mark style="color:yellow;"> 🤨 -> Have you ever been in a situation where you had to make a choice among a few options, but did not have a lot of </mark>
+==> time to explore each option
 
-Have you ever failed at something? What did you learn from it?
+### <mark style="color:yellow;"> 🤨 -> Have you ever failed at something? What did you learn from it?</mark>
+==> 
 
-name time when you went out of your way to help someone?
+### <mark style="color:yellow;"> 🤨 -> name time when you went out of your way to help someone?</mark>
+==> 
 
-Time when you came up with novel solution.\
-Received negative feedback from manager and how you responded.\
-Time when you went above and beyond your job responsibilities.\
-Time when you did not have enough data and had to use judgement to make decision.\
-Time when you helped someone in their work.\
-Time when you helped someone grow in career and it benefited them.\
-Time when you helped someone grow but did not benefit them.\
-Time when you were 75% through a project and realized you had the wrong goal.\
-Time when your team members were not supporting something but you pushed and went for a more optimal solution.\
-Time when you pushed back a decision from your management for better long term benefits.\
-Time when you failed to meet your commitment
+### <mark style="color:yellow;"> 🤨 -> Time when you came up with novel solution.\</mark>
+==> 
+### <mark style="color:yellow;"> 🤨 -> Received negative feedback from manager and how you responded.\</mark>
+==> 
+### <mark style="color:yellow;"> 🤨 -> Time when you went above and beyond your job responsibilities.\</mark>
+==> 
+### <mark style="color:yellow;"> 🤨 -> Time when you did not have enough data and had to use judgement to make decision.\</mark>
+==> 
+### <mark style="color:yellow;"> 🤨 -> Time when you helped someone in their work.\</mark>
+==> 
+### <mark style="color:yellow;"> 🤨 -> Time when you helped someone grow in career and it benefited them.\</mark>
+==> 
+### <mark style="color:yellow;"> 🤨 -> Time when you helped someone grow but did not benefit them.\</mark>
+==> 
+### <mark style="color:yellow;"> 🤨 -> Time when you were 75% through a project and realized you had the wrong goal.\</mark>
+==> 
+### <mark style="color:yellow;"> 🤨 -> Time when your team members were not supporting something but you pushed and went for a more optimal solution.\</mark>
+==> 
+### <mark style="color:yellow;"> 🤨 -> Time when you pushed back a decision from your management for better long term benefits.\</mark>
+==> 
+### <mark style="color:yellow;"> 🤨 -> Time when you failed to meet your commitment</mark>
+==> 
 
-Tell me about yourself. Tell me about a project you're working on.
+### <mark style="color:yellow;"> 🤨 -> Tell me about yourself. Tell me about a project you're working on.</mark>
+\==>
 
-Time when you were working on a project on a time constraint
+### <mark style="color:yellow;"> 🤨 -> Time when you were working on a project on a time constraint</mark>
+\==>
 
-Time when you didn't meet a deadline
+### <mark style="color:yellow;"> 🤨 -> Time when you didn't meet a deadline</mark>
+\==>
 
-Time when you needed help from somebody
+### <mark style="color:yellow;"> 🤨 -> Time when you needed help from somebody</mark>
+\==>
 
-Tell me about yourself.\
-Tell me about a time you had to help a team member struggling with a task.\
-Tell me about a time you faced an obstacle and how you overcame it.
+### <mark style="color:yellow;"> 🤨 -> Tell me about yourself.\</mark>
+\==>
+### <mark style="color:yellow;"> 🤨 -> Tell me about a time you had to help a team member struggling with a task.\</mark>
+\==>
+### <mark style="color:yellow;"> 🤨 -> Tell me about a time you faced an obstacle and how you overcame it.</mark>
+\==>
 
-Tell me about one of your projects?\
-Tell me about one of your projects so the same as the first guy.\
-Tell me a time you took some on some risk
+### <mark style="color:yellow;"> 🤨 -> Tell me about one of your projects?\</mark>
+\==>
+### <mark style="color:yellow;"> 🤨 -> Tell me about one of your projects so the same as the first guy.\</mark>
+\==>
+### <mark style="color:yellow;"> 🤨 -> Tell me a time you took some on some risk</mark>
+\==>
 
-Have you ever gone out of your way to help a peer? (ownership)\
-Have you ever had to make a tough decision without consulting anybody? (bias for action)\
-asked me about my past projects that I've worked on and gave me detailed explaination about the Internship.
+### <mark style="color:yellow;"> 🤨 -> Have you ever gone out of your way to help a peer? (ownership)\</mark>
+\==>
+### <mark style="color:yellow;"> 🤨 -> Have you ever had to make a tough decision without consulting anybody? (bias for action)\</mark>
+\==>
+### <mark style="color:yellow;"> 🤨 -> asked me about my past projects that I've worked on and gave me detailed explaination about the Internship.</mark>
+\==>
 
-Tell me about a time when you learned new technologies\
-Tell me about a time when you took a decision on your own without the manager's prior approval\
-Tell me about a time you had multiple solutions and you had to select an optimal one
+### <mark style="color:yellow;"> 🤨 -> Tell me about a time when you learned new technologies\</mark>
+\==>
+### <mark style="color:yellow;"> 🤨 -> Tell me about a time when you took a decision on your own without the manager's prior approval\</mark>
+\==>
+### <mark style="color:yellow;"> 🤨 -> Tell me about a time you had multiple solutions and you had to select an optimal one</mark>
+\==>
 
-Tell me about a time when you innovated and exceeded the expectation
+### <mark style="color:yellow;"> 🤨 -> Tell me about a time when you innovated and exceeded the expectation</mark>
+\==>
 
-Tell me about a time where you had to make a decision based on limited information and how it impacted the outcome.
+### <mark style="color:yellow;"> 🤨 -> Tell me about a time where you had to make a decision based on limited information and how it impacted the </mark>
+\==>outcome.
 
-Tell me about a time where you had limited time and how it impacted
+### <mark style="color:yellow;"> 🤨 -> Tell me about a time where you had limited time and how it impacted</mark>
+\==>
 
-Tell me about a time where you did not know something and how you tackled it(Something related to it)
+### <mark style="color:yellow;"> 🤨 -> Tell me about a time where you did not know something and how you tackled it(Something related to it)</mark>
+\==>
 
-first one was about handling a tight deadline, second is setbacks on projects?
+### <mark style="color:yellow;"> 🤨 -> first one was about handling a tight deadline, second is setbacks on projects?</mark>
+\==>
 
-Handling a tight deadline\
-How would you help a new employee who is facing technical difficulties?
+### <mark style="color:yellow;"> 🤨 -> Handling a tight deadline\</mark>
+\==>
+### <mark style="color:yellow;"> 🤨 -> How would you help a new employee who is facing technical difficulties?</mark>
+\==>
 
-disagree and commit and ownership LPs.
+### <mark style="color:yellow;"> 🤨 -> disagree and commit and ownership LPs.</mark>
+\==>
 
-Tell me about your yourself (the general icebreaker).\
-Tell me about tim when you faced a difficult challenge.\
-Tell me about a time when you needed help from someone during a project.
+### <mark style="color:yellow;"> 🤨 -> Tell me about your yourself (the general icebreaker).\</mark>
+\==>
+### <mark style="color:yellow;"> 🤨 -> Tell me about tim when you faced a difficult challenge.\</mark>
+\==>
+### <mark style="color:yellow;"> 🤨 -> Tell me about a time when you needed help from someone during a project.</mark>
+\==>
 
-Tell me about a time when you thought of an unpopular idea.\
-Tell me about a time when you had to decide upon something without consulting your superior.\
-Tell me about a time when you had to face tight time constraints during a project.
+### <mark style="color:yellow;"> 🤨 -> Tell me about a time when you thought of an unpopular idea. </mark>
+### <mark style="color:yellow;"> 🤨 -> Tell me about a time when you had to decide upon something without consulting your superior. </mark>
+### <mark style="color:yellow;"> 🤨 -> Tell me about a time when you had to face tight time constraints during a project. </mark>
 
-Tell me about yourself.\
-Tell me about a time when you did not meet your deadlines for a project.\
-Tell me about a time when you had conflicting ideas with your teammates and how did you resolve them?
+### <mark style="color:yellow;"> 🤨 -> Tell me about yourself. </mark>
+### <mark style="color:yellow;"> 🤨 -> Tell me about a time when you did not meet your deadlines for a project. </mark>
+### <mark style="color:yellow;"> 🤨 -> Tell me about a time when you had conflicting ideas with your teammates and how did you resolve them </mark>
 
 #### <mark style="color:yellow;">a project you're proud of</mark>
 
 \==> answer
 
-&#x20;<mark style="color:yellow;">a time when you faced a setback initially but still achieved the goal.</mark>\ <mark style="color:yellow;">a time when you had to cut corners to meet a deadline</mark>
+### <mark style="color:yellow;"> 🤨 -> a time when you faced a setback initially but still achieved the goal.</mark>\ <mark style="color:yellow;">a time when you had to cut corners to meet a deadline</mark>
 
-#### <mark style="color:yellow;">🤨Tell me about a time when you felt under pressure that you wouldn't be able to get something done or had to take a pivot at the last minute</mark>&#x20;
+#### <mark style="color:yellow;">🤨 -> Tell me about a time when you felt under pressure that you wouldn't be able to get something done or had to take a pivot at the last minute</mark>&#x20;
 
 \==> Linguini@Nestaway&#x20;
 
