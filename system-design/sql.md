@@ -15,7 +15,7 @@
 | Symbol | Description                                         | Example                                            |
 | ------ | --------------------------------------------------- | -------------------------------------------------- |
 | %      | Represents zero or more characters                  | **bl%** finds\*\* bl, black, blue, and blob\*\*    |
-| \_     | Represents a single character                       | **h_t** finds **hot, hat**, and **hit**            |
+| \_     | Represents a single character                       | **h\_t** finds **hot, hat**, and **hit**           |
 | \[]    | Represents any single character within the brackets | **h\[oa]t** finds **hot** and **hat**, but not hit |
 | ^      | Represents any character not in the brackets        | **h\[^oa]t** finds **hit**, but not hot and hat    |
 | -      | Represents a range of characters                    | **c\[a-b]t** finds **cat** and **cbt**             |
@@ -31,7 +31,7 @@
 | WHERE ContactName LIKE 'a%o'   | Finds any values that start with "a" and ends with "o" |
 
 * **REGEX**
-  * Practiced from [regexone.com](https://regexone.com/lesson/misc_meta_characters?)
+  * Practiced from [regexone.com](https://regexone.com/lesson/misc\_meta\_characters?)
   * Using regex in SQL queries:
     * `select distinct city from station where city `**`regexp`**` '^[aeiou]';`
 
@@ -77,7 +77,7 @@ SELECT CITY ,LENGTH(CITY) FROM STATION
     ORDER BY CITY ASC LIMIT 1;
 ```
 
-* \*\*[**Weather Observation Station 9**](https://www.hackerrank.com/challenges/weather-observation-station-9/problem?h_r=next-challenge\&h_v=zen\&h_r=next-challenge\&h_v=zen\&h_r=next-challenge\&h_v=zen\&h_r=next-challenge\&h_v=zen) | \*\*Query the list of _CITY_ names starting DOES NOT with vowels (i.e., `a`, `e`, `i`, `o`, or `u`) from **STATION**
+* \*\*[**Weather Observation Station 9**](https://www.hackerrank.com/challenges/weather-observation-station-9/problem?h\_r=next-challenge\&h\_v=zen\&h\_r=next-challenge\&h\_v=zen\&h\_r=next-challenge\&h\_v=zen\&h\_r=next-challenge\&h\_v=zen) | \*\*Query the list of _CITY_ names starting DOES NOT with vowels (i.e., `a`, `e`, `i`, `o`, or `u`) from **STATION**
 
 ```sql
  --> starts with ke liye
@@ -88,7 +88,7 @@ select distinct city from station where left(city,1) not in ('a','e','i','o','u'
 select distinct city from station where city not regexp '^[aeiou]';
 ```
 
-* [**Type of Triangle**](https://www.hackerrank.com/challenges/what-type-of-triangle/problem)** | query identifying the **_**type**_** of each record in the TRIANGLES table using its three side lengths | UAGE: `CASE `✅**
+* [**Type of Triangle**](https://www.hackerrank.com/challenges/what-type-of-triangle/problem)\*\* | query identifying the **\_**type**\_** of each record in the TRIANGLES table using its three side lengths | UAGE: `CASE `✅\*\*
 
 ```sql
 SELECT CASE
@@ -100,7 +100,7 @@ SELECT CASE
 FROM TRIANGLES
 ```
 
-* [**The PADS**](https://www.hackerrank.com/challenges/the-pads/problem)** | ✅✅**
+* [**The PADS**](https://www.hackerrank.com/challenges/the-pads/problem)\*\* | ✅✅\*\*
   * Query an _alphabetically ordered_ list of all names in **OCCUPATIONS**, immediately followed by the first letter of each profession as a parenthetical (i.e.: enclosed in parentheses). For example: `AnActorName(A)`, `ADoctorName(D)`, `AProfessorName(P)`, and `ASingerName(S)`.
   * \#2. Query the number of ocurrences of each occupation in **OCCUPATIONS**. Sort the occurrences in _ascending order_, and output them in the following format:\
     `There are a total of [occupation_count] [occupation]s.`
@@ -202,7 +202,7 @@ ORDER BY COUNT(OCCUPATION);
     ON a.ManagerId = b.Id
     Where a.Salary > b.Salary;
     ```
-*   **LC.183. **[**Customers Who Never Order**](https://leetcode.com/problems/customers-who-never-order/)
+*   \*\*LC.183. \*\*[**Customers Who Never Order**](https://leetcode.com/problems/customers-who-never-order/)
 
     ```sql
     select customers.name as 'Customers'
@@ -212,7 +212,7 @@ ORDER BY COUNT(OCCUPATION);
         select customerid from orders
     );
     ```
-*   **LC.184. **[**Department Highest Salary**](https://leetcode.com/problems/department-highest-salary/)
+*   \*\*LC.184. \*\*[**Department Highest Salary**](https://leetcode.com/problems/department-highest-salary/)
 
     ```sql
     select d.Name as Department, e.Name as Employee, e.Salary
@@ -230,14 +230,14 @@ ORDER BY COUNT(OCCUPATION);
 
 ### 3. RANK :: learn more about it ☑️
 
-*   **LC.176. **[**Second Highest Salary**](https://leetcode.com/problems/second-highest-salary/)
+*   \*\*LC.176. \*\*[**Second Highest Salary**](https://leetcode.com/problems/second-highest-salary/)
 
     ```sql
     Select Max(Salary) AS SecondHighestSalary
     From Employee
     Where Salary < (Select Max(Salary) From Employee);
     ```
-*   **LC.177. **[**Nth Highest Salary**](https://leetcode.com/problems/nth-highest-salary/)
+*   \*\*LC.177. \*\*[**Nth Highest Salary**](https://leetcode.com/problems/nth-highest-salary/)
 
     ```sql
     CREATE FUNCTION getNthHighestSalary(N INT) RETURNS INT
@@ -259,14 +259,14 @@ ORDER BY COUNT(OCCUPATION);
 
 ### 4. Basics
 
-*   **182. **[**Duplicate Emails**](https://leetcode.com/problems/duplicate-emails/)
+*   \*\*182. \*\*[**Duplicate Emails**](https://leetcode.com/problems/duplicate-emails/)
 
     ```sql
     Select Email From Person
     Group by Email
     Having count(*) > 1;
     ```
-*   **196. **[**Delete Duplicate Emails**](https://leetcode.com/problems/delete-duplicate-emails/)
+*   \*\*196. \*\*[**Delete Duplicate Emails**](https://leetcode.com/problems/delete-duplicate-emails/)
 
     ```sql
     /* retain the unique emails*/
@@ -291,6 +291,6 @@ ORDER BY COUNT(OCCUPATION);
 
 ## RESOURCES:
 
-* **\[x] **[**Summary of SQL Questions on Leetcode**](https://byrony.github.io/summary-of-sql-questions-on-leetcode.html)
+* \*\*\[x] \*\*[**Summary of SQL Questions on Leetcode**](https://byrony.github.io/summary-of-sql-questions-on-leetcode.html)
 * **\[.] **[**shawlu95**](https://github.com/shawlu95)**/**[**Beyond-LeetCode-SQL**](https://github.com/shawlu95/Beyond-LeetCode-SQL)\*\*\*\*
 * [**mrinal1704**](https://github.com/mrinal1704)**/**[**SQL-Leetcode-Challenge**](https://github.com/mrinal1704/SQL-Leetcode-Challenge)

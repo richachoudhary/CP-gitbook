@@ -957,7 +957,6 @@ Similar to Merge Intervals(LeetCode 56), but the output is different,
 now you are required to output idle time after time intervals merged, 
 notice also output 0 - first start time.
 
-
 ```
 {% endtab %}
 
@@ -1427,7 +1426,6 @@ if __name__ == "__main__":
 # Pt2: ===============================================================
 Input: s = "(1+(4+5+2)-3)+(6+8)"
 Output: 23
-
 ```
 {% endtab %}
 

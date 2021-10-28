@@ -144,7 +144,7 @@ def maximalRectangle(self, matrix: List[List[str]]):
 * [x] [42. Trapping Rain Water](https://leetcode.com/problems/trapping-rain-water/) `res += min(mxl[i],mxr[i]) - h[i]`
 * [x] [227. Basic Calculator II](https://leetcode.com/problems/basic-calculator-ii/)
 * [x] [224. Basic Calculator](https://leetcode.com/problems/basic-calculator/) ✅
-* [x] [**772. Basic Calculator III**](https://ttzztt.gitbooks.io/lc/content/quant-dev/basic-calculator-iii.html)** 🐽 | **[**approach**](https://leetcode.com/problems/basic-calculator-ii/discuss/658480/python-basic-calculator-i-ii-iii-easy-solution-detailed-explanation)
+* [x] [**772. Basic Calculator III**](https://ttzztt.gitbooks.io/lc/content/quant-dev/basic-calculator-iii.html)\*\* 🐽 | \*\*[**approach**](https://leetcode.com/problems/basic-calculator-ii/discuss/658480/python-basic-calculator-i-ii-iii-easy-solution-detailed-explanation)
 
 {% tabs %}
 {% tab title="42" %}
@@ -316,7 +316,7 @@ return calc(0)
 * [x] [503. Next Greater Element II](https://leetcode.com/problems/next-greater-element-ii/) | for circular array 🚀
 * [ ] [556.Next Greater Element III](https://leetcode.com/problems/next-greater-element-iii/) 🍪🍪🍪
 * [x] [155. Min Stack](https://leetcode.com/problems/min-stack/) : instead of 2 stacks, use single stack & insert pairs in it: `ele,min_ele`
-  * Regular approach of `O(1)` => [Aditya Verma](https://www.youtube.com/watch?v=ZvaRHYYI0-4\&list=PL_z\_8CaSLPWdeOezg68SKkeLN4-T_jNHd\&index=11\&ab_channel=AdityaVerma)
+  * Regular approach of `O(1)` => [Aditya Verma](https://www.youtube.com/watch?v=ZvaRHYYI0-4\&list=PL\_z\_8CaSLPWdeOezg68SKkeLN4-T\_jNHd\&index=11\&ab\_channel=AdityaVerma)
 * [x] [1441.Build an Array With Stack Operations](https://leetcode.com/problems/build-an-array-with-stack-operations/)
 * [x] SPOJ: [STPAR - Street Parade](https://www.spoj.com/problems/STPAR/) | [Approach](http://discuss.spoj.com/t/stpar-street-parade/2022)
 * [x] LC 316. [Remove Duplicate Letters](https://leetcode.com/problems/remove-duplicate-letters/)
@@ -324,7 +324,7 @@ return calc(0)
 
 {% tabs %}
 {% tab title="155" %}
-#### Approach#1: Standard | single stack + var | O(1)
+**Approach#1: Standard | single stack + var | O(1)**
 
 ```python
 def __init__(self):
@@ -355,9 +355,9 @@ def getMin(self) -> int:
         return self.min_
 ```
 
-####
 
-#### Approach#2: Smart | stack of tuple | O(1)
+
+**Approach#2: Smart | stack of tuple | O(1)**
 
 ```python
 class MinStack:
@@ -407,7 +407,6 @@ def removeDuplicateLetters(self, s: str) -> str:
         stk.append(c)
         vis.add(c)
     return ''.join(stk)
-
 ```
 
 soln link: [https://leetcode.com/problems/remove-duplicate-letters/discuss/889477/Python-O(n)-greedy-with-stack-explained](https://leetcode.com/problems/remove-duplicate-letters/discuss/889477/Python-O\(n\)-greedy-with-stack-explained)
@@ -433,11 +432,10 @@ def max_sums(d):
 def max_differences_sum(A):    # main function
     return max_sums(A) + max_sums([-x for x in A])
 
-
 ```
 {% endtab %}
 {% endtabs %}
 
 ### 4.3 Resources
 
-* [Aditya Verma's Playlist](https://www.youtube.com/watch?v=P1bAPZg5uaE\&list=PL_z\_8CaSLPWdeOezg68SKkeLN4-T_jNHd\&ab_channel=AdityaVerma)
+* [Aditya Verma's Playlist](https://www.youtube.com/watch?v=P1bAPZg5uaE\&list=PL\_z\_8CaSLPWdeOezg68SKkeLN4-T\_jNHd\&ab\_channel=AdityaVerma)

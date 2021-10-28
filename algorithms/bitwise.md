@@ -2,17 +2,17 @@
 
 ### 🌟**ANY PROBLEM IN THE WORLD CAN BE SOLVED BY BITSET(i.e. checking on all possible solutions)🟢🟢🟢**
 
-### ****
+### \*\*\*\*
 
-### **                                                     **<mark style="color:green;">**1<\<i **</mark>**          **<mark style="color:green;">** i>>1**</mark>
+### \*\* \*\*<mark style="color:green;">**1<\<i **</mark>**i>>1**
 
-### &#x20;                                               <mark style="color:orange;">चोंच</mark> wali taraf <mark style="color:orange;">1</mark> rahega
+### <mark style="color:orange;">चोंच</mark> wali taraf <mark style="color:orange;">1</mark> rahega
 
-&#x20;                                                             (because चोंच एक hi hoti hai na)
+(because चोंच एक hi hoti hai na)
 
-### &#x20;                                         <mark style="color:yellow;">मुँह खुला</mark> wali taraf <mark style="color:yellow;">i</mark> rahega
+### <mark style="color:yellow;">मुँह खुला</mark> wali taraf <mark style="color:yellow;">i</mark> rahega
 
-****
+***
 
 ## **0.Notes:**
 
@@ -35,23 +35,23 @@
 3
 ```
 
-| What                                                                      | How                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
-| ------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Left Shift ( << )                                                         | <p><code>1 &#x3C;&#x3C; i = pow(2,i) : </code><strong><code>general_use</code></strong></p><p><strong><code>n&#x3C;&#x3C;k </code></strong>is equivalent to <strong>multiplying</strong> n with <span class="math">2^k</span></p>                                                                                                                                                                                                                                                                                        |
-| Right Shift ( >> )                                                        | <p><code>i >> 1 : </code><strong><code>general_use</code></strong></p><p>16 >> 4 = 1</p><p><strong><code>n>>k </code></strong>is equivalent to <strong>dividing</strong> n with <span class="math">2^k</span></p>                                                                                                                                                                                                                                                                                                        |
-| **Implementation: C**heck if the i-th bit is set                          | **`return x and (1<<i)`**                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
-| **GET** i-th bit of x                                                     | **`return (x>>i)&1`**                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
-| \*\*CLEAR/TURN OFF \*\* the i-th bit in x                                 | **`x = x^(1<<i) `**# xor turns that bit off                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
-| \*\*SET/TURN ON \*\*the i-th bit in x                                     | **`x = x\|(1<<i)`**                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
-| **TOGGLE** the i-th bit in x                                              | **x = `x^(1<<i)`**                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
-| \*\*Implementation: \*\*generate all the possible subsets                 | <p><code>for i in range(0, 1&#x3C;&#x3C;n):</code><br>         <code>sub = []</code></p><p><code>    for j in range(0,n):</code></p><p><code>        if i </code><strong><code>&#x26;</code></strong><code>(1&#x3C;&#x3C;j):</code></p><p><code>            sub.append(a[j])</code></p><p><code>    superset += sub</code></p>                                                                                                                                                                                           |
-| `(x-1)`                                                                   | <p>flips all the bits to the right of rightmost 1 in x and also including the rightmost 1</p><p>x = 4 = (100)<br>x - 1 = 3 = (011)</p>                                                                                                                                                                                                                                                                                                                                                                                   |
-| \*\*Implementation: \*\*check if a given number is a power of 2 ?         | <p><strong><code>return (x and !(x and (x-1)))</code></strong><br><code>//x will check if x == 0 and !(x and (x-1)) will check if power of two</code></p>                                                                                                                                                                                                                                                                                                                                                                |
-| \*\*Implementation: \*\*Count number of 1's in binary representation of x | <p><strong><code>while(x):</code></strong></p><p><strong><code>      x = x &#x26; (x-1)</code></strong></p><p><strong><code>      cnt += 1</code></strong></p><p><strong>Complexity:</strong> O(K), where K is the number of ones present in the binary form of the given number</p>                                                                                                                                                                                                                                     |
-| \*\*Implementation: \*\*Get the rightmost 1 in binary representation of x | <p><strong><code>return x ^ ( x &#x26; (x-1))</code></strong></p><p><strong>How: </strong>(x &#x26; (x - 1)) will have all the bits equal to the x except for the rightmost 1 in x. So if we do bitwise XOR of x and (x &#x26; (x-1)), it will simply return the rightmost 1.</p><p>x = 10 = (1010)<br>x &#x26; (x-1) = (1010) &#x26; (1001) = (1000)<br>x ^ (x &#x26; (x-1)) = (1010) ^ (1000) = (0010)</p>                                                                                                             |
-| \*\*Implementation: \*\*Highest power of 2 less than or equal to given N  | <ul><li>using left shift operator to find all powers of 2 starting from 1.</li><li><p>For every power check if it is smaller than or equal to n or not</p><p><br><code>for i in range( 8  *sys.getsizeof ( n ) ):</code></p><p><code>     curr</code> <code>=</code> <code>1</code> <code>&#x3C;&#x3C; i</code></p><p><code>     if</code> <code>curr >= n: return curr</code></p></li><li><p>Another approach using log:</p><p><code>p = int(math.log(n, 2))</code><br><code>return int(pow(2, p))</code></p></li></ul> |
-| \*\*XOR Trick: \*\*swap w/o extra variable                                | <p><code>a,b // integers to be swapped</code></p><p><code>a = a^b // a now contains a^b</code></p><p><code>b = a^b // b now contains a</code></p><p><code>a = a^b // a now contains b </code><strong><code>#SWAPPED</code></strong></p>                                                                                                                                                                                                                                                                                  |
-| Other Useful things                                                       | <ul><li></li></ul>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| What                                                                      | How                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| ------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Left Shift ( << )                                                         | <p><code>1 &#x3C;&#x3C; i = pow(2,i) : </code><strong><code>general_use</code></strong></p><p><strong><code>n&#x3C;&#x3C;k </code></strong>is equivalent to <strong>multiplying</strong> n with <span class="math">2^k</span></p>                                                                                                                                                                                                                                                                             |
+| Right Shift ( >> )                                                        | <p><code>i >> 1 : </code><strong><code>general_use</code></strong></p><p>16 >> 4 = 1</p><p><strong><code>n>>k </code></strong>is equivalent to <strong>dividing</strong> n with <span class="math">2^k</span></p>                                                                                                                                                                                                                                                                                             |
+| **Implementation: C**heck if the i-th bit is set                          | **`return x and (1<<i)`**                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| **GET** i-th bit of x                                                     | **`return (x>>i)&1`**                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| \*\*CLEAR/TURN OFF \*\* the i-th bit in x                                 | **`x = x^(1<<i) `**# xor turns that bit off                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| \*\*SET/TURN ON \*\*the i-th bit in x                                     | **`x = x\|(1<<i)`**                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| **TOGGLE** the i-th bit in x                                              | **x = `x^(1<<i)`**                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+| \*\*Implementation: \*\*generate all the possible subsets                 | <p><code>for i in range(0, 1&#x3C;&#x3C;n):</code><br><code>sub = []</code></p><p><code>for j in range(0,n):</code></p><p><code>if i </code><strong><code>&#x26;</code></strong><code>(1&#x3C;&#x3C;j):</code></p><p><code>sub.append(a[j])</code></p><p><code>superset += sub</code></p>                                                                                                                                                                                                                     |
+| `(x-1)`                                                                   | <p>flips all the bits to the right of rightmost 1 in x and also including the rightmost 1</p><p>x = 4 = (100)<br>x - 1 = 3 = (011)</p>                                                                                                                                                                                                                                                                                                                                                                        |
+| \*\*Implementation: \*\*check if a given number is a power of 2 ?         | <p><strong><code>return (x and !(x and (x-1)))</code></strong><br><code>//x will check if x == 0 and !(x and (x-1)) will check if power of two</code></p>                                                                                                                                                                                                                                                                                                                                                     |
+| \*\*Implementation: \*\*Count number of 1's in binary representation of x | <p><strong><code>while(x):</code></strong></p><p><strong><code>x = x &#x26; (x-1)</code></strong></p><p><strong><code>cnt += 1</code></strong></p><p><strong>Complexity:</strong> O(K), where K is the number of ones present in the binary form of the given number</p>                                                                                                                                                                                                                                      |
+| \*\*Implementation: \*\*Get the rightmost 1 in binary representation of x | <p><strong><code>return x ^ ( x &#x26; (x-1))</code></strong></p><p><strong>How: </strong>(x &#x26; (x - 1)) will have all the bits equal to the x except for the rightmost 1 in x. So if we do bitwise XOR of x and (x &#x26; (x-1)), it will simply return the rightmost 1.</p><p>x = 10 = (1010)<br>x &#x26; (x-1) = (1010) &#x26; (1001) = (1000)<br>x ^ (x &#x26; (x-1)) = (1010) ^ (1000) = (0010)</p>                                                                                                  |
+| \*\*Implementation: \*\*Highest power of 2 less than or equal to given N  | <ul><li>using left shift operator to find all powers of 2 starting from 1.</li><li><p>For every power check if it is smaller than or equal to n or not</p><p><br><code>for i in range( 8 *sys.getsizeof ( n ) ):</code></p><p><code>curr</code> <code>=</code> <code>1</code> <code>&#x3C;&#x3C; i</code></p><p><code>if</code> <code>curr >= n: return curr</code></p></li><li><p>Another approach using log:</p><p><code>p = int(math.log(n, 2))</code><br><code>return int(pow(2, p))</code></p></li></ul> |
+| \*\*XOR Trick: \*\*swap w/o extra variable                                | <p><code>a,b // integers to be swapped</code></p><p><code>a = a^b // a now contains a^b</code></p><p><code>b = a^b // b now contains a</code></p><p><code>a = a^b // a now contains b </code><strong><code>#SWAPPED</code></strong></p>                                                                                                                                                                                                                                                                       |
+| Other Useful things                                                       | <ul><li></li></ul>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
 
 ***
 
@@ -73,7 +73,7 @@
 
 {% tabs %}
 {% tab title="289." %}
-#### 1. Appr#1 : SC: O(N\*M)
+**1. Appr#1 : SC: O(N\*M)**
 
 so damn easy
 
@@ -105,7 +105,7 @@ def gameOfLife(self, A: List[List[int]]) -> None:
     A[::] = res
 ```
 
-#### 2. FOLLOW\_UP: #1: Do in O(1) Space ---> <mark style="color:red;">bitwise</mark>
+**2. FOLLOW\_UP: #1: Do in O(1) Space ---> **<mark style="color:red;">**bitwise**</mark>
 
 \*\*IDEA: \*\*
 
@@ -143,7 +143,7 @@ def gameOfLife(self, A: List[List[int]]) -> None:
             A[i][j] = get_ith_bit(1,i,j)
 ```
 
-#### 3. FOLLOW\_UP#2: infinite board
+**3. FOLLOW\_UP#2: infinite board**
 
 > In this question, we represent the board using a 2D array. In principle, the board is infinite, which would cause problems when the active area encroaches upon the border of the array (i.e., live cells reach the border). How would you address these problems?
 
@@ -186,12 +186,12 @@ Complexity for `gameOfLifeInfinite`:
 {% endtab %}
 
 {% tab title="421✅" %}
-#### Videos:
+**Videos:**
 
 * To understand logic: [this](https://www.youtube.com/watch?v=I7sUjln2Fjw\&ab\_channel=HellgeekArena)
 * To understand code: [this](https://www.youtube.com/watch?v=jCu-Pd0IjIA\&ab\_channel=CodingNinjas)
 
-### Approach:
+#### Approach:
 
 * O(N\*2) is trivial; so dont bother
 * Greedy Approach: **bitwise+Trie**: `O(32*N) `✅
@@ -265,8 +265,6 @@ class Solution:
 ```
 {% endtab %}
 {% endtabs %}
-
-
 
 ## **2. Bitmasking**:
 

@@ -111,7 +111,7 @@ def largestDivisibleSubset(self, nums: List[int]) -> List[int]:
 
 {% tab title="1191" %}
 The key is to figure out couple of cases that the answer could be derived from.\
-Case 1: when k == 1, => return kaden's . \
+Case 1: when k == 1, => return kaden's .\
 Case 2: when k > 1:
 
 * Case2(1): when sum >= 0: we can use ((k - 2) \* sum of array) as 'free' sum since they are positive and why not add them to our answer. Then, only add max prefix sum and max suffix sum from the rest two arrays to add to our final answer.
@@ -477,9 +477,9 @@ def maxEnvelopes(self, A: List[List[int]]) -> int:
 ### 4.1 Standard Qs
 
 * [x] LC [62. Unique Paths](https://leetcode.com/problems/unique-paths/) | **standard\_question\_of\_dp | robot traveling down the matrix**
-* [x] **LC **[**63.**Unique Paths II](https://leetcode.com/problems/unique-paths-ii/) ✅
+* [x] \*\*LC \*\*[\*\*63.\*\*Unique Paths II](https://leetcode.com/problems/unique-paths-ii/) ✅
 * [x] LC [64. Minimum Path Sum](https://leetcode.com/problems/minimum-path-sum/) | **standard ✅**
-* [x] LC [120. Triangle](https://leetcode.com/problems/triangle/) | Similar to #64 | **@uber **&#x20;
+* [x] LC [120. Triangle](https://leetcode.com/problems/triangle/) | Similar to #64 | \*\*@uber \*\*
 
 {% tabs %}
 {% tab title="62" %}
@@ -650,14 +650,12 @@ https://leetcode.com/problems/where-will-the-ball-fall/discuss/988195/JavaPython
 {% endtab %}
 
 {% tab title="741💪🍒🐞🐞" %}
-
-
-### What the Question wants:
+#### What the Question wants:
 
 * Collect max cherries on TWO right/down fashion traversals
 * HINT: sum collected in way down == sum collected in way up
 
-### How to solve it?
+#### How to solve it?
 
 * assume 2 bugs are left from (x1=0,y1=0) & (x2=0,y2=0)
 * at every step they can go: (down,down), (right,right), (down,right), (right,down)
@@ -764,8 +762,6 @@ return solve(0,0,0,m-1)
 {% endtab %}
 {% endtabs %}
 
-
-
 ## 5. Buy & Sell Stocks set
 
 * [x] LC [121. Best Time to Buy and Sell Stock](https://leetcode.com/problems/best-time-to-buy-and-sell-stock/) | single transaction allowed
@@ -835,7 +831,6 @@ TC: O(N*2*2) => O(N)
 
 {% tab title="188" %}
 ```python
-
 MEMO = {}
 def solve(i,own,k):
     if i>= len(prices) or k<0:
@@ -913,7 +908,5 @@ return solve(0,False,k)
 * [ ] [https://leetcode.com/problems/maximum-sum-of-3-non-overlapping-subarrays/](https://leetcode.com/problems/maximum-sum-of-3-non-overlapping-subarrays/)
 * [ ] [https://leetcode.com/problems/number-of-submatrices-that-sum-to-target/](https://leetcode.com/problems/number-of-submatrices-that-sum-to-target/)
 * [ ] [https://leetcode.com/problems/get-the-maximum-score/](https://leetcode.com/problems/get-the-maximum-score/)
-
-
 
 ###

@@ -86,7 +86,7 @@ def insertMeAtBottom(stk,x): # HYPO: inserts 'x' at the bottom of stk
 
 {% tabs %}
 {% tab title="779" %}
-Pascal Tree **type **structure banega
+Pascal Tree \*\*type \*\*structure banega
 
 ```python
 def kthGrammar(self, n: int, k: int) -> int:
@@ -154,8 +154,6 @@ def generateParenthesis(self, n: int) -> List[str]:
 {% endtab %}
 {% endtabs %}
 
-&#x20;&#x20;
-
 * [x] Print all subsets/powerset of a string | [video](https://www.youtube.com/watch?v=Yg5a2FxU4Fo\&list=PL\_z\_8CaSLPWeT1ffjiImo0sYTcnLzo-wY\&index=12\&ab\_channel=AdityaVerma) | **Decision Tree method**
 
 ```python
@@ -207,8 +205,6 @@ printSubsets(str,'') # init with I/P & O/P
 * [x] CSES: [Apple Division](https://cses.fi/problemset/result/2572485/) ⭐️
 * [x] LC: [395. Longest Substring with At Least K Repeating Characters](https://leetcode.com/problems/longest-substring-with-at-least-k-repeating-characters/) ✅🚀🐽
 
-
-
 {% tabs %}
 {% tab title="95" %}
 ```python
@@ -239,8 +235,6 @@ def generateTrees(self, n: int) -> List[TreeNode]:
 {% endtab %}
 
 {% tab title="241" %}
-
-
 ```python
 def diffWaysToCompute(self, s: str) -> List[int]:
     MEMO = {}
@@ -311,13 +305,13 @@ class Solution:
         return False
 ```
 
-####
 
-#### Approach#2: O(N+M) | most optimised:
+
+**Approach#2: O(N+M) | most optimised:**
 
 * start from TOP-RIGHT(**TR**) corner
 * in each step; either move down or left ; until found OR out-of-bound
-* video on approach#2: [link](https://www.youtube.com/watch?v=dcTJRw1704w\&ab\_channel=AlgorithmsMadeEasy) | understand why you can solve this only by starting from **TOP-RIGHT**(**TR) **corner
+* video on approach#2: [link](https://www.youtube.com/watch?v=dcTJRw1704w\&ab\_channel=AlgorithmsMadeEasy) | understand why you can solve this only by starting from **TOP-RIGHT**(\*\*TR) \*\*corner
 {% endtab %}
 
 {% tab title="395" %}
@@ -362,13 +356,11 @@ print(ans)
 {% endtab %}
 
 {% tab title="WiggleSort280+342" %}
-### [LC 280. Wiggle Sort I](https://leetfree.com/problems/wiggle-sort)
+#### [LC 280. Wiggle Sort I](https://leetfree.com/problems/wiggle-sort)
 
 ```
 nums[i-1] <= nums[i] >= nums[i + 1] where i is an odd number
 ```
-
-
 
 * App#1(naive): sort🙅‍♂️ TC:O(nlogn) , SC: O(N)
 * App#2: in-place swap: TC:O(N), SC: O(1)
@@ -433,16 +425,15 @@ def wiggleSort(self, nums: List[int]) -> None:
     '''
 ```
 
-### LC 324. [Wiggle Sort II](https://leetcode.com/problems/wiggle-sort-ii/)
+#### LC 324. [Wiggle Sort II](https://leetcode.com/problems/wiggle-sort-ii/)
 
-#### How is it different from Wiggle Sort I?
+**How is it different from Wiggle Sort I?**
 
 * Wiggle sort 1 is `nums[i-1] <= nums[i] >= nums[i + 1]` where i is an odd number
 * This question is `nums[i-1] < nums[i] > nums[i + 1]` where i is an odd number.
 * The **difference** is that, in this question, when two elements are equal, you have to move one of the two elements somewhere else, and the difficulty is how to achieve moving all the duplicate elements to their correct positions in O(N) time such that the final array has a wiggle pattern.
 
 ```python
-
 
 
 
@@ -459,16 +450,9 @@ TODO:
 
 
 
-
 ```
 {% endtab %}
 {% endtabs %}
-
-
-
-
-
-
 
 ## 3. Backtrack
 

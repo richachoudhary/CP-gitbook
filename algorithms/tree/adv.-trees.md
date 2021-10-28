@@ -1,13 +1,11 @@
 # Adv. Trees
 
-
-
 ## 1. Trie
 
 * [x] LC [208.Implement Trie (Prefix Tree)](https://leetcode.com/problems/implement-trie-prefix-tree/) 🔴🔵
 * [x] LC [214. Word Search II](https://leetcode.com/problems/word-search-ii/) ✅🚀
 * [x] LC [14.Longest Common Prefix](https://leetcode.com/problems/longest-common-prefix/)✅
-* [x] LC 421. [Maximum XOR of Two Numbers in an Array](https://leetcode.com/problems/maximum-xor-of-two-numbers-in-an-array/) | <mark style="color:orange;">`standardQ`</mark> | **@google | must_do✅**
+* [x] LC 421. [Maximum XOR of Two Numbers in an Array](https://leetcode.com/problems/maximum-xor-of-two-numbers-in-an-array/) | <mark style="color:orange;">`standardQ`</mark> | **@google | must\_do✅**
 
 {% tabs %}
 {% tab title="208.(TEMPLATE.py)🔵🔴" %}
@@ -152,16 +150,14 @@ string longestCommonPrefix(vector<string>& strs) {
 {% tab title="421" %}
 (repeat from bitwise seciton)
 
-
-
 {% tabs %}
 {% tab title="421✅" %}
-#### Videos:
+**Videos:**
 
-* To understand logic: [this](https://www.youtube.com/watch?v=I7sUjln2Fjw\&ab_channel=HellgeekArena)
-* To understand code: [this](https://www.youtube.com/watch?v=jCu-Pd0IjIA\&ab_channel=CodingNinjas)
+* To understand logic: [this](https://www.youtube.com/watch?v=I7sUjln2Fjw\&ab\_channel=HellgeekArena)
+* To understand code: [this](https://www.youtube.com/watch?v=jCu-Pd0IjIA\&ab\_channel=CodingNinjas)
 
-### Approach:
+#### Approach:
 
 * O(N\*2) is trivial; so dont bother
 * Greedy Approach: **bitwise+Trie**: `O(32*N) `✅
@@ -236,11 +232,9 @@ class Solution:
 {% endtab %}
 {% endtabs %}
 
-
-
 ##
 
-## 2. Segment Trees 
+## 2. Segment Trees
 
 #### ( both: RSQ+RMQ implementations YAAAAAD honi chahiye)
 
