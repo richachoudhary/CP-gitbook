@@ -101,15 +101,43 @@ Tell me about a time when you had conflicting ideas with your teammates and how 
 <mark style="color:yellow;"></mark>\ <mark style="color:yellow;">a time when you faced a setback initially but still achieved the goal.</mark>\ <mark style="color:yellow;">a time when you had to cut corners to meet a deadline</mark>
 
 <mark style="color:yellow;">Tell me about a time when you felt under pressure that you wouldn't be able to get something done or had to take a pivot at the last minute</mark>
+\=> Linguini@Nestaway
+\       * 6 months internship; got project in the last 1.5 months
+\       * change of 3 mentors caused too much skeweness in POC (spent enough time with image processing, comparing GCP/AWS/Azure, pricing)
+\       * last 3 weeks remaind; panicked as mentor@college was asking for pre-demo & ppt
+\       * improvised & went ahead with speech-to-text + targetted-keywords matching
 
 \==================================================================
 
 
 
 
+## Things To Talk About:
 
+1. @BITS
+  * DTN project
+  * Apriori project
 
+2. @BARC
+  * Office Management System
+  * Telephone Directory
 
+3. @Nestaway
+  * Linguini
+
+4. @Rzp
+  * Mozart: integration
+  * Capital: instant loans, instant refunds, KYC integration
+
+5. @Flipkart
+  * Keyword Targeting
+  * Sampling
+    * computation reduced by 80%
+    * real impact during  BBD sale 21
+  * Bidding Price Recommendation System
+  * Ads Merch Separation
+  * RCAs
+  * NFRs
 
 
 
