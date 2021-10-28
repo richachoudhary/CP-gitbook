@@ -1,10 +1,14 @@
 # Vending Machine
 
-
-
-### &#x20;Vending Machine | 🟢STATE pattern
+## Vending Machine | 🟢STATE pattern
 
 * [Code(JAVA)](https://github.com/prabhakerau/lowlevelsystemdesgin/tree/main/VendingMachine/src/com/lld/questions/vendingmachine)
+
+![](../../.gitbook/assets/screenshot-2021-09-05-at-2.49.43-pm.png)
+
+![](../../.gitbook/assets/screenshot-2021-09-07-at-11.53.04-am.png)
+
+![](../../.gitbook/assets/screenshot-2021-09-07-at-11.55.25-am.png)
 
 \*\* Advantages of using State Pattern:\*\*
 
@@ -471,3 +475,5 @@ class VendingMachine:
 ```
 {% endtab %}
 {% endtabs %}
+
+##

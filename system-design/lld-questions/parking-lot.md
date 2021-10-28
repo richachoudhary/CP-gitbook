@@ -1,17 +1,15 @@
 # Parking Lot
 
+## 1. Parking Lot | `🟢Singleton| OpenClose | Builder`
 
-
-### Parking Lot | `🟢Singleton| OpenClose | Builder`
-
-**System Requirements:**
+#### System Requirements:
 
 * **Take ticket:** To provide customers with a new parking ticket when entering the parking lot.
 * **Scan ticket:** To scan a ticket to find out the total charge.
 * **Make payment:** To pay the ticket fee with credit card
 * **Add/Modify parking rate:** To allow admin to add or modify the hourly parking rate.
 
-**Out of Scope**
+#### Out of Scope
 
 * Termnial
 * \------------------------EntryTerminal : Terminal (multiple entry points per floor)
@@ -300,7 +298,7 @@ Board.show(P)
 {% endtab %}
 {% endtabs %}
 
-**5.ParkingLot (main system class) ================================================**
+#### 5.ParkingLot (main system class) ================================================
 
 * **ParkingLot**
   * name
@@ -537,3 +535,5 @@ class ParkingLot:
 ```
 {% endtab %}
 {% endtabs %}
+
+##

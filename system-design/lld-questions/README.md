@@ -38,7 +38,6 @@
 6. `Writing UTs` : if time permits
 ```
 
-
 ## 21. InMemory Task scheduler Library
 
 * [Link to question & code](https://leetcode.com/discuss/interview-question/891551/uber-experienced-2020-machine-coding-round)
@@ -47,7 +46,6 @@
 
 * [link](https://www.youtube.com/watch?v=O\_oLtUHlrXM\&ab\_channel=UditAgarwal)
 
-
 Design distributed notification service
 
-Design Amazon Wishlistss
+Design Amazon Wishlist

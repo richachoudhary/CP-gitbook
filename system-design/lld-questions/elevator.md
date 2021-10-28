@@ -1,10 +1,10 @@
 # Elevator
 
-
+## 2. Elevator
 
 * [Code(JAVA)](https://github.com/prabhakerau/lowlevelsystemdesgin/tree/main/ElevatorSystem/src/com/lld/questions)
 
-
+![](../../.gitbook/assets/screenshot-2021-09-05-at-2.56.17-pm.png)
 
 {% tabs %}
 {% tab title="Design.md" %}
@@ -367,3 +367,5 @@ class Elevator:
 ```
 {% endtab %}
 {% endtabs %}
+
+##
