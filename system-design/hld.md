@@ -1,5 +1,7 @@
 # HLD
 
+
+
 ## 1. **Scalability Trade-offs**
 
 * There’s no free lunch i.e. everything is a trade-off:
@@ -58,6 +60,8 @@
   * \*\*Basically Available \*\*
   * \*\*Soft state \*\*
   * **Eventual consistency**
+
+![3 types of scaling](<../.gitbook/assets/Screenshot 2021-10-31 at 1.54.53 PM.png>)
 
 ***
 
@@ -149,11 +153,11 @@
 
 * \*\*2.Master-Master replication \*\*
 
-![](https://lh4.googleusercontent.com/necGDrchLwSr\_0\_RGjKM69LSH6j5Hmoz25DSkCdFmJgvYCrmkJB4hfqpzS6cFmMPpheucvwWzvNl_ANUz4T8Is5yGK4u-g4VJxRXo6IGRQFL70HlTHu760PZqJSxaRou2PvCG03L=s0)
+![](https://lh4.googleusercontent.com/necGDrchLwSr\_0\_RGjKM69LSH6j5Hmoz25DSkCdFmJgvYCrmkJB4hfqpzS6cFmMPpheucvwWzvNl\_ANUz4T8Is5yGK4u-g4VJxRXo6IGRQFL70HlTHu760PZqJSxaRou2PvCG03L=s0)
 
 * **3.Tree Replication**
 
-![](https://lh5.googleusercontent.com/iDOodnyY57NpqVbzy3syHzWyoR9-ZY4QUoT9MN54mE6hm79UzKExeXIrM7AcjbCcKACrghxi-YqOzB4gkCZSufRFp4rcqIo_yEasVEKLg1Ufilu7NTXYfDHaExRBl0fqi0Wf6L1m=s0)
+![](https://lh5.googleusercontent.com/iDOodnyY57NpqVbzy3syHzWyoR9-ZY4QUoT9MN54mE6hm79UzKExeXIrM7AcjbCcKACrghxi-YqOzB4gkCZSufRFp4rcqIo\_yEasVEKLg1Ufilu7NTXYfDHaExRBl0fqi0Wf6L1m=s0)
 
 * **4.Buddy replication**
 
@@ -191,7 +195,7 @@
 * **Types of CDN:**
   * **Pull CDNs**
     * Pull CDNs grab new content from your server when the first user requests the content. This results in a slower request until the content is cached on the CDN.
-    * A [time-to-live (TTL)](https://en.wikipedia.org/wiki/Time_to_live) determines how long content is cached. Pull CDNs minimize storage space on the CDN, but can create redundant traffic if files expire and are pulled before they have actually changed.
+    * A [time-to-live (TTL)](https://en.wikipedia.org/wiki/Time\_to\_live) determines how long content is cached. Pull CDNs minimize storage space on the CDN, but can create redundant traffic if files expire and are pulled before they have actually changed.
     * **Sites with heavy traffic work well with pull CDNs**, as traffic is spread out more evenly with only recently-requested content remaining on the CDN.
   * **Push CDNs**
     * Push CDNs receive new content whenever changes occur on your server.
@@ -273,9 +277,9 @@
   * Logging
   * Microservices
 
-![](https://lh5.googleusercontent.com/HpJ-h5TukMtwQBBO_N3wj\_5RobpkwVQhHHMHY3IbLbeqvg2wGpkLL_bRXPUgA6WEtLBh1j8WbOXXqH4JLoAjxw8aopRN9kmrnG4lJq_RxhqnGydcZieRqAznZL3sVcKzkVGUa0N3=s0)
+![](https://lh5.googleusercontent.com/HpJ-h5TukMtwQBBO\_N3wj\_5RobpkwVQhHHMHY3IbLbeqvg2wGpkLL\_bRXPUgA6WEtLBh1j8WbOXXqH4JLoAjxw8aopRN9kmrnG4lJq\_RxhqnGydcZieRqAznZL3sVcKzkVGUa0N3=s0)
 
-![](https://lh4.googleusercontent.com/tOTPmkKC-iCW_Zd46QoTUbUtg0-VlG2yjN5vgaAGLWO5vkuCe0\_6rPp4XzNgvY5j2hpT12ipKlrvA8mMOgOGmfbUuBMLo4o8qM-i_Z17YsJZ-FwNgpsL6bsx3-idFGk-GvV5qGaJ=s0)
+![](https://lh4.googleusercontent.com/tOTPmkKC-iCW\_Zd46QoTUbUtg0-VlG2yjN5vgaAGLWO5vkuCe0\_6rPp4XzNgvY5j2hpT12ipKlrvA8mMOgOGmfbUuBMLo4o8qM-i\_Z17YsJZ-FwNgpsL6bsx3-idFGk-GvV5qGaJ=s0)
 
 * **Reversed Proxy:**-> Client doesnt know the final destination
 * **Use Cases:**
@@ -310,6 +314,68 @@
 * **Reverse proxies can be useful even with just one application server**, opening up the benefits described in the previous section.
 * Solutions such as **NGINX** and **HAProxy** can support both layer 7 reverse proxying and load balancing.
 
+## 7. Cache
+
+
+
+### 7.1 Cache Read/Write Policies
+
+* 1 <mark style="color:orange;">**Cache Aside**</mark> (cond: when data in cache is never updated)
+* 2 <mark style="color:orange;">**Read Through**</mark> (cond: when data in cache is never updated)
+* 3 <mark style="color:orange;">**Write Through**</mark> (cond: data in cache is updated) -> used in <mark style="color:yellow;">**STRONG CONSISTENCY**</mark> systems
+  * slower writes
+  * strong consistency
+* 4 <mark style="color:orange;">**Read Through**</mark> (cond: data in cache is updated) -> used in <mark style="color:yellow;">**WEAK CONSISTENCY**</mark> systems
+  * fast writes
+  * eventual consistency
+  * chances of data loss are there; if cache-> DB write fails
+* 5 Read Ahead : difficult to implement(requires heuristics etc)...so lite
+
+![Cache Aside & Read Through](<../.gitbook/assets/Screenshot 2021-11-01 at 4.11.43 AM (1).png>)
+
+![write though & write back](<../.gitbook/assets/Screenshot 2021-11-01 at 4.22.02 AM (1).png>)
+
+
+
+### 7.2 Cache Eviction Policies
+
+* LRU
+* LFU
+* MFU
+* FIFO
+
+### 7.3 Ways to scale up Cache ( i.e. make it Distributed)
+
+* Increase replicas
+* <mark style="color:orange;">Shard</mark> ( partition by hash of keys)
+
+###
+
+### 7.4 Thundering Herd Problem (src: [scaling\_instagram](https://www.youtube.com/watch?v=hnpzNAPiC0E\&ab\_channel=InfoQ))
+
+#### 1. WHAT
+
+![ Thundering Herd Prblem](<../.gitbook/assets/Screenshot 2021-10-31 at 1.23.01 PM.png>)
+
+* when cache gets invalidated(due to its lifecycle/TTL/etc);
+* all the read requests(herds) start trying to access(thundering) the DB for read
+
+#### 2. SOLUTION => Cache Lease on DB
+
+![cahce lease on DB: solution for Thundering Herd Prblem](<../.gitbook/assets/Screenshot 2021-10-31 at 1.26.45 PM.png>)
+
+*   **HOW does it work?**
+
+    ⟶ When the first req(d1) access cache & it doesn't find data
+
+    ⟶ cache assigns a LEASE PERIOD & forwards this req to db
+
+    ⟶ Meanwhile if any other req(d2) want to hit DB due to unavailability of data in cache; the cache doesnt allow it. (puts it on wait-or-use-stale state)
+
+    ⟶ after d1 is done reading db; the lease is reset & now d2 can hit the DB
+
+
+
 ## 8.**Scalability Patterns - DB**
 
 Below steps to be taken(as #users increase)
@@ -341,7 +407,7 @@ Below steps to be taken(as #users increase)
 
 ## **8.1 RDBMS**
 
-* **ACID** is a set of properties of relational database [transactions](https://en.wikipedia.org/wiki/Database_transaction).
+* **ACID** is a set of properties of relational database [transactions](https://en.wikipedia.org/wiki/Database\_transaction).
   * **Atomicity** - Each transaction is **all or nothing**
   * **Consistency** - Any transaction will bring the database from **one valid state to another**
   * **Isolation** - Executing transactions concurrently has the same results **as if the transactions were executed serially**
@@ -362,7 +428,7 @@ Below steps to be taken(as #users increase)
 
 #### **2.Federation**
 
-![](https://lh6.googleusercontent.com/UwKEprPiFrT1KqBz21cF-M3bEgWRf8lW3Qa4TqCYLV_PtQY\_-FfVYFj_OWMPC2bhFdPWA0adFuvAYkIsyWfnMmFCxT7d0DdMxxHCM4rz1w69kDbz5TtUZmWz2xAoIQ7P1J4yvxae=s0)
+![](https://lh6.googleusercontent.com/UwKEprPiFrT1KqBz21cF-M3bEgWRf8lW3Qa4TqCYLV\_PtQY\_-FfVYFj\_OWMPC2bhFdPWA0adFuvAYkIsyWfnMmFCxT7d0DdMxxHCM4rz1w69kDbz5TtUZmWz2xAoIQ7P1J4yvxae=s0)
 
 * **Federation (or functional partitioning) splits up databases by function.**
 * For example, instead of a single, monolithic database, you could have three databases: forums, users, and products, resulting in less read and write traffic to each database and therefore less replication lag
@@ -375,7 +441,7 @@ Below steps to be taken(as #users increase)
 
 #### **3.Sharding**
 
-![](https://lh3.googleusercontent.com/3wxMhrFfn_K1Lzm1D4oV_sD55WlVPbMcNWEmuogB4WYVjmwD4IGSfaRjfj-ZOVDqNygpcxImGoRSttKOu1E90FPqwk-IShuCVvx8mAJgjPIH96BDZPAIsNZV3egUYFopeJICpB5T=s0)
+![](https://lh3.googleusercontent.com/3wxMhrFfn\_K1Lzm1D4oV\_sD55WlVPbMcNWEmuogB4WYVjmwD4IGSfaRjfj-ZOVDqNygpcxImGoRSttKOu1E90FPqwk-IShuCVvx8mAJgjPIH96BDZPAIsNZV3egUYFopeJICpB5T=s0)
 
 * Sharding **distributes data across different databases** such that each database can only manage a **subset of the data.**
 * Taking a users database as an example, as the number of users increases, more shards are added to the cluster
@@ -391,7 +457,7 @@ Below steps to be taken(as #users increase)
 
 * Denormalization attempts to **improve read performance at the expense of some write performance**.
 * **Redundant copies** of the data are written in multiple tables to avoid expensive joins.
-* Some RDBMS such as [PostgreSQL](https://en.wikipedia.org/wiki/PostgreSQL) and Oracle support [materialized views](https://en.wikipedia.org/wiki/Materialized_view) which handle the work of storing redundant information and keeping redundant copies consistent.
+* Some RDBMS such as [PostgreSQL](https://en.wikipedia.org/wiki/PostgreSQL) and Oracle support [materialized views](https://en.wikipedia.org/wiki/Materialized\_view) which handle the work of storing redundant information and keeping redundant copies consistent.
 * Once data becomes distributed with techniques such as [federation](https://github.com/donnemartin/system-design-primer#federation) and [sharding](https://github.com/donnemartin/system-design-primer#sharding), managing joins across data centers further increases complexity. Denormalization might circumvent the need for such complex joins.
 * **Where to use**: In most systems, **reads can heavily outnumber writes 100:1 or even 1000:1**. A read resulting in a complex database join can be very expensive, spending a significant amount of time on disk operations.
 * **Disadvantages:**
@@ -418,7 +484,7 @@ Below steps to be taken(as #users increase)
   * WE DON’T MAKE THINGS KNOWING THE STRUCTURE FROM DAY 1
   * **SERVER ARCHITECTURE IS NOW AT A STAGE WHERE WE CAN TAKE ADVANTAGE OF IT**
 
-![](https://lh4.googleusercontent.com/rNGrp1iB1-DqvA84NOXM2WQfUMaBDkERIkrJfPfX4XkY5pp0yBtxlztTnD7M9J2SPlF1CfPw019gQeV9H9crEnGf4syl3oE_BLg83WaQGl8LJ8oxNay7Aow2F1Qc_eucODsfnBLc=s0)
+![](https://lh4.googleusercontent.com/rNGrp1iB1-DqvA84NOXM2WQfUMaBDkERIkrJfPfX4XkY5pp0yBtxlztTnD7M9J2SPlF1CfPw019gQeV9H9crEnGf4syl3oE\_BLg83WaQGl8LJ8oxNay7Aow2F1Qc\_eucODsfnBLc=s0)
 
 * **NoSQL Use Cases:**
   * LARGE DATA VOLUMES:
@@ -439,8 +505,7 @@ Below steps to be taken(as #users increase)
 
 #### Types of NoSQL
 
-* Determine which type of NoSQL database best fits your use case out of these:
-  *
+* Determine which type of NoSQL database best fits your use case out of these: \*
 
 ![](https://lh4.googleusercontent.com/LLth0aAtNlkt\_8wzz5n2Vyy15w2xMm2cGdZjlb6ZneZy2Tut7BNe5Es8dRXlaIVKucBf0UGJXhEiJ-ShwvgUX0YSDFjW8zU2Ffduk5ikTkgd5q3CW--P2m-d3P6mbMETGc3KGqho=s0)
 
@@ -512,7 +577,7 @@ Below steps to be taken(as #users increase)
     * **Clickhouse@fk😎**
   * \*\*Wide Column DBs: \*\*
     * [Cassandra](http://docs.datastax.com/en/cassandra/3.0/cassandra/architecture/archIntro.html) from Facebook
-    * \*\*HBase: **open-source **[**HBase**](https://www.edureka.co/blog/hbase-architecture/) \*\*often-used in the **Hadoop ecosystem**
+    * \*\*HBase: \*\*open-source \*\*[**HBase**](https://www.edureka.co/blog/hbase-architecture/) \*\*often-used in the **Hadoop ecosystem**
       * Data is stored in \*\*Big table. \*\*
       * Table consist rows and **each rows has arbitrary number of columns**.
       * Every cell value gets assigned by **timestamp** and it plays an important role during operations.
@@ -554,11 +619,11 @@ Below steps to be taken(as #users increase)
 * **IDEA:Keys & nodes map to the same space**
 * [**link**](https://www.paperplanes.de/2011/12/9/the-magic-of-consistent-hashing.html)
 
-![](https://lh5.googleusercontent.com/1P9BdIeCryJzUekL5c9TY5d16p47-\_XfeM1dpruZgARILMen6bDfy70zpQr-8Va4EcIJL7VkIBpwvU0Tz9AkaB9wjRRwjo1b-aXfJYSbEW7zUk8M_lX_x7ifrSSLeYYP_Z24mVyF=s0)
+![](https://lh5.googleusercontent.com/1P9BdIeCryJzUekL5c9TY5d16p47-\_XfeM1dpruZgARILMen6bDfy70zpQr-8Va4EcIJL7VkIBpwvU0Tz9AkaB9wjRRwjo1b-aXfJYSbEW7zUk8M\_lX\_x7ifrSSLeYYP\_Z24mVyF=s0)
 
 ## **10. Message Queues:Asynchronism**
 
-![](https://lh6.googleusercontent.com/1lJOxzH0A3WUOc6S5qNgSVbbUmdv0I_SqaI_bY-7HJF4W686a2VdFM3Z7EBa\_\_qiVeAPf9bqlRF3QxEeRrb1WyHHrIj28Dx2DBu0tE_pgCiaL_qGHrCJf0QTWZnP-xUJJb6fXAng=s0)
+![](https://lh6.googleusercontent.com/1lJOxzH0A3WUOc6S5qNgSVbbUmdv0I\_SqaI\_bY-7HJF4W686a2VdFM3Z7EBa\_\_qiVeAPf9bqlRF3QxEeRrb1WyHHrIj28Dx2DBu0tE\_pgCiaL\_qGHrCJf0QTWZnP-xUJJb6fXAng=s0)
 
 * Message queues receive, hold, and deliver messages. If an operation is too slow to perform inline, you can use a message queue with the following workflow:
 * An application publishes a job to the queue, then notifies the user of job status
@@ -706,11 +771,11 @@ Below steps to be taken(as #users increase)
 ### 12.3 Misc
 
 * **Varnish**
-  * **@ distributed_cache**
+  * **@ distributed\_cache**
   * Front-end Caching system
   * batching together similar requests from cache to DB
 * **Hysterix**
-  * **@ api_management**
+  * **@ api\_management**
   * \=> \*\*usedTo: \*\*avoid **Cascading Failures**
     * graceful degradation
   * circuit breaking
@@ -728,9 +793,9 @@ Below steps to be taken(as #users increase)
 
 ## 13. Cryptography
 
-* **Src**: [video1](https://www.youtube.com/watch?v=q9vu6\_2r0o4\&ab_channel=PaulTurner) , [video2](https://www.youtube.com/watch?v=r1nJT63BFQ0\&ab_channel=HusseinNasser)
+* **Src**: [video1](https://www.youtube.com/watch?v=q9vu6\_2r0o4\&ab\_channel=PaulTurner) , [video2](https://www.youtube.com/watch?v=r1nJT63BFQ0\&ab\_channel=HusseinNasser)
 
-#### Two types of Encryption: [SourceVideo](https://www.youtube.com/watch?v=q9vu6\_2r0o4\&ab_channel=PaulTurner)
+#### Two types of Encryption: [SourceVideo](https://www.youtube.com/watch?v=q9vu6\_2r0o4\&ab\_channel=PaulTurner)
 
 1. **Symmetric Encryption**
    * Have\*\* one key\*\* & exchange it **securely** to other party once
@@ -745,29 +810,29 @@ Below steps to be taken(as #users increase)
      * if you encrypt with **B** => you **can** decrypt with **A**
      * if you encrypt with **A** => you **CANNOT** decrypt with **A**
      * if you encrypt with **B** => you **CANNOT** decrypt with **B**
-   * Call \*\*A: public_key \*\*and **B:private_key**
-   * Keep \*\*private_key with you \*\*& **share ur public_key with all your clients(or publish it on site)**
-   * \*\*Now: \*\*the client will **encrypt the msg** with your **public_key** and will send you.
-   * Nobody in the world can understand this msg; because it can only be decrypted by your **private_key**(which lies safe in your pocket)
-   * \*\*decrypt \*\*the clients's msg with your \*\*private_key \*\*and voila!
+   * Call \*\*A: public\_key \*\*and **B:private\_key**
+   * Keep \*\*private\_key with you \*\*& **share ur public\_key with all your clients(or publish it on site)**
+   * \*\*Now: \*\*the client will **encrypt the msg** with your **public\_key** and will send you.
+   * Nobody in the world can understand this msg; because it can only be decrypted by your **private\_key**(which lies safe in your pocket)
+   * \*\*decrypt \*\*the clients's msg with your \*\*private\_key \*\*and voila!
    * **ISSUE**: **Man in the middle attack**
      * How to solve => use **certificate authority (CA)**
 
-![PKI. Source: https://www.youtube.com/watch?v=q9vu6\_2r0o4\&ab_channel=PaulTurner](../.gitbook/assets/screenshot-2021-08-30-at-4.02.27-am.png)
+![PKI. Source: https://www.youtube.com/watch?v=q9vu6\_2r0o4\&ab\_channel=PaulTurner](../.gitbook/assets/screenshot-2021-08-30-at-4.02.27-am.png)
 
 * \*\*Certificates : \*\*to avoid Man in the Middle Attaack in **PKI**(public key infrastructure)
   * **What is Man in the Middle Attack?**
     * Somebody sits b/w the sender & receiver; hearing all the conversation happening
   * **How can Man in the Middle Attack can happen?**
-    * **middle_man** provides their **public_key** to the **sender**
-    * \*\*sender \*\*encrypts data with this middle_man's public_key
-    * **middle_man** decrypts data with his \*\*private_key \*\*
-    * \*\*middle_man \*\*stores a **copy** of this data with him (the bastard!)
-    * now he encrypt's data with the original receiver's **public_key**
-    * the original receiver gets the data & decrypts with his **private_key**
+    * **middle\_man** provides their **public\_key** to the **sender**
+    * \*\*sender \*\*encrypts data with this middle\_man's public\_key
+    * **middle\_man** decrypts data with his \*\*private\_key \*\*
+    * \*\*middle\_man \*\*stores a **copy** of this data with him (the bastard!)
+    * now he encrypt's data with the original receiver's **public\_key**
+    * the original receiver gets the data & decrypts with his **private\_key**
     * to the original receiver; the\*\* data looks the same\*\* (& there is **no way of him knowing that the call was breached!**)
-  * **certificate binds a public_key to a name**
-    * it takes a **public_key**; **validates** if the key's **owner** is **authenticated** => then **signs it** & adds a **signature** to it
+  * **certificate binds a public\_key to a name**
+    * it takes a **public\_key**; **validates** if the key's **owner** is **authenticated** => then **signs it** & adds a **signature** to it
     * has expiration date, issuing authority
   * **How** does certification avoids Man in middle attack\*\*? => using SSL/TLS HANDSHAKE\*\*
     * \*\*Before starting \*\*any **communication** with a client; the **sender** **sends his certificate** to the **client**.
@@ -786,8 +851,8 @@ Below steps to be taken(as #users increase)
 ### 12.2 Cryptocurrency | Blockchain
 
 * Resources(Noob level):
-  * Nice video: [But how does bitcoin actually work?](https://www.youtube.com/watch?v=bBC-nXj3Ng4\&ab_channel=3Blue1Brown)
-  * John Oliver chacha: [Last Week Tonight](https://www.youtube.com/watch?v=g6iDZspbRMg\&ab_channel=LastWeekTonight)
+  * Nice video: [But how does bitcoin actually work?](https://www.youtube.com/watch?v=bBC-nXj3Ng4\&ab\_channel=3Blue1Brown)
+  * John Oliver chacha: [Last Week Tonight](https://www.youtube.com/watch?v=g6iDZspbRMg\&ab\_channel=LastWeekTonight)
 * **Main concepts for Noob:**
   * Digital Signature
   * **The ledger is the currency**
@@ -819,11 +884,11 @@ Below steps to be taken(as #users increase)
   * **encode() :** Converts the string into bytes to be acceptable by hash function.
   * \*\*hexdigest() : \*\*Returns the encoded data in hexadecimal format.
 * **WOAH!!!!!!!!!!!**
-  * SHA256 is not any common hash_function, but a fucking **cryptographic hash function**
+  * SHA256 is not any common hash\_function, but a fucking **cryptographic hash function**
   * i.e. if `sha256(x) = y`
   * **there is no way to get `x` from `y`** i.e. any function g s.t. `g(y) =x `**doesnt exist!!!!**
   * the only way you can get x from given y is by guessing....probability of guessing =`1/pow(2,256)`
-    * Chances of guessing = 1 in 4 Billion for a 40 times olduniverse worth of **1Kilo Google** computers for every fully occupied planet of earth's size 🤣[src: video](https://www.youtube.com/watch?v=S9JGmA5\_unY\&ab_channel=3Blue1Brown)
+    * Chances of guessing = 1 in 4 Billion for a 40 times olduniverse worth of **1Kilo Google** computers for every fully occupied planet of earth's size 🤣[src: video](https://www.youtube.com/watch?v=S9JGmA5\_unY\&ab\_channel=3Blue1Brown)
 
 ```python
 import hashlib
@@ -862,12 +927,165 @@ scale is no the actual time taken, but to make humans understand the diff in tim
 
 ![](../.gitbook/assets/screenshot-2021-09-05-at-5.11.49-pm.png)
 
-\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*
+
+
+## 15. DBs Data Structures: B+Trees & LSMT
+
+There are mainly 2 data structures used in DBMS:
+
+1. **B+Trees => **used when we want **less search & insertion time** <mark style="color:orange;">**(read heavy systems)**</mark>
+2. **LSMT Trees =>** used when we want **low insert & update time** <mark style="color:orange;">**(write heavy systems)**</mark>
+
+### 15.1. B Trees & B+ Trees
+
+* Video: [AbdulBari](https://www.youtube.com/watch?v=aZjYr87r1b8\&t=639s\&ab\_channel=AbdulBari)
+
+#### 15.1.1 B Trees
+
+* B-Tree is a self-balancing search tree
+* **Time Complexity of B-Tree:** (<mark style="color:orange;">n</mark>  is the total number of elements in the B-tree.)
+  * Search: <mark style="color:orange;">`O(logN)`</mark>
+  * Insert: <mark style="color:orange;">`O(logN)`</mark>
+  * Delete: <mark style="color:orange;">`O(logN)`</mark>
+* **Properties of B-Tree:**&#x20;
+  * All leaves are at the same level.
+  * A B-Tree is defined by the term _<mark style="color:orange;">minimum degree</mark>_ <mark style="color:orange;">'t'</mark> .The value of t depends upon disk block size**( i.e. max number of children it can have)**
+  * Every node has: (1) child pointer & (2) record pointer
+
+#### 15.1.2 B+ Trees
+
+* <mark style="color:orange;">**USE: In **</mark><mark style="color:orange;">dynamic multilevel indexing of Databases</mark>
+* **WHY Dont we use B-Trees in DB?**
+  * \=> B-tress have more number of levels -> slow search
+  * **in-depth:** The drawback of B-tree used for indexing, however is that it stores the data pointer (a pointer to the disk file block containing the key value), corresponding to a particular key value, along with that key value in the node of a B-tree. This technique, greatly reduces the number of entries that can be packed into a node of a B-tree, thereby contributing to the increase in the number of levels in the B-tree, hence increasing the search time of a record.
+  * B+ tree eliminates the above drawback by storing data pointers only at the leaf nodes of the tree.&#x20;
+*   **Diff b/w B Trees & B+ Trees:**
+
+    * **=> **In B+ trees  only leaf nodes have record pointer
+    * \=> While in B trees; all nodes will have child pointer+record pointer
+
+
+
+![Typical B+ trees (NOTE: only leafs have pointer to record documents)](<../.gitbook/assets/Screenshot 2021-11-01 at 1.21.25 AM.png>)
+
+
+
+### 15.2. LSMT Tree : Optimizing writes in DB
+
+* <mark style="color:yellow;">**LSMT = **</mark><mark style="color:yellow;">Log Structured Merged Tree</mark>
+* link: [youtube](https://www.youtube.com/watch?v=oUNjDHYFES8\&ab\_channel=GLTechTutorials)
+* **Advantages:**
+  * High write throughput
+  * Attractive to store data with high update rates
+  * Minimizes store overhead
+* **Disadvantages:**
+  * Slow reads
+  * "Compaction" process sometimes interrupts with read & write operations on disk
+* **HOW Does it's structure look like?**
+  * \=> it comprises of tree-like data structure with 2 levels:
+    * <mark style="color:orange;">**Memtable**</mark> : resides in-memory
+    * <mark style="color:orange;">**SSTable**</mark> : resides on hard-disk
+* **WHERE Does LSMT get used?**
+  * \=> mostly in all types of DBs ( in key-val **DBs/ cassandra/ MongoDB/**pulsar etc)
+* LSMT uses these 3 concepts to optimize reads & writes:
+  * SSTables
+  * Memtable
+  * Compaction
+  * Bloom Filters
+
+#### 15.2.1.  LSMT@First Concept:: <mark style="color:orange;">SSTables</mark>: Sorted String Tables
+
+* \=> it's a special type of data structure ( based on linked-list & sorted array)
+* Insert Complexity: <mark style="color:orange;">**O(1)**</mark>
+* Search Complexity: <mark style="color:orange;">**O(logN)**</mark>
+* **NOTE: **once you've written a value to a SStable, its persisted forever <mark style="color:orange;">**(i.e. SSTables are immutable)**</mark>
+
+![how normal data logs are sorted in SSTable( circle wala)](<../.gitbook/assets/Screenshot 2021-11-01 at 2.02.20 AM.png>)
+
+#### 15.2.1.  LSMT@2nd Concept:: <mark style="color:orange;">Memtable</mark>
+
+* <mark style="color:orange;">bad</mark> option for sending write/update queries to DB: send then <mark style="color:orange;">one by one</mark>
+* <mark style="color:orange;">better</mark> option for write( right-side in pic below): bunch them together & send them in <mark style="color:orange;">batch</mark>
+* This additional data-structure to batch up the queries is called <mark style="color:orange;">**Memtable**</mark>
+* **Advantages: **
+  * single acknowledgment is reqd from DB ( ki push ho gya hai)
+  * ... show in pic(right-side ) below
+
+![Memtable](<../.gitbook/assets/Screenshot 2021-11-01 at 2.06.38 AM.png>)
+
+* <mark style="color:orange;">**Write Operations:**</mark>
+  * values are batched in (immutable) SSTables data structure- to be stored (in-memory) Memtable
+  * Once the max capacity of Memtable is reached; the SSTable is pushed to DB (on-disk)
+  * **handling duplicate keys( "Walter" below):**
+    * since SSTables are immutable; we store both values
+    * these SSTables are persisted with their insertion-<mark style="color:orange;">timestamps</mark><mark style="color:orange;">** **</mark>
+    * while read: the value with latest timestamp is returned( see **Bloom-filter **below)
+
+![Write Operations](<../.gitbook/assets/Screenshot 2021-11-01 at 2.18.36 AM.png>)
+
+* <mark style="color:orange;">**Read Operations:**</mark>
+  * STEP#1: check if value is present in Memtable itself
+  * STEP#2: search in all SSTables( using Bloomfilters)
+
+![](<../.gitbook/assets/Screenshot 2021-11-01 at 2.28.35 AM (1).png>)
+
+#### 15.2.3.  LSMT@3rd Concept:: <mark style="color:orange;">Compaction</mark>
+
+* <mark style="color:orange;">**The WHY:**</mark>&#x20;
+  * Worst case read time from disk  = <mark style="color:orange;">`O(NlogT)`</mark>where <mark style="color:orange;">N</mark> is the number of SSTables & <mark style="color:orange;">T =</mark> size of one SSTable
+  * As number of SSTables increase on disk:
+    * read time increases ❌
+    * duplication of keys also increase ❌
+* <mark style="color:orange;">**The WHAT:**</mark>&#x20;
+  * Compaction is basically** a **<mark style="color:red;">**daemon-cron job**</mark> which runs in background (in every 30 mins or so) to <mark style="color:orange;">**merge SSTables**</mark> by:&#x20;
+    * removing redundant/deleted keys
+    * resolving duplicate keys(to latest val)
+    * Hence; creating new compacted/merged SStables
+
+![Search Complexity Comparison: wihout & with Compaction](<../.gitbook/assets/Screenshot 2021-11-01 at 2.43.03 AM (1).png>)
+
+
+
+#### 15.2.4.  LSMT@4th Concept:: <mark style="color:orange;">Bloom Filters</mark>
+
+* <mark style="color:orange;">**The WHY:**</mark>&#x20;
+  * as number of SStables increase on disk => read latency also increases
+* <mark style="color:orange;">**The WHAT:**</mark>&#x20;
+  * Wa filter associated with a SSTable, which **probabilistically** tells you if a key is present in that SSTable or not
+  * BloomFilter function for key K in SStable: <mark style="color:orange;">`bloom_filter(k)-> {0 or 1}`</mark>&#x20;
+    * If output == 0 => key `k` is definitely not present in the table
+    * if output == 1 => key `k `can be or cannot be present in that sstable
+      * as bloom filters (though can be optimised to 99.9% too) can still give **false-positive** results
+      * to verify; you need to search in that table
+* \=> so now(after applying bloom filter): search complexity = <mark style="color:orange;">O(MlogT)</mark>; where **M = number of tables where bloom\_filter(key=k) == 1 & **T = SSTable Size
+  * ofc: <mark style="color:orange;">**M << N **</mark>(as written above in search complexity without bloom-filter)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*
 
 ## Resources:
 
 * Whimsical board: [HLDs](https://whimsical.com/hlds-n52ahnNWNwnC99fzGKJQ4)
-* **NOTE: **[**SYSTEM DESIGN TEMPLATE ON LEETCODE**](https://leetcode.com/discuss/career/229177/My-System-Design-Template)
+* \*\*NOTE: \*\*[**SYSTEM DESIGN TEMPLATE ON LEETCODE**](https://leetcode.com/discuss/career/229177/My-System-Design-Template)
 
 ## TODOs:
 

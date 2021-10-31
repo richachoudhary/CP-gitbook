@@ -305,8 +305,6 @@ class Solution:
         return False
 ```
 
-
-
 **Approach#2: O(N+M) | most optimised:**
 
 * start from TOP-RIGHT(**TR**) corner
@@ -356,7 +354,7 @@ print(ans)
 {% endtab %}
 
 {% tab title="WiggleSort280+342" %}
-#### [LC 280. Wiggle Sort I](https://leetfree.com/problems/wiggle-sort)
+[**LC 280. Wiggle Sort I**](https://leetfree.com/problems/wiggle-sort)
 
 ```
 nums[i-1] <= nums[i] >= nums[i + 1] where i is an odd number
@@ -425,7 +423,7 @@ def wiggleSort(self, nums: List[int]) -> None:
     '''
 ```
 
-#### LC 324. [Wiggle Sort II](https://leetcode.com/problems/wiggle-sort-ii/)
+**LC 324. **[**Wiggle Sort II**](https://leetcode.com/problems/wiggle-sort-ii/)
 
 **How is it different from Wiggle Sort I?**
 
@@ -442,10 +440,8 @@ def wiggleSort(self, nums: List[int]) -> None:
 
 
 
-
 ??????????????????????????????????? 
 TODO:
-
 
 
 
