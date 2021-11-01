@@ -1,4 +1,4 @@
-# HLD
+# HLD : Theory
 
 
 
@@ -921,12 +921,6 @@ s = b'GeeksForGeeks'
 gfg = b64encode(s)    #  b’R2Vla3NGb3JHZWVrcw==’
 ```
 
-## Access Time Comparison
-
-scale is no the actual time taken, but to make humans understand the diff in times
-
-![](../.gitbook/assets/screenshot-2021-09-05-at-5.11.49-pm.png)
-
 
 
 ## 15. DBs Data Structures: B+Trees & LSMT
@@ -1061,6 +1055,24 @@ There are mainly 2 data structures used in DBMS:
   * ofc: <mark style="color:orange;">**M << N **</mark>(as written above in search complexity without bloom-filter)
 
 
+
+
+
+## 16. Numbers Developers Should Know
+
+### 16.1 Memory Size Numbers
+
+![](<../.gitbook/assets/Screenshot 2021-11-01 at 5.05.01 AM.png>)
+
+### 16.2 Memory Access SLAs
+
+![](<../.gitbook/assets/Screenshot 2021-11-01 at 5.05.08 AM.png>)
+
+### 16.3 Access Time Comparison
+
+scale is no the actual time taken, but to make humans understand the diff in times
+
+![](../.gitbook/assets/screenshot-2021-09-05-at-5.11.49-pm.png)
 
 
 

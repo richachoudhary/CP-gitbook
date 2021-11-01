@@ -1,21 +1,27 @@
 # Parking Lot
 
-## 1. Parking Lot | `🟢Singleton| OpenClose | Builder`
+## @Principle:
 
-#### System Requirements:
+### &#x20;`🟢Singleton| OpenClose | Builder`
+
+####
+
+## 1. System Requirements:
 
 * **Take ticket:** To provide customers with a new parking ticket when entering the parking lot.
 * **Scan ticket:** To scan a ticket to find out the total charge.
 * **Make payment:** To pay the ticket fee with credit card
 * **Add/Modify parking rate:** To allow admin to add or modify the hourly parking rate.
 
-#### Out of Scope
+## 2. Out of Scope
 
 * Termnial
 * \------------------------EntryTerminal : Terminal (multiple entry points per floor)
 * \------------------------ExitTerminal : Terminal (multiple exit points per floor)
 * ParkingAssignmentStrategy # consider **multiple entries on each floor** - **nearest dist**/**closest elevators** on floors etc
 * Logger # uses **Observer Pattern**
+
+## 3. Code
 
 {% tabs %}
 {% tab title="schema.txt" %}
@@ -298,7 +304,9 @@ Board.show(P)
 {% endtab %}
 {% endtabs %}
 
-#### 5.ParkingLot (main system class) ================================================
+####
+
+## 4. (Redunedant Code)
 
 * **ParkingLot**
   * name
@@ -536,4 +544,7 @@ class ParkingLot:
 {% endtab %}
 {% endtabs %}
 
-##
+## 5. HLD
+
+![](../../.gitbook/assets/screenshot-2021-08-25-at-2.27.04-am.png)
+
