@@ -59,8 +59,6 @@
 
 ## 4. Tables
 
-#### 4.1 Tables Schemas
-
 * **User**
   * id
   * name
@@ -74,10 +72,13 @@
   * expiresAt
   * userID
 
-#### 4.2 DBs choices(NoSQL/SQL)
+### 4.2 DBs choices(NoSQL/SQL)
 
 * **Metadata DB**: SQL or NoSQL ( both are fine)
   * this has just the reference of snippet
+  * #### <mark style="color:yellow;">**-> Discuss Pros & Cons of both: SQL & NoSQL**</mark>
+    * Our non-functional requirements dictate that the datastore needs to be **highly available, scalable, performant, and durable.** <mark style="color:orange;">=></mark> <mark style="color:orange;">**NoSQL**</mark> <mark style="color:orange;">DBs are good at this( SQL dbs are bad)</mark>
+    * Also, the database schema required for our service **does not have any relations** requiring relational databases. <mark style="color:orange;">=> No special benefit with picking SQL</mark>
 * **Blob/Object DB**: For storing the actual snippets
   * **=> S3**
 * <mark style="color:yellow;">**-> \[Hybrid Approach]For better UX:**</mark>

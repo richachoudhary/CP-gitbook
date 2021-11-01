@@ -88,5 +88,7 @@
 * [HLD:Questions](system-design/hld-questions/README.md)
   * [TinyURL : HLD+LLD](system-design/hld-questions/1.-tinyurl.md)
   * [Pastebin/Gist](system-design/hld-questions/pastebin-gist.md)
-  * [8. Dropbox/Drive |@CoinBase](system-design/hld-questions/8.-dropbox-drive-or-coinbase.md)
+  * [Dropbox/Drive |@CoinBase](system-design/hld-questions/8.-dropbox-drive-or-coinbase.md)
+  * [Instagram](system-design/hld-questions/instagram.md)
+  * [\<template>](system-design/hld-questions/less-than-template-greater-than.md)
 * [Resources](system-design/resources.md)

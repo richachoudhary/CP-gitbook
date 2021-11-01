@@ -1074,7 +1074,25 @@ scale is no the actual time taken, but to make humans understand the diff in tim
 
 ![](../.gitbook/assets/screenshot-2021-09-05-at-5.11.49-pm.png)
 
+## 17. Estimations Numbers
 
+
+
+* `b` => bytes
+* if table size = 60 bytes
+  * If total users = 500M&#x20;
+  * <mark style="color:orange;">**=> **</mark>we will need 60b\*500M = 30,000(b\*M) <mark style="color:orange;">=> 30GB</mark>
+  * <mark style="color:orange;">"30 million bytes means 30 MB"</mark>
+
+| Field Type            |                                                                                         |   |
+| --------------------- | --------------------------------------------------------------------------------------- | - |
+| IDs                   | <ul><li><p>if int -> 4 bytes   (32 bit)</p><p>if uuid -> 8 bytes (64 bit)</p></li></ul> |   |
+| Dates & Timestamps    | datetime ->  4 b                                                                        |   |
+| Name                  | 20 b                                                                                    |   |
+| Email                 | 32 b                                                                                    |   |
+| URI path (media link) | 256 b                                                                                   |   |
+| Lat \| Long           | 4 b                                                                                     |   |
+|                       |                                                                                         |   |
 
 
 
