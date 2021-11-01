@@ -1092,7 +1092,8 @@ scale is no the actual time taken, but to make humans understand the diff in tim
 | Email                 | 32 b                                                                                    |   |
 | URI path (media link) | 256 b                                                                                   |   |
 | Lat \| Long           | 4 b                                                                                     |   |
-|                       |                                                                                         |   |
+| Photo                 | 200KB                                                                                   |   |
+| Video                 | 2MB                                                                                     |   |
 
 
 

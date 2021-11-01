@@ -91,5 +91,6 @@
   * [Dropbox/Drive |@CoinBase](system-design/hld-questions/8.-dropbox-drive-or-coinbase.md)
   * [Instagram](system-design/hld-questions/instagram.md)
   * [WhatsApp / Messenger](system-design/hld-questions/whatsapp-messenger.md)
+  * [Twitter](system-design/hld-questions/twitter.md)
   * [\<template>](system-design/hld-questions/less-than-template-greater-than.md)
 * [Resources](system-design/resources.md)
