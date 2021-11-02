@@ -138,7 +138,7 @@
 
 ![](<../../.gitbook/assets/Screenshot 2021-11-02 at 2.32.18 AM.png>)
 
-## 8. Other Discussions
+## 8. Other Discussions & Extended Features
 
 ### 8.1 Duplex Connection: <mark style="color:yellow;">Poll ❌ vs Push ✅</mark>
 
@@ -188,22 +188,45 @@
 
 * Server keeps on sending <mark style="color:orange;">**heartbeats**</mark> every 5 sec or so
 * and updates last seen value in the table
-* **Sending Media**
-  * A sends media to server
-  * server uploads this media on a CDN
-  * and returns the link to A
-  * then server shares this link to B; so that it can access that media
-* **End to end encryption**
-  * A and B exchange their **public keys**
-  * every msg sent from A is first encrypted using A's public key
-  * upon receiving this msg; B decrypts it with its private key
-*   **Group chat(for small group <200):**
 
-    * the message from User A is copied to each group member’s message sync queue: one for User B and the second for User C. You can think of the message sync queue as an inbox for a recipient.
-    * This design choice is good for small group chat because:
-      * it simplifies message sync flow as each client only needs to check its own inbox to get new messages.
-      * when the group number is small, storing a copy in each recipient’s inbox is not too expensive.
+### <mark style="color:orange;">**8.4 Sending Media**</mark>
 
+* A sends media to server
+* server uploads this media on a CDN
+* and returns the link to A
+* then server shares this link to B; so that it can access that media
 
+### <mark style="color:orange;">**8.5 End to end encryption**</mark>
+
+* A and B exchange their **public keys**
+* every msg sent from A is first encrypted using A's public key
+* upon receiving this msg; B decrypts it with its private key
+
+### <mark style="color:orange;">**8.6 Someone's typing...**</mark>
+
+* typing indicator was triggered on the first keystroke and repeated as more keystrokes occurred.
+* If no keystrokes were registered after 10 seconds, the indicator would no longer be displayed. Either you were typing, or you weren’t.
+* **If a user stops typing for five seconds, Slack removes the “person is typing” indicator.**
+* So when user starts typing update your database and set isTyping true.
+* Dont forget to check if isTyping set to true so it will not update every time user presses the key
+*   EVENT is Implement using a <mark style="color:orange;">**pub/sub trigger**</mark>
+
+    ```
+    {
+      "isTyping":true,
+      "fromDeviceToken": "xxxx",
+      "timestamp": 12345
+    }
+    ```
+* **ISSUE: **If user A **connection is lost during typin**g then the status will be always remain true until he resumes the connection. To solve this problem you can have one DateTime field in your firebase object
+
+### <mark style="color:orange;">**8.7 Group chat(for small group <200):**</mark>
+
+* the message from User A is copied to each group member’s message sync queue: one for User B and the second for User C. You can think of the message sync queue as an inbox for a recipient.
+* This design choice is good for small group chat because:
+  * it simplifies message sync flow as each client only needs to check its own inbox to get new messages.
+  * when the group number is small, storing a copy in each recipient’s inbox is not too expensive.
+
+<mark style="color:orange;">****</mark>
 
 ##
