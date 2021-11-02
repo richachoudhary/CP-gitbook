@@ -60,6 +60,7 @@
   * [\_index\_](system-design/lld-questions/\_index\_.md)
   * [Fare Generator Service](system-design/lld-questions/1.-fare-generator-service.md)
   * [Uber : LLD+HLD](system-design/lld-questions/2.-uber-lld+hld.md)
+  * [Quad Tree](system-design/lld-questions/quad-tree.md)
   * [Meeting Scheduler](system-design/lld-questions/3.-meeting-scheduler.md)
   * [Google Calendar](system-design/lld-questions/2.-google-calendar.md)
   * [Ludo](system-design/lld-questions/ludo.md)
