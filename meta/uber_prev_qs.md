@@ -12,8 +12,6 @@
 
 ## 2. Machine Coding
 
-
-
 * [x] fare generation for a cab service | [Question Here](https://leetcode.com/discuss/interview-experience/682096/Uber-or-SE-2-or-Hyderabad) | @LLD:Question>1.FareGenerator
 * [ ] Design Map Reduce
 * [ ] pub-sub with concurrency | [Interview\_exp](https://leetcode.com/discuss/interview-experience/1453593/Uber-or-L4-or-SDE-II-or-Bangalore)
@@ -22,23 +20,21 @@
 
 ## 3. SysDesign
 
-* [ ] Spacial Problems/Quad Trees
-* [ ] uber system design | [here](https://leetcode.com/discuss/interview-question/1490926/Uber-System-Design)
+* [x] Spacial Problems/Quad Trees
+* [x] uber system design | [here](https://leetcode.com/discuss/interview-question/1490926/Uber-System-Design)
 * [ ] a service for Uber which would show a heatmap of active drivers around the world | [exp](https://leetcode.com/discuss/interview-experience/951674/Uber-or-L4-or-Banglore-or-Oct-Nov-2020-Reject)
 * [ ] Parking Lot
-* [ ] Google Doc Commenting
-* [ ] Facebook Messenger
+* [x] Google Doc Commenting
+* [x] Facebook Messenger
 * [ ] multiplayer online chess game
 * [ ] uber eats
 * [ ] Design distributed notification service
 * [ ] Design a proximity service like Yelp.
-* [ ] Design a meeting scheduler.
-* [ ] Design a photo sharing application like instagram
-* [ ] chat system like whatsapp | with ticks
+* [x] Design a meeting scheduler.
+* [x] Design a photo sharing application like instagram
+* [x] chat system like whatsapp | with ticks
 * [ ] Design Amazon Wishlist
 * [ ] Google doc | [What’s different about the new Google Docs: Making collaboration fast](https://drive.googleblog.com/2010/09/whats-different-about-new-google-docs.html)
-
-
 
 ## =============================
 

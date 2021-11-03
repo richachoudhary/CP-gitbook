@@ -2080,7 +2080,270 @@ Built-in sorted: 0.106752 sec        (FASTEST)
 '''
 ```
 
-### 7. Uber Ride Problem
+### 7. Implement Map-Reduce | @Uber 🟢
+
+### About MR
+
+* In a MapReduce-based system, input data is **broken down into chunks** for processing **by different worker instances**.&#x20;
+* Each chunk of input data is _<mark style="color:orange;">mapped</mark>_ to an i**ntermediate state** using a **simple transformation**.&#x20;
+* The intermediate data is then **collected together** and **partitioned based on a key value** so that all of the related values are together.&#x20;
+* Finally, the partitioned data is _<mark style="color:orange;">reduced</mark>_ to a result set
+
+### Word Count
+
+![word-count](<../.gitbook/assets/Screenshot 2021-11-03 at 1.58.44 AM.png>)
+
+
+
+{% tabs %}
+{% tab title="without_concurr" %}
+### Implement Word Count with Map Reduce&#x20;
+
+### (without concurrency)
+
+
+
+
+
+### STEP#1 : Data Preparation
+
+1. Importing the text file
+2. Deleting URLs and Emails in the text file
+3. Deleting all numbers in the text file
+4. Removing all punctuation marks in the text file
+5. Converting text to lower case
+
+###
+
+### STEP #2: Building Map Function
+
+* In this part, we will produce a set of key-value pairs and collect all pairs with same key.
+* The input here is the "data" list we created above.
+
+
+
+### STEP #3: Building Reduce function
+
+* In this part, we will collect all the values with same key, count the number and produce an output.
+* The input here is the "data" list we created in the second step
+
+## Code
+
+```python
+# Step 1: Clean text ==========================================
+def data_clean(text):
+    NoNumbers = ''.join([i for i in text if not (i.isdigit() and i == ' ')]) #Removing numbers & spaces
+    NoNumbers = text.lower()        #Making the text to lower case
+    import string
+    onlyText = NoNumbers.translate(str.maketrans('','',string.punctuation))            #Removing punctuation
+    finaltext = "".join([s for s in onlyText.strip().splitlines(True) if s.strip()]) #Removing the null lines
+    return finaltext
+
+# Step 2: Build Mapper  ==========================================
+def mapper(text):
+    keyval = []   
+    for item in text:
+        keyval.append([item, 1])
+    
+    keyval.sort()   # since no multithreading- we can sort it here only(being single list)
+    return keyval   # [['apple', 1], ['apple', 1], ['book', 1] ...]
+
+# Step 3: Build Mapper  ==========================================
+def reducer(mapper_out) :
+    reducer_out = []
+    count = 1
+    for i in range(0,len(mapper_out)):
+        if i < len(mapper_out)-1:
+            if mapper_out[i][0] == mapper_out[i+1][0]:
+                count = count+1                              #Counting the number of words
+            else : 
+                reducer_out.append([mapper_out[i][0],count])  #Appending the word along with count to sum_reduced list as ["word",count]
+                count = 1 
+        else: reducer_out.append(mapper_out[i])          #Appending the last word to the output list    
+    return reducer_out  # ['apple', 3], ['book', 2]...]
+
+
+def main_function(text):  
+  cleantext = data_clean(text)
+  cleantext = cleantext.split(' ')
+  mapperout = mapper(cleantext)
+  reducerout = reducer(mapperout)
+  return reducerout
+
+# Run the thread  ==========================================
+text = "Apple, aPple book BOOK apple cat zuul, potato potato."
+output = main_function(text)
+print(output)
+'''
+[['apple', 3], ['book', 2], ['cat', 1], ['potato', 2], ['zuul', 1]]
+'''
+```
+{% endtab %}
+
+{% tab title="multithreaded_implementation" %}
+## Steps(with 2 threads):
+
+#### 1. Text Cleanup
+
+#### 2. split text into 2 chunks ( for 2 threads) - using <mark style="color:orange;">`splitlines()`</mark>
+
+#### 3. Run 2 parallel <mark style="color:orange;">mappers</mark> on each chunk
+
+#### 4. Merge the outputs of both the mappers & SORT the list
+
+#### 5. Again split this result into 2 chunks ( for 2 threads) - using <mark style="color:orange;">`partition()`</mark>
+
+#### 6. Run 2 parallel <mark style="color:orange;">reducers</mark> on each chunk
+
+#### 7. Merge the result
+
+
+
+### <mark style="color:yellow;">NOTE: use Queue() to collect output of each thread</mark>
+
+
+
+```python
+def data_clean(text):
+    NoNumbers = ''.join([i for i in text if not (i.isdigit() and i == ' ')]) #Removing numbers & spaces
+    NoNumbers = text.lower()        #Making the text to lower case
+    import string
+    onlyText = NoNumbers.translate(str.maketrans('','',string.punctuation))            #Removing punctuation
+    finaltext = "".join([s for s in onlyText.strip().splitlines(True) if s.strip()]) #Removing the null lines
+    return finaltext
+
+'''
+takes a list of words as input to do multi-threading on the given data set
+
+Here “partition_after” is the number of words after you wish to make the split. 
+For example, splitlines(text,200) 
+    will split the text into split1 and split2 as two sentences with first 1 to 199 words in split1 and rest in split2.
+'''
+def splitlines(text,partition_after):
+    text = text.split(' ')                 #Splitting the lines into a list
+    split1 = text[0:partition_after]       #Creating the first split with the first "a" number of lines into split 1
+    split2 = text[partition_after:]        #Creating the second split with the first "a" number of lines into split 2
+    return split1,split2
+
+
+'''
+Mapper
+
+We map all the words in “text” to 1 using the keyval.append([j,1]) command. 
+So, the key here is the word and we apped a value of 1. 
+The output format of the data is <word,1>
+'''
+def mapper(text,out_queue):
+    keyval = []   
+    for item in text:
+        keyval.append([item, 1])
+    out_queue.put(keyval)
+
+'''
+Sorting Function
+
+As we have two lists of separate key-value pairs after the split function, 
+now we define sorting function to handle both the lists. We take two inputs and 
+return only one output which which contains the sorted list of word key value pairs.
+'''
+def sortedlists(list1,list2):
+    out = list1 + list2             #Appending the two input lists into a single list
+    out.sort(key= lambda x :x[0])   #Sorting the lists based on the first element of the list which is the "word"
+    return out
+
+'''
+Partition
+
+The below code creates two lists of sorted words in alphabetical order and then we separate the words starting with a-m and n-z. 
+The function returns the sorted lists which will be inputs to the reducer function.
+'''
+
+def partition(sorted_list) :
+    sort1out = []
+    sort2out = []
+    for i in sorted_list:
+        if i[0][0] < 'n':             #Partitioning the sorted word list into two separate lists 
+            sort1out.append(i)          #with first list containing words starting with a-m and n-z into second
+        else : sort2out.append(i)
+    return sort1out,sort2out
+
+'''
+Reducer
+'''
+def reducer(part_out1,out_queue) :
+    sum_reduced = []
+    count = 1
+    for i in range(0,len(part_out1)):
+        if i < len(part_out1)-1:
+            if part_out1[i][0] == part_out1[i+1][0]:
+                count = count+1                              #Counting the number of words
+            else : 
+                sum_reduced.append([part_out1[i][0],count])  #Appending the word along with count to sum_reduced list as ["word",count]
+                count = 1 
+        else: sum_reduced.append(part_out1[i])          #Appending the last word to the output list    
+    out_queue.put(sum_reduced)
+    
+'''
+Multi - Threading function
+
+The user defined function below takes a function and two inputs as arguments. 
+The function is applied on both the inputs simultaneously and the output is returned by the function.
+'''    
+import threading
+import queue
+
+def multi_thread_function(func,map1_input,map2_input):  #func is the function to be used with two threads taking two inputs map1_input and map2_input
+  my_queue1 = queue.Queue()  #Using queue to store the values of mapper output to use them in sort function
+  my_queue2 = queue.Queue()
+  t1 = threading.Thread(target=func, args=(map1_input,my_queue1)) 
+  t2 = threading.Thread(target=func, args=(map2_input,my_queue2))  
+  t1.start()                 #Starting the execution of thread1
+  t2.start()                 #Starting the execution of thread2 to run simultaneously with thread1
+  t1.join()                  #Waiting for the thread1 to be completely executed
+  t2.join()                  #Waiting for the thread2 to be completely executed
+  list1out = my_queue1.get() #Getting the values from the queue into a variable to return its value
+  list2out = my_queue2.get()
+  return list1out,list2out
+
+'''
+Mapper-Reducer
+
+Finally, we combine all the above functions to split the lines after 5000 words 
+and them implement the entire Mapper Reducer operation which mimics the way Hadoop’s handles the data
+'''
+def main_function(text):  
+  cleantext = data_clean(text)
+  linessplit = splitlines(cleantext,3)  # make it around 5K for big file
+  mapperout = multi_thread_function(mapper,linessplit[0],linessplit[1]) 
+  # print('mapperout:>> ', *mapperout)
+  sortedwords = sortedlists(mapperout[0],mapperout[1])
+  slicedwords = partition(sortedwords)
+  reducerout = multi_thread_function(reducer,slicedwords[0],slicedwords[1])
+#   print('reducerout:>> ', reducerout)
+  return reducerout[0]+reducerout[1]
+
+
+text = "Apple, aPple book BOOK apple cat zuul, potato potato."
+output = main_function(text)
+print(output)
+'''
+[['apple', 3], ['book', 2], ['cat', 1], ['potato', 2], ['zuul', 1]]
+'''
+```
+{% endtab %}
+{% endtabs %}
+
+
+
+
+
+
+
+
+
+###
+
+### 8. Uber Ride Problem
 
 * Imagine at the end of a political conference, republicans and democrats are trying to leave the venue and ordering Uber rides at the same time. However, to make sure no fight breaks out in an Uber ride, the software developers at Uber come up with an algorithm whereby either an Uber ride can have all democrats or republicans or two Democrats and two Republicans. All other combinations can result in a fist-fight
 
@@ -2114,7 +2377,7 @@ public void seatDemocrat() throws InterruptedException, BrokenBarrierException {
     }
 ```
 
-### 7: Multithreaded Pub-Sub Queue Like Kafka | no need; as already done ABOVE(#4)
+### 9: Multithreaded Pub-Sub Queue Like Kafka | no need; as already done ABOVE(#4)
 
 {% tabs %}
 {% tab title="Kakfa" %}
