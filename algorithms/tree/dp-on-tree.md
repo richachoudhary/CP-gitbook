@@ -300,12 +300,15 @@ print(res)
 * [x] CSES: [Tree Matching](https://cses.fi/problemset/task/1130) | [kartikArora](https://www.youtube.com/watch?v=RuNAYVTn9qM\&list=PLb3g\_Z8nEv1j\_BC-fmZWHFe6jmU\_zv-8s\&index=2\&ab\_channel=KartikArora) ✅
 * [x] CF: [Distance in Tree](https://codeforces.com/contest/161/problem/D) | #nodes at dist K from each other
 * [x] 968.[Binary Tree Cameras](https://leetcode.com/problems/binary-tree-cameras/) | @kartikArora 📷✅✅✅✅✅✅✅✅
+  * [x] LC [979.Distribute Coins in Binary Tree](https://leetcode.com/problems/distribute-coins-in-binary-tree/) |**@uber**
 * [x] 337\. [House Robber III](https://leetcode.com/problems/house-robber-iii/) ✅
 * [x] 95\. [Unique Binary Search Trees II](https://leetcode.com/problems/unique-binary-search-trees-ii/) ✅| @MindTickle
 * [x] 1339\. [Maximum Product of Splitted Binary Tree](https://leetcode.com/problems/maximum-product-of-splitted-binary-tree/)| ❤️✅| looks so complicated, yet so easy
 * [ ] [https://leetcode.com/problems/longest-zigzag-path-in-a-binary-tree/](https://leetcode.com/problems/longest-zigzag-path-in-a-binary-tree/)
 * [ ] [https://leetcode.com/problems/maximum-sum-bst-in-binary-tree/](https://leetcode.com/problems/maximum-sum-bst-in-binary-tree/)
 * [ ] [https://leetcode.com/problems/number-of-ways-to-reorder-array-to-get-same-bst/](https://leetcode.com/problems/number-of-ways-to-reorder-array-to-get-same-bst/)
+
+faf
 
 {% tabs %}
 {% tab title="Subordinates" %}
@@ -464,6 +467,25 @@ return minCameras()
 ```
 {% endtab %}
 
+{% tab title="97" %}
+```cpp
+res = 0
+def distributeCoins(self, root):
+    def dfs(root):
+        if not root: return 0
+        left = dfs(root.left)
+        right = dfs(root.right)
+        self.res += abs(left) + abs(right)
+        return root.val + left + right - 1
+    dfs(root)
+    return self.res
+```
+{% endtab %}
+{% endtabs %}
+
+###
+
+{% tabs %}
 {% tab title="HouesRobber3" %}
 ```python
 MEMO = {}
@@ -577,6 +599,8 @@ Time Complexity :  O(NlogN)
 ```
 {% endtab %}
 {% endtabs %}
+
+
 
 ### Binary Lifting
 

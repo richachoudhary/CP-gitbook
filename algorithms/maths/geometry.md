@@ -1,7 +1,5 @@
 # Geometry
 
-
-
 ## 0. Notes
 
 * Heron's formula for area of triangle![\text{ Area }=\sqrt{s(s-a)(s-b)(s-c)}](https://www.gstatic.com/education/formulas2/355397047/en/heron\_s\_formula.svg)
@@ -20,14 +18,14 @@ AXB = |  x1  y1  z1 |
 '''
 ```
 
-## 1. Problems     &#x20;
+## 1. Problems
 
-#### 1.2.1 Easy 🧠    &#x20;
+#### 1.2.1 Easy 🧠
 
-* [x] [1266.Minimum Time Visiting All Points](https://leetcode.com/problems/minimum-time-visiting-all-points/)  &#x20;
-* [x] [883. Projection Area of 3D Shapes](https://leetcode.com/problems/projection-area-of-3d-shapes/) &#x20;
-* [x] [1030. Matrix Cells in Distance Order](https://leetcode.com/problems/matrix-cells-in-distance-order/)&#x20;
-* [x] [892. Surface Area of 3D Shapes](https://leetcode.com/problems/surface-area-of-3d-shapes/)&#x20;
+* [x] [1266.Minimum Time Visiting All Points](https://leetcode.com/problems/minimum-time-visiting-all-points/)
+* [x] [883. Projection Area of 3D Shapes](https://leetcode.com/problems/projection-area-of-3d-shapes/)
+* [x] [1030. Matrix Cells in Distance Order](https://leetcode.com/problems/matrix-cells-in-distance-order/)
+* [x] [892. Surface Area of 3D Shapes](https://leetcode.com/problems/surface-area-of-3d-shapes/)
 
 {% hint style="info" %}
 For problems like (**#892**) :in geometry of 3-D blocks: think in terms of subtracting the overlap, not adding each block one-by-one.
@@ -152,6 +150,8 @@ class Solution:
 * [x] CSES: [Polygon Area](https://cses.fi/problemset/result/2677213/) ✅✅
 * [ ] CSES: [Point in Polygon](https://www.youtube.com/watch?v=G9QTjWtK\_TQ) 🐽🐽| [video](https://www.youtube.com/watch?v=G9QTjWtK\_TQ\&t=5265s)
 * [ ] CSES: [Convex Hull](https://cses.fi/problemset/task/2195) ✅✅ | [video](https://www.youtube.com/watch?v=G9QTjWtK\_TQ\&t=7801s) | \*\*Graham Scan+Jarvis Algo >> \*\*shape of rubber band on nails boundary
+* [x] LC [750. Number Of Corner Rectangles](https://sugarac.gitbooks.io/facebook-interview-handbook/content/number-of-corner-rectangles.html) | **@uber**
+* [x] LC [939. Minimum Area Rectangle](https://leetcode.com/problems/minimum-area-rectangle/) | **@uber**
 
 {% tabs %}
 {% tab title="PointLocationTest" %}
@@ -183,7 +183,7 @@ def solve():
 ```
 {% endtab %}
 
-{% tab title="Line Segment Intersection" %}
+{% tab title="LineSeg Intersection" %}
 ```python
 '''
 #1. check if both lines are COLINEAR YET PARALLEL:
@@ -245,7 +245,7 @@ if not isSolved:
 ```
 {% endtab %}
 
-{% tab title="Polygon Area" %}
+{% tab title="PolyArea" %}
 ```python
 '''
 IDEA: 
@@ -284,9 +284,98 @@ def solve():
     
 ```
 {% endtab %}
+
+{% tab title="750" %}
+
+
+**Solution 1:**\
+One straight-forward solution is: we can iterate any two rows, say r1 and r2, and for every column, we check if grid\[r1]\[c] == grid\[r2]\[c]. IF yes, we increate the count by 1. Then the number of rentangles formed by these two rows are count \* (count - 1) / 2.\
+\
+The time complexity of the solution is O(m^2 \* n). \
+\
+If the number of rows is significantly greater than number of columns, we can iterate the columns and check the rows for each of the two columns. Then the time complexity is&#x20;
+
+O(n^2 \* m).
+
+```java
+public int countCornerRectangles(int[][] grid) {
+        int ans = 0;
+        for (int i = 0; i < grid.length - 1; i++) {
+            for (int j = i + 1; j < grid.length; j++) {
+                int counter = 0;
+                for (int k = 0; k < grid[0].length; k++) {
+                    if (grid[i][k] == 1 && grid[j][k] == 1) counter++;
+                }
+                if (counter > 0) ans += counter * (counter - 1) / 2;
+            }
+        }
+        return ans;
+    }
+```
+
+\
+**Solution 2:**\
+Solution 2 is similar to solution 1. The main difference is we use a hash map to save the positions of the two rows.
+
+_**Time Complexity:** O(N\*(M^2))_\
+_**Auxiliary Space:** O(M^2)_\
+
+
+```java
+public int countCornerRectangles(int[][] grid) {
+        if (grid == null || grid.length < 2 || grid[0] == null || grid[0].length < 2) {
+            return 0;
+        }
+         
+        int ans = 0;
+        Map<Integer, Integer> map = new HashMap<>();
+         
+        int m = grid.length;
+        int n = grid[0].length;
+         
+        for (int r1 = 0; r1 < m; r1++) {
+            for (int r2 = r1 + 1; r2 < m; r2++) {
+                for (int c = 0; c < n; c++) {
+                    if (grid[r1][c] == 1 && grid[r2][c] == 1) {
+                        int pos = r1* n + r2;
+                        if (map.containsKey(pos)) {
+                            int val = map.get(pos);
+                            ans += val;
+                            map.put(pos, val + 1);
+                        } else {
+                            map.put(pos, 1);
+                        }
+                    }
+                }
+            }
+        }
+         
+        return ans;
+    }
+```
+{% endtab %}
+
+{% tab title="939" %}
+```python
+def minAreaRect(self, points: List[List[int]]) -> int:
+
+    seen = set()
+    res = float('inf')
+    for x1, y1 in points:
+        for x2, y2 in seen:
+            if (x1, y2) in seen and (x2, y1) in seen:
+                area = abs(x1 - x2) * abs(y1 - y2)
+                if area and area < res:
+                    res = area
+        seen.add((x1, y1))
+    return res if res < float('inf') else 0
+
+'''
+TC: O(N^2)
+'''
+```
+{% endtab %}
 {% endtabs %}
-
-
 
 ## 2. Problemsets
 

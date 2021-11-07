@@ -322,7 +322,7 @@ def calcEquation(self, equations: List[List[str]], values: List[float], queries:
 * [x] [895. Max Area of Island](https://leetcode.com/problems/max-area-of-island/)
 * [x] [733. Flood Fill](https://leetcode.com/problems/flood-fill/)
 * [x] [542. 01 Matrix](https://leetcode.com/problems/01-matrix/)
-* [x] [1162.As Far from Land as Possible](https://leetcode.com/problems/as-far-from-land-as-possible/) | **DP**(2 traversal)\*\*: \*\*(i) top_to_bottom (ii) bottom_to_top
+* [x] [1162.As Far from Land as Possible](https://leetcode.com/problems/as-far-from-land-as-possible/) | **DP**(2 traversal)\*\*: \*\*(i) top\_to\_bottom (ii) bottom\_to\_top
 * [x] [994.Rotting Oranges](https://leetcode.com/problems/rotting-oranges/) 🍊🍊
 * [x] [1091.Shortest Path in Binary Matrix](https://leetcode.com/problems/shortest-path-in-binary-matrix/) //see 'Why DP doesnt work here!!'
   * _i.e. for a lonnngggg zigzag path going through (7,0)....->(1,1)->... ; by you wont have value of dp\[7]\[0] when you're calculating dp\[1]\[1]_
@@ -330,16 +330,15 @@ def calcEquation(self, equations: List[List[str]], values: List[float], queries:
 * [x] [332.Reconstruct Itinerary](https://leetcode.com/problems/reconstruct-itinerary/) | dfs + backtrack ✅✈️
 * [x] [1443.Minimum Time to Collect All Apples in a Tree](https://leetcode.com/problems/minimum-time-to-collect-all-apples-in-a-tree/) 🍎
 * [x] [934.Shortest Bridge](https://leetcode.com/problems/shortest-bridge/) | \*\*Google \*\*| BFS+DFS ✅
-* [ ] CSES:[ Grid Paths](https://cses.fi/problemset/task/1625) ✅✅✅🐽| [WilliamLin](https://www.youtube.com/watch?v=dZ\_6MS14Mg4\&t=2440s\&ab_channel=WilliamLin)
+* [ ] CSES:[ Grid Paths](https://cses.fi/problemset/task/1625) ✅✅✅🐽| [WilliamLin](https://www.youtube.com/watch?v=dZ\_6MS14Mg4\&t=2440s\&ab\_channel=WilliamLin)
 * [x] CSES: [Labyrinth](https://cses.fi/problemset/task/1193) ==> \*\*DFS \*\*fails, **ALWAYS USE BFS for SHORTEST PATH ✅✅**
-* [x] \*\*CSES: \*\*[Monsters](https://cses.fi/problemset/task/1194) | `Lava Flow Problem✅✅✅🔥🔥` | [video](https://www.youtube.com/watch?v=hB59dxdDLII\&ab_channel=Dardev)
-* [x] LC 127. [Word Ladder](https://leetcode.com/problems/word-ladder/) ✅✅💪💪
+* [x] \*\*CSES: \*\*[Monsters](https://cses.fi/problemset/task/1194) | `Lava Flow Problem✅✅✅🔥🔥` | [video](https://www.youtube.com/watch?v=hB59dxdDLII\&ab\_channel=Dardev)
 * [ ] CSES: [Swap Game](https://cses.fi/problemset/task/1670)
 * [x] LC [818. Race Car](https://leetcode.com/problems/race-car/) 😎✅✅
   * [x] Similar: LC [1654.Minimum Jumps to Reach Home](https://leetcode.com/problems/minimum-jumps-to-reach-home/) ✅| must do| DP se nhi honge aise Questions
   * [x] LC [1533.Minimum Number of Days to Eat N Oranges](https://leetcode.com/problems/minimum-number-of-days-to-eat-n-oranges/) | BFS or DP 💪✅
 * [x] LC [847. Shortest Path Visiting All Nodes](https://leetcode.com/problems/shortest-path-visiting-all-nodes/) 🐽| BFS + bitmask
-* [x] LC [**127. Word Ladder**](https://leetcode.com/problems/word-ladder/) | &[ **126.Word Ladder II**](https://leetcode.com/problems/word-ladder-ii/)\*\* - amazon@happy !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!🤯\*\*
+* [x] LC [**127. Word Ladder**](https://leetcode.com/problems/word-ladder/) | &[ **126.Word Ladder II**](https://leetcode.com/problems/word-ladder-ii/) - amazon@happy !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!🤯
 
 {% tabs %}
 {% tab title="818" %}
@@ -514,16 +513,101 @@ def findLadders(self, beginWord: str, endWord: str, wordList: List[str]) -> List
     return res
 ```
 {% endtab %}
+
+{% tab title="332" %}
+```python
+def findItinerary(self, tickets: List[List[str]]) -> List[str]:
+
+    ''' #1. DFS + Backtrack  O(N!) ======================== '''
+    G = defaultdict(list)
+
+    for f,t in tickets:
+        G[f].append(t)
+
+
+    def dfs(x):           
+        dstns = sorted(G[x])
+        for i in dstns:
+            iten.append(i)
+            G[x].remove(i)
+            dfs(i)
+            if len(iten) == len(tickets) + 1:
+                return iten
+            G[x].append(i)
+            iten.pop()
+
+    iten = ["JFK"]
+    return dfs("JFK")
+    '''
+    COMPLEXITY:
+    O(n!) where n is the number of edges(or tickets). 
+        Because in the backtracking solution you are trying different permutations of the edges
+    '''
+
+    ''' #2. Construct Eurler Path  O(E log E) =================================  '''
+    def dfs(x):
+        while G[x]:
+            i = G[x].pop()
+            dfs(i)
+        euler_path.append(x)
+
+    for x in G:
+        G[x] = sorted(G[x], reverse = True)
+
+    euler_path = []
+    dfs("JFK")
+    return euler_path[::-1]
+    '''
+    COMPLEXITY:
+     time and space complexity of usual Euler Path Finding algorighm is O(E+V) = O(E), 
+        because we traverse each edge only once and number of edges is more than number of vertixes - 1 in Eulerian graph. 
+        However here we sort our list for every node, so complexity will be O(E log E)
+    '''
+```
+{% endtab %}
+
+{% tab title="542" %}
+```python
+def updateMatrix(self, mat: List[List[int]]) -> List[List[int]]:
+    m, n = len(mat), len(mat[0])
+    DIR = [0, 1, 0, -1, 0]
+
+    q = deque([])
+    for r in range(m):
+        for c in range(n):
+            if mat[r][c] == 0:
+                q.append((r, c))
+            else:
+                mat[r][c] = -1  # Marked as not processed yet!
+
+    while q:
+        r, c = q.popleft()
+        for i in range(4):
+            nr, nc = r + DIR[i], c + DIR[i + 1]
+            if nr < 0 or nr == m or nc < 0 or nc == n or mat[nr][nc] != -1: continue
+            mat[nr][nc] = mat[r][c] + 1
+            q.append((nr, nc))
+    return mat
+'''
+BFS from 0-cells
+Complexity
+
+Time: O(M * N), where M is number of rows, N is number of columns in the matrix.
+Space: O(M * N), space for the queue.
+'''    
+      
+```
+{% endtab %}
 {% endtabs %}
 
-## \*\*1. Single Source Shortest/Longest Path - SSSP/SSLP \*\*
+## 1. Single Source Shortest/Longest Path - SSSP/SSLP
 
 ### **1.1 For DAGs**
 
-#### \*\*1.1.1 SSSP \*\*
+#### 1.1.1 SSSP
 
 * Can be done easily in `O(E+V)` using topological sort.
-* Ref [video](https://www.youtube.com/watch?v=TXkDpqjDMHA\&list=PLDV1Zeh2NRsDGO4--qE8yH72HFL1Km93P\&index=17\&ab_channel=WilliamFiset)
+* Ref [video](https://www.youtube.com/watch?v=TXkDpqjDMHA\&list=PLDV1Zeh2NRsDGO4--qE8yH72HFL1Km93P\&index=17\&ab\_channel=WilliamFiset)
 
 {% tabs %}
 {% tab title="Logic" %}
@@ -541,10 +625,10 @@ for node in topo_list:
 
 #### 1.1.2 SSLP
 
-* while SSLP on undirected graphs is \*\*NP-HARD, \*\*for DAGs, it could be easily solved in O(E+V).
+* while SSLP on undirected graphs is <mark style="color:orange;">**NP-HARD **</mark>for DAGs, it could be easily solved in O(E+V).
 * **Logic**:
   * multiply all edges with `-1` --> find shorted path --> multiply all edges with `-1` again
-* Ref [video](https://www.youtube.com/watch?v=TXkDpqjDMHA\&list=PLDV1Zeh2NRsDGO4--qE8yH72HFL1Km93P\&index=17\&ab_channel=WilliamFiset)
+* Ref [video](https://www.youtube.com/watch?v=TXkDpqjDMHA\&list=PLDV1Zeh2NRsDGO4--qE8yH72HFL1Km93P\&index=17\&ab\_channel=WilliamFiset)
 
 ### 1.2 For Graphs (non-DAG wale)
 
@@ -1051,12 +1135,12 @@ TC: M*N(log(MN))
 * [x] CSES: [Shortest Routes II](https://cses.fi/problemset/task/1672/) | **`Floyd-Warshall |`**\<standardQ> | must do 🔖🍪🚀🔖
 * [x] CSES: [High Score](https://cses.fi/problemset/task/1673/) | **`Bellman-Ford`**` with Negative Cycle Detection` | \<standardQ> | must do 🔖🍪🚀🔖
 * [x] CSES: [Cycle Finding](https://cses.fi/problemset/task/1197/) ✅🐽
-* [x] CSES: [Flight Routes](https://cses.fi/problemset/task/1196) | ✅✅ | [approach](https://www.youtube.com/watch?v=009PBKHXtyA\&ab_channel=Dardev) | 2-D dijkstra's
+* [x] CSES: [Flight Routes](https://cses.fi/problemset/task/1196) | ✅✅ | [approach](https://www.youtube.com/watch?v=009PBKHXtyA\&ab\_channel=Dardev) | 2-D dijkstra's
 * [x] CSES: [Flight Discount](https://cses.fi/problemset/result/2664805/) | reversed dij: | [approach](https://usaco.guide/problems/cses-1195-flight-discount/solution) ✅✅ aise hi questions toh dekhne mei impossible lagte hai BC!!!!............so damn easy
 * [x] [Currency Arbitrage](https://www.dailycodingproblem.com/blog/how-to-find-arbitrage-opportunities-in-python/) | @coinbase
 * [x] 1368\. [Minimum Cost to Make at Least One Valid Path in a Grid](https://leetcode.com/problems/minimum-cost-to-make-at-least-one-valid-path-in-a-grid/) 🍪🍪🍪| disguised Dijkstra's | too easy when you see it
 
-## \*\*2. MST \*\*
+## 2. MST&#x20;
 
 #### 2.1.1 Prim's Algo : `O(ElogE)`
 
@@ -1433,7 +1517,7 @@ return cnt
 * [x] [1331.Rank Transform of an Array](https://leetcode.com/problems/rank-transform-of-an-array/) | tag:Easy
 * [x] [1632.Rank Transform of a Matrix](https://leetcode.com/problems/rank-transform-of-a-matrix/) | **GOOGLE!!!!..........last time 🐽🐽🐽**
 * [x] CSES :[ Building Roads](https://cses.fi/problemset/task/1666) ✅
-* [x] [**1168. Optimize Water Distribution in a Village**](http://leetcode.libaoj.in/optimize-water-distribution-in-a-village.html)** | @google | **[**video**](https://www.youtube.com/watch?v=\_Bb9GRu4myk\&ab_channel=KelvinChandra)** | ✅✅䷯**
+* [x] [**1168. Optimize Water Distribution in a Village**](http://leetcode.libaoj.in/optimize-water-distribution-in-a-village.html)\*\* | @google | [**video**](https://www.youtube.com/watch?v=\_Bb9GRu4myk\&ab\_channel=KelvinChandra) | ✅✅䷯\*\*
 * [x] 2003\. [Smallest Missing Genetic Value in Each Subtree](https://leetcode.com/problems/smallest-missing-genetic-value-in-each-subtree/) | **@contest** | 🐽🐽🟡
 * [ ] [352.Data Stream as Disjoint Intervals](https://leetcode.com/problems/data-stream-as-disjoint-intervals/)
 * [ ] 128, [https://leetcode.com/problems/longest-consecutive-sequence/](https://leetcode.com/problems/longest-consecutive-sequence/)\
@@ -1773,7 +1857,7 @@ print(total_cost)
 
 ### **4.3 Resources:**
 
-* [WilliamFiset videos](https://www.youtube.com/watch?v=ibjEGG7ylHk\&ab_channel=WilliamFiset)
+* [WilliamFiset videos](https://www.youtube.com/watch?v=ibjEGG7ylHk\&ab\_channel=WilliamFiset)
 
 ***
 
@@ -1839,7 +1923,7 @@ def possibleBipartition(self, n: int, dislikes: List[List[int]]) -> bool:
 
 ### 6.2 for Directed Graphs:
 
-### 🟢1. in_path
+### 🟢1. in\_path
 
 ### 🟢2. #(Nodes - 1) = #Edges
 
@@ -1918,10 +2002,10 @@ Therefore, after the topological sort,
 
 ### 6.3 Problems: Cycle Detection
 
-* [x] CSES: [Round Trip](https://cses.fi/problemset/task/1669/) ✅✅ | **Undirected Graph** | **cycle retrieval** | [video](https://www.youtube.com/watch?v=qYyyj2SRsRc\&t=427s\&ab_channel=Dardev)
+* [x] CSES: [Round Trip](https://cses.fi/problemset/task/1669/) ✅✅ | **Undirected Graph** | **cycle retrieval** | [video](https://www.youtube.com/watch?v=qYyyj2SRsRc\&t=427s\&ab\_channel=Dardev)
 * [x] [802.Find Eventual Safe States](https://leetcode.com/problems/find-eventual-safe-states/) .💯
 * [x] [886.Possible Bipartition](https://leetcode.com/problems/possible-bipartition/)
-* [x] CSES: [Round Trip II](https://cses.fi/problemset/task/1678) | Directed Graph | [Approach](https://www.youtube.com/watch?v=kzeAHV2Pw2o\&ab_channel=Dardev)
+* [x] CSES: [Round Trip II](https://cses.fi/problemset/task/1678) | Directed Graph | [Approach](https://www.youtube.com/watch?v=kzeAHV2Pw2o\&ab\_channel=Dardev)
 
 {% tabs %}
 {% tab title="RoundTrip" %}
@@ -2125,10 +2209,10 @@ int32_t main()
 > WHEN you're thinking ki DSU ka question hai : easy-peasy & halfway coding, suddenly you notice; **"Oh Fuck! ye toh DIRECTED GRAPH hai**" ...................... immediately switch to SCC
 
 * \*\*What? \*\*self contained cycles in graph in & from every vertex in cycle you can reach every other vertex.
-* **Property:`SCC will always be disjoint from each other`**(as shown in Kosaraju's. Ref:[ClementInterview](https://www.youtube.com/watch?v=qz9tKlF431k\&ab_channel=Cl%C3%A9mentMihailescu))
+* **Property:`SCC will always be disjoint from each other`**(as shown in Kosaraju's. Ref:[ClementInterview](https://www.youtube.com/watch?v=qz9tKlF431k\&ab\_channel=Cl%C3%A9mentMihailescu))
 * **Algos**:
-  * ✅Kosaraju's => `O(V+E)` : [hackerearth](https://www.hackerearth.com/practice/algorithms/graphs/strongly-connected-components/tutorial/) , [TusharRoy](https://www.youtube.com/watch?v=RpgcYiky7uw\&ab_channel=TusharRoy-CodingMadeSimple)
-  * ❌Tarjan's => `O(V+E)` : [WilliamFiset#23](https://www.youtube.com/watch?v=wUgWX0nc4NY\&list=PLDV1Zeh2NRsDGO4--qE8yH72HFL1Km93P\&index=23\&ab_channel=WilliamFiset) | wayyyy too sophisticated to apply in realtime
+  * ✅Kosaraju's => `O(V+E)` : [hackerearth](https://www.hackerearth.com/practice/algorithms/graphs/strongly-connected-components/tutorial/) , [TusharRoy](https://www.youtube.com/watch?v=RpgcYiky7uw\&ab\_channel=TusharRoy-CodingMadeSimple)
+  * ❌Tarjan's => `O(V+E)` : [WilliamFiset#23](https://www.youtube.com/watch?v=wUgWX0nc4NY\&list=PLDV1Zeh2NRsDGO4--qE8yH72HFL1Km93P\&index=23\&ab\_channel=WilliamFiset) | wayyyy too sophisticated to apply in realtime
 
 {% tabs %}
 {% tab title="LOGIC:Kosaraju" %}
@@ -2318,7 +2402,7 @@ class Solution:
 
 * [x] CSES: [Flight Routes Check](https://cses.fi/problemset/task/1682) | direct copy-paste of Kosaraju's code
 * [x] [990.Satisfiability of Equality Equations](https://leetcode.com/problems/satisfiability-of-equality-equations/)
-* [x] **Clemment's interview**:[ Google Coding Interview With A High School Student](https://www.youtube.com/watch?v=qz9tKlF431k\&ab_channel=Cl%C3%A9mentMihailescu) ✈️
+* [x] **Clemment's interview**:[ Google Coding Interview With A High School Student](https://www.youtube.com/watch?v=qz9tKlF431k\&ab\_channel=Cl%C3%A9mentMihailescu) ✈️
 * [x] [207.Course Schedule](https://leetcode.com/problems/course-schedule/) | if SCC of len > 1 exits ==> there is cyclic dependency
 * [x] [1192.Critical Connections in a Network](https://leetcode.com/problems/critical-connections-in-a-network/)
 * [ ] [1520.Maximum Number of Non-Overlapping Substrings](https://leetcode.com/problems/maximum-number-of-non-overlapping-substrings/)
@@ -2393,7 +2477,7 @@ return euler_path[::-1]    # this reversing is part of the standard algo
 
 * \*\*Articulation Point: \*\*The node, which if removed, will increase the number of connected components in graph.
   * Number of articulation points represent the **vulnerabilities in network**.
-* **Algo** to find Articulation points: **Tarjan's algo** : **`O(V+E)`** | [Abdul Bari](https://www.youtube.com/watch?v=jFZsDDB0-vo\&ab_channel=AbdulBari) (**see #1192 for CODE**)
+* **Algo** to find Articulation points: **Tarjan's algo** : **`O(V+E)`** | [Abdul Bari](https://www.youtube.com/watch?v=jFZsDDB0-vo\&ab\_channel=AbdulBari) (**see #1192 for CODE**)
 * \*\*Biconnected Graph \*\*properties:
   1. It is connected, i.e. it is possible to reach every vertex from every other vertex, by a simple path.
   2. Even after removing any vertex the graph remains connected.
@@ -2450,7 +2534,7 @@ def criticalConnections(self, n, connections):
 * \*\*Augmenting Paths? \*\*=> is a path of edges with flow capacity > 0 from \*\*source \*\*to **sink.**
   * Every Augmenting path has a \_bottleneck \_(the smallest capacity wali edge)
 * **Augmenting the flow?** => means updating the flow values of the edge along the augmenting path.
-* \*\*Ref: \*\*[WilliamFiset](https://www.youtube.com/watch?v=LdOnanfc5TM\&list=PLDV1Zeh2NRsDGO4--qE8yH72HFL1Km93P\&index=34\&ab_channel=WilliamFiset)
+* \*\*Ref: \*\*[WilliamFiset](https://www.youtube.com/watch?v=LdOnanfc5TM\&list=PLDV1Zeh2NRsDGO4--qE8yH72HFL1Km93P\&index=34\&ab\_channel=WilliamFiset)
 
 {% hint style="info" %}
 Ford Fulkerson gives **min-cut** value as byproduct!

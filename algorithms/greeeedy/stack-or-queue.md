@@ -321,6 +321,7 @@ return calc(0)
 * [x] SPOJ: [STPAR - Street Parade](https://www.spoj.com/problems/STPAR/) | [Approach](http://discuss.spoj.com/t/stpar-street-parade/2022)
 * [x] LC 316. [Remove Duplicate Letters](https://leetcode.com/problems/remove-duplicate-letters/)
 * [x] [Sum of all contiguous sub-array's max difference](https://stackoverflow.com/questions/30698441/optimal-way-to-find-sums-of-all-contiguous-sub-arrays-max-difference) | **@amazon**
+* [x] LC [735.Asteroid Collision](https://leetcode.com/problems/asteroid-collision/) **| @uber✅**
 
 {% tabs %}
 {% tab title="155" %}
@@ -354,8 +355,6 @@ def getMin(self) -> int:
     if self.stack:
         return self.min_
 ```
-
-
 
 **Approach#2: Smart | stack of tuple | O(1)**
 
@@ -431,7 +430,23 @@ def max_sums(d):
 
 def max_differences_sum(A):    # main function
     return max_sums(A) + max_sums([-x for x in A])
+```
+{% endtab %}
 
+{% tab title="735" %}
+```python
+stack = []
+for num in asteroids:
+    if num>0:
+        stack.append(num)
+    else:
+        while stack and stack[-1]>0 and stack[-1]<abs(num):
+            stack.pop()
+        if not stack or stack[-1]<0:
+            stack.append(num)
+        elif stack[-1] == -num:
+            stack.pop()
+return stack
 ```
 {% endtab %}
 {% endtabs %}

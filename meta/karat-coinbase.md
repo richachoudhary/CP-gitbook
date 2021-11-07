@@ -9,6 +9,8 @@
 * **Currency Arbitrage**: Now given any two currencies x and y. Find the best conversion rate. Basically a graph problem you will have to traverse all paths from x to y because you want the best conversion rate.
   * **follow up** - Rather than hardcoding the data use two apis - 1.) [https://api.pro.coinbase.com/products](https://api.pro.coinbase.com/products) to get the id like USD-EUR aka currency pair and 2.) [https://api.pro.coinbase.com/products/](https://api.pro.coinbase.com/products/)" + id + "/book to fetch the ask and bid price for each one of them. response = request.get(url) is enough to handle the GET calls + response.json() is enough to parse the response.
 
+faf
+
 {% tabs %}
 {% tab title="588.MyFileSys" %}
 ```python
@@ -436,6 +438,8 @@ The Bellman-Ford algorithm can detect negative cycles. So if we run Bellman-Ford
 ```
 {% endtab %}
 {% endtabs %}
+
+fafa
 
 ## HLD:
 
@@ -956,7 +960,6 @@ Similar to Meeting Rooms(LeetCode 252, *try 253!)
 Similar to Merge Intervals(LeetCode 56), but the output is different, 
 now you are required to output idle time after time intervals merged, 
 notice also output 0 - first start time.
-
 ```
 {% endtab %}
 

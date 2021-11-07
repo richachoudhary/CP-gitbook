@@ -195,6 +195,17 @@ class LFUCache(object):
 * [x] LC [1600. Throne Inheritance](https://leetcode.com/problems/throne-inheritance/)
 * [x] LC [295. Find median from a data stream](https://leetcode.com/problems/find-median-from-data-stream/)
 * [x] LC [480. Sliding Window Median](https://leetcode.com/problems/sliding-window-median/)
+* [ ] LC 348. Design Tic-Tac-Toe
+* [ ] LC 534. Design Tiny URL
+* [ ] LC 535.Encode and Decode TinyURL
+* [ ] LC 346. Moving Average from Data Stream
+* [ ] LC 281. Zigzag Iterator
+* [ ] LC 381. Insert Delete GetRandom O(1) - Duplicates allowed
+* [ ] LC 432. All O\`one Data Structure
+* [ ] LC 341. Flatten Nested List Iterator
+* [ ] LC 642. Design Search Autocomplete System
+* [ ] LC 170. Two Sum III - Data structure design
+* [ ] LC 622. Design Circular Queue
 
 {% tabs %}
 {% tab title="1600" %}

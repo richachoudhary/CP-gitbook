@@ -8,6 +8,7 @@
 * [x] CSES: [Restaurant Customers](https://cses.fi/problemset/task/1619)
 * [x] LC [715. Range Module](https://leetcode.com/problems/range-module/) | \<hard>
 * [x] LC [636. Exclusive Time of Functions](https://leetcode.com/problems/exclusive-time-of-functions/) | **@Microsoft**
+* [x] **LC **[**986. **Interval List Intersections](https://leetcode.com/problems/interval-list-intersections/) | @Uber
 
 {% tabs %}
 {% tab title="56" %}
@@ -103,7 +104,7 @@ def summaryRanges(self, A: List[int]) -> List[str]:
 ```
 {% endtab %}
 
-{% tab title="MovieFestival -II" %}
+{% tab title="MovieFest-II" %}
 ```cpp
 int n, k; cin >> n >> k;
 vector<pair<int, int>> v(n);
@@ -158,9 +159,7 @@ class RangeModule:
 ```
 {% endtab %}
 
-{% tab title="Untitled" %}
-
-
+{% tab title="636" %}
 Intuition:
 
 1. similar to the closing openning backet problems, where there's nesting, stack is required
@@ -186,6 +185,33 @@ def exclusiveTime(self, n, logs):
                 # deduct from previous fn time 
                 outputs[stack[-1][0]] += -time_diff
     return outputs 
+```
+{% endtab %}
+
+{% tab title="986" %}
+
+
+![](<../../.gitbook/assets/Screenshot 2021-11-08 at 2.25.37 AM.png>)
+
+
+
+```python
+def intervalIntersection(self, A: List[List[int]], B: List[List[int]]) -> List[List[int]]:
+    i = 0
+    j = 0
+
+    result = []
+    while i < len(A) and j < len(B):
+        a_start, a_end = A[i]
+        b_start, b_end = B[j]
+        if a_start <= b_end and b_start <= a_end:                       # Criss-cross lock
+            result.append([max(a_start, b_start), min(a_end, b_end)])   # Squeezing
+
+        if a_end <= b_end:         # Exhausted this range in A
+            i += 1               # Point to next range in A
+        else:                      # Exhausted this range in B
+            j += 1               # Point to next range in B
+    return result
 ```
 {% endtab %}
 {% endtabs %}

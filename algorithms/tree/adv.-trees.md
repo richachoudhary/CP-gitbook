@@ -6,6 +6,7 @@
 * [x] LC [214. Word Search II](https://leetcode.com/problems/word-search-ii/) ✅🚀
 * [x] LC [14.Longest Common Prefix](https://leetcode.com/problems/longest-common-prefix/)✅
 * [x] LC 421. [Maximum XOR of Two Numbers in an Array](https://leetcode.com/problems/maximum-xor-of-two-numbers-in-an-array/) | <mark style="color:orange;">`standardQ`</mark> | **@google | must\_do✅**
+* [x] **LC **[**212.**Word Search II](https://leetcode.com/problems/word-search-ii/)
 
 {% tabs %}
 {% tab title="208.(TEMPLATE.py)🔵🔴" %}
@@ -157,7 +158,7 @@ string longestCommonPrefix(vector<string>& strs) {
 * To understand logic: [this](https://www.youtube.com/watch?v=I7sUjln2Fjw\&ab\_channel=HellgeekArena)
 * To understand code: [this](https://www.youtube.com/watch?v=jCu-Pd0IjIA\&ab\_channel=CodingNinjas)
 
-#### Approach:
+**Approach:**
 
 * O(N\*2) is trivial; so dont bother
 * Greedy Approach: **bitwise+Trie**: `O(32*N) `✅
@@ -229,6 +230,69 @@ class Solution:
 ```
 {% endtab %}
 {% endtabs %}
+{% endtab %}
+
+{% tab title="212" %}
+```python
+'''
+TC: m×n×4^(length_of_largest_word)
+SC: O(nm + wl) (nm space for the visited grid, wl space for the stored Trie)
+
+for single word search in a 2d matrix in WORD SEARCH 1 problem we apply dfs at every block of matrix for that we run 2 for loops and there time complexity is m×n and in each dfs we visit 4^(sizeofword) because we are applying dfs calls to 4 directions for each character of the given word , so the time complexity for that will be m×n×4^(sizeofword)
+
+'''
+class TrieNode():
+    def __init__(self):
+        self.children = collections.defaultdict(TrieNode)
+        self.isWord = False
+    
+class Trie():
+    def __init__(self):
+        self.root = TrieNode()
+    
+    def insert(self, word):
+        node = self.root
+        for w in word:
+            node = node.children[w]
+        node.isWord = True
+    
+    def search(self, word):
+        node = self.root
+        for w in word:
+            node = node.children.get(w)
+            if not node:
+                return False
+        return node.isWord
+    
+class Solution(object):
+    def findWords(self, board, words):
+        res = []
+        trie = Trie()
+        node = trie.root
+        for w in words:
+            trie.insert(w)
+        for i in range(len(board)):
+            for j in range(len(board[0])):
+                self.dfs(board, node, i, j, path="", res)
+        return res
+    
+    def dfs(self, board, node, i, j, path, res):
+        if node.isWord:
+            res.append(path)
+            node.isWord = False
+        if i < 0 or i >= len(board) or j < 0 or j >= len(board[0]):
+            return 
+        tmp = board[i][j]
+        node = node.children.get(tmp)
+        if not node:
+            return 
+        board[i][j] = "#"
+        self.dfs(board, node, i+1, j, path+tmp, res)
+        self.dfs(board, node, i-1, j, path+tmp, res)
+        self.dfs(board, node, i, j-1, path+tmp, res)
+        self.dfs(board, node, i, j+1, path+tmp, res)
+        board[i][j] = tmp
+```
 {% endtab %}
 {% endtabs %}
 
