@@ -25,6 +25,7 @@ class Node:
         self.data = key
         self.left = None
         self.right = None
+        self.parent = None
 
     def inOrderSuccessor(n):
      

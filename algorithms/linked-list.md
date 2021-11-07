@@ -117,6 +117,11 @@ def deleteDuplicates(head):
 
 * [x] [206.Reverse Linked List](https://leetcode.com/problems/reverse-linked-list/)
 * [ ] [92.Reverse Linked List II](https://leetcode.com/problems/reverse-linked-list-ii/)
+* [x] [234.Palindrome Linked List](https://leetcode.com/problems/palindrome-linked-list/) ✅
+* [ ] [61.Rotate List](https://leetcode.com/problems/rotate-list/)
+* [x] [2.Add Two Numbers](https://leetcode.com/problems/add-two-numbers/) ✅🚀
+* [x] [141.Linked List Cycle](https://leetcode.com/problems/linked-list-cycle/) ✅🚀
+* [ ] [142.Linked List Cycle II](https://leetcode.com/problems/linked-list-cycle-ii/)
 
 {% tabs %}
 {% tab title="reverse I" %}
@@ -244,6 +249,37 @@ def copyRandomList(self, head: 'Node') -> 'Node':
     return oldToCopy[head]
 ```
 {% endtab %}
+{% endtabs %}
+
+* [x] [138.Copy List with Random Pointer](https://leetcode.com/problems/copy-list-with-random-pointer/) | Deep copy | chillar
+* [x] 23\. [Merge k Sorted Lists](https://leetcode.com/problems/merge-k-sorted-lists/) 🍪🍪🍪✅
+* [x] LC [287. Find the Duplicate Number](https://leetcode.com/problems/find-the-duplicate-number/) | \*\*Rabbit-Tortoise \*\*method on array | had me failed **@ShareChat** back then 💪 | also see in `BinarySearch`
+* [ ] `341. `[Flatten Nested List Iterator](https://leetcode.com/problems/flatten-nested-list-iterator/) | **@Google**
+
+{% tabs %}
+{% tab title="138." %}
+```python
+def copyRandomList(self, head: 'Node') -> 'Node':    
+    oldToCopy = { None:None}    #for last node
+    
+    #1. first pass: hashmap key: old node, val: new copy node
+    curr = head
+    while curr:
+        copy = Node(curr.val)
+        oldToCopy[curr] = copy
+        curr = curr.next
+    
+    #2. second pass: creating .next & .random for copy nodes
+    curr = head
+    while curr:
+        copy = oldToCopy[curr]
+        copy.next = oldToCopy[curr.next]
+        copy.random = oldToCopy[curr.random]
+        curr = curr.next
+    
+    return oldToCopy[head]
+```
+{% endtab %}
 
 {% tab title="23.🍪" %}
 ```python
@@ -310,16 +346,6 @@ def findDuplicate(self, nums):
 ```
 {% endtab %}
 {% endtabs %}
-
-* [x] [234.Palindrome Linked List](https://leetcode.com/problems/palindrome-linked-list/) ✅
-* [ ] [61.Rotate List](https://leetcode.com/problems/rotate-list/)
-* [x] [2.Add Two Numbers](https://leetcode.com/problems/add-two-numbers/) ✅🚀
-* [x] [141.Linked List Cycle](https://leetcode.com/problems/linked-list-cycle/) ✅🚀
-* [ ] [142.Linked List Cycle II](https://leetcode.com/problems/linked-list-cycle-ii/)
-* [x] [138.Copy List with Random Pointer](https://leetcode.com/problems/copy-list-with-random-pointer/) | Deep copy | chillar
-* [x] 23\. [Merge k Sorted Lists](https://leetcode.com/problems/merge-k-sorted-lists/) 🍪🍪🍪✅
-* [x] LC [287. Find the Duplicate Number](https://leetcode.com/problems/find-the-duplicate-number/) | \*\*Rabbit-Tortoise \*\*method on array | had me failed **@ShareChat** back then 💪 | also see in `BinarySearch`
-* [ ] `341. `[Flatten Nested List Iterator](https://leetcode.com/problems/flatten-nested-list-iterator/) | **@Google**
 
 ## 2. All Problems
 

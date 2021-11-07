@@ -47,8 +47,6 @@ This means we only need to find a solution when N < 5000.
 {% endtab %}
 {% endtabs %}
 
-
-
 ## 2. Math Based
 
 * [x] LC [264. Ugly Number II](https://leetcode.com/problems/ugly-number-ii/) ✅
@@ -131,9 +129,9 @@ def diffWaysToCompute(self, s: str) -> List[int]:
 
 ## 3. Geometrical DP (blocks, rectangles etc)
 
-* [x] CSES: [Counting Towers](https://cses.fi/problemset/task/2413) | [KartikArora](https://www.youtube.com/watch?v=pMEYMYTX-r0\&ab_channel=KartikArora) ✅
-* [x] CSES: Rectangle Cutting | [Kartik Arora](https://www.youtube.com/watch?v=LdynQjWsO5Q\&ab_channel=KartikArora) ✅
+* [x] CSES: Rectangle Cutting | [Kartik Arora](https://www.youtube.com/watch?v=LdynQjWsO5Q\&ab\_channel=KartikArora) ✅
 * [x] LC [1240: Tiling a Rectangle with the Fewest Squares](https://leetcode.com/problems/tiling-a-rectangle-with-the-fewest-squares/) | just handle the case of `11x13 `separately | rest is same as `CSES: Rect Cutting` | **@google**
+* [x] CSES: [Counting Towers](https://cses.fi/problemset/task/2413) | [KartikArora](https://www.youtube.com/watch?v=pMEYMYTX-r0\&ab\_channel=KartikArora) ✅
 
 {% tabs %}
 {% tab title="Rect Cutting" %}
@@ -237,8 +235,6 @@ def f():
         n = int(input())
         res = (dp(n,0) + dp(n,1))%MOD
         print(res)
-
 ```
 {% endtab %}
 {% endtabs %}
-

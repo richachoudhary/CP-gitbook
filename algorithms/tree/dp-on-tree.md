@@ -86,7 +86,7 @@ int main(){
 
 {% tab title="TreeDiameter" %}
 ```python
----------------------- works only for binary tree
+---------------------- works only for binary tree❌
 
 def recurse(x):
     if not x: 
@@ -101,7 +101,7 @@ self.result = 0
 recurse(root)
 return self.result    
     
-------------------------- for n-arry tree
+------------------------- for n-arry tree✅
 int n, ans;
 vector<int> adj[MAX];
 int d[MAX];
