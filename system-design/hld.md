@@ -1,6 +1,8 @@
 # HLD : Theory
 
+## 🟡**>>> Summary : {1,2,3}**
 
+![](<../.gitbook/assets/Screenshot 2021-11-12 at 2.16.33 AM.png>)
 
 ## 1. **Scalability Trade-offs**
 
@@ -30,11 +32,11 @@
   * **Consistency** - Every read receives the most recent write or an error
   * **Availability** - Every request receives a response, without guarantee that it contains the most recent version of the information
   * **Partition Tolerance** - The system continues to operate despite arbitrary partitioning due to network failures
-* In a **centralized system (RDBMS etc.)** we **don’t have** network partitions, e.g. **P in CAP**:
+* In a **centralized system (**<mark style="color:yellow;">**RDBMS**</mark>** etc.)** we **don’t have** network partitions, e.g. **P in CAP**:
   * So you get both:
     * Availability
     * Consistency
-  * Hence they are **ACID:**
+  * Hence they are <mark style="color:yellow;">**ACID**</mark>**:**
     * Atomic
     * Consistent
     * Isolated
@@ -46,19 +48,19 @@
 * **CAP in practice:**
   * Networks aren't reliable, so you'll **need to support partition tolerance(P)**. You'll need to make a software tradeoff between consistency and availability.
   * So, there are only two types of systems:
-    * 1\. \*\*CP \*\*
+    * 1\. **CP**
       * Waiting for a response from the partitioned node might result in a timeout error.
       * **CP** is a good choice **if your business needs require atomic reads and writes**.
     * 2\. **AP**
       * Responses return the most readily available version of the data available on any node, **which might not be the latest**.
       * Writes might take some time to propagate when the partition is resolved.
-      * **AP** is a good choice \*\*if the business needs allow for [**eventual consistency**](https://github.com/donnemartin/system-design-primer#eventual-consistency) \*\*or when the system needs to continue working despite external errors.
+      * **AP** is a good choice if the **business needs allow for **[**eventual consistency**](https://github.com/donnemartin/system-design-primer#eventual-consistency) or when the system needs to** continue working despite external errors.**
 * ...there is only one choice to make. In case of a network partition, what do you sacrifice?
   * 1\. C: Consistency
   * 2\. A: Availability
-* Hence these systems(**CP & AP**) are **BASE**:
-  * \*\*Basically Available \*\*
-  * \*\*Soft state \*\*
+* Hence these systems(**CP & AP**) are <mark style="color:orange;">**BASE**</mark>:
+  * **Basically Available**&#x20;
+  * **Soft state **
   * **Eventual consistency**
 
 ![3 types of scaling](<../.gitbook/assets/Screenshot 2021-10-31 at 1.54.53 PM.png>)
@@ -82,7 +84,7 @@
 
 ### **2.3 Strong consistency**
 
-* After a write, reads will see it. Data is\*\* replicated synchronously.\*\*
+* After a write, reads will see it. Data is **replicated synchronously.**
 * This approach is seen in file systems and **RDBMSes**.
 * Strong consistency works well in **systems that need transactions**.
 
@@ -120,20 +122,20 @@
 ### 3.2 Availability Patterns
 
 * There are two complementary patterns to support high availability:
-  1. \*\*fail-over \*\*
+  1. **fail-over**&#x20;
   2. **replication.**
 
 ### **3.2.1. #1.Fail-over (with Fail-back)**
 
-* \*\*Fail Over \*\*=> Putting the failed node out of service
-* **Fail Back** => Restoring the failed node back
+* <mark style="color:orange;">**Fail Over**</mark> => Putting the failed node out of service
+* <mark style="color:orange;">**Fail Back**</mark> <mark style="color:orange;"></mark>=> Restoring the failed node back
 * fail-over is not always this simple
-* **1. Active-passive Fail-over**
-  * With active-passive fail-over, **heartbeats** are sent \*\*between the active and the passive server \*\*on standby. If the heartbeat is interrupted, the **passive server takes over the active's IP address and resumes** service.
-  * The\*\* length of downtime \*\*is determined by whether the **passive server** is already running in **'hot' standb**y or whether it needs to start up from **'cold' standby.** Only the active server handles traffic.
+* **1. Active-passive Fail-over | OR | **<mark style="color:orange;">**Master-Slave Failover**</mark>
+  * With active-passive fail-over, **heartbeats** are sent between the active and the passive server on standby. If the heartbeat is interrupted, the **passive server takes over the active's IP address and resumes** service.
+  * The **length of downtime **is determined by whether the **passive server** is already running in <mark style="color:orange;">**'hot' standb**</mark><mark style="color:orange;">y</mark> or whether it needs to start up from <mark style="color:orange;">**'cold' standb**</mark>**y.** Only the active server handles traffic.
   * Active-passive failover can also be referred to as **master-slave** failover.
-* **2.Active-active Fail-over**
-  * In active-active, both servers are managing traffic, \*\*spreading the load \*\*between them.
+* **2.Active-active Fail-over | OR | **<mark style="color:orange;">**Master-Master Failover**</mark>
+  * In active-active, both servers are managing traffic, **spreading the load** between them.
   * If the servers are **public-facing**, the DNS would need to know about the public IPs of both servers. If the servers are **internal-facing**, application logic would need to know about both servers.
   * Active-active failover can also be referred to as **master-master** failover.
 * **Disadvantage(s): failover**
@@ -147,21 +149,23 @@
   * Data not available, read from peer, then store it locally
   * Works well with timeout-based caches
 * **Types of Replication architecture:**
-  * \*\*1.Master-Slave replication \*\*
+  * <mark style="color:orange;">**1.Master-Slave replication **</mark>
 
 ![](https://lh3.googleusercontent.com/QQUYp9-SheKbIg\_6gVv8Z9UeiA2D54YvsudH5a2qum2l5B2wgnIDNGwrO7yowXdXcOyev60\_gq2hY85wDCohyxkPPDFxwCl3B-SL3mg6a9woRXSanvJx1L2nqcaWe6iU6WKzKomK=s0)
 
-* \*\*2.Master-Master replication \*\*
+* <mark style="color:orange;">**2.Master-Master replication**</mark>&#x20;
 
 ![](https://lh4.googleusercontent.com/necGDrchLwSr\_0\_RGjKM69LSH6j5Hmoz25DSkCdFmJgvYCrmkJB4hfqpzS6cFmMPpheucvwWzvNl\_ANUz4T8Is5yGK4u-g4VJxRXo6IGRQFL70HlTHu760PZqJSxaRou2PvCG03L=s0)
 
-* **3.Tree Replication**
+* <mark style="color:orange;">**3.Tree Replication**</mark>
 
 ![](https://lh5.googleusercontent.com/iDOodnyY57NpqVbzy3syHzWyoR9-ZY4QUoT9MN54mE6hm79UzKExeXIrM7AcjbCcKACrghxi-YqOzB4gkCZSufRFp4rcqIo\_yEasVEKLg1Ufilu7NTXYfDHaExRBl0fqi0Wf6L1m=s0)
 
-* **4.Buddy replication**
+* <mark style="color:orange;">**4.Buddy replication**</mark>
 
 ![](https://lh4.googleusercontent.com/9d1THmmZ7PHXtPCb1rxvDsfK-QPPhF36GTX7QGzLeVka04S2GcCmxZqvmf1xnwS5wW9RaG572TGbwYvqcY1I3UqjQT2k-YVWCrdcJtcuFvgPeyhfSwlRGmfFzD21CjxeOcC7bIik=s0)
+
+
 
 ## **4.DNS**
 
@@ -189,8 +193,8 @@
 
 ## **5.CDN**
 
-* \=> is a globally distributed network of proxy servers, \*\*serving content from locations closer to the user. \*\*
-* Generally, static files such as HTML/CSS/JS, photos, and videos are served from CDN, although some CDNs such as Amazon's CloudFront support dynamic content.
+* <mark style="color:orange;">=> is a globally distributed network of proxy servers, serving content from locations closer to the user.</mark>&#x20;
+* Generally, static files such as <mark style="color:orange;">**HTML/CSS/JS, photos, and videos**</mark> are served from CDN, although some CDNs such as Amazon's CloudFront support dynamic content.
 * **The site's DNS resolution will tell clients which server to contact**.
 * **Types of CDN:**
   * **Pull CDNs**
@@ -215,7 +219,7 @@
 ## 6.**Load Balancer**
 
 * Load balancers can be **implemented** with **hardware** (expensive) **or** with software such as **HAProxy**.
-* \*\*Advantages of LB: \*\*
+* **Advantages of LB:**
   * Preventing requests from going to unhealthy servers
   * Preventing overloading resources
   * Helping to eliminate a single point of failure
@@ -309,14 +313,16 @@
 
 ### **Load balancer vs reverse proxy 🟢🔵🔴**
 
-* Load balancer is **just an instance of reverse proxy**
+* <mark style="color:orange;">Load balancer is</mark> <mark style="color:orange;">**just an instance of reverse proxy**</mark>
 * **Deploying a load balancer is useful when you have multiple servers**. Often, load balancers route traffic to a set of servers serving the same function.
 * **Reverse proxies can be useful even with just one application server**, opening up the benefits described in the previous section.
 * Solutions such as **NGINX** and **HAProxy** can support both layer 7 reverse proxying and load balancing.
 
 ## 7. Cache
 
+### 🟡 >>> 7.0 SUMMARY (7.1, 7.2,7.3, 7.4)&#x20;
 
+![](<../.gitbook/assets/Screenshot 2021-11-12 at 2.43.35 AM.png>)
 
 ### 7.1 Cache Read/Write Policies
 
@@ -349,13 +355,13 @@
 * Increase replicas
 * <mark style="color:orange;">Shard</mark> ( partition by hash of keys)
 
-###
+
 
 ### 7.4 Thundering Herd Problem (src: [scaling\_instagram](https://www.youtube.com/watch?v=hnpzNAPiC0E\&ab\_channel=InfoQ))
 
 #### 1. WHAT
 
-![ Thundering Herd Prblem](<../.gitbook/assets/Screenshot 2021-10-31 at 1.23.01 PM.png>)
+![ Thundering Herd Problem](<../.gitbook/assets/Screenshot 2021-10-31 at 1.23.01 PM.png>)
 
 * when cache gets invalidated(due to its lifecycle/TTL/etc);
 * all the read requests(herds) start trying to access(thundering) the DB for read
@@ -370,7 +376,7 @@
 
     ⟶ cache assigns a LEASE PERIOD & forwards this req to db
 
-    ⟶ Meanwhile if any other req(d2) want to hit DB due to unavailability of data in cache; the cache doesnt allow it. (puts it on wait-or-use-stale state)
+    ⟶ Meanwhile if any other req(d2) want to hit DB due to unavailability of data in cache; the cache doesnt allow it. (puts it on <mark style="color:orange;">**wait-or-use-stale**</mark> state)
 
     ⟶ after d1 is done reading db; the lease is reset & now d2 can hit the DB
 
@@ -380,14 +386,14 @@
 
 Below steps to be taken(as #users increase)
 
-* \*\*Partitioning \*\*
-* \*\*HTTP Caching \*\*
-* \*\*RDBMS Sharding \*\*
-  * Scaling **reads** to a RDBMS is **hard**
-  * Scaling **writes** to a RDBMS is **impossible**
-  * How to scale out RDBMS? => Sharding
-    * \*\*Partitioning \*\*
-    * **Replication**
+* **Partitioning**
+* **HTTP Caching **
+* **RDBMS Sharding**
+  * <mark style="color:yellow;">Scaling</mark> <mark style="color:yellow;">**reads**</mark> <mark style="color:yellow;">to a RDBMS is</mark> <mark style="color:yellow;">**hard**</mark>
+  * <mark style="color:yellow;">Scaling</mark> <mark style="color:yellow;">**writes**</mark> <mark style="color:yellow;">to a RDBMS is</mark> <mark style="color:yellow;">**impossible**</mark>
+  * <mark style="color:yellow;">How to scale out RDBMS? =></mark> <mark style="color:yellow;">**Sharding**</mark>
+    * <mark style="color:orange;">**Partitioning **</mark>
+    * <mark style="color:orange;">**Replication**</mark>
 * **NOSQL**
   * Types
     * Key-Value databases (Voldemort, Dynomite, **Firestore**)
@@ -402,7 +408,7 @@ Below steps to be taken(as #users increase)
     * Yahoo: HBase
     * Facebook: Cassandra
     * LinkedIn: Voldemort
-* \*\*Distributed Caching \*\*
+* **Distributed Caching**
 * Data Grids
 
 ## **8.1 RDBMS**
@@ -422,7 +428,7 @@ Below steps to be taken(as #users increase)
   * denormalization
   * SQL tuning
 
-#### \*\*1.Master-Master || Master-Slave \*\*:
+#### 1.Master-Master || Master-Slave&#x20;
 
 * already covered up
 
@@ -441,14 +447,14 @@ Below steps to be taken(as #users increase)
 
 #### **3.Sharding**
 
-![](https://lh3.googleusercontent.com/3wxMhrFfn\_K1Lzm1D4oV\_sD55WlVPbMcNWEmuogB4WYVjmwD4IGSfaRjfj-ZOVDqNygpcxImGoRSttKOu1E90FPqwk-IShuCVvx8mAJgjPIH96BDZPAIsNZV3egUYFopeJICpB5T=s0)
+![](<../.gitbook/assets/Screenshot 2021-11-12 at 3.05.17 AM.png>)
 
 * Sharding **distributes data across different databases** such that each database can only manage a **subset of the data.**
 * Taking a users database as an example, as the number of users increases, more shards are added to the cluster
 * ~~**@fk: partitioned on date ranges**~~
 * **Disadvantage(s): sharding**
   * You'll need to update your application logic to work with shards, which could result in complex SQL queries.
-  * \*\*Data distribution can become lopsided \*\*in a shard. For example, a set of power users on a shard could result in increased load to that shard compared to others.
+  * **Data distribution can become lopsided i**n a shard. For example, a set of power users on a shard could result in increased load to that shard compared to others.
     * Rebalancing adds additional complexity. A sharding function based on [consistent hashing](http://www.paperplanes.de/2011/12/9/the-magic-of-consistent-hashing.html) can reduce the amount of transferred data.
   * **Joining data from multiple shards is more complex.**
   * Sharding adds more hardware and additional complexity.
@@ -473,10 +479,10 @@ Below steps to be taken(as #users increase)
 
 ## **8.2 NoSQL**
 
-* Data is **denormalized**, and\*\* joins are generally done in the application code.\*\*
+* Data is **denormalized**, and**  joins are generally done in the application code.**
 * **Lack true ACID** transactions and have **BASE**:
   * **Basically available** - the system guarantees availability.
-  * **Soft state** - the\*\* state of the system may change over time, even without input.\*\*
+  * **Soft state** - the state of the system may change over time, even without input.
   * **Eventual consistency** - the system will become consistent over a period of time, given that the system doesn't receive input during that period.
 * **Why Use NoSQ**L:
   * WE ARE STORING MORE DATA NOW THAN WE EVER HAVE BEFORE
@@ -494,12 +500,12 @@ Below steps to be taken(as #users increase)
   * SCHEMA EVOLUTION:
     * SCHEMA FLEXIBILITY IS NOT TRIVIAL AT A LARGE SCALE BUT IT CAN BE WITH NO SQL
 * **NoSQL PROS :**
-  * \*\*MASSIVE SCALABILITY \*\*
-  * \*\*HIGH AVAILABILITY \*\*
-  * \*\*LOWER COST \*\*
+  * **MASSIVE SCALABILITY**
+  * **HIGH AVAILABILITY **
+  * **LOWER COST **
   * SCHEMA FLEXIBILITY SPARCE AND SEMI STRUCTURED DATA
 * **NoSQL CONS:**
-  * \*\*LIMITED QUERY CAPABILITIES \*\*
+  * **LIMITED QUERY CAPABILITIES **
   * NOT STANDARDISED (PORTABILITY MAY BE AN ISSUE)
   * STILL A DEVELOPING TECHNOLOGY
 
@@ -623,6 +629,8 @@ Below steps to be taken(as #users increase)
 
 ## **10. Message Queues:Asynchronism**
 
+### **10.1 Concept**
+
 ![](https://lh6.googleusercontent.com/1lJOxzH0A3WUOc6S5qNgSVbbUmdv0I\_SqaI\_bY-7HJF4W686a2VdFM3Z7EBa\_\_qiVeAPf9bqlRF3QxEeRrb1WyHHrIj28Dx2DBu0tE\_pgCiaL\_qGHrCJf0QTWZnP-xUJJb6fXAng=s0)
 
 * Message queues receive, hold, and deliver messages. If an operation is too slow to perform inline, you can use a message queue with the following workflow:
@@ -631,17 +639,53 @@ Below steps to be taken(as #users increase)
 * The user is not blocked and the job is processed in the background. During this time, the client might optionally do a small amount of processing to make it seem like the task has completed.
 * For example, if posting a tweet, the tweet could be instantly posted to your timeline, but it could take some time before your tweet is actually delivered to all of your followers.
 * E.g.s:
-  * [Redis](https://redis.io) is useful as a simple message broker but messages can be lost.
+  * [Redis](https://redis.io) is useful as a simple message broker but **messages can be lost.**
     * **I've implemented RedisStore for client @Supp 💪**
   * [RabbitMQ](https://www.rabbitmq.com) is popular but requires you to adapt to the 'AMQP' protocol and manage your own nodes.
   * [Amazon SQS](https://aws.amazon.com/sqs/) is hosted but can have high latency and has the possibility of messages being delivered twice.
-  *   **Kafka**
+  * <mark style="color:orange;">**Kafka : **</mark>ensures that data is stored in** **<mark style="color:orange;">**durable & fault tolerant**</mark>** way.**
 
-      * Kafak has **Brokers**
+### <mark style="color:orange;">**10.2 Kafka**</mark>
 
-      ***
+* Each topic can have >=1** partitions**
+* **Brokers =>** each server holding >=1 partition is called **Broker.**
+* **Record: **each item in a partition is called record
+* **Topic: **a group of partition handling the same type of data
+* <mark style="color:yellow;">each record in kafka is identified by partition number & offset</mark>
+* **Retention Policies (for cleanup):**
+  * In kakfa, retention policies are configurable
+  * i.e. you can set-up the data cleanup time
+    * <mark style="color:orange;">**DISADVANTAGE**</mark>**: **if your application is down for more than retention time; data loss hoga
+* Kafka ensures that data is stored in** **<mark style="color:orange;">**durable & fault tolerant**</mark>** way.**
+* **Replication:**
+  * kafka replicates each broker; so that if it goes down, the other broker resumes
+  * <mark style="color:orange;">`replication_factor: 3`</mark>
+    * \=> means 1 leader & 2 replications
 
 ![](../.gitbook/assets/screenshot-2021-09-30-at-2.54.24-am.png)
+
+### 10.3 Kafka vs RabbitMQ | [video](https://www.youtube.com/watch?v=GMmRtSFQ5Z0\&ab\_channel=TechPrimers)
+
+* **Diff Summary:**
+  * **RabbitMQ**:&#x20;
+    * <mark style="color:orange;">push based model</mark>
+    * decoupled consumer queues: => every consumer has its own queue
+  * **Kafa**:&#x20;
+    * <mark style="color:orange;">pull based model</mark>
+    * coupled consumer queues => hence needs planning ahead
+* **Intro**
+
+![](<../.gitbook/assets/Screenshot 2021-11-12 at 4.11.58 AM.png>)
+
+* **Architecture Diff**
+
+![RabbitMQ](<../.gitbook/assets/Screenshot 2021-11-12 at 4.15.36 AM.png>)
+
+![Kafka](<../.gitbook/assets/Screenshot 2021-11-12 at 4.18.12 AM.png>)
+
+* **When to Use Which**
+
+![](<../.gitbook/assets/Screenshot 2021-11-12 at 4.19.12 AM.png>)
 
 ## 11. APIs
 
@@ -663,10 +707,10 @@ Below steps to be taken(as #users increase)
 
 #### **Why do we need Event Driven Architecture?**
 
-* **Use case:** have I got any new msg or not\*\* (@whatsapp)\*\*
+* **Use case:** have I got any new msg or not **(@whatsapp)**
 * If done with **LONG** **POLLING**(i.e. keep pinging server to check)
   * it'll be huge loss of resources ❌
-* \*\*So, \*\*build your APIs in **Event driven way**
+* So, build your APIs in **Event driven way**
 
 #### There are 3 well known standards for building Pure Event Driven APIs
 
@@ -676,11 +720,11 @@ Below steps to be taken(as #users increase)
 
 #### 1.WebHooks:
 
-* the client needs to do\*\* one time registration \*\*with the webhook-provider:
-  * Client provides the\*\* interested events\*\* & **callback URL**
+* the client needs to do **one time registration** with the webhook-provider:
+  * Client provides the **interested events** & **callback URL**
     * **Callback URL:** => "hey, when there's an update; send it to me @here"
 * When there's a new msg/update; the webhook provider sends the data(usually **POST)**
-* \*\*E.G: @Stripe \*\*webHooks **😎**
+* <mark style="color:yellow;">**E.G: @Stripe**</mark> webHooks **😎**
 * **ISSUES:**
   * Have to handle failures with **retires**
   * Callback URL has to be public => **security** concerns
@@ -721,7 +765,7 @@ Below steps to be taken(as #users increase)
     * Good for back-end servers to communicate with each other
   * **Server-sent-events**
     * **ReactJS** 😎
-    * \*\*@twitter : \*\*uses this to push new tweets
+    * **@twitter **: uses this to push new tweets
 * **PROS:**
   * Can be done over simple HTTP protocol(no other fancy protocol is reqd)
   * Native browser support
@@ -810,39 +854,39 @@ Below steps to be taken(as #users increase)
      * if you encrypt with **B** => you **can** decrypt with **A**
      * if you encrypt with **A** => you **CANNOT** decrypt with **A**
      * if you encrypt with **B** => you **CANNOT** decrypt with **B**
-   * Call \*\*A: public\_key \*\*and **B:private\_key**
-   * Keep \*\*private\_key with you \*\*& **share ur public\_key with all your clients(or publish it on site)**
-   * \*\*Now: \*\*the client will **encrypt the msg** with your **public\_key** and will send you.
+   * Call **A: public\_key **and **B:private\_key**
+   * <mark style="color:orange;">**Keep private\_key with you**</mark> & <mark style="color:orange;">**share ur public\_key **</mark>**with all your clients(or publish it on site)**
+   * Now: the client will **encrypt the msg** with your **public\_key** and will send you.
    * Nobody in the world can understand this msg; because it can only be decrypted by your **private\_key**(which lies safe in your pocket)
-   * \*\*decrypt \*\*the clients's msg with your \*\*private\_key \*\*and voila!
+   * decrypt the clients's msg with your private\_key and voila!
    * **ISSUE**: **Man in the middle attack**
      * How to solve => use **certificate authority (CA)**
 
 ![PKI. Source: https://www.youtube.com/watch?v=q9vu6\_2r0o4\&ab\_channel=PaulTurner](../.gitbook/assets/screenshot-2021-08-30-at-4.02.27-am.png)
 
-* \*\*Certificates : \*\*to avoid Man in the Middle Attaack in **PKI**(public key infrastructure)
+* <mark style="color:orange;">**Certificates**</mark> : to avoid Man in the Middle Attaack in **PKI**(public key infrastructure)
   * **What is Man in the Middle Attack?**
     * Somebody sits b/w the sender & receiver; hearing all the conversation happening
   * **How can Man in the Middle Attack can happen?**
     * **middle\_man** provides their **public\_key** to the **sender**
-    * \*\*sender \*\*encrypts data with this middle\_man's public\_key
-    * **middle\_man** decrypts data with his \*\*private\_key \*\*
-    * \*\*middle\_man \*\*stores a **copy** of this data with him (the bastard!)
+    * **sender **encrypts data with this middle\_man's public\_key
+    * **middle\_man** decrypts data with his **private\_key**
+    * **middle\_man **stores a **copy** of this data with him (the bastard!)
     * now he encrypt's data with the original receiver's **public\_key**
     * the original receiver gets the data & decrypts with his **private\_key**
-    * to the original receiver; the\*\* data looks the same\*\* (& there is **no way of him knowing that the call was breached!**)
+    * to the original receiver; the data looks the same (& there is **no way of him knowing that the call was breached!**)
   * **certificate binds a public\_key to a name**
     * it takes a **public\_key**; **validates** if the key's **owner** is **authenticated** => then **signs it** & adds a **signature** to it
     * has expiration date, issuing authority
-  * **How** does certification avoids Man in middle attack\*\*? => using SSL/TLS HANDSHAKE\*\*
-    * \*\*Before starting \*\*any **communication** with a client; the **sender** **sends his certificate** to the **client**.
+  * **How** does certification avoids Man in middle attack? => <mark style="color:orange;">**using SSL/TLS HANDSHAKE**</mark>
+    * **Before starting** any **communication** with a client; the **sender** **sends his certificate** to the **client - **<mark style="color:yellow;">**"hey, I want to start sending you some data. Please verify me."**</mark>
     * The **client verifies this certificate** of the sender (using the **signature** attached to certificate)
       * `sign(certificate, private_key) = signature`
-      * `verify(certificate, signatrue, public_key) = True/False`
+      * `verify(certificate, signature, public_key) = True/False`
     * After the client is done verification(also called **Handshake**); the **communication starts**.
   * There are 2 types of handshake protocols:
-    * \*\*SSL : Secure Socket Layer \*\*
-    * **TLS** : Transport Layer Security
+    * <mark style="color:orange;">**SSL**</mark> : Secure Socket Layer&#x20;
+    * <mark style="color:orange;">**TLS**</mark> : Transport Layer Security
       * its the **successor** to SSL
       * its the **latest industry standard** in cryptography
 
@@ -951,8 +995,8 @@ There are mainly 2 data structures used in DBMS:
 * <mark style="color:orange;">**USE: In **</mark><mark style="color:orange;">dynamic multilevel indexing of Databases</mark>
 * **WHY Dont we use B-Trees in DB?**
   * \=> B-tress have more number of levels -> slow search
-  * **in-depth:** The drawback of B-tree used for indexing, however is that it stores the data pointer (a pointer to the disk file block containing the key value), corresponding to a particular key value, along with that key value in the node of a B-tree. This technique, greatly reduces the number of entries that can be packed into a node of a B-tree, thereby contributing to the increase in the number of levels in the B-tree, hence increasing the search time of a record.
-  * B+ tree eliminates the above drawback by storing data pointers only at the leaf nodes of the tree.&#x20;
+  * **in-depth:** The drawback of B-tree used for indexing, however is that <mark style="color:yellow;">it stores the data pointer</mark> (a pointer to the disk file block containing the key value), corresponding to a particular key value, along with that key value <mark style="color:yellow;">in the node of a B-tree</mark>. This technique, greatly reduces the number of entries that can be packed into a node of a B-tree, thereby contributing to the <mark style="color:yellow;">increase in the number of levels in the B-tree, hence increasing the search time of a record.</mark>
+  * <mark style="color:yellow;">B+ tree eliminates the above drawback by storing data pointers only at the leaf nodes of the tree.</mark>&#x20;
 *   **Diff b/w B Trees & B+ Trees:**
 
     * **=> **In B+ trees  only leaf nodes have record pointer
@@ -998,8 +1042,8 @@ There are mainly 2 data structures used in DBMS:
 
 #### 15.2.1.  LSMT@2nd Concept:: <mark style="color:orange;">Memtable</mark>
 
-* <mark style="color:orange;">bad</mark> option for sending write/update queries to DB: send then <mark style="color:orange;">one by one</mark>
-* <mark style="color:orange;">better</mark> option for write( right-side in pic below): bunch them together & send them in <mark style="color:orange;">batch</mark>
+* <mark style="color:orange;">A bad</mark> option for sending write/update queries to DB => send then <mark style="color:orange;">one by one</mark>
+* <mark style="color:orange;">A better</mark> option for write( right-side in pic below): bunch them together & send them in <mark style="color:orange;">batch</mark>
 * This additional data-structure to batch up the queries is called <mark style="color:orange;">**Memtable**</mark>
 * **Advantages: **
   * single acknowledgment is reqd from DB ( ki push ho gya hai)
