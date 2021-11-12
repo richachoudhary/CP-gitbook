@@ -1,6 +1,38 @@
 # Quad Tree
 
-## 16. Quad Trees
+## 16.1 The WHY?
+
+### 1. 1-D Spacial Data Representation
+
+* To represent 1-D spacial data: => **use **<mark style="color:orange;">**Binary Search Tree**</mark>
+
+![](<../../.gitbook/assets/Screenshot 2021-11-12 at 3.47.14 PM (1).png>)
+
+### 2. 2-D & 3-D Spacial Data Representation
+
+* 2-D -> <mark style="color:orange;">**Quadtrees **</mark>
+  * each node has 4 children, corresponding to quadrants of sub-plane: <mark style="color:yellow;">**\[NE, SE, SW, NW]**</mark>
+* 3-D -> <mark style="color:orange;">**Octrees **</mark>
+  * each node has 8 children, corresponding to 3D octant of a sub-volume
+*   **Kab tak children banate jaana hota hai in trees mei? **(for both Quadtree & Octree)
+
+    * **=> jab tak har node ek property satisfy na kar de.**
+    * <mark style="color:yellow;">**Examples plis => **</mark>
+      * E.g#1: until every node has (1) either all 0's OR (2) all 1's
+
+
+
+![Eg #1](<../../.gitbook/assets/Screenshot 2021-11-12 at 3.57.38 PM.png>)
+
+* E.g#2: decompose this image until every node have same color fill
+
+![E.g #2](<../../.gitbook/assets/Screenshot 2021-11-12 at 3.56.19 PM.png>)
+
+* Eg #3: untill every node either (1) has grass OR (2) doesnt have grass
+
+![](<../../.gitbook/assets/Screenshot 2021-11-12 at 3.43.39 PM.png>)
+
+## 16.2 Implementation&#x20;
 
 {% tabs %}
 {% tab title="code" %}
@@ -36,7 +68,7 @@ class Rectangle:
                     range.north > self.south or
                     range.south < self.north)
     
-
+    # lite:
     def draw(self, ax, c='k', lw=1, **kwargs):
         x1, y1 = self.west, self.north
         x2, y2 = self.east, self.south
@@ -219,3 +251,22 @@ plt.show()
 {% endtab %}
 {% endtabs %}
 
+## 16.4 \[Util] Trigonometry: to determine direction
+
+```python
+import math
+
+p1, p2 = (1,1), (0,0)    # touple
+dx, dy = p1[0] - p2[0], p1[1] - p2[1]
+
+angle_in_radian = math.atan2(dy,dy)              # 0.7853981633974483
+angle_in_degree = angle_in_radian*180/math.pi    # 45
+
+# ===========>  hence p1 lies in North-East of p2
+```
+
+
+
+## 16.5 Resources
+
+* video: [Quadtrees and Octrees for Representing Spatial Information](https://www.youtube.com/watch?v=xFcQaig5Z2A\&t=443s\&ab\_channel=TylerScott)

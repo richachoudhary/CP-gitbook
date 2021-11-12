@@ -18,6 +18,19 @@ AXB = |  x1  y1  z1 |
 '''
 ```
 
+* **Trigonometry: **
+  * Calculate tan inverse
+
+```python
+import math
+
+p1, p2 = (1,1), (0,0)    # touple
+dx, dy = p1[0] - p2[0], p1[1] - p2[1]
+
+angle_in_radian = math.atan2(dy,dy)              # 0.7853981633974483
+angle_in_degree = angle_in_radian*180/math.pi    # 45
+```
+
 ## 1. Problems
 
 #### 1.2.1 Easy 🧠

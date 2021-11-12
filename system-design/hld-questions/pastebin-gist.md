@@ -82,7 +82,7 @@
 * **Blob/Object DB**: For storing the actual snippets
   * **=> S3**
 * <mark style="color:yellow;">**-> \[Hybrid Approach]For better UX:**</mark>
-  * store small chunk (10KB) - to serve as preview/header of snippet in **Metadata DB** as well;
+  * store small chunk (10KB) - to serve as <mark style="color:yellow;">preview/header</mark> of snippet in **Metadata DB** as well;
   * so that user doesnt have to wait for async req of Blob pull
 
 ## 5. HLD&#x20;
