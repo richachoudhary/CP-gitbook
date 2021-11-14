@@ -885,13 +885,13 @@ The Bellman-Ford algorithm can detect negative cycles. So if we run Bellman-Ford
 * [x] Facebook Messenger
 * [ ] multiplayer online chess game
 * [ ] uber eats
-* [ ] Design distributed notification service
+* [x] Design distributed notification service
 * [ ] Design a proximity service like Yelp.
 * [x] Design a meeting scheduler.
 * [x] Design a photo sharing application like instagram
 * [x] chat system like whatsapp | with ticks
-* [ ] Design Amazon Wishlist
-* [ ] Google doc | [What’s different about the new Google Docs: Making collaboration fast](https://drive.googleblog.com/2010/09/whats-different-about-new-google-docs.html)
+* [x] Design Amazon Wishlist
+* [x] Google doc | [What’s different about the new Google Docs: Making collaboration fast](https://drive.googleblog.com/2010/09/whats-different-about-new-google-docs.html)
 
 ## =============================
 

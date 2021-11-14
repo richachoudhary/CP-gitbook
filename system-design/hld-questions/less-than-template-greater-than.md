@@ -62,6 +62,7 @@
 * System is read heavy
 * Real time UX; no lag
 * User traffic will be distributed unevenly throughout the day
+* Now for a system that handles such high traffic, especially during huge sales, meeting all three non-functional requirements <mark style="color:yellow;">**might be difficult. **</mark><mark style="color:orange;">**But not everything needs to be always available, have low latency, and be extremely consistent**</mark><mark style="color:orange;">.</mark> For example, payment and inventory systems should be highly consistent even at the cost of availability, Search needs to be highly available even if it is slightly inconsistent. Most user-facing components should have a low enough latency.
 
 
 
@@ -101,6 +102,10 @@
 ### 5.2 Caching Discussion <a href="5.2-caching-discussion" id="5.2-caching-discussion"></a>
 
 #### <mark style="color:yellow;">-> Discuss Global/Distributed Cache ✅ vs. Local Cache ❌</mark> <a href="31eb" id="31eb"></a>
+
+<mark style="color:yellow;"></mark>
+
+![SQL vs DocumentDB vs ColumnarDB](<../../.gitbook/assets/Screenshot 2021-11-14 at 10.01.27 PM.png>)
 
 ## 6. Detailed Design Discussion <a href="6.-detailed-discussion-encoding-approaches" id="6.-detailed-discussion-encoding-approaches"></a>
 
