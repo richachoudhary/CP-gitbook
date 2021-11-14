@@ -35,7 +35,10 @@ angle_in_degree = angle_in_radian*180/math.pi    # 45
 
 #### 1.2.1 Easy 🧠
 
-* [x] [1266.Minimum Time Visiting All Points](https://leetcode.com/problems/minimum-time-visiting-all-points/)
+*   [x] [1266.Minimum Time Visiting All Points](https://leetcode.com/problems/minimum-time-visiting-all-points/)
+
+    \=> `d = max(abs(points[i][0]-points[i+1][0]),abs(points[i][1]-points[i+1][1]))`
+* [x] [836.Rectangle Overlap](https://leetcode.com/problems/rectangle-overlap/) 💡
 * [x] [883. Projection Area of 3D Shapes](https://leetcode.com/problems/projection-area-of-3d-shapes/)
 * [x] [1030. Matrix Cells in Distance Order](https://leetcode.com/problems/matrix-cells-in-distance-order/)
 * [x] [892. Surface Area of 3D Shapes](https://leetcode.com/problems/surface-area-of-3d-shapes/)
@@ -50,6 +53,41 @@ For problems like (**#892**) :in geometry of 3-D blocks: think in terms of subtr
 * [x] LC [218.The Skyline Problem](https://leetcode.com/problems/the-skyline-problem/) ✅🌇| uses \*\*SortedList \*\*
 
 {% tabs %}
+{% tab title="836.rect_ovrlp" %}
+```python
+def isRectangleOverlap(self, rec1: List[int], rec2: List[int]) -> bool:
+    east1, west1, north1, south1 = rec1[2],rec1[0],rec1[3],rec1[1]
+    east2, west2, north2, south2 = rec2[2],rec2[0],rec2[3],rec2[1]
+
+    return not (east1 <= west2 or    # r2 lies on right of r1
+                west1 >= east2 or    # r2 lies on left of r1
+                north1 <= south2 or  # r2 lies on top of r1
+                south1 >= north2     # r2 lies on bottom of r1
+              )    
+    
+'''
+    W            E
+    |            |   
+N  -|------------x--        
+    |            |       
+    |            |       
+    |            |       
+S  -x------------|--        
+    |            |       
+
+
+inspired from QuadTree code:
+
+def intersects(self, range):
+    return not (range.west > self.east or
+                range.east < self.west or
+                range.north > self.south or
+                range.south < self.north)
+
+''' 
+```
+{% endtab %}
+
 {% tab title="892" %}
 ```python
 # Intution: 
@@ -157,7 +195,6 @@ class Solution:
 {% endtab %}
 {% endtabs %}
 
-* [x] [836.Rectangle Overlap](https://leetcode.com/problems/rectangle-overlap/) 💡
 * [x] CSES: [Point Location Test](https://cses.fi/problemset/task/2189) | ✅✅**Cross Product**
 * [x] CSES: [Line Segment Intersection](https://cses.fi/problemset/task/2190) ✅✅ | `Boundary Box Technique` |**COVERS SO MANY CONCEPTS!**
 * [x] CSES: [Polygon Area](https://cses.fi/problemset/result/2677213/) ✅✅
@@ -302,9 +339,9 @@ def solve():
 
 
 **Solution 1:**\
-One straight-forward solution is: we can iterate any two rows, say r1 and r2, and for every column, we check if grid\[r1]\[c] == grid\[r2]\[c]. IF yes, we increate the count by 1. Then the number of rentangles formed by these two rows are count \* (count - 1) / 2.\
+One straight-forward solution is: we can iterate any two rows, say r1 and r2, and for every column, we check if grid\[r1]\[c] == grid\[r2]\[c]. IF yes, we increate the count by 1. Then the number of rentangls formed by these two rows are <mark style="color:orange;">**nC2 (i.e.n=count)**</mark> = count\*(count - 1)/2.\
 \
-The time complexity of the solution is O(m^2 \* n). \
+The time complexity of the solution is O(m^2 \* n) -> <mark style="color:orange;">\~O(N^3)</mark>. \
 \
 If the number of rows is significantly greater than number of columns, we can iterate the columns and check the rows for each of the two columns. Then the time complexity is&#x20;
 
@@ -385,6 +422,15 @@ def minAreaRect(self, points: List[List[int]]) -> int:
 
 '''
 TC: O(N^2)
+
+    x1           x2   
+    |            |   
+y1 -|------------|--        
+    |            |       
+    |            |       
+    |            |       
+y2 -x------------|--        
+    |            |       
 '''
 ```
 {% endtab %}

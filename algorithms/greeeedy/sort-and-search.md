@@ -1,7 +1,5 @@
 # Sort & Search
 
-
-
 ## 1.Sort
 
 * [x] Learn Quicksort for LC [973.K Closest Points to Origin](https://leetcode.com/problems/k-closest-points-to-origin/) | [O(N) quicksort approach](https://leetcode.com/problems/k-closest-points-to-origin/discuss/219442/Python-with-quicksort-algorithm) | **@uber**
@@ -54,9 +52,9 @@ while lo<hi:
     #step 2 in quick sort: partition
     pvt = partition(lo,hi,pvt)  # now; after partition pvt element is ats correct position
     if pvt < k:
-        lo = pvt+1
-    elif pvt > k:
-        hi = pvt - 1
+        lo = pvt+1    # search on right of pvt
+    elif pvt > k:    
+        hi = pvt - 1   # search on left of pvt
     else:
         break
 return A[:k]
@@ -170,8 +168,6 @@ def solve(A, k, t):
 {% endtab %}
 
 {% tab title="406" %}
-
-
 1. **Pick out tallest group of people and sort them** in a subarray (S). Since there's no other groups of people taller than them, therefore **each guy's index will be just as same as his k value**.
 2. For 2nd tallest group (and the rest), insert each one of them into (S) by k value. So on and so forth.
 
@@ -180,8 +176,6 @@ input: \[\[7,0], \[4,4], \[7,1], \[5,0], \[6,1], \[5,2]]\
 subarray after step 1: \[**\[7,0], \[7,1]**]\
 subarray after step 2: \[\[7,0], **\[6,1]**, \[7,1]]\
 ...
-
-
 
 ```python
 def reconstructQueue(self, people: List[List[int]]) -> List[List[int]]:
@@ -196,8 +190,6 @@ def reconstructQueue(self, people: List[List[int]]) -> List[List[int]]:
 
 {% tab title="945" %}
 Based on: **W**ater Level Simulation
-
-
 
 Keep a variable: level, to represent a new unique value we will give to each position in sorted array A.
 
@@ -223,7 +215,7 @@ def minIncrementForUnique(self, A: List[int]) -> int:
 {% endtabs %}
 
 * [x] LC [853.Car Fleet](https://leetcode.com/problems/car-fleet/) | mastt question | done by self **| @google**
-* [ ] **LC **[**1777.**Car Fleet II](https://leetcode.com/problems/car-fleet-ii/)
+* [ ] LC [1777.Car Fleet II](https://leetcode.com/problems/car-fleet-ii/)
 
 {% tabs %}
 {% tab title="853" %}
@@ -264,23 +256,16 @@ rev(t) = [|1, 1,|7, 3,|12] ============> 3 fleets
 '''        
 ```
 {% endtab %}
-
-{% tab title="Second Tab" %}
-
-{% endtab %}
 {% endtabs %}
-
-
-
-
 
 ## 2.Binary Search 🌟
 
 ### 1.0 Notes
 
-* [**\*\* greatest template\*\***](https://leetcode.com/discuss/general-discussion/786126/python-powerful-ultimate-binary-search-template-solved-many-problems)** ever!!!!**
+* [**\*\* greatest template\*\***](https://leetcode.com/discuss/general-discussion/786126/python-powerful-ultimate-binary-search-template-solved-many-problems)\*\* ever!!!!\*\*
 * Generalized template ( **works all the time**) :: fucking moonshot!!!
   * Remember this: **after exiting the while loop, `left` is the minimal k​ satisfying the `condition` function**;
+    * <mark style="color:orange;">==></mark> so if you need to find** max k satisfying **the condition; <mark style="color:orange;">**return high**</mark>
 
 {% tabs %}
 {% tab title="Binary Search Template" %}
@@ -363,11 +348,11 @@ def searchInsert(self, nums: List[int], target: int) -> int:
 {% endtab %}
 {% endtabs %}
 
-* [x] [**1011. Capacity To Ship Packages Within D Days \[Medium\]**](https://leetcode.com/problems/capacity-to-ship-packages-within-d-days/)** ✅**
+* [x] [**1011. Capacity To Ship Packages Within D Days \[Medium\]**](https://leetcode.com/problems/capacity-to-ship-packages-within-d-days/)\*\* ✅\*\*
 * [x] [**410. Split Array Largest Sum \[Hard\]**](https://leetcode.com/problems/split-array-largest-sum/) / ditto same as `1011`
 * [x] [**875. Koko Eating Bananas \[Medium\]**](https://leetcode.com/problems/koko-eating-bananas/)
 * [x] [**1482. Minimum Number of Days to Make m Bouquets \[Medium\]**](https://leetcode.com/problems/minimum-number-of-days-to-make-m-bouquets/)
-* [x] [**475. Heaters \[Medium\]**](https://leetcode.com/problems/heaters/)** ✅💪**
+* [x] [**475. Heaters \[Medium\]**](https://leetcode.com/problems/heaters/)\*\* ✅💪\*\*
 * [x] **Spoj**: [Aggressive Cows](https://www.spoj.com/problems/AGGRCOW/) | @curefit 💪| khud se kiya poora😎!
 
 {% tabs %}
@@ -656,7 +641,7 @@ def longestDupSubstring(self, S):
 
 ***
 
-### 2.2 Modified  Binary Search Problems
+### 2.2 Modified Binary Search Problems
 
 * [ ] [1044. Longest Duplicate Substring](https://leetcode.com/problems/longest-duplicate-substring/) ⚡️ - learn [this approach](https://leetcode.com/problems/longest-duplicate-substring/discuss/695029/python-binary-search-with-rabin-karp-o\(n-log-n\)-explained) => **Rolling Hash/Rabin Karp**
 * [ ] [658.Find K Closest Elements](https://leetcode.com/problems/find-k-closest-elements/) | [Soln](https://leetcode.com/problems/find-k-closest-elements/discuss/915047/Finally-I-understand-it-and-so-can-you.)
@@ -797,8 +782,6 @@ while left <= right:
 {% endtab %}
 {% endtabs %}
 
-
-
 * [x] LC [162.Find Peak Element](https://leetcode.com/problems/find-peak-element/) | ⭐️🤯✅| **@google**
 * [x] ..
 
@@ -837,19 +820,9 @@ def findPeakElement(self, nums):
     return -1   # dummy return statement
 ```
 {% endtab %}
-
-{% tab title="Second Tab" %}
-
-{% endtab %}
 {% endtabs %}
 
-
-
-
-
 ## 3. String Search
-
-
 
 {% hint style="danger" %}
 **NOTE**: there is no O(logN) search based multiset data structure in python : [https://stackoverflow.com/questions/17346905/is-there-a-python-equivalent-for-c-multisetint](https://stackoverflow.com/questions/17346905/is-there-a-python-equivalent-for-c-multisetint)

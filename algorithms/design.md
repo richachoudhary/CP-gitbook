@@ -190,6 +190,102 @@ class LFUCache(object):
 * LC [1912. Design Movie Rental System](https://leetcode.com/problems/design-movie-rental-system/)
 * Sol: [https://leetcode.com/problems/design-movie-rental-system/discuss/1298440/Python-SortedList-solution-explained](https://leetcode.com/problems/design-movie-rental-system/discuss/1298440/Python-SortedList-solution-explained)
 
+## 3. D.S. with O(1) insert|delete|delRandom
+
+{% tabs %}
+{% tab title="w/o concurr" %}
+```python
+'''
+Design data structure to get/insert/delete an element. 
+It should also support DeleteRandom method. 
+All the methods should be O(1) | 
+
+SOLN:
+=================================================================================
+I used Map(Index in the list, element) and List(element).
+
+Add(Element):
+
+add to the end of the list. O(1)
+add to the map. O(1)
+Delete(Element):
+
+Get the index(i) of the element from the list. O(1)
+Remove Element from the map. O(1)
+Move the last element (Last_Element) from the list to index i and delete the last element. O(1)
+Update the index of the Last_Element in map. O(1)
+DeleteRandom:
+
+Get a random_number between 0 and list.size()-1. O(1)
+Call Delete(list.get(random_number))
+=================================================================================
+
+[PART#2: handle concurrency]
+'''
+import random
+
+class Sharper:
+    def __init__(self):
+        self.mapper = dict()    # val -> index in the list
+        self.lister = []         
+    
+    # O(1)
+    def get(self, val:int) ->int:
+        idx = self.mapper[val]      # O(1)
+        return self.lister[idx]     # O(1)
+    
+    # O(1)
+    def insert(self, val:int) -> int:
+        curr_size = len(self.lister)
+        self.mapper[val] = curr_size        # add to map
+        self.lister.append(val)             # append to list
+
+    # O(1)
+    def delete(self, val:int) -> None:
+        # get index of val from map
+        idx = self.mapper[val]  
+        print(f'\t idx = {idx}')
+        print(f'\t self.lister = {self.lister}')
+        # swap ele@index with last ele in list
+        self.lister[idx] , self.lister[-1] = self.lister[-1], self.lister[idx]
+        
+        print(f'\t self.lister = {self.lister}')
+        # now delete last ele from list & remove it from map too
+        self.mapper.pop(self.lister[-1]) 
+        self.lister.pop(-1)
+    
+    # O(1)
+    def deleteRandom(self) ->None:
+        rand_idx = random.randint(0,len(self.lister) -1)
+        self.delete(self.lister[rand_idx])
+        
+ds = Sharper()
+ds.insert(1)
+ds.insert(4)
+ds.insert(2)
+ds.insert(3)
+print(ds.lister)
+print(ds.mapper)
+ds.insert(5)
+print(ds.lister)
+print(ds.mapper)
+print(ds.get(1))
+print(ds.lister)
+print(ds.mapper)
+ds.delete(4)
+print(ds.lister)
+print(ds.mapper)
+ds.deleteRandom()
+print(ds.lister)
+print(ds.mapper)
+```
+{% endtab %}
+
+{% tab title="Second Tab" %}
+
+{% endtab %}
+{% endtabs %}
+
 ## From LC:
 
 * [x] LC [1600. Throne Inheritance](https://leetcode.com/problems/throne-inheritance/)
@@ -253,13 +349,22 @@ class MedianFinder:
 
     def addNum(self, num):
         if len(self.small) == len(self.large):
-            heappush(self.large, -heappushpop(self.small, -num))
+            # push to small
+            heappush(self.small, -num)
+            # rebalance
+            heappush(self.large, -heappop(self.small))
+            # heappush(self.large, -heappushpop(self.small, -num))
         else:
-            heappush(self.small, -heappushpop(self.large, num))
+            # heappush(self.small, -heappushpop(self.large, num))
+            # push to large
+            heappush(self.large, num)
+            # rebalance
+            heappush(self.small, -heappop(self.large))
 
     def findMedian(self):
+        
         if len(self.small) == len(self.large):
-            return float(self.large[0] - self.small[0]) / 2.0
+            return float(self.large[0] + (-self.small[0])) / 2.0
         else:
             return float(self.large[0])
         

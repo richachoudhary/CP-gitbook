@@ -3,24 +3,24 @@
 ## 0. Notes
 
 * 1D array:
-  * `prefix[k]=prefix[k−1]+arr[k]`
-  * `arr[i]=prefix[R]−prefix[L−1]`
+  * `prefix[i]=prefix[i−1]+arr[i]`
+  * `arr[i]=prefix[i]−prefix[i−1]`
 * 2D matrix:
   * `prefix[i][j] = prefix[i-1][j] + prefix[i][j-1] − prefix[i-1][j-1] + arr[i][j]`
-  * `arr[i][j] = prefix[A][B] − prefix[a-1][B] − prefix[A][b-1] + prefix[a-1][b-1]`
+  * `arr[i][j] = prefix[i][j] − prefix[i-1][j] − prefix[i][j-1] + prefix[i-1][j-1]`
 
 ## 1. Questions
 
 * [x] CSES: [Subarray Sums II](https://cses.fi/problemset/task/1661) (negative numbers also allowed)
   * [x] CSES: [Subarray Sums I](https://cses.fi/problemset/task/1660) 🌟✅ | (only +ve numbers allowed)
 * [x] CSES: [Subarray Divisibility](https://cses.fi/problemset/task/1662) ✅
-* [ ] CF: [1398C. Good Subarrays](https://codeforces.com/contest/1398/problem/C)
+* [x] CF: [1398C. Good Subarrays](https://codeforces.com/contest/1398/problem/C)
 * [x] CSES: [Forest Queries](https://cses.fi/problemset/task/1652) | 2D matrix | direct implementation 🌟
 * [x] LC [1074. Number of Submatrices That Sum to Target](https://leetcode.com/problems/number-of-submatrices-that-sum-to-target/)
   * [x] LC [363. Max Sum of Rectangle No Larger Than K](https://leetcode.com/problems/max-sum-of-rectangle-no-larger-than-k/)
 
 {% tabs %}
-{% tab title="SubarraySums2" %}
+{% tab title="SubarrSum2" %}
 ```python
 for _ in range(1):
     n,x = I()
@@ -90,7 +90,7 @@ print(ans)
 ```
 {% endtab %}
 
-{% tab title="SubarrDivisibility✅" %}
+{% tab title="SubarrDivisibility" %}
 ```python
 A = list(I())
  
@@ -214,10 +214,6 @@ def maxSideLength(self, mat: List[List[int]], threshold: int) -> int:
     # RETURN MAX SIDE
     return max_side
 ```
-{% endtab %}
-
-{% tab title="Second Tab" %}
-
 {% endtab %}
 {% endtabs %}
 

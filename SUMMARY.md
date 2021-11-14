@@ -99,4 +99,5 @@
   * [API Rate Limiter](system-design/hld-questions/api-rate-limiter.md)
   * [Flash Sale | CoWin](system-design/hld-questions/flash-sale-or-cowin.md)
   * [Google Doc](system-design/hld-questions/google-doc.md)
+  * [Amazon ShoppingCart](system-design/hld-questions/amazon-shoppingcart.md)
 * [Resources](system-design/resources.md)

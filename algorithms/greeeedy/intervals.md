@@ -1,8 +1,8 @@
 # Intervals
 
 * [x] LC [56. Merge Intervals](https://leetcode.com/problems/merge-intervals/)
+  * [x] LC [228. Summary Ranges](https://leetcode.com/problems/summary-ranges/)
 * [x] LC [57. Insert Interval](https://leetcode.com/problems/insert-interval/) 🌟| **must\_do**
-* [x] LC [228. Summary Ranges](https://leetcode.com/problems/summary-ranges/)
 * [x] CSES: [Movie Festival](https://cses.fi/problemset/task/1629)
 * [x] CSES: [Movei Festival II](https://cses.fi/problemset/task/1632) ✅
 * [x] CSES: [Restaurant Customers](https://cses.fi/problemset/task/1619)
@@ -192,6 +192,8 @@ def exclusiveTime(self, n, logs):
 
 
 ![](<../../.gitbook/assets/Screenshot 2021-11-08 at 2.25.37 AM.png>)
+
+![](<../../.gitbook/assets/Screenshot 2021-11-13 at 11.35.40 AM.png>)
 
 
 

@@ -77,7 +77,7 @@ a: 45 60 60 80
 ```
 {% endtab %}
 
-{% tab title="FerrisWh" %}
+{% tab title="FerrisWheel" %}
 ```python
 import bisect
  
@@ -110,7 +110,7 @@ if __name__ == "__main__":
 ```
 {% endtab %}
 
-{% tab title="SubarrayDistcVal" %}
+{% tab title="SubarrDistcVal" %}
 ```python
 I = lambda : map(int, input().split())
 n,k = I()
@@ -404,15 +404,15 @@ class ExamRoom:
 
 ### 2.2 Dynamic Size Window
 
-* [x] [**3. Longest Substring Without Repeating Characters**](https://leetcode.com/problems/longest-substring-without-repeating-characters/)** | @rubrik | doob maro sharam se behanchodd**
+* [x] [**3. Longest Substring Without Repeating Characters**](https://leetcode.com/problems/longest-substring-without-repeating-characters/)\*\* | @rubrik | doob maro sharam se behanchodd\*\*
   * [x] CSES: [Playlist](https://cses.fi/problemset/task/1141) similar
 * [x] [560.Subarray Sum Equals K](https://leetcode.com/problems/subarray-sum-equals-k/)✅
-  * \*\*NOTE: \*\*Sliding window technique works only for all positive/all negative (i.e. not for arr with both pos & neg numbers).So soln#1 below gets WA
+  * \*\*NOTE: \*\*Sliding window technique works only for all positive/all negative (i.e. not for arr with both pos & neg numbers)
 * [x] GfG#1: [Longest substring with k unique characters](https://www.geeksforgeeks.org/find-the-longest-substring-with-k-unique-characters-in-a-given-string/) ❤️
-  * [x] SIMILAR: [904.Fruit Into Baskets](https://leetcode.com/problems/fruit-into-baskets/submissions/)
-* [x] [424.Longest Repeating Character Replacement ](https://leetcode.com/problems/longest-repeating-character-replacement/)(similar to #1) 🚀🚀
+  * [x] [424.Longest Repeating Character Replacement ](https://leetcode.com/problems/longest-repeating-character-replacement/)(how to find minority eles) 🚀🚀
+  * [x] SIMILAR: LC [904.Fruit Into Baskets](https://leetcode.com/problems/fruit-into-baskets/submissions/)
 * [x] CSES: [Shortest Subsequence](https://cses.fi/problemset/task/1087/) | DNA | eee naa hora bina [theory](https://codeforces.com/blog/entry/82174) padhe.Karlo betta💪
-* [x] [1658.Minimum Operations to Reduce X to Zero](https://leetcode.com/problems/minimum-operations-to-reduce-x-to-zero/) | the trick is to identify that its a Sliding Window Q
+* [x] [1658.Minimum Operations to Reduce X to Zero](https://leetcode.com/problems/minimum-operations-to-reduce-x-to-zero/) | the trick is to identify that its a Sliding Window Q | find smallest subarr with needed sum = sum(Arr) - x
 
 {% tabs %}
 {% tab title="3" %}

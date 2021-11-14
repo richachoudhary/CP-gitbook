@@ -873,7 +873,7 @@ The Bellman-Ford algorithm can detect negative cycles. So if we run Bellman-Ford
 * [x] Design Map Reduce
 * [x] pub-sub with concurrency | [Interview\_exp](https://leetcode.com/discuss/interview-experience/1453593/Uber-or-L4-or-SDE-II-or-Bangalore)
 * [ ] Job Schedular | [exp](https://leetcode.com/discuss/interview-experience/951674/Uber-or-L4-or-Banglore-or-Oct-Nov-2020-Reject)
-* [ ] Design data structure to get/insert/delete an element. It should also support DeleteRandom method. All the methods should be O(1) | concurrency | [exp\_here](https://leetcode.com/discuss/interview-experience/469588/Uber-Onsite-or-L5-or-Dec-2019-or-SF-or-Reject)
+* [x] Design data structure to get/insert/delete an element. It should also support DeleteRandom method. All the methods should be O(1) | concurrency | [exp\_here](https://leetcode.com/discuss/interview-experience/469588/Uber-Onsite-or-L5-or-Dec-2019-or-SF-or-Reject)
 
 ## 3. SysDesign
 

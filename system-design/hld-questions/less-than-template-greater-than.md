@@ -17,7 +17,51 @@
 
 ### 1.3 NFRs <a href="1.2-nfrs" id="1.2-nfrs"></a>
 
-*
+#### Availability:
+
+* High Availability (for reads to work)
+* Service is highly available
+  * The acceptable latency of the system is 200ms for News Feed generation.
+
+#### Consistency:
+
+* High consistency (to avoid duplicate writes)
+* Replication Consistency: eventual
+* Consistency can take a hit:
+  * if a user doesn’t see a tweet for a while, it should be fine.
+  * i.e. Eventual Consistency
+
+#### Durability:
+
+* Fault tolerant
+* The system should be highly reliable; any uploaded photo or video should never be lost.
+* Durability : no tweet/follow should get deleted
+
+#### Latency:
+
+* Low latency for timeline generation
+* Low latency is expected while viewing photos
+
+#### Scaling:
+
+* Scalable: system should scale with inc. in number of users
+
+#### Bandwidth:
+
+* Minimum bandwidth while file transfer
+
+#### Storage:
+
+* Users can upload as many photos as they want
+  * \=> Storage management is crucial
+
+#### Others:
+
+* Ensure ACID-ity
+* Shortened links should not be guessable (not predictable).
+* System is read heavy
+* Real time UX; no lag
+* User traffic will be distributed unevenly throughout the day
 
 
 
@@ -29,7 +73,7 @@
 
 ### 2.2 Storage size estimation <a href="2.2-storage-size-estimation" id="2.2-storage-size-estimation"></a>
 
-*
+* try to bring numbers in Gb\*Million as <mark style="color:orange;">**1 TB = (1 GB \* 1 M)**</mark>
 
 ### 2.3 Bandwidth Estimate <a href="2.3-bandwidth-estimate" id="2.3-bandwidth-estimate"></a>
 
