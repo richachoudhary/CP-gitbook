@@ -288,6 +288,7 @@ print(ds.mapper)
 
 ## From LC:
 
+* [x] LC [427. Construct Quad Tree](https://leetcode.com/problems/construct-quad-tree/)
 * [x] LC [1600. Throne Inheritance](https://leetcode.com/problems/throne-inheritance/)
 * [x] LC [295. Find median from a data stream](https://leetcode.com/problems/find-median-from-data-stream/)
 * [x] LC [480. Sliding Window Median](https://leetcode.com/problems/sliding-window-median/)
@@ -304,6 +305,33 @@ print(ds.mapper)
 * [ ] LC 622. Design Circular Queue
 
 {% tabs %}
+{% tab title="427" %}
+```python
+class Node:
+    def __init__(self, val, isLeaf, topLeft, topRight, bottomLeft, bottomRight):
+        self.val = val
+        self.isLeaf = isLeaf
+        self.topLeft = topLeft
+        self.topRight = topRight
+        self.bottomLeft = bottomLeft
+        self.bottomRight = bottomRight
+
+class Solution:
+    def construct(self, grid: List[List[int]]) -> 'Node':
+        root = Node(True, True, None, None, None, None)
+        if len(set([item for row in grid for item in row])) == 1:   #is leaf
+            root.val = bool(grid[0][0])
+        else:
+            root.isLeaf = False
+            size = len(grid)
+            root.topLeft = self.construct([row[:size//2] for row in grid[:size//2]])
+            root.topRight = self.construct([row[size//2:] for row in grid[:size//2]])
+            root.bottomLeft = self.construct([row[:size//2] for row in grid[size//2:]])
+            root.bottomRight = self.construct([row[size//2:] for row in grid[size//2:]])
+        return root
+```
+{% endtab %}
+
 {% tab title="1600" %}
 ```python
 from collections import defaultdict

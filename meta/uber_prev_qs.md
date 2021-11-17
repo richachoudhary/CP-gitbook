@@ -296,6 +296,8 @@ public int countCornerRectangles(int[][] grid) {
 * [ ] LC [465. Optimal Account Balancing](https://leetfree.com/problems/optimal-account-balancing) 🐽
 * [ ] LC [68. Text Justification](https://leetcode.com/problems/text-justification/)
 * [ ] LC [146. LRU Cache](https://leetcode.com/problems/lru-cache/)
+* [ ] [Battery Swap in Uber Cars](https://leetcode.com/discuss/interview-question/1095987/UBER-oror-CodeSignal) | binary search
+* [ ] LC [128.Longest Consecutive Sequence](https://leetcode.com/problems/longest-consecutive-sequence/)
 
 {% tabs %}
 {% tab title="55" %}
@@ -874,6 +876,7 @@ The Bellman-Ford algorithm can detect negative cycles. So if we run Bellman-Ford
 * [x] pub-sub with concurrency | [Interview\_exp](https://leetcode.com/discuss/interview-experience/1453593/Uber-or-L4-or-SDE-II-or-Bangalore)
 * [ ] Job Schedular | [exp](https://leetcode.com/discuss/interview-experience/951674/Uber-or-L4-or-Banglore-or-Oct-Nov-2020-Reject)
 * [x] Design data structure to get/insert/delete an element. It should also support DeleteRandom method. All the methods should be O(1) | concurrency | [exp\_here](https://leetcode.com/discuss/interview-experience/469588/Uber-Onsite-or-L5-or-Dec-2019-or-SF-or-Reject)
+* [ ] Minesweeper [here](https://leetcode.com/discuss/interview-question/770225/Uber-or-SDE2)
 
 ## 3. SysDesign
 

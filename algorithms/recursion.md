@@ -155,7 +155,10 @@ def generateParenthesis(self, n: int) -> List[str]:
 {% endtabs %}
 
 * [x] Print all subsets/powerset of a string | [video](https://www.youtube.com/watch?v=Yg5a2FxU4Fo\&list=PL\_z\_8CaSLPWeT1ffjiImo0sYTcnLzo-wY\&index=12\&ab\_channel=AdityaVerma) | **Decision Tree method**
+* [x] **LC **[**967.**Numbers With Same Consecutive Differences](https://leetcode.com/problems/numbers-with-same-consecutive-differences/) | **Jump Numbers** | @uber
 
+{% tabs %}
+{% tab title="print powerset" %}
 ```python
 def printSubsets(ip, op):
     if len(ip) == 0:
@@ -169,6 +172,38 @@ def printSubsets(ip, op):
     
 printSubsets(str,'') # init with I/P & O/P
 ```
+{% endtab %}
+
+{% tab title="967" %}
+```python
+def numsSameConsecDiff(self, n: int, k: int) -> List[int]:
+
+    def f(x,k,tmp):
+
+        if len(x) == n:
+            tmp.append(int(x))
+            return
+        last_dig = int(x[-1])
+
+        #append smaller num
+        if last_dig - k >= 0 and k != 0:   #K!=0 is considered, as when K=0 then the above if condition produces same solution as the below condition. (Ex: N=2, K=0)
+            y = x + str(last_dig - k)
+            f(y,k,tmp)
+        #append larger num
+        if last_dig + k <= 9:
+            y = x + str(last_dig + k)
+            f(y,k,tmp)
+
+    res = []
+    if n == 1:
+        res.append(0)
+    for i in range(1,10):
+        tmp = []
+        f(str(i),k,tmp)
+        res.extend(tmp)
+```
+{% endtab %}
+{% endtabs %}
 
 * [x] [Permutation with Spaces](https://practice.geeksforgeeks.org/problems/permutation-with-spaces3627/1) | [Video](https://www.youtube.com/watch?v=1cspuQ6qHW0\&list=PL\_z\_8CaSLPWeT1ffjiImo0sYTcnLzo-wY\&index=14\&ab\_channel=AdityaVerma) : \*\*NOTE: \*\*Sometimes you've to break-down the problem before making recursion tree
 * [x] \----------------------------- \[Medium]---------------------------

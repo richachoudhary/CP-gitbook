@@ -632,7 +632,7 @@ for node in topo_list:
 
 ### 1.2 For Graphs (non-DAG wale)
 
-#### \*\*1.2.1 Dijkstra :: \*\*`(V+E)logV`
+#### 1.2.1 Dijkstra :: `(V+E)logV`
 
 * Fastest among three
 * Fails when _negative cycle_ exists in graph
@@ -657,7 +657,7 @@ for node in topo_list:
 * Run the regular Bellman-ford : (i.e. N-1) times for the graph. After that do one more run; if any points distance updates => this is due to negative cycle => hence neg cycle exists.
 {% endhint %}
 
-\*\*1.2.3 Floyd Warshall :: \*\*$$V^3$$OR $$V^2$$ if MEMO is used!
+**1.2.3 Floyd Warshall :**: $$V^3$$OR $$V^2$$ if MEMO is used!
 
 * Its an **APSP**(All Pair Shortest Path) algo. Means it can find shortest distance b/w all 2 node pairs.
 * \*\*Code Optimisation: \*\*use MEMOIZATION (similar to _matrix chain multiplication_) : see below code
@@ -1117,7 +1117,7 @@ TC: M*N(log(MN))
 {% endtab %}
 {% endtabs %}
 
-### 1.x Problems: \*\*SSSP/SSLP \*\*
+### 1.x Problems: SSSP/SSLP
 
 * [x] CSES: [Investigation](https://cses.fi/problemset/task/1202)🏆✅✅
 * [x] [743. Network Delay Time](https://leetcode.com/problems/network-delay-time/) 🍪🍪
@@ -1131,7 +1131,7 @@ TC: M*N(log(MN))
 * [ ] [The Maze II](https://leetfree.com/problems/the-maze-ii)
 * [ ] [The Maze III](https://leetfree.com/problems/the-maze-iii)
 * [x] [1928.Minimum Cost to Reach Destination in Time](https://leetcode.com/problems/minimum-cost-to-reach-destination-in-time/) | @contest 🚀❤️ | **Google**
-* [x] \*\*CSES: \*\*[Longest Flight Route](https://cses.fi/problemset/task/1680) | print paths with `Dijkstras`
+* [x] CSES: [Longest Flight Route](https://cses.fi/problemset/task/1680) | print paths with `Dijkstras`
 * [x] CSES: [Shortest Routes II](https://cses.fi/problemset/task/1672/) | **`Floyd-Warshall |`**\<standardQ> | must do 🔖🍪🚀🔖
 * [x] CSES: [High Score](https://cses.fi/problemset/task/1673/) | **`Bellman-Ford`**` with Negative Cycle Detection` | \<standardQ> | must do 🔖🍪🚀🔖
 * [x] CSES: [Cycle Finding](https://cses.fi/problemset/task/1197/) ✅🐽
@@ -1254,7 +1254,7 @@ return res
 ```
 {% endtab %}
 
-{% tab title="TopoSort(DFS way)" %}
+{% tab title="TopoSort(DFS)" %}
 ```python
 def topological_sort():
     for each node:
@@ -1270,7 +1270,7 @@ def dfs(node):
 ```
 {% endtab %}
 
-{% tab title="LongestFlightRoute" %}
+{% tab title="LgstFlightRout" %}
 ```cpp
 queue<int> q;
 for(int i = 2; i <= n; ++i)
@@ -1519,6 +1519,7 @@ return cnt
 * [x] CSES :[ Building Roads](https://cses.fi/problemset/task/1666) ✅
 * [x] [**1168. Optimize Water Distribution in a Village**](http://leetcode.libaoj.in/optimize-water-distribution-in-a-village.html)\*\* | @google | [**video**](https://www.youtube.com/watch?v=\_Bb9GRu4myk\&ab\_channel=KelvinChandra) | ✅✅䷯\*\*
 * [x] 2003\. [Smallest Missing Genetic Value in Each Subtree](https://leetcode.com/problems/smallest-missing-genetic-value-in-each-subtree/) | **@contest** | 🐽🐽🟡
+* [x] 2076\. [Process Restricted Friend Requests](https://leetcode.com/problems/process-restricted-friend-requests/)💪
 * [ ] [352.Data Stream as Disjoint Intervals](https://leetcode.com/problems/data-stream-as-disjoint-intervals/)
 * [ ] 128, [https://leetcode.com/problems/longest-consecutive-sequence/](https://leetcode.com/problems/longest-consecutive-sequence/)\
   305, [https://leetcode.com/problems/number-of-islands-ii/](https://leetcode.com/problems/number-of-islands-ii/) 💲\
@@ -1539,7 +1540,7 @@ return cnt
   711, [https://leetcode.com/problems/number-of-distinct-islands-ii/](https://leetcode.com/problems/number-of-distinct-islands-ii/)
 
 {% tabs %}
-{% tab title="990.✅" %}
+{% tab title="990" %}
 ```python
 indeg = dict(zip(string.ascii_lowercase, [1]*26))
 who = dict(zip(string.ascii_lowercase, string.ascii_lowercase))
@@ -1571,7 +1572,7 @@ return True
 ```
 {% endtab %}
 
-{% tab title="947.✅🚀" %}
+{% tab title="947" %}
 ```python
 '''
 -> stones_to_be_removed = #total_stones - #forests(or Unions)
@@ -1623,7 +1624,7 @@ return ans
 ```
 {% endtab %}
 
-{% tab title="261.🔥" %}
+{% tab title="261" %}
 ```java
 public boolean validTree(int n, int[][] edges) {
     List<Set<Integer>> adjList = new ArrayList<>();
@@ -1668,7 +1669,7 @@ public boolean hasCycle(int node, boolean[] visited, List<Set<Integer>> adjList,
 ```
 {% endtab %}
 
-{% tab title="1697.💪" %}
+{% tab title="1697" %}
 ```python
 # 1. DFS : O(N^2) fails for N = 10^5 =================================
 def dfs(x,y,z):
@@ -1735,7 +1736,7 @@ return res
 ```
 {% endtab %}
 
-{% tab title="1632.🐽🐽" %}
+{% tab title="1632" %}
 ```python
 n, m = len(A), len(A[0])
 rank = [0] * (m + n)
@@ -1765,7 +1766,7 @@ return A
 ```
 {% endtab %}
 
-{% tab title="BuildingRoads" %}
+{% tab title="CSES" %}
 ```python
 n,m = I()
 
@@ -1851,6 +1852,40 @@ for i in range(1,N+1):
         
 print(total_cost)
         
+```
+{% endtab %}
+
+{% tab title="2076" %}
+```python
+def find(x):
+    if par[x] != x:
+        par[x] = find(par[x])
+    return par[x]
+
+def unite(x,y):
+    par_x, par_y = find(x), find(y)
+    par[par_x] = par_y
+
+par = [i for i in range(n)]
+res = []
+
+for u,v in requests:
+    can_become_friends = True
+    par_u, par_v = find(u), find(v)
+
+    for x,y in restrictions:
+        par_x, par_y = find(x), find(y)
+        if (par_u, par_v) == (par_x,par_y) or (par_v, par_u) == (par_x,par_y):
+            can_become_friends = False
+            break
+    if can_become_friends:
+        unite(u,v)
+    res.append(can_become_friends)
+return res
+
+'''
+O(n * m * log(n)) for time and O(n) for space, where m = len(requests).
+'''  
 ```
 {% endtab %}
 {% endtabs %}
@@ -2431,7 +2466,7 @@ class Solution:
 
 ### 8.1 Algos
 
-* Eulers Path: [GfG](https://www.geeksforgeeks.org/eulerian-path-and-circuit/) | see [#332](https://leetcode.com/problems/reconstruct-itinerary/). for algo: `O(E+V)` **| Resource:** [this page](http://www.graph-magics.com/articles/euler.php)
+* Eulers Path: [GfG](https://www.geeksforgeeks.org/eulerian-path-and-circuit/) | see [#332](https://leetcode.com/problems/reconstruct-itinerary/). for algo: <mark style="color:orange;">`O(E+V)`</mark> **| Resource:** [this page](http://www.graph-magics.com/articles/euler.php)
   * [x] [332.Reconstruct Itinerary](https://leetcode.com/problems/reconstruct-itinerary/)
 * **Hierholzer's algorithm** for Euler Circuit: [GfG](https://www.geeksforgeeks.org/hierholzers-algorithm-directed-graph/)
 
@@ -2457,8 +2492,11 @@ def dfs(x):
         dfs(i)
     euler_path.append(x)
 
+'''
+# this sorting is specific to #332.
 for x in G:
-    G[x] = sorted(G[x], reverse = True)    # this sorting is specific to #332.
+    G[x] = sorted(G[x], reverse = True)    
+'''
 
 euler_path = []
 dfs("JFK")        # "JFK" is the start node here
