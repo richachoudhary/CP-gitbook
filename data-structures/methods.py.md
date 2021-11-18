@@ -9,7 +9,7 @@ description: useful methods found & stolen during CP-ing
 * Print **all permutations** of a list/string
 
 ```python
-from itertools import permutations
+from itertools import permutations, combinations
 
 # for a list ==================================================
 a = [1,2,3]
@@ -19,6 +19,16 @@ perms = [p for p in permutations(a)]
 # for a string ===============================================
 perms = [''.join(p) for p in permutations('abc')] 
 # ['abc', 'acb', 'bac', 'bca', 'cab', 'cba']
+
+combinations('ABCD', 2)     # AB AC AD BC BD CD
+
+# print superset
+a = [1,2,3]
+super = []
+for i in range(0,len(a)+1):
+   super += [list(x) for x in itertools.combinations(a,i)]
+
+# => [[], [1], [2], [3], [1, 2], [1, 3], [2, 3]]
 ```
 
 ## `map()`

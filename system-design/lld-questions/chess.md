@@ -1,6 +1,47 @@
 # Chess
 
+## Resource@Grokking: [here(in py)](https://github.com/tssovi/grokking-the-object-oriented-design-interview/blob/master/object-oriented-design-case-studies/design-chess.md)
 
+
+
+## Design:
+
+### Some Rules: <a href="some-rules" id="some-rules"></a>
+
+* Player chooses piece to move through the board.
+* Piece makes legal move according to its own move rules.
+* .
+* If player captures a piece, remove the piece.
+* If the piece is a pawn reaching the back rank, promote it.
+* If the move is a castling, set the new position of the rook accordingly. But a king and rook can only castle if they haven't moved, so you need to keep track of that. And if the king moves through a check to castle, that's disallowed, too.
+* If the move results in a stalemate or checkmate, the game is over.
+
+### Basic Object Design <a href="basic-object-design" id="basic-object-design"></a>
+
+* Game:
+  * Contains the Board and 2 Players
+  * Commands List (for history tracking)
+* Board (Singleton):
+  * Hold spots with 8\*8
+  * Initialize the piece when game start
+  * Move Piece
+  * Remove Piece
+* Spot:
+  * Hold Pieces
+* Piece (Abstract):
+  * Hold the color to represent the affiliation.
+  * Extended by concreted classes with 8 Pawns, 2 Rooks, 2 Bishops, 2 Knights, 1 Queen, 1 King
+  * Concreted classes define the detail step approach
+* Player (Abstract):
+  * Has a list of piece reference it owns.
+  * Concreted classes for Human and Computer players
+* Command
+  * Piece
+  * Destination x, y
+
+
+
+## Code
 
 We have two actors in our system:
 

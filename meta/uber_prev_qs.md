@@ -2,7 +2,6 @@
 
 ## 1. DSA
 
-* [x] [1579. Remove Max Number of Edges to Keep Graph Fully Traversable](https://leetcode.com/problems/remove-max-number-of-edges-to-keep-graph-fully-traversable/) 🐽🔴| **todo**
 * [x] [332.Reconstruct Itinerary](https://leetcode.com/problems/reconstruct-itinerary/)
 * [x] [1235. Maximum Profit in Job Scheduling](https://leetcode.com/problems/maximum-profit-in-job-scheduling/)
 * [x] [2054. Two Best Non-Overlapping Events](https://leetcode.com/problems/two-best-non-overlapping-events/)
@@ -298,6 +297,7 @@ public int countCornerRectangles(int[][] grid) {
 * [ ] LC [146. LRU Cache](https://leetcode.com/problems/lru-cache/)
 * [ ] [Battery Swap in Uber Cars](https://leetcode.com/discuss/interview-question/1095987/UBER-oror-CodeSignal) | binary search
 * [ ] LC [128.Longest Consecutive Sequence](https://leetcode.com/problems/longest-consecutive-sequence/)
+* [x] [1579. Remove Max Number of Edges to Keep Graph Fully Traversable](https://leetcode.com/problems/remove-max-number-of-edges-to-keep-graph-fully-traversable/) 🐽🔴
 
 {% tabs %}
 {% tab title="55" %}
@@ -430,6 +430,70 @@ Time: O(M * N), where M is number of rows, N is number of columns in the matrix.
 Space: O(M * N), space for the queue.
 '''    
       
+```
+{% endtab %}
+
+{% tab title="1579" %}
+
+
+![](<../.gitbook/assets/Screenshot 2021-11-18 at 9.38.56 AM.png>)
+
+```python
+def maxNumEdgesToRemove(self, n: int, edges: List[List[int]]) -> int:
+
+    # Union find
+    def find(i):
+        if i != root[i]:
+            root[i] = find(root[i])
+        return root[i]
+
+    def uni(x, y):
+        x, y = find(x), find(y)
+        if x == y: return 0
+        root[x] = y
+        return 1
+
+    res = e1 = e2 = 0
+
+    # Alice and Bob
+    root = range(n + 1)
+    for t, i, j in edges:
+        if t == 3:
+            if uni(i, j):
+                e1 += 1
+                e2 += 1
+            else:
+                res += 1
+    root0 = root[:]
+
+    # only Alice
+    for t, i, j in edges:
+        if t == 1:
+            if uni(i, j):
+                e1 += 1
+            else:
+                res += 1
+
+    # only Bob
+    root = root0
+    for t, i, j in edges:
+        if t == 2:
+            if uni(i, j):
+                e2 += 1
+            else:
+                res += 1
+
+    return res if e1 == e2 == n - 1 else -1
+
+
+'''
+Union find:
+Add Type3 first, then check Type 1 and Type 2.
+
+Time O(E), if union find with compression and rank
+Space O(E)
+
+''' 
 ```
 {% endtab %}
 {% endtabs %}
