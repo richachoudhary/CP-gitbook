@@ -19,22 +19,79 @@
   * Capital: instant loans, instant refunds, KYC integration
   * OTP-elf
 * **@Flipkart**
-  * Keyword Targeting
-  * Sampling
+  * <mark style="color:red;">**Sampling**</mark>
+    * **Problem statement**&#x20;
+      * With the increasing scale of traffic + features, compute & storage requirements are increasing, and getting machines for them has become difficult and we are heading towards a dead-end, where our batch pipelines would not be able to meet any SLAs in the future.&#x20;
+      * For big sale events like BBD 2021 where scale will increase multiple folds, we are seeing huge risk in providing data to our consumers in any defined SLA.&#x20;
+      * To address along with various optimizations we have to look upon approaches that can bring down our compute+storage requirements and still meet consumer expectations with a certain degree of accuracy.&#x20;
+      * Let's take the example of our Neo Merch/Common Pipeline:
+        1. Current compute asks: 20 TB (M3 Data Capacity Ask 2021)
+        2. Available reserved Compute: 9 TB 3. Dependency on bursting: 50%
+        3. Expected BBD 2021 ask: 28 TB
+        4. After Optimization BBD2021 ask would become: 22 TB
+    * **About Sampling:**
+      * The whole tech community is marching towards a direction to make insight available as soon as possible with certain guaranteed accuracy and sampling is the key there.
+      * In place of doing a process with 100% data, we should <mark style="color:yellow;">work on a random sample of whole data and project numbers with acceptable accuracy.</mark>&#x20;
+      * This will reduce our capacity asks multiple folds for example of Neo Pipeline. If we consider 40% as the sample size of the universe then compute requirement will come down by 50%.
+    * <mark style="color:orange;">**Metrics (Complete Data)**</mark>: views, clicks, spent, ctr, non-clicks engagements.&#x20;
+    * <mark style="color:orange;">**Metrics (Sampled Data):**</mark> served impressions, wins, loaded impressions, win rate, serving efficiency, view rate.
+    * Sampling in all the input raw events will be done on <mark style="color:orange;">**requestID**</mark>.&#x20;
+      * &#x20;<mark style="color:yellow;">Sampling bucket = hash(requestID) % No of buckets</mark>
+    * **IMPACT (@BBD21)**
+      * Runtime Improvements&#x20;
+        * Avg job <mark style="color:orange;">runtime reduced by</mark> <mark style="color:orange;">**60%**</mark> from 40 mins daily avg to 16 mins daily avg..
+        * Avg of <mark style="color:orange;">Total Map tasks time of job</mark> is reduced by <mark style="color:orange;">68.9%</mark> from 106 mins to 33 mins.&#x20;
+        * Avg of <mark style="color:orange;">Total Reduce tasks time</mark> of job is reduced by <mark style="color:orange;">80.7%</mark> from 117 mins to 22 mins.&#x20;
+        * Because of less data to process due to sampling, the <mark style="color:orange;">number of reducers required in fact MR job</mark> has also been reduced by <mark style="color:orange;">half</mark> (350 to 175 now).
     * computation reduced by 80%
     * real impact during BBD sale 21
-  * Bidding Price Recommendation System
+  * <mark style="color:red;">Keyword Targeting</mark>
+  * <mark style="color:red;">Bidding Price Recommendation System</mark>
   * Ads Merch Separation
   * Pricing Service Feedback
-  * Jarvis
+  * <mark style="color:red;">Jarvis</mark>
   * RCAs
   * NFRs
 
 \====================================================================
 
+#### <mark style="color:yellow;">🤨 ->WHY DO YOU WANT TO LEAVE FLIPKART?</mark>
+
+* \==>&#x20;
+  * I am a <mark style="color:orange;">growth oriented person who is yet to find my niche</mark>. Continuing here would lock me in data-side which I feel is too early to settle.
+  * I <mark style="color:orange;">love</mark> what I was working on and the <mark style="color:orange;">team I've grown with</mark>, the <mark style="color:orange;">work and the culture were great</mark>. You simply feel like it's time for you to grow different skills and learn from new people, you've heard great things about the <mark style="color:orange;">culture and challenges at X and couldn't be more excited to be part of the team</mark>.
+  * (<mark style="color:orange;">team switch</mark> is easier said than allowed)
+  * When recruiters ask you why you’re leaving you don’t have to state your reason but you can reply with what you’re looking for. For instance you can say I’m looking to work in a product company, or a company that involves X. In other words tell them what you’re looking for, never why you’re leaving. That way you don’t have to involve your current employer.
+
+#### <mark style="color:yellow;">🤨 -> WHY DO YOU WANT TO JOIN UBER?</mark>
+
+* \==>&#x20;
+  * Uber has been my dream company since college days.
+    * since first job; I've been regular reader/visitor of **uber engg blogs. **
+    * It has shaped me as an engineer
+  * My mom uses it. (It saved my uncle's life @4am)&#x20;
+  * So, when Uber's **recruiter reached out**; I could not have not applied here! & <mark style="color:orange;">couldn't be more excited to be part of the team</mark>.
+  * (looking at the **stocks**; its the right time to get some of'em 😋)
+  * Uber’s mission statement is “**Transportation as reliable as running water, everywhere for everyone**.”&#x20;
+
 #### <mark style="color:yellow;">🤨 -> Tell me about a time when you challenged the status quo.</mark>
 
-\==> 1. Implemented Jarvis platfor for helping out oncall's redundant tasks ==> 2. Sampling
+\==>&#x20;
+
+* 1\. Implemented Jarvis platform for oncall
+  * failure detection moved from 1 hours (usual run time) to live-dashboard( based on log parsing)
+
+
+
+
+
+or helping out oncall's redundant tasks ==> 2. Sampling
+
+#### <mark style="color:yellow;"></mark>
+
+#### <mark style="color:yellow;"></mark>
+
+#### <mark style="color:yellow;"></mark>
 
 #### <mark style="color:yellow;">🤨 -> Time when you were 75% through a project and realized you had the wrong goal.\</mark></mark>
 
@@ -72,15 +129,15 @@
 
 #### <mark style="color:yellow;">🤨 -> Tell me about a time you had multiple solutions and you had to select an optimal one</mark>
 
-\==> 1. Keyword Targeting algos&#x20;
+\==> 1. Keyword Targeting algos
 
-\==> 2. Sampling&#x20;
+\==> 2. Sampling
 
 \==> 3. Linguini
 
 #### <mark style="color:yellow;">🤨 -> Tell me about a time when you innovated and exceeded the expectation</mark>
 
-\==> 1. Sampling : 80% computation time&#x20;
+\==> 1. Sampling : 60% job run time
 
 \==> 2. Keyword targeting
 
@@ -96,25 +153,25 @@
 
 #### <mark style="color:yellow;">🤨 -> Tell me about a time when you had conflicting ideas with your teammates and how did you resolve them</mark>
 
-\==> 1. Linguini&#x20;
+\==> 1. Linguini
 
 \==> 2. KeywordTargeting: algo selection
 
 #### <mark style="color:yellow;">🤨 -> Tell me about time when you faced a difficult challenge.\</mark></mark>
 
-\==> 1. Sampling&#x20;
+\==> 1. Sampling
 
 \==>
 
 #### <mark style="color:yellow;">🤨 -> Tell me about a time when you needed help from someone during a project.</mark>
 
-\==> 1. Onboardings - everywhere&#x20;
+\==> 1. Onboardings - everywhere
 
 \==> 2. Bidding Price Recommendation System : from data-science team
 
 #### <mark style="color:yellow;">🤨 -> Tell me about a time when you thought of an unpopular idea.</mark>
 
-\==> 1. Keyword targeting: not using standard Edit Dist. but researched-> N-Gram&#x20;
+\==> 1. Keyword targeting: not using standard Edit Dist. but researched-> N-Gram
 
 \==> 2. Mozart- test coverage => build Tree & BFS ==> 3. Linguini
 
@@ -125,16 +182,16 @@
 * SITUATION/TASK:
   * (cant disclose much internal details)
   * our deployment was impacted due to a recent(same day) deployment; which was not writing Unserved's data to correct sql tables => hence impacting their reporting
-  * By the time I figured this out, it was 2AM & the (senior) person who had done the other deployment was slept(had to catc a flight next day)
+  * By the time I figured this out, it was 2AM & the (senior) person who had done the other deployment was slept(had to catch a flight next day)
 * ACTION:
   * I got access to that project's config (by awaking some other team member at 2:30 AM)
-  * first thing; I stopped the flow to wrong tables => to avoid false positives & dedups
+  * first thing; I stopped the flow to wrong tables => to avoid <mark style="color:orange;">**false positives**</mark> & dedups
   * Fixed the issue by morning, got PR approved @8AM
   * Triggered reruns for the lost buckets with the help of oncall person
 
 #### <mark style="color:yellow;">🤨 -> Tell me about a time when you did not meet your deadlines for a project | Tell me about a time when you had to face tight time constraints during a project.</mark>
 
-\==> 1. Never(maybe in college lol)&#x20;
+\==> 1. Never(maybe in college lol)
 
 \==> 2. tight timeline for Sampling before BBD'21. but stretched over 3 weekends to go live on time
 
@@ -148,7 +205,7 @@
 
 * SITUATION/TASK:
   * It was a 2-sprint project, was working with 1 (senior) teammate
-  * Nearly at the end of 1st sprint, he had to leave immediately due to a medical emeregency at his home(2nd wave)
+  * Nearly at the end of 1st sprint, he had to leave immediately due to a medical emeregency at his home(2nd <mark style="color:orange;">COVID</mark> wave)
   * All the responsibility fell onto my shoulders, I was new to that pipeline as well
 * ACTION:
   * first thing I did for next 2 days was collected all the info about his tasks (over phone calls, syncing with other team's resp. people)
