@@ -190,6 +190,11 @@ def maxAncestorDiff(self, root: Optional[TreeNode]) -> int:
 ## 2. **Root to leaf path problems**
 
 * [x] ****[**257.** Binary Tree Paths](https://leetcode.com/problems/binary-tree-paths/) - EASY
+* [x] [112. Path Sum I](https://leetcode.com/problems/path-sum/)
+* [x] [113. Path Sum II](https://leetcode.com/problems/path-sum-ii/)
+* [x] [437. Path Sum III](https://leetcode.com/problems/path-sum-iii/) ✅
+* [x] [1022. Sum of Root To Leaf Binary Numbers](https://leetcode.com/problems/sum-of-root-to-leaf-binary-numbers/)
+*
 
 {% tabs %}
 {% tab title="257" %}
@@ -212,8 +217,93 @@ return all_paths
 ```
 {% endtab %}
 
-{% tab title="Second Tab" %}
+{% tab title="112" %}
+```python
+def recur(x,curr_sum):
+    if not x:
+        return False
+    if x and not x.left and not x.right:    # if leaf
+        if curr_sum - x.val == 0:
+            return True
+        return False
 
+    found_on_left = recur(x.left, curr_sum - x.val)
+    found_on_right = recur(x.right, curr_sum - x.val)
+    return found_on_left or found_on_right
+
+
+return recur(root,targetSum)
+```
+{% endtab %}
+
+{% tab title="113" %}
+```python
+def recur(x,all_paths, curr_path):
+    if not x:
+        return
+
+    if not x.left and not x.right and sum(curr_path) == targetSum:
+        all_paths.append(curr_path)
+        return
+
+    if x.left: recur(x.left,all_paths, curr_path + [x.left.val])
+    if x.right: recur(x.right,all_paths, curr_path + [x.right.val])
+
+all_paths = []
+if root:
+    recur(root,all_paths,[root.val])
+return all_paths
+```
+{% endtab %}
+
+{% tab title="437" %}
+```python
+def recur(self,root, k):
+    if root:
+        return int(root.val == k) + self.recur(root.left, k - root.val) +  self.recur(root.right, k - root.val) 
+    return 0
+
+def pathSum(self, root: Optional[TreeNode], targetSum: int) -> int:
+    if root:
+        return self.recur(root, targetSum) + self.pathSum(root.left, targetSum) + self.pathSum(root.right, targetSum)
+    return 0
+
+
+
+'''
+* The simplest solution is to traverse each node (preorder traversal) and then find all paths which sum to the target using this node as root.
+* The worst case complexity for this method is N^2.
+* If we have a balanced tree, we have the recurrence: T(N) = N + 2T(N/2). This is the merge sort recurrence and suggests NlgN.
+'''
+```
+{% endtab %}
+
+{% tab title="1022" %}
+```python
+def bin_to_int(s):
+    val = 0
+    for i,c in enumerate(reversed(s)):
+        val += pow(2,i)*int(c)
+    return val
+
+def solve(x, paths, curr):
+    if not x:
+        return
+    if x and not x.left and not x.right:
+        paths.append(curr + str(x.val))
+        return 
+    solve(x.left,paths, curr + str(x.val))
+    solve(x.right,paths, curr + str(x.val))
+
+paths = []
+solve(root,paths, '')
+print(paths)
+ans = 0
+for path in paths:
+    ans += bin_to_int(path)
+return ans
+
+```
 {% endtab %}
 {% endtabs %}
 
