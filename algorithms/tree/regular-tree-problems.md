@@ -1,6 +1,223 @@
 # Regular Tree Problems
 
-## 1. Regular Tree Problems
+##
+
+## 1. Ancestor \[LCA]
+
+* [x] [235. LCA of BST](https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/) 📌
+* [x] [236. LCA of Binary Tree](https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/) 📌
+  * [x] [1644. LCA of Binary Tree II](https://zhenchaogan.gitbook.io/leetcode-solution/leetcode-1644-lowest-common-ancestor-of-a-binary-tree-ii) - target node/s MAY NOT exist in tree | <mark style="color:yellow;">LCA + DFS</mark>
+  * [x] [1650. LCA of Binary Tree III](https://zhenchaogan.gitbook.io/leetcode-solution/leetcode-1650-lowest-common-ancestor-of-a-binary-tree-iii) - parent to a node is given in Node definition | <mark style="color:yellow;">LCA + 2P</mark>
+  * [x] [1483.Kth Ancestor of a Tree Node](https://leetcode.com/problems/kth-ancestor-of-a-tree-node/) 📌 | template for binary lifting
+    * [x] \=> [Errichto Video](https://www.youtube.com/watch?v=oib-XsjFa-M\&ab\_channel=Errichto)
+* [x] [1026.Maximum Difference Between Node and Ancestor](https://leetcode.com/problems/maximum-difference-between-node-and-ancestor/)
+
+{% tabs %}
+{% tab title="235" %}
+4 cases possible for rooted tree @x:
+
+1. x is LCA
+2. LCA lies on x.left
+3. LCA lies on x.right
+4. LCA doesnt exits in tree
+
+```python
+def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
+
+    def lca_bst(x,a,b):
+        if not x:
+            return None
+        #1. if LCA lies on left
+        if x.val > a.val and x.val > b.val:
+            return lca_bst(x.left,a,b)
+
+        #3. if LCA lies on right
+        if x.val < a.val and x.val < b.val:
+            return lca_bst(x.right,a,b)
+        #3. x is lca
+        return x
+
+    return lca_bst(root, p,q)
+    
+'''
+TC: O(H}
+SC: O(1) - w/o function stack
+'''        
+```
+{% endtab %}
+
+{% tab title="236" %}
+dda
+
+```python
+def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
+
+    def lca(x,a,b):
+        if not x:
+            return None
+        # 1. if x's immediate children are a & b
+        if (x.left == a and x.right == b) or (x.right == a and x.left == b):
+            return x
+
+        # 2. if x is same as a or b
+        if x == a or x == b:
+            return x
+
+        left_lca = lca(x.left, a,b)
+        right_lca = lca(x.right, a,b)
+
+        if left_lca and right_lca:
+            return x
+        if left_lca:
+            return left_lca
+        return right_lca
+
+    return lca(root, p,q)
+
+'''
+TC: O(H)
+SC: O(1), w/o function stack
+
+'''      
+```
+{% endtab %}
+
+{% tab title="1644" %}
+```python
+    def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
+        if not q or not p:
+            return None
+        self.count = 0
+        res = self.dfs(root, p, q)
+        if self.count == 2:
+            return res
+        return None
+
+    def dfs(self, root, p, q):
+        if not root:
+            return None
+
+        left = self.dfs(root.left, p, q)
+        right = self.dfs(root.right, p, q)
+        if root == p or root == q:
+            self.count += 1    # one of the target node exists in tree
+            return root
+
+        if left and right:
+            return root
+        else:
+            return left or right
+```
+{% endtab %}
+
+{% tab title="1650" %}
+```python
+    """
+    # Definition for a Node.
+    class Node:
+        def __init__(self, val):
+            self.val = val
+            self.left = None
+            self.right = None
+            self.parent = None
+    """
+    def lowestCommonAncestor(self, p: 'Node', q: 'Node') -> 'Node':
+        p1, p2 = p, q
+        while p1 != p2:
+            if p1.parent:
+                p1 = p1.parent
+            else:
+                p1 = q
+            if p2.parent:
+                p2 = p2.parent
+            else:
+                p2 = p
+        return p1
+```
+{% endtab %}
+
+{% tab title="1483" %}
+![](<../../.gitbook/assets/Screenshot 2021-12-04 at 4.34.59 PM.png>)
+
+```python
+def __init__(self, n: int, parent: List[int]):
+    self.LOG = 20   # log(5*(10^4))
+    self.up = [[-1]*self.LOG for _ in range(n)]  # matrix dim: N*LOG      
+
+    for j in range(self.LOG):
+        for v in range(n):
+            if j == 0: self.up[v][j] = parent[v]
+            elif self.up[v][j-1] != -1:     #dont mess up with uncalculated values yet. eg: [-1,2,3,0]
+                self.up[v][j] = self.up[ self.up[v][j-1] ][j-1]
+
+
+def getKthAncestor(self, node: int, k: int) -> int:
+
+    for j in range(self.LOG):
+        if k & (1<<j):
+            node = self.up[node][j]
+        if node == -1:
+            return node
+    return node
+
+'''
+Complexities: 
+#1. Preprocessing => TC: O(N*logN), SC: O(N*logN)
+#2. Query=> O(LogN)
+'''
+```
+{% endtab %}
+
+{% tab title="1026" %}
+We pass the minimum and maximum values to the children,\
+At the leaf node, we return `max - min` through the path from the root to the leaf.
+
+```python
+def maxAncestorDiff(self, root: Optional[TreeNode]) -> int:
+
+    def solve(x, minn, maxx):
+        if not x:
+            return maxx - minn
+
+        minn = min(minn, x.val)
+        maxx = max(maxx, x.val)
+        return max(solve(x.left,minn,maxx), solve(x.right,minn,maxx))
+    return solve(root,root.val,root.val)
+```
+{% endtab %}
+{% endtabs %}
+
+## 2. **Root to leaf path problems**
+
+* [x] ****[**257.** Binary Tree Paths](https://leetcode.com/problems/binary-tree-paths/) - EASY
+
+{% tabs %}
+{% tab title="257" %}
+```python
+def recur(x,all_paths,this_path):
+    # only add when x is leaf
+    if x and not x.left and not x.right:
+        if this_path:
+            all_paths.append(this_path[2:] +'->' + str(x.val))
+        else:
+            all_paths.append(str(x.val))
+        return 
+    elif x:
+        recur(x.left, all_paths, this_path + '->' + str(x.val))
+        recur(x.right, all_paths, this_path + '->' + str(x.val))
+
+all_paths = []
+recur(root, all_paths, '')
+return all_paths
+```
+{% endtab %}
+
+{% tab title="Second Tab" %}
+
+{% endtab %}
+{% endtabs %}
+
+## \*. Regular Tree Problems
 
 * [x] \*\*\*\*[**Inorder Successor in Binary Search Tree**](https://www.geeksforgeeks.org/inorder-successor-in-binary-search-tree/) ✅💪
 * [x] 501\. [Find Mode in Binary Search Tree](https://leetcode.com/problems/find-mode-in-binary-search-tree/) | MindTickle!

@@ -155,7 +155,7 @@ def generateParenthesis(self, n: int) -> List[str]:
 {% endtabs %}
 
 * [x] Print all subsets/powerset of a string | [video](https://www.youtube.com/watch?v=Yg5a2FxU4Fo\&list=PL\_z\_8CaSLPWeT1ffjiImo0sYTcnLzo-wY\&index=12\&ab\_channel=AdityaVerma) | **Decision Tree method**
-* [x] **LC **[**967.**Numbers With Same Consecutive Differences](https://leetcode.com/problems/numbers-with-same-consecutive-differences/) | **Jump Numbers** | @uber
+* [x] **LC** [**967.**Numbers With Same Consecutive Differences](https://leetcode.com/problems/numbers-with-same-consecutive-differences/) | **Jump Numbers** | @uber
 
 {% tabs %}
 {% tab title="print powerset" %}
@@ -458,7 +458,7 @@ def wiggleSort(self, nums: List[int]) -> None:
     '''
 ```
 
-**LC 324. **[**Wiggle Sort II**](https://leetcode.com/problems/wiggle-sort-ii/)
+**LC 324.** [**Wiggle Sort II**](https://leetcode.com/problems/wiggle-sort-ii/)
 
 **How is it different from Wiggle Sort I?**
 

@@ -66,18 +66,18 @@
 
 #### Chat APIs
 
-* **`initiate_direct_chat_session`**`(` `api_key, user_id, senders_id, handshake_info)  -> `**`session_id`**
-* **`send_msg`**`(` `api_key, user_id, session_id, msg_body) -> `**`message_id`**
-* **`read_new_msgs`**`(` `api_key, user_id, senders_id, `<mark style="color:orange;">`last_received_msg_id`</mark>`)`
-  * <mark style="color:orange;">**`last_received_msg_id`**</mark>` `is used as a pointer to read all the unread msgs (which came after it)
+* **`initiate_direct_chat_session`**`(` `api_key, user_id, senders_id, handshake_info)  ->`` `**`session_id`**
+* **`send_msg`**`(` `api_key, user_id, session_id, msg_body) ->`` `**`message_id`**
+* **`read_new_msgs`**`(` `api_key, user_id, senders_id,`` `<mark style="color:orange;">`last_received_msg_id`</mark>`)`
+  * <mark style="color:orange;">**`last_received_msg_id`**</mark>` ``` is used as a pointer to read all the unread msgs (which came after it)
 
 #### GroupChat APIs
 
-* **`initiate_group_chat_session`**`(` `api_key, group_info)   -> `**`group_id`**
+* **`initiate_group_chat_session`**`(` `api_key, group_info)   ->`` `**`group_id`**
   * creates a group with user being the admin
-* **`add_user_to_group`**`(` `api_key, group_id, user_id)   `# only admins can execute
-* **`remove_user_from_group`**`(api_key, group_id, user_id) `# only admins can execute
-* **`promote_user_to_admin`**`(api_key, group_id, user_id) `# only admins can execute
+* **`add_user_to_group`**`(` `api_key, group_id, user_id)`   # only admins can execute
+* **`remove_user_from_group`**`(api_key, group_id, user_id)` # only admins can execute
+* **`promote_user_to_admin`**`(api_key, group_id, user_id)` # only admins can execute
 
 ## 4. Tables
 
@@ -86,14 +86,14 @@
 ## 5. DB Choices: Hbase✅ | MySQL❌ | Mongo❌
 
 * **Requirements from DB**
-  * We need to have a database that <mark style="color:orange;">can support a</mark> <mark style="color:orange;">**very high rate of small updates**</mark> and also <mark style="color:orange;">**fetch a range of records quickly**</mark>**.**&#x20;
+  * We need to have a database that <mark style="color:orange;">can support a</mark> <mark style="color:orange;"></mark><mark style="color:orange;">**very high rate of small updates**</mark> and also <mark style="color:orange;">**fetch a range of records quickly**</mark>**.**&#x20;
   * This is required because we have a huge number of small messages that need to be inserted in the database and, while querying, a <mark style="color:orange;">**user is mostly interested in sequentially accessing the messages**</mark>.
 * <mark style="color:orange;">**WHY NOT SLQ & NoSQL (yep; both no):**</mark>
   * We cannot use RDBMS like MySQL or NoSQL like MongoDB <mark style="color:orange;">because we cannot afford to read/write a row from the database every time a user receives/sends a message</mark>.&#x20;
-  * This will not only make the basic operations of our service run with <mark style="color:orange;">**high latency**</mark> but also create **a huge load **on databases.
+  * This will not only make the basic operations of our service run with <mark style="color:orange;">**high latency**</mark> but also create **a huge load** on databases.
 * Go with Wide-Column DBs: <mark style="color:orange;">**HBase/BigTable**</mark>
   * Both of our requirements can be easily met with a wide-column database solution like [HBase](https://en.wikipedia.org/wiki/Apache\_HBase).&#x20;
-* <mark style="color:yellow;">**ABOUT HBase: **</mark>
+* <mark style="color:yellow;">**ABOUT HBase:**</mark>&#x20;
   * HBase is a **column-oriented key-value NoSQL** database that can store multiple values against one key into multiple columns.&#x20;
   * HBase is modeled after Google’s [BigTable](https://en.wikipedia.org/wiki/Bigtable) and runs on top of Hadoop Distributed File System ([HDFS](https://en.wikipedia.org/wiki/Apache\_Hadoop)).&#x20;
   * HBase <mark style="color:orange;">groups data together</mark> to store new data in a memory buffer and, once the buffer is full, it dumps the data to the disk.&#x20;
@@ -149,10 +149,10 @@
 * **How sending & receiving of msg takes place:**
   * A wants to send msg to B
   * **WHAT DOESNT WORK:**
-    * <mark style="color:orange;">**❌ Poll Model: **</mark>Users can periodically ask the server if there are any new messages for them
-      * **issue: **latency
+    * <mark style="color:orange;">**❌ Poll Model:**</mark> Users can periodically ask the server if there are any new messages for them
+      * **issue:** latency
       * **issue:** wastage of resources(when there's no message)
-  * **WHAT DOES WORK: **
+  * **WHAT DOES WORK:**&#x20;
     * <mark style="color:orange;">**✅ Push Model**</mark><mark style="color:orange;">:</mark> Users can keep a connection open with the server and can depend upon the server to notify them whenever there are new messages.
   * **@A's end**
     1. clientA sends a msg to clientB
@@ -172,7 +172,7 @@
   * if B is doesnt have a whatsapp acc: server dumps A's msg in a **separate DB**
 * <mark style="color:orange;">****</mark>
 
-### <mark style="color:orange;">**8.2 Tick, Double & Blue Tick: **</mark>**How does Acknowledgement work? **
+### <mark style="color:orange;">**8.2 Tick, Double & Blue Tick:**</mark>** How does Acknowledgement work?**&#x20;
 
 * **Single Tick**
   * is sent to clientA when server receives its msg
@@ -218,7 +218,7 @@
       "timestamp": 12345
     }
     ```
-* **ISSUE: **If user A **connection is lost during typin**g then the status will be always remain true until he resumes the connection. To solve this problem you can have one DateTime field in your firebase object
+* **ISSUE:** If user A **connection is lost during typin**g then the status will be always remain true until he resumes the connection. To solve this problem you can have one DateTime field in your firebase object
 
 ### <mark style="color:orange;">**8.7 Group chat(for small group <200):**</mark>
 

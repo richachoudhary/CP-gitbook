@@ -12,13 +12,13 @@
 
 * Post a tweet
 * Delete a tweet
-* <mark style="color:yellow;">**=>DISCUSS:**</mark>** **updating a tweet is not allowed
+* <mark style="color:yellow;">**=>DISCUSS:**</mark>** ** updating a tweet is not allowed
 * max tweet size = 140 chars
 * like a tweet
 * follow a user
 * See timelines. Type of timelines:&#x20;
-  * **user timeline **(user's past tweets)
-  * **home timeline **(whom user follows)
+  * **user timeline** (user's past tweets)
+  * **home timeline** (whom user follows)
 * **Search** tweets based on keywords
 * Login/Signup to start tweeting
 * a tweet can be:
@@ -94,7 +94,7 @@
 * **`delete_tweet`**`(api_dev_key, tweet_id)`
 * **`like_or_unlike_tweet`**`(api_dev_key, tweet_id, like_bool)`
 * **`follow_user`**`(api_dev_key, user_id)`
-  * `user_id `=> whom we want to follow( not self's duh)
+  * `user_id` => whom we want to follow( not self's duh)
 
 #### 3.2 Timeline APIs
 

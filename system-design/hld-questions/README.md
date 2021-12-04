@@ -745,7 +745,7 @@ city() # it calls the function city
     * `last_msg_id`to be used as **pointer** to separate b/w read & not-read msgs
 * **Group chats**
 *
-  * `createGrop(API_key, group_id, group_name, `**`admin, [members]`**`)`
+  * `createGrop(API_key, group_id, group_name,`` `**`admin, [members]`**`)`
   * `addUserToGroup(API_Key, group_id, user_id,admin_id)`
   * `removeUserFromGroup(API_Key, group_id, user_id,admin_id)`
   * `promoteMemberToGroup(API_key,group_id,user_id)`
@@ -856,7 +856,7 @@ city() # it calls the function city
       "timestamp": 12345
     }
     ```
-* **ISSUE: **If user A **connection is lost during typin**g then the status will be always remain true until he resumes the connection. To solve this problem you can have one DateTime field in your firebase object
+* **ISSUE:** If user A **connection is lost during typin**g then the status will be always remain true until he resumes the connection. To solve this problem you can have one DateTime field in your firebase object
 
 #### #6. Detailed HLD ================================================
 

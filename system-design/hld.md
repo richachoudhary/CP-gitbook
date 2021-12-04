@@ -54,13 +54,13 @@
     * 2\. **AP**
       * Responses return the most readily available version of the data available on any node, **which might not be the latest**.
       * Writes might take some time to propagate when the partition is resolved.
-      * **AP** is a good choice if the **business needs allow for **[**eventual consistency**](https://github.com/donnemartin/system-design-primer#eventual-consistency) or when the system needs to** continue working despite external errors.**
+      * **AP** is a good choice if the **business needs allow for** [**eventual consistency**](https://github.com/donnemartin/system-design-primer#eventual-consistency) or when the system needs to **continue working despite external errors.**
 * ...there is only one choice to make. In case of a network partition, what do you sacrifice?
   * 1\. C: Consistency
   * 2\. A: Availability
 * Hence these systems(**CP & AP**) are <mark style="color:orange;">**BASE**</mark>:
   * **Basically Available**&#x20;
-  * **Soft state **
+  * **Soft state**&#x20;
   * **Eventual consistency**
 
 ![3 types of scaling](<../.gitbook/assets/Screenshot 2021-10-31 at 1.54.53 PM.png>)
@@ -128,11 +128,11 @@
 ### **3.2.1. #1.Fail-over (with Fail-back)**
 
 * <mark style="color:orange;">**Fail Over**</mark> => Putting the failed node out of service
-* <mark style="color:orange;">**Fail Back**</mark> <mark style="color:orange;"></mark>=> Restoring the failed node back
+* <mark style="color:orange;">**Fail Back**</mark> <mark style="color:orange;"></mark><mark style="color:orange;"></mark> => Restoring the failed node back
 * fail-over is not always this simple
 * **1. Active-passive Fail-over | OR | **<mark style="color:orange;">**Master-Slave Failover**</mark>
   * With active-passive fail-over, **heartbeats** are sent between the active and the passive server on standby. If the heartbeat is interrupted, the **passive server takes over the active's IP address and resumes** service.
-  * The **length of downtime **is determined by whether the **passive server** is already running in <mark style="color:orange;">**'hot' standb**</mark><mark style="color:orange;">y</mark> or whether it needs to start up from <mark style="color:orange;">**'cold' standb**</mark>**y.** Only the active server handles traffic.
+  * The **length of downtime** is determined by whether the **passive server** is already running in <mark style="color:orange;">**'hot' standb**</mark><mark style="color:orange;">y</mark> or whether it needs to start up from <mark style="color:orange;">**'cold' standb**</mark>**y.** Only the active server handles traffic.
   * Active-passive failover can also be referred to as **master-slave** failover.
 * **2.Active-active Fail-over | OR | **<mark style="color:orange;">**Master-Master Failover**</mark>
   * In active-active, both servers are managing traffic, **spreading the load** between them.
@@ -149,7 +149,7 @@
   * Data not available, read from peer, then store it locally
   * Works well with timeout-based caches
 * **Types of Replication architecture:**
-  * <mark style="color:orange;">**1.Master-Slave replication **</mark>
+  * <mark style="color:orange;">**1.Master-Slave replication**</mark>&#x20;
 
 ![](https://lh3.googleusercontent.com/QQUYp9-SheKbIg\_6gVv8Z9UeiA2D54YvsudH5a2qum2l5B2wgnIDNGwrO7yowXdXcOyev60\_gq2hY85wDCohyxkPPDFxwCl3B-SL3mg6a9woRXSanvJx1L2nqcaWe6iU6WKzKomK=s0)
 
@@ -313,7 +313,7 @@
 
 ### **Load balancer vs reverse proxy 🟢🔵🔴**
 
-* <mark style="color:orange;">Load balancer is</mark> <mark style="color:orange;">**just an instance of reverse proxy**</mark>
+* <mark style="color:orange;">Load balancer is</mark> <mark style="color:orange;"></mark><mark style="color:orange;">**just an instance of reverse proxy**</mark>
 * **Deploying a load balancer is useful when you have multiple servers**. Often, load balancers route traffic to a set of servers serving the same function.
 * **Reverse proxies can be useful even with just one application server**, opening up the benefits described in the previous section.
 * Solutions such as **NGINX** and **HAProxy** can support both layer 7 reverse proxying and load balancing.
@@ -387,12 +387,12 @@
 Below steps to be taken(as #users increase)
 
 * **Partitioning**
-* **HTTP Caching **
+* **HTTP Caching**&#x20;
 * **RDBMS Sharding**
-  * <mark style="color:yellow;">Scaling</mark> <mark style="color:yellow;">**reads**</mark> <mark style="color:yellow;">to a RDBMS is</mark> <mark style="color:yellow;">**hard**</mark>
-  * <mark style="color:yellow;">Scaling</mark> <mark style="color:yellow;">**writes**</mark> <mark style="color:yellow;">to a RDBMS is</mark> <mark style="color:yellow;">**impossible**</mark>
-  * <mark style="color:yellow;">How to scale out RDBMS? =></mark> <mark style="color:yellow;">**Sharding**</mark>
-    * <mark style="color:orange;">**Partitioning **</mark>
+  * <mark style="color:yellow;">Scaling</mark> <mark style="color:yellow;"></mark><mark style="color:yellow;">**reads**</mark> <mark style="color:yellow;"></mark><mark style="color:yellow;">to a RDBMS is</mark> <mark style="color:yellow;"></mark><mark style="color:yellow;">**hard**</mark>
+  * <mark style="color:yellow;">Scaling</mark> <mark style="color:yellow;"></mark><mark style="color:yellow;">**writes**</mark> <mark style="color:yellow;"></mark><mark style="color:yellow;">to a RDBMS is</mark> <mark style="color:yellow;"></mark><mark style="color:yellow;">**impossible**</mark>
+  * <mark style="color:yellow;">How to scale out RDBMS? =></mark> <mark style="color:yellow;"></mark><mark style="color:yellow;">**Sharding**</mark>
+    * <mark style="color:orange;">**Partitioning**</mark>&#x20;
     * <mark style="color:orange;">**Replication**</mark>
 * **NOSQL**
   * Types
@@ -479,7 +479,7 @@ Below steps to be taken(as #users increase)
 
 ## **8.2 NoSQL**
 
-* Data is **denormalized**, and**  joins are generally done in the application code.**
+* Data is **denormalized**, and  **joins are generally done in the application code.**
 * **Lack true ACID** transactions and have **BASE**:
   * **Basically available** - the system guarantees availability.
   * **Soft state** - the state of the system may change over time, even without input.
@@ -501,11 +501,11 @@ Below steps to be taken(as #users increase)
     * SCHEMA FLEXIBILITY IS NOT TRIVIAL AT A LARGE SCALE BUT IT CAN BE WITH NO SQL
 * **NoSQL PROS :**
   * **MASSIVE SCALABILITY**
-  * **HIGH AVAILABILITY **
-  * **LOWER COST **
+  * **HIGH AVAILABILITY**&#x20;
+  * **LOWER COST**&#x20;
   * SCHEMA FLEXIBILITY SPARCE AND SEMI STRUCTURED DATA
 * **NoSQL CONS:**
-  * **LIMITED QUERY CAPABILITIES **
+  * **LIMITED QUERY CAPABILITIES**&#x20;
   * NOT STANDARDISED (PORTABILITY MAY BE AN ISSUE)
   * STILL A DEVELOPING TECHNOLOGY
 
@@ -643,20 +643,20 @@ Below steps to be taken(as #users increase)
     * **I've implemented RedisStore for client @Supp 💪**
   * [RabbitMQ](https://www.rabbitmq.com) is popular but requires you to adapt to the 'AMQP' protocol and manage your own nodes.
   * [Amazon SQS](https://aws.amazon.com/sqs/) is hosted but can have high latency and has the possibility of messages being delivered twice.
-  * <mark style="color:orange;">**Kafka : **</mark>ensures that data is stored in** **<mark style="color:orange;">**durable & fault tolerant**</mark>** way.**
+  * <mark style="color:orange;">**Kafka :**</mark> ensures that data is stored in ** **<mark style="color:orange;">**durable & fault tolerant**</mark>** way.**
 
 ### <mark style="color:orange;">**10.2 Kafka**</mark>
 
-* Each topic can have >=1** partitions**
+* Each topic can have >=1 **partitions**
 * **Brokers =>** each server holding >=1 partition is called **Broker.**
-* **Record: **each item in a partition is called record
-* **Topic: **a group of partition handling the same type of data
+* **Record:** each item in a partition is called record
+* **Topic:** a group of partition handling the same type of data
 * <mark style="color:yellow;">each record in kafka is identified by partition number & offset</mark>
 * **Retention Policies (for cleanup):**
   * In kakfa, retention policies are configurable
   * i.e. you can set-up the data cleanup time
-    * <mark style="color:orange;">**DISADVANTAGE**</mark>**: **if your application is down for more than retention time; data loss hoga
-* Kafka ensures that data is stored in** **<mark style="color:orange;">**durable & fault tolerant**</mark>** way.**
+    * <mark style="color:orange;">**DISADVANTAGE**</mark>**:** if your application is down for more than retention time; data loss hoga
+* Kafka ensures that data is stored in ** **<mark style="color:orange;">**durable & fault tolerant**</mark>** way.**
 * **Replication:**
   * kafka replicates each broker; so that if it goes down, the other broker resumes
   * <mark style="color:orange;">`replication_factor: 3`</mark>
@@ -765,7 +765,7 @@ Below steps to be taken(as #users increase)
     * Good for back-end servers to communicate with each other
   * **Server-sent-events**
     * **ReactJS** 😎
-    * **@twitter **: uses this to push new tweets
+    * **@twitter** : uses this to push new tweets
 * **PROS:**
   * Can be done over simple HTTP protocol(no other fancy protocol is reqd)
   * Native browser support
@@ -854,8 +854,8 @@ Below steps to be taken(as #users increase)
      * if you encrypt with **B** => you **can** decrypt with **A**
      * if you encrypt with **A** => you **CANNOT** decrypt with **A**
      * if you encrypt with **B** => you **CANNOT** decrypt with **B**
-   * Call **A: public\_key **and **B:private\_key**
-   * <mark style="color:orange;">**Keep private\_key with you**</mark> & <mark style="color:orange;">**share ur public\_key **</mark>**with all your clients(or publish it on site)**
+   * Call **A: public\_key** and **B:private\_key**
+   * <mark style="color:orange;">**Keep private\_key with you**</mark> & <mark style="color:orange;">**share ur public\_key**</mark>** with all your clients(or publish it on site)**
    * Now: the client will **encrypt the msg** with your **public\_key** and will send you.
    * Nobody in the world can understand this msg; because it can only be decrypted by your **private\_key**(which lies safe in your pocket)
    * decrypt the clients's msg with your private\_key and voila!
@@ -869,9 +869,9 @@ Below steps to be taken(as #users increase)
     * Somebody sits b/w the sender & receiver; hearing all the conversation happening
   * **How can Man in the Middle Attack can happen?**
     * **middle\_man** provides their **public\_key** to the **sender**
-    * **sender **encrypts data with this middle\_man's public\_key
+    * **sender** encrypts data with this middle\_man's public\_key
     * **middle\_man** decrypts data with his **private\_key**
-    * **middle\_man **stores a **copy** of this data with him (the bastard!)
+    * **middle\_man** stores a **copy** of this data with him (the bastard!)
     * now he encrypt's data with the original receiver's **public\_key**
     * the original receiver gets the data & decrypts with his **private\_key**
     * to the original receiver; the data looks the same (& there is **no way of him knowing that the call was breached!**)
@@ -930,7 +930,7 @@ Below steps to be taken(as #users increase)
 * **WOAH!!!!!!!!!!!**
   * SHA256 is not any common hash\_function, but a fucking **cryptographic hash function**
   * i.e. if `sha256(x) = y`
-  * **there is no way to get `x` from `y`** i.e. any function g s.t. `g(y) =x `**doesnt exist!!!!**
+  * **there is no way to get `x` from `y`** i.e. any function g s.t. `g(y) =x` **doesnt exist!!!!**
   * the only way you can get x from given y is by guessing....probability of guessing =`1/pow(2,256)`
     * Chances of guessing = 1 in 4 Billion for a 40 times olduniverse worth of **1Kilo Google** computers for every fully occupied planet of earth's size 🤣[src: video](https://www.youtube.com/watch?v=S9JGmA5\_unY\&ab\_channel=3Blue1Brown)
 
@@ -971,7 +971,7 @@ gfg = b64encode(s)    #  b’R2Vla3NGb3JHZWVrcw==’
 
 There are mainly 2 data structures used in DBMS:
 
-1. **B+Trees => **used when we want **less search & insertion time** <mark style="color:orange;">**(read heavy systems)**</mark>
+1. **B+Trees =>** used when we want **less search & insertion time** <mark style="color:orange;">**(read heavy systems)**</mark>
 2. **LSMT Trees =>** used when we want **low insert & update time** <mark style="color:orange;">**(write heavy systems)**</mark>
 
 ### 15.1. B Trees & B+ Trees
@@ -981,25 +981,25 @@ There are mainly 2 data structures used in DBMS:
 #### 15.1.1 B Trees
 
 * B-Tree is a self-balancing search tree
-* **Time Complexity of B-Tree:** (<mark style="color:orange;">n</mark>  is the total number of elements in the B-tree.)
+* **Time Complexity of B-Tree:** (<mark style="color:orange;">n</mark> is the total number of elements in the B-tree.)
   * Search: <mark style="color:orange;">`O(logN)`</mark>
   * Insert: <mark style="color:orange;">`O(logN)`</mark>
   * Delete: <mark style="color:orange;">`O(logN)`</mark>
 * **Properties of B-Tree:**&#x20;
   * All leaves are at the same level.
-  * A B-Tree is defined by the term _<mark style="color:orange;">minimum degree</mark>_ <mark style="color:orange;">'t'</mark> .The value of t depends upon disk block size**( i.e. max number of children it can have)**
+  * A B-Tree is defined by the term _<mark style="color:orange;">minimum degree</mark>_ <mark style="color:orange;"></mark><mark style="color:orange;">'t'</mark> .The value of t depends upon disk block size**( i.e. max number of children it can have)**
   * Every node has: (1) child pointer & (2) record pointer
 
 #### 15.1.2 B+ Trees
 
-* <mark style="color:orange;">**USE: In **</mark><mark style="color:orange;">dynamic multilevel indexing of Databases</mark>
+* <mark style="color:orange;">**USE: In**</mark> <mark style="color:orange;"></mark><mark style="color:orange;">dynamic multilevel indexing of Databases</mark>
 * **WHY Dont we use B-Trees in DB?**
   * \=> B-tress have more number of levels -> slow search
   * **in-depth:** The drawback of B-tree used for indexing, however is that <mark style="color:yellow;">it stores the data pointer</mark> (a pointer to the disk file block containing the key value), corresponding to a particular key value, along with that key value <mark style="color:yellow;">in the node of a B-tree</mark>. This technique, greatly reduces the number of entries that can be packed into a node of a B-tree, thereby contributing to the <mark style="color:yellow;">increase in the number of levels in the B-tree, hence increasing the search time of a record.</mark>
   * <mark style="color:yellow;">B+ tree eliminates the above drawback by storing data pointers only at the leaf nodes of the tree.</mark>&#x20;
 *   **Diff b/w B Trees & B+ Trees:**
 
-    * **=> **In B+ trees  only leaf nodes have record pointer
+    * **=>** In B+ trees  only leaf nodes have record pointer
     * \=> While in B trees; all nodes will have child pointer+record pointer
 
 
@@ -1010,7 +1010,7 @@ There are mainly 2 data structures used in DBMS:
 
 ### 15.2. LSMT Tree : Optimizing writes in DB
 
-* <mark style="color:yellow;">**LSMT = **</mark><mark style="color:yellow;">Log Structured Merged Tree</mark>
+* <mark style="color:yellow;">**LSMT =**</mark> <mark style="color:yellow;"></mark><mark style="color:yellow;">Log Structured Merged Tree</mark>
 * link: [youtube](https://www.youtube.com/watch?v=oUNjDHYFES8\&ab\_channel=GLTechTutorials)
 * **Advantages:**
   * High write throughput
@@ -1036,7 +1036,7 @@ There are mainly 2 data structures used in DBMS:
 * \=> it's a special type of data structure ( based on linked-list & sorted array)
 * Insert Complexity: <mark style="color:orange;">**O(1)**</mark>
 * Search Complexity: <mark style="color:orange;">**O(logN)**</mark>
-* **NOTE: **once you've written a value to a SStable, its persisted forever <mark style="color:orange;">**(i.e. SSTables are immutable)**</mark>
+* **NOTE:** once you've written a value to a SStable, its persisted forever <mark style="color:orange;">**(i.e. SSTables are immutable)**</mark>
 
 ![how normal data logs are sorted in SSTable( circle wala)](<../.gitbook/assets/Screenshot 2021-11-01 at 2.02.20 AM.png>)
 
@@ -1045,7 +1045,7 @@ There are mainly 2 data structures used in DBMS:
 * <mark style="color:orange;">A bad</mark> option for sending write/update queries to DB => send then <mark style="color:orange;">one by one</mark>
 * <mark style="color:orange;">A better</mark> option for write( right-side in pic below): bunch them together & send them in <mark style="color:orange;">batch</mark>
 * This additional data-structure to batch up the queries is called <mark style="color:orange;">**Memtable**</mark>
-* **Advantages: **
+* **Advantages:**&#x20;
   * single acknowledgment is reqd from DB ( ki push ho gya hai)
   * ... show in pic(right-side ) below
 
@@ -1056,8 +1056,8 @@ There are mainly 2 data structures used in DBMS:
   * Once the max capacity of Memtable is reached; the SSTable is pushed to DB (on-disk)
   * **handling duplicate keys( "Walter" below):**
     * since SSTables are immutable; we store both values
-    * these SSTables are persisted with their insertion-<mark style="color:orange;">timestamps</mark><mark style="color:orange;">** **</mark>
-    * while read: the value with latest timestamp is returned( see **Bloom-filter **below)
+    * these SSTables are persisted with their insertion-<mark style="color:orange;">timestamps</mark> <mark style="color:orange;"></mark><mark style="color:orange;">****</mark>&#x20;
+    * while read: the value with latest timestamp is returned( see **Bloom-filter** below)
 
 ![Write Operations](<../.gitbook/assets/Screenshot 2021-11-01 at 2.18.36 AM.png>)
 
@@ -1075,7 +1075,7 @@ There are mainly 2 data structures used in DBMS:
     * read time increases ❌
     * duplication of keys also increase ❌
 * <mark style="color:orange;">**The WHAT:**</mark>&#x20;
-  * Compaction is basically** a **<mark style="color:red;">**daemon-cron job**</mark> which runs in background (in every 30 mins or so) to <mark style="color:orange;">**merge SSTables**</mark> by:&#x20;
+  * Compaction is basically **a **<mark style="color:red;">**daemon-cron job**</mark> which runs in background (in every 30 mins or so) to <mark style="color:orange;">**merge SSTables**</mark> by:&#x20;
     * removing redundant/deleted keys
     * resolving duplicate keys(to latest val)
     * Hence; creating new compacted/merged SStables
@@ -1092,11 +1092,11 @@ There are mainly 2 data structures used in DBMS:
   * Wa filter associated with a SSTable, which **probabilistically** tells you if a key is present in that SSTable or not
   * BloomFilter function for key K in SStable: <mark style="color:orange;">`bloom_filter(k)-> {0 or 1}`</mark>&#x20;
     * If output == 0 => key `k` is definitely not present in the table
-    * if output == 1 => key `k `can be or cannot be present in that sstable
+    * if output == 1 => key `k` can be or cannot be present in that sstable
       * as bloom filters (though can be optimised to 99.9% too) can still give **false-positive** results
       * to verify; you need to search in that table
-* \=> so now(after applying bloom filter): search complexity = <mark style="color:orange;">O(MlogT)</mark>; where **M = number of tables where bloom\_filter(key=k) == 1 & **T = SSTable Size
-  * ofc: <mark style="color:orange;">**M << N **</mark>(as written above in search complexity without bloom-filter)
+* \=> so now(after applying bloom filter): search complexity = <mark style="color:orange;">O(MlogT)</mark>; where **M = number of tables where bloom\_filter(key=k) == 1 &** T = SSTable Size
+  * ofc: <mark style="color:orange;">**M << N**</mark> (as written above in search complexity without bloom-filter)
 
 
 
@@ -1340,7 +1340,7 @@ scale is no the actual time taken, but to make humans understand the diff in tim
 * `b` => bytes
 * if table size = 60 bytes
   * If total users = 500M&#x20;
-  * <mark style="color:orange;">**=> **</mark>we will need 60b\*500M = 30,000(b\*M) <mark style="color:orange;">=> 30GB</mark>
+  * <mark style="color:orange;">**=>**</mark> we will need 60b\*500M = 30,000(b\*M) <mark style="color:orange;">=> 30GB</mark>
   * <mark style="color:orange;">"30 million bytes means 30 MB"</mark>
 
 | Field Type            |                                                                                         |   |

@@ -12,7 +12,7 @@
 * [x] [1928. Minimum Cost to Reach Destination in Time](https://leetcode.com/problems/minimum-cost-to-reach-destination-in-time/)
 * [x] [581. Shortest Unsorted Continuous Subarray](https://leetcode.com/problems/shortest-unsorted-continuous-subarray/)
 * [x] [149. Max Points on a Line](https://leetcode.com/problems/max-points-on-a-line/)
-* [x] **LC **[**986. **Interval List Intersections](https://leetcode.com/problems/interval-list-intersections/)&#x20;
+* [x] **LC** [**986.** Interval List Intersections](https://leetcode.com/problems/interval-list-intersections/)&#x20;
 * [x] LC [750. Number Of Corner Rectangles](https://sugarac.gitbooks.io/facebook-interview-handbook/content/number-of-corner-rectangles.html)
 * [x] [979. Distribute Coins in Binary Tree](https://leetcode.com/problems/distribute-coins-in-binary-tree/)
 
@@ -290,7 +290,7 @@ public int countCornerRectangles(int[][] grid) {
 * [x] [542. 01 Matrix](https://leetcode.com/problems/01-matrix/)
 * [x] [735. Asteroid Collision](https://leetcode.com/problems/asteroid-collision/)
 * [x] LC [973.K Closest Points to Origin](https://leetcode.com/problems/k-closest-points-to-origin/) | [O(N) quicksort approach](https://leetcode.com/problems/k-closest-points-to-origin/discuss/219442/Python-with-quicksort-algorithm) | #**quick\_sort**
-* [x] **LC **[**855. Exam Room**](https://leetcode.com/problems/exam-room/)****
+* [x] **LC** [**855. Exam Room**](https://leetcode.com/problems/exam-room/)****
 * [ ] LC [836. All Nodes Distance K in Binary Tree](https://leetcode.com/problems/all-nodes-distance-k-in-binary-tree/) 🐽
 * [ ] LC [465. Optimal Account Balancing](https://leetfree.com/problems/optimal-account-balancing) 🐽
 * [ ] LC [68. Text Justification](https://leetcode.com/problems/text-justification/)

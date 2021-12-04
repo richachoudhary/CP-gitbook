@@ -73,7 +73,7 @@
   * Total number of likes
   * Total number of dislikes
   * Total number of views
-* **Comment**<mark style="color:orange;">**( only for Youtube)**</mark>**: **For each video comment, we need to store following information:
+* **Comment**<mark style="color:orange;">**( only for Youtube)**</mark>**:** For each video comment, we need to store following information:
   * CommentID
   * VideoID
   * UserID

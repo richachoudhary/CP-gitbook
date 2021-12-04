@@ -625,7 +625,7 @@ for node in topo_list:
 
 #### 1.1.2 SSLP
 
-* while SSLP on undirected graphs is <mark style="color:orange;">**NP-HARD **</mark>for DAGs, it could be easily solved in O(E+V).
+* while SSLP on undirected graphs is <mark style="color:orange;">**NP-HARD**</mark> for DAGs, it could be easily solved in O(E+V).
 * **Logic**:
   * multiply all edges with `-1` --> find shorted path --> multiply all edges with `-1` again
 * Ref [video](https://www.youtube.com/watch?v=TXkDpqjDMHA\&list=PLDV1Zeh2NRsDGO4--qE8yH72HFL1Km93P\&index=17\&ab\_channel=WilliamFiset)
@@ -1133,7 +1133,7 @@ TC: M*N(log(MN))
 * [x] [1928.Minimum Cost to Reach Destination in Time](https://leetcode.com/problems/minimum-cost-to-reach-destination-in-time/) | @contest 🚀❤️ | **Google**
 * [x] CSES: [Longest Flight Route](https://cses.fi/problemset/task/1680) | print paths with `Dijkstras`
 * [x] CSES: [Shortest Routes II](https://cses.fi/problemset/task/1672/) | **`Floyd-Warshall |`**\<standardQ> | must do 🔖🍪🚀🔖
-* [x] CSES: [High Score](https://cses.fi/problemset/task/1673/) | **`Bellman-Ford`**` with Negative Cycle Detection` | \<standardQ> | must do 🔖🍪🚀🔖
+* [x] CSES: [High Score](https://cses.fi/problemset/task/1673/) | **`Bellman-Ford`**` ``with Negative Cycle Detection` | \<standardQ> | must do 🔖🍪🚀🔖
 * [x] CSES: [Cycle Finding](https://cses.fi/problemset/task/1197/) ✅🐽
 * [x] CSES: [Flight Routes](https://cses.fi/problemset/task/1196) | ✅✅ | [approach](https://www.youtube.com/watch?v=009PBKHXtyA\&ab\_channel=Dardev) | 2-D dijkstra's
 * [x] CSES: [Flight Discount](https://cses.fi/problemset/result/2664805/) | reversed dij: | [approach](https://usaco.guide/problems/cses-1195-flight-discount/solution) ✅✅ aise hi questions toh dekhne mei impossible lagte hai BC!!!!............so damn easy
@@ -1507,7 +1507,7 @@ return cnt
 
 * [x] [721.Accounts Merge](https://leetcode.com/problems/accounts-merge/) 🐽
 * [x] [547. Number of Provinces](https://leetcode.com/problems/number-of-provinces/)
-* [x] [959.Regions Cut By Slashes](https://leetcode.com/problems/regions-cut-by-slashes/) | 💯| `/\\ / `🤩
+* [x] [959.Regions Cut By Slashes](https://leetcode.com/problems/regions-cut-by-slashes/) | 💯| `/\\ /` 🤩
   * Convert every `/` into 3X3 matrix to boil this Q down to #200.Number of Islands
 * [x] [261. Graph Valid Tree](https://protegejj.gitbook.io/algorithm-practice/leetcode/union-find/261-graph-valid-tree) 💲| check both: cycle & connected
 * [x] [990.Satisfiability of Equality Equations](https://leetcode.com/problems/satisfiability-of-equality-equations/) | ✅| how to choose `x<---y` OR `x-->y`in **`union()`**
@@ -1899,7 +1899,7 @@ O(n * m * log(n)) for time and O(n) for space, where m = len(requests).
 ## 5. **Graph colouring/Bipartition ⚪️🔴🔵**
 
 * **colors:** **`# -1:grey, 1:blue, 0:red`**
-* **`dfs(x,col=1) `**`--[for all its children]--->`**` dfs(y, col^1)`**
+* **`dfs(x,col=1)`**` ``--[for all its children]--->`` `**`dfs(y, col^1)`**
 
 ![](../.gitbook/assets/screenshot-2021-09-10-at-11.49.49-am.png)
 
@@ -1966,7 +1966,7 @@ def possibleBipartition(self, n: int, dislikes: List[List[int]]) -> bool:
 
 ### ⚪️4. Topological Ordering
 
-1. **Way#1🟢**: start dfs from a node & maintain list of all visited nodes(**`in_path`**); if a about-to-be-traversed node is already in the\*\*` in_path`\*\* => there is a cycle.✅
+1. **Way#1🟢**: start dfs from a node & maintain list of all visited nodes(**`in_path`**); if a about-to-be-traversed node is already in the\*\* `in_path`\*\* => there is a cycle.✅
 2. **Way#2:🟢** just count the #nodes & #edges: (**IDEA**: a non-cyclic graph is a tree, dumbass!)
    * If a component contains **c nodes** and no cycle, it must contain\*\* exactly c − 1 edges\*\* (so it has to be a **tree**).
    * If there are\*\* c or more edges\*\*, the component surely **contains a cycle.**

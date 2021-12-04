@@ -33,7 +33,7 @@
 * **REGEX**
   * Practiced from [regexone.com](https://regexone.com/lesson/misc\_meta\_characters?)
   * Using regex in SQL queries:
-    * `select distinct city from station where city `**`regexp`**` '^[aeiou]';`
+    * `select distinct city from station where city`` `**`regexp`**` ``'^[aeiou]';`
 
 | Regex      | Matches                        |
 | ---------- | ------------------------------ |
@@ -88,7 +88,7 @@ select distinct city from station where left(city,1) not in ('a','e','i','o','u'
 select distinct city from station where city not regexp '^[aeiou]';
 ```
 
-* [**Type of Triangle**](https://www.hackerrank.com/challenges/what-type-of-triangle/problem)\*\* | query identifying the **\_**type**\_** of each record in the TRIANGLES table using its three side lengths | UAGE: `CASE `✅\*\*
+* [**Type of Triangle**](https://www.hackerrank.com/challenges/what-type-of-triangle/problem)\*\* | query identifying the **\_**type\*\*\_\*\* of each record in the TRIANGLES table using its three side lengths | UAGE: `CASE` ✅\*\*
 
 ```sql
 SELECT CASE
@@ -292,5 +292,5 @@ ORDER BY COUNT(OCCUPATION);
 ## RESOURCES:
 
 * \*\*\[x] \*\*[**Summary of SQL Questions on Leetcode**](https://byrony.github.io/summary-of-sql-questions-on-leetcode.html)
-* **\[.] **[**shawlu95**](https://github.com/shawlu95)**/**[**Beyond-LeetCode-SQL**](https://github.com/shawlu95/Beyond-LeetCode-SQL)\*\*\*\*
+* **\[.]** [**shawlu95**](https://github.com/shawlu95)**/**[**Beyond-LeetCode-SQL**](https://github.com/shawlu95/Beyond-LeetCode-SQL)\*\*\*\*
 * [**mrinal1704**](https://github.com/mrinal1704)**/**[**SQL-Leetcode-Challenge**](https://github.com/mrinal1704/SQL-Leetcode-Challenge)

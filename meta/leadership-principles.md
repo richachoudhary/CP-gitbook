@@ -39,7 +39,7 @@
       * &#x20;<mark style="color:yellow;">Sampling bucket = hash(requestID) % No of buckets</mark>
     * **IMPACT (@BBD21)**
       * Runtime Improvements&#x20;
-        * Avg job <mark style="color:orange;">runtime reduced by</mark> <mark style="color:orange;">**60%**</mark> from 40 mins daily avg to 16 mins daily avg..
+        * Avg job <mark style="color:orange;">runtime reduced by</mark> <mark style="color:orange;"></mark><mark style="color:orange;">**60%**</mark> from 40 mins daily avg to 16 mins daily avg..
         * Avg of <mark style="color:orange;">Total Map tasks time of job</mark> is reduced by <mark style="color:orange;">68.9%</mark> from 106 mins to 33 mins.&#x20;
         * Avg of <mark style="color:orange;">Total Reduce tasks time</mark> of job is reduced by <mark style="color:orange;">80.7%</mark> from 117 mins to 22 mins.&#x20;
         * Because of less data to process due to sampling, the <mark style="color:orange;">number of reducers required in fact MR job</mark> has also been reduced by <mark style="color:orange;">half</mark> (350 to 175 now).
@@ -67,7 +67,7 @@
 
 * \==>&#x20;
   * Uber has been my dream company since college days.
-    * since first job; I've been regular reader/visitor of **uber engg blogs. **
+    * since first job; I've been regular reader/visitor of **uber engg blogs.**&#x20;
     * It has shaped me as an engineer
   * My mom uses it. (It saved my uncle's life @4am)&#x20;
   * So, when Uber's **recruiter reached out**; I could not have not applied here! & <mark style="color:orange;">couldn't be more excited to be part of the team</mark>.

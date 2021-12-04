@@ -6,7 +6,7 @@
 * [x] LC [214. Word Search II](https://leetcode.com/problems/word-search-ii/) ✅🚀
 * [x] LC [14.Longest Common Prefix](https://leetcode.com/problems/longest-common-prefix/)✅
 * [x] LC 421. [Maximum XOR of Two Numbers in an Array](https://leetcode.com/problems/maximum-xor-of-two-numbers-in-an-array/) | <mark style="color:orange;">`standardQ`</mark> | **@google | must\_do✅**
-* [x] **LC **[**212.**Word Search II](https://leetcode.com/problems/word-search-ii/)
+* [x] **LC** [**212.**Word Search II](https://leetcode.com/problems/word-search-ii/)
 
 {% tabs %}
 {% tab title="208.(TEMPLATE.py)🔵🔴" %}
@@ -161,7 +161,7 @@ string longestCommonPrefix(vector<string>& strs) {
 **Approach:**
 
 * O(N\*2) is trivial; so dont bother
-* Greedy Approach: **bitwise+Trie**: `O(32*N) `✅
+* Greedy Approach: **bitwise+Trie**: `O(32*N)` ✅
   * 1 Build Bitwise tree with array
   * 2 for each ele in arr: greedily traverse the trie & get max possible xor value with it
 
@@ -302,7 +302,7 @@ class Solution(object):
 
 #### ( both: RSQ+RMQ implementations YAAAAAD honi chahiye)
 
-* \*\*Complexity: \*\*Tree Construction:` O( n )`
+* \*\*Complexity: \*\*Tree Construction: `O( n )`
 * \*\*Complexity: \*\*Query in Range: `O( Log n )`
 * \*\*Complexity:\*\*Updating an element: `O( Log n )`
 
@@ -640,3 +640,7 @@ def queryTreeRSQ(ql, qr,sl,sr,index):
 
 * [ ] CSES: [Nested Range Check](https://cses.fi/problemset/task/2168) 🐽
 * [ ] CSES: [Nested Range Count](https://cses.fi/problemset/task/2169) 🐽
+
+## 4. Sparse Tables
+
+* see vid of Errichto

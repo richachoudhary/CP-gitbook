@@ -602,13 +602,48 @@ Time Complexity :  O(NlogN)
 
 
 
-### Binary Lifting
 
+
+## 3. Binary Lifting
+
+* [x] [1483.Kth Ancestor of a Tree Node](https://leetcode.com/problems/kth-ancestor-of-a-tree-node/) 📌 | template for binary lifting
+  * [x] \=> [Errichto Video](https://www.youtube.com/watch?v=oib-XsjFa-M\&ab\_channel=Errichto)
 * [x] CSES#1: [Company Queries I](https://cses.fi/problemset/task/1687) | **`Binary Lifting` 💪✅✅❤️**
 * [x] CSES#2: [Company Queries II](https://cses.fi/problemset/task/1688) | **`LCA + Binary Lifting` 🐽🐽**
 * [ ] CSES: [Planets Queries I](https://cses.fi/problemset/task/1750) | Binary Lifting
 
 {% tabs %}
+{% tab title="1483" %}
+![](<../../.gitbook/assets/Screenshot 2021-12-04 at 4.34.59 PM (1).png>)
+
+```python
+def __init__(self, n: int, parent: List[int]):
+    self.LOG = 20   # log(5*(10^4))
+    self.up = [[-1]*self.LOG for _ in range(n)]  # matrix dim: N*LOG      
+
+    for j in range(self.LOG):
+        for v in range(n):
+            if j == 0: self.up[v][j] = parent[v]
+            elif self.up[v][j-1] != -1:     #dont mess up with uncalculated values yet. eg: [-1,2,3,0]
+                self.up[v][j] = self.up[ self.up[v][j-1] ][j-1]
+
+
+def getKthAncestor(self, node: int, k: int) -> int:
+
+    for j in range(self.LOG):
+        if k & (1<<j):
+            node = self.up[node][j]
+        if node == -1:
+            return node
+    return node
+'''
+Complexities: 
+    #1. Preprocessing => TC: O(N*logN), SC: O(N*logN)
+    #2. Query=> O(LogN)
+'''
+```
+{% endtab %}
+
 {% tab title="CSES#1: Binary Lifting 101" %}
 ```python
 """

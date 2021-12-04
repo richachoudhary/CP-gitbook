@@ -2,7 +2,7 @@
 
 ## General
 
-* **Mutex = **Mutual Exclusion
+* **Mutex =** Mutual Exclusion
 * **Find Cores:** Find out cpu count(how many cores) of a machine
 
 ```python
@@ -16,7 +16,7 @@ os.cpu_count() # -> 8 on mine
 $ htop
 ```
 
-* How to **Time **a process:
+* How to **Time** a process:
 
 ```python
 import time
@@ -122,10 +122,10 @@ print(f'total time = {end_time - start_time}')
   * **Process: Its used when function based parallelism** is required
     * i.e. where I could define different functionality with parameters that they receive and run those different functions in parallel which are doing totally various kind of computations.
     * **When you have a small data or functions and less repetitive tasks to do**.
-    * It puts **all the process in the memor**y. Hence in the larger task, it** might cause to loss of memory**. 🔴
-    * **I/O operation: **The process class suspends the process executing I/O operations and schedule another process parallel.
+    * It puts **all the process in the memor**y. Hence in the larger task, it **might cause to loss of memory**. 🔴
+    * **I/O operation:** The process class suspends the process executing I/O operations and schedule another process parallel.
     * Uses FIFO scheduler.
-  * **Pool: **is used when **data based parallelism **is required.
+  * **Pool:** is used when **data based parallelism** is required.
     * i.e. parallelising the execution of a function across **multiple input values, distributing the input data across processes**.
     * **When you have junk of data, you can use Pool class.**
     * Only the process under execution are kept in the memory. 🟢
@@ -137,7 +137,7 @@ print(f'total time = {end_time - start_time}')
     * \*\*WHEN TO USE: \*\*If you need more than two points to communicate, use a [`Queue()`](http://docs.python.org/library/multiprocessing.html#multiprocessing.Queue).
   * **Pipe**
     * A [`Pipe()`](http://docs.python.org/library/multiprocessing.html#multiprocessing.Pipe) can only have **two** endpoints.
-    * \*\*WHEN TO USE: \*\*If you need absolute performance, <mark style="color:red;">a</mark> [<mark style="color:red;">`Pipe()`</mark>](http://docs.python.org/library/multiprocessing.html#multiprocessing.Pipe) <mark style="color:red;">is much faster</mark> <mark style="color:yellow;">because</mark> <mark style="color:yellow;">`Queue()`</mark> <mark style="color:yellow;">is built on top of</mark> <mark style="color:yellow;">`Pipe()`</mark><mark style="color:yellow;">.</mark>
+    * \*\*WHEN TO USE: \*\*If you need absolute performance, <mark style="color:red;">a</mark> [<mark style="color:red;">`Pipe()`</mark>](http://docs.python.org/library/multiprocessing.html#multiprocessing.Pipe) <mark style="color:red;">is much faster</mark> <mark style="color:yellow;">because</mark> <mark style="color:yellow;"></mark><mark style="color:yellow;">`Queue()`</mark> <mark style="color:yellow;"></mark><mark style="color:yellow;">is built on top of</mark> <mark style="color:yellow;"></mark><mark style="color:yellow;">`Pipe()`</mark><mark style="color:yellow;">.</mark>
 *   **`multiprocessing` lib vs `threading` lib**
 
     **Multiprocessing**
@@ -197,7 +197,7 @@ square(4) = 16
 ```
 
 * With **`Process`**, **`current_process`**
-  * <mark style="color:yellow;">**Style (demo) **</mark>**: **
+  * <mark style="color:yellow;">**Style (demo)**</mark>** :**&#x20;
     * **run lots of long process(with delay: `time.sleep(.5)`)**
     * **terminal -> "**<mark style="color:orange;">**`htop`**</mark>**" -> **<mark style="color:orange;">**F4**</mark>** -> filter python & voila!**
 
@@ -247,7 +247,7 @@ square(4) = 16
 
 * Here two functions to pay attention are \*\*`.start()`\*\*and **`.join()`**
   * **`.start()`** helps in starting a process and that too **asynchronously**.
-  * \*\*`.join() `\*\*method on a `Process` does **block** until the process has finished, but because we called `.start()` on all processes before joining, then both processes will run <mark style="color:orange;">asynchronously</mark>. <mark style="color:orange;">The interpreter will, however, wait until p\[i] finishes before attempting to wait for p\[i+1] to finish</mark>.✅
+  * \*\*`.join()` \*\*method on a `Process` does **block** until the process has finished, but because we called `.start()` on all processes before joining, then both processes will run <mark style="color:orange;">asynchronously</mark>. <mark style="color:orange;">The interpreter will, however, wait until p\[i] finishes before attempting to wait for p\[i+1] to finish</mark>.✅
 * **Note**: A process cannot join itself because this would cause a **deadlock**. It is an error to attempt to join a process before it has been started.
 
 
@@ -321,8 +321,8 @@ Processing 10000 numbers took 2.190778970718384 time using serial processing.
 
 ### 3. Lock(synonym = Mutex)
 
-* **WHAT is Lock/Mutex: **
-  * A lock or mutex is a **synchronisation mechanism** to **enforce limits** on **access to a resource **in an environment where there are **many threads of execution**.
+* **WHAT is Lock/Mutex:**&#x20;
+  * A lock or mutex is a **synchronisation mechanism** to **enforce limits** on **access to a resource** in an environment where there are **many threads of execution**.
 * **Without Lock (on shared variable)**
   * output is random values every time; because `add` & `subtract` methods are accessing the shared variable randomly
 
@@ -601,7 +601,7 @@ if __name__=='__main__':
 * **Condition**\
   Another primitive used with Lock to implement the other structures. Gives you **finer control over what happens after you release a lock.**
 
-### WTH is `with `(for lock, semaphore, condition)
+### WTH is `with` (for lock, semaphore, condition)
 
 *   Using with
 
@@ -856,7 +856,7 @@ if __name__ == '__main__':
 * \*\*APIs: \*\*
   * `set()`
   * `wait()`
-  * `reset() : `Reset the internal flag to false
+  * `reset() :` Reset the internal flag to false
   * `is_set()`
 
 ### Code: Event

@@ -265,7 +265,7 @@ rev(t) = [|1, 1,|7, 3,|12] ============> 3 fleets
 * [**\*\* greatest template\*\***](https://leetcode.com/discuss/general-discussion/786126/python-powerful-ultimate-binary-search-template-solved-many-problems)\*\* ever!!!!\*\*
 * Generalized template ( **works all the time**) :: fucking moonshot!!!
   * Remember this: **after exiting the while loop, `left` is the minimal k​ satisfying the `condition` function**;
-    * <mark style="color:orange;">==></mark> so if you need to find** max k satisfying **the condition; <mark style="color:orange;">**return high**</mark>
+    * <mark style="color:orange;">==></mark> so if you need to find **max k satisfying** the condition; <mark style="color:orange;">**return high**</mark>
 
 {% tabs %}
 {% tab title="Binary Search Template" %}

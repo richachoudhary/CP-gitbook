@@ -81,16 +81,16 @@
 
 #### 5.1.1 Primary Tables <mark style="color:yellow;">=> NoSQL</mark>
 
-* <mark style="color:orange;">**Benefit of SQL: **</mark>
+* <mark style="color:orange;">**Benefit of SQL:**</mark>&#x20;
   * Since we require joins; it'd be straightforward to use SQL ✅
   * But SQL is not good for scaling(as set in NFRs) ❌
-* <mark style="color:orange;">**Benefit of NoSQL: **</mark>
+* <mark style="color:orange;">**Benefit of NoSQL:**</mark>&#x20;
   * Our non-functional requirements dictate that the datastore needs to be **highly available, scalable, performant, and durable.**&#x20;
-  * <mark style="color:orange;">=></mark> <mark style="color:orange;">**NoSQL**</mark> <mark style="color:orange;">DBs are good at this</mark>
+  * <mark style="color:orange;">=></mark> <mark style="color:orange;"></mark><mark style="color:orange;">**NoSQL**</mark> <mark style="color:orange;"></mark><mark style="color:orange;">DBs are good at this</mark>
 
 #### 5.1.2 Media Datastore <mark style="color:yellow;">=> Distributed Datastore</mark>
 
-* Use **HDFS/S3 **for storing Media
+* Use **HDFS/S3** for storing Media
   * We can store the above schema in a distributed store to enjoy the benefits offered by NoSQL.&#x20;
   * All the metadata related to photos can go to a table where the ‘key’ would be the ‘PhotoID’ and the ‘value’ would be an object containing PhotoLocation, UserLocation, CreationTimestamp, etc.
 
@@ -104,7 +104,7 @@
 
 ### 5.2 Caching Discussion
 
-#### <mark style="color:yellow;">-> Discuss Global Cache ✅ vs. Local Cache ❌</mark> <a href="31eb" id="31eb"></a>
+#### <mark style="color:yellow;">-> Discuss Global Cache ✅ vs. Local Cache ❌</mark> <a href="#31eb" id="31eb"></a>
 
 ## 7. HLD
 

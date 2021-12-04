@@ -18,7 +18,7 @@ AXB = |  x1  y1  z1 |
 '''
 ```
 
-* **Trigonometry: **
+* **Trigonometry:**&#x20;
   * Calculate tan inverse
 
 ```python

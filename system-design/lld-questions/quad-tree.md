@@ -10,14 +10,14 @@
 
 ### 2. 2-D & 3-D Spacial Data Representation
 
-* 2-D -> <mark style="color:orange;">**Quadtrees **</mark>
+* 2-D -> <mark style="color:orange;">**Quadtrees**</mark>&#x20;
   * each node has 4 children, corresponding to quadrants of sub-plane: <mark style="color:yellow;">**\[NE, SE, SW, NW]**</mark>
-* 3-D -> <mark style="color:orange;">**Octrees **</mark>
+* 3-D -> <mark style="color:orange;">**Octrees**</mark>&#x20;
   * each node has 8 children, corresponding to 3D octant of a sub-volume
-*   **Kab tak children banate jaana hota hai in trees mei? **(for both Quadtree & Octree)
+*   **Kab tak children banate jaana hota hai in trees mei?** (for both Quadtree & Octree)
 
     * **=> jab tak har node ek property satisfy na kar de.**
-    * <mark style="color:yellow;">**Examples plis => **</mark>
+    * <mark style="color:yellow;">**Examples plis =>**</mark>&#x20;
       * E.g#1: until every node has (1) either all 0's OR (2) all 1's
 
 

@@ -8,7 +8,7 @@
 * [x] CSES: [Restaurant Customers](https://cses.fi/problemset/task/1619)
 * [x] LC [715. Range Module](https://leetcode.com/problems/range-module/) | \<hard>
 * [x] LC [636. Exclusive Time of Functions](https://leetcode.com/problems/exclusive-time-of-functions/) | **@Microsoft**
-* [x] **LC **[**986. **Interval List Intersections](https://leetcode.com/problems/interval-list-intersections/) | @Uber
+* [x] **LC** [**986.** Interval List Intersections](https://leetcode.com/problems/interval-list-intersections/) | @Uber
 
 {% tabs %}
 {% tab title="56" %}
