@@ -1,6 +1,16 @@
 # Regular Tree Problems
 
-##
+## 0. Notes
+
+
+
+_Q. <mark style="color:orange;">**DFS vs BFS ?**</mark>. Which would be more efficient ? When would you prefer one over the other ?_
+
+* <mark style="color:orange;">**Ans :**</mark> If you were to get such a problem in interview, it's very likely that the interviewer would proceed to ask a follow-up question such as this one.&#x20;
+* The DFS vs BFS is a **vast topic of discussion**. But one thing that's for sure (and helpful to know) is <mark style="color:orange;">none is always better than the other</mark>. You would need to have an idea of probable structure of Tree/Graph that would be given as input (and ofcourse what you need to find depending on the question ) to make a better decision about which approach to prefer.
+* A <mark style="color:orange;"></mark> <mark style="color:orange;"></mark><mark style="color:orange;">**DFS:**</mark> is <mark style="color:yellow;">easy to implement</mark> and <mark style="color:yellow;">generally has advantage of being space-efficient</mark>, <mark style="color:yellow;">especially in a balanced / almost balanced Tree</mark> and the space required would be `O(h)` (where `h` is the height of the tree) while we would require `O(2^h)` space complexity for **BFS** traversal which could consume huge amount of memory <mark style="color:yellow;">when tree is balanced & for</mark> <mark style="color:yellow;"></mark><mark style="color:yellow;">`h`</mark> <mark style="color:yellow;"></mark><mark style="color:yellow;">is larger.</mark>
+* **A **<mark style="color:orange;">**BFS:**</mark> On the other hand, **BFS** would <mark style="color:yellow;">perform well if you don't need to search the entire depth of the tree or if the tree is skewed and there are only few branches going very deep.</mark> In worst case, the height of a tree `h` could be equal to `n` and if there are huge number of nodes, <mark style="color:orange;">DFS would consume huge amounts of memory</mark> & may lead to <mark style="color:orange;">stackoverflow</mark>.
+* In this question, the DFS performed marginally better giving better space efficiency than BFS. Again, this <mark style="color:yellow;">**depends on the structure of trees used**</mark> in the test cases.
 
 ## 1. Ancestor \[LCA]
 
@@ -194,7 +204,7 @@ def maxAncestorDiff(self, root: Optional[TreeNode]) -> int:
 * [x] [113. Path Sum II](https://leetcode.com/problems/path-sum-ii/)
 * [x] [437. Path Sum III](https://leetcode.com/problems/path-sum-iii/) ✅
 * [x] [1022. Sum of Root To Leaf Binary Numbers](https://leetcode.com/problems/sum-of-root-to-leaf-binary-numbers/)
-*
+* [ ] [1457.Pseudo-Palindromic Paths in a Binary Tree](https://leetcode.com/problems/pseudo-palindromic-paths-in-a-binary-tree/) 🐽
 
 {% tabs %}
 {% tab title="257" %}
@@ -214,6 +224,11 @@ def recur(x,all_paths,this_path):
 all_paths = []
 recur(root, all_paths, '')
 return all_paths
+
+'''
+# Time complexity: O(N) since we visit every node of the tree once.
+# Space complexity: O(N) since we are using the stack to fill the output and since we have the output as a list
+'''
 ```
 {% endtab %}
 
@@ -306,6 +321,216 @@ return ans
 ```
 {% endtab %}
 {% endtabs %}
+
+## 3. **Serialize and Deserialise**
+
+1.[https://leetcode.com/problems/serialize-and-deserialize-binary-tree/](https://leetcode.com/problems/serialize-and-deserialize-binary-tree/) Hard\
+2.[https://leetcode.com/problems/verify-preorder-serialization-of-a-binary-tree/](https://leetcode.com/problems/verify-preorder-serialization-of-a-binary-tree/) Medium\
+3.[https://leetcode.com/problems/serialize-and-deserialize-bst/](https://leetcode.com/problems/serialize-and-deserialize-bst/)\
+4.[https://leetcode.com/problems/serialize-and-deserialize-bst/](https://leetcode.com/problems/serialize-and-deserialize-bst/)
+
+
+
+## 4. **Leaves related problem**
+
+* [x] **📌 Get Height of Binary Tree**
+* [x] ****[**404.**Sum of Left Leaves](https://leetcode.com/problems/sum-of-left-leaves/) 📌
+* [x] [872. Leaf-Similar Trees](https://leetcode.com/problems/leaf-similar-trees/)
+* [x] [1325. Delete Leaves With a Given Value](https://leetcode.com/problems/delete-leaves-with-a-given-value/)
+
+{% tabs %}
+{% tab title="get_height" %}
+```python
+def get_height(root):
+     if not root: return 0
+      return 1 + max(get_height(root.left), get_height(root.right))
+```
+{% endtab %}
+
+{% tab title="404" %}
+![](<../../.gitbook/assets/Screenshot 2021-12-05 at 3.42.53 AM (1).png>)
+
+```python
+def recur(root):
+    if not root:
+        return 0
+    if root and root.left and not root.left.right and not root.left.left:
+        return root.left.val + recur(root.right)
+    return recur(root.left)+recur(root.right)
+return recur(root)
+```
+{% endtab %}
+
+{% tab title="872" %}
+```python
+class Solution:
+    def leafSimilar(self, root1: Optional[TreeNode], root2: Optional[TreeNode]) -> bool:
+    
+        return self.findleaf(root1) == self.findleaf(root2)
+
+    def findleaf(self, root):
+        if not root: return []
+        if not (root.left or root.right): return [root.val]
+        return self.findleaf(root.left) + self.findleaf(root.right)
+```
+{% endtab %}
+
+{% tab title="1325" %}
+```python
+def removeLeafNodes(self, root, target):
+        if root.left: root.left = self.removeLeafNodes(root.left, target)
+        if root.right: root.right = self.removeLeafNodes(root.right, target)
+        return None if root.left == root.right and root.val == target else root
+```
+{% endtab %}
+{% endtabs %}
+
+## 5. Level Order Traversal
+
+* [x] ****[**1161.** Maximum Level Sum of a Binary Tree](https://leetcode.com/problems/maximum-level-sum-of-a-binary-tree/) | 📌| standard\_bfs
+* [x] [**865.** Smallest Subtree with all the Deepest Nodes](https://leetcode.com/problems/smallest-subtree-with-all-the-deepest-nodes/) ✅
+* [x] [1104.Path In Zigzag Labelled Binary Tree](https://leetcode.com/problems/path-in-zigzag-labelled-binary-tree/) 🐽
+* [x] [1377. Frog Position After T Seconds](https://leetcode.com/problems/frog-position-after-t-seconds/) ✅
+
+{% tabs %}
+{% tab title="1161" %}
+Standard BFS - level order traversal
+
+```python
+def maxLevelSum(self, root: Optional[TreeNode]) -> int:
+    Q = deque()
+    Q.append((root,1))
+    d = defaultdict(int)
+    d[1] = root.val
+
+    while Q:
+        sz = len(Q)
+        for _ in range(sz):
+            u,l = Q.popleft()
+            d[l] += u.val
+            if u.left:
+                Q.append((u.left,l+1))
+            if u.right:
+                Q.append((u.right,l+1))
+
+    maxl, maxs = 0,float('-inf')
+    for l,s in d.items():
+        if maxs < s:
+            maxl = l
+            maxs = s
+    return maxl
+    
+'''
+Time & space: O(n), n is the number of total nodes.
+'''    
+```
+{% endtab %}
+
+{% tab title="865" %}
+Write a sub function deep(TreeNode root).&#x20;
+
+Return a pair(int depth, TreeNode subtreeWithAllDeepest)
+
+In sub function deep(TreeNode root)->&#x20;
+
+&#x20;      **if root == null,**&#x20;
+
+&#x20;      \-> return pair(0, null)
+
+&#x20;      **if left depth == right depth**,&#x20;
+
+&#x20;      \-> deepest nodes both in the left and right subtree,&#x20;
+
+&#x20;      \-> return pair (left.depth + 1, root)
+
+&#x20;       **if left depth > right depth**
+
+&#x20;         **->** deepest nodes only in the left subtree,&#x20;
+
+&#x20;        \-> return pair (left.depth + 1, left subtree)
+
+&#x20;       **if left depth < right depth**
+
+&#x20;         **->** deepest nodes only in the right subtree,&#x20;
+
+&#x20;        \-> return pair (right.depth + 1, right subtree)
+
+<mark style="color:yellow;">**Complexity Time O(N) Space O(height)**</mark>
+
+```python
+def subtreeWithAllDeepest(self, root: TreeNode) -> TreeNode:
+        def deep(root):
+            if not root: return 0, None
+            l, r = deep(root.left), deep(root.right)
+            if l[0] > r[0]: return l[0] + 1, l[1]
+            elif l[0] < r[0]: return r[0] + 1, r[1]
+            else: return l[0] + 1, root
+        return deep(root)[1]
+```
+{% endtab %}
+
+{% tab title="1104" %}
+### Taken from: [soln](https://leetcode.com/problems/path-in-zigzag-labelled-binary-tree/discuss/324011/Python-O\(logn\)-time-and-space-with-readable-code-and-step-by-step-explanation)
+
+![](<../../.gitbook/assets/Screenshot 2021-12-05 at 5.56.47 AM.png>)
+
+```python
+def pathInZigZagTree(self, label: int) -> List[int]:
+    res = [] # O(log n) space
+    node_count = 1
+    level = 1
+    # Determine level of the label
+    while label >= node_count*2: # O(log n) time
+        node_count *= 2
+        level += 1
+    # Iterate from the target label to the root
+    while label != 0: # O(log n) time
+        res.append(label)
+        level_max = 2**(level) - 1
+        level_min = 2**(level-1)
+        label = int((level_max + level_min - label)/2)
+        level -= 1
+    return res[::-1] # O(n) time
+    
+'''
+=> https://leetcode.com/problems/path-in-zigzag-labelled-binary-tree/discuss/324011/Python-O(logn)-time-and-space-with-readable-code-and-step-by-step-explanation
+
+Time Complexity:
+O(3 log n). 3 are needed as commented in the code.
+
+Space Complexity:
+If including the space required for the return res object counts as space then we need
+O(log n) because we need to store the path from the root to the label.
+'''
+```
+{% endtab %}
+
+{% tab title="1377" %}
+```python
+def frogPosition(self, n: int, edges: List[List[int]], t: int, target: int) -> float:
+    if n == 1: return 1.0
+    G = [[] for i in range(n + 1)]
+    for i, j in edges:
+        G[i].append(j)
+        G[j].append(i)
+    seen = [0] * (n + 1)
+    
+    def dfs(i, t):
+        if i != 1 and len(G[i]) == 1 or t == 0:
+            return i == target
+        seen[i] = 1
+        res = sum(dfs(j, t - 1) for j in G[i] if not seen[j])
+        return res * 1.0 / (len(G[i]) - (i != 1))
+    return dfs(1, t)
+```
+{% endtab %}
+{% endtabs %}
+
+
+
+## 6. **Distance between two Nodes**
+
+
 
 ## \*. Regular Tree Problems
 
@@ -497,4 +722,6 @@ where N = tree size, H = tree height, L = list length.
 
 ![LCA of N-ary Tree](../../.gitbook/assets/screenshot-2021-09-10-at-1.56.31-pm.png)
 
-##
+## # Resources
+
+* LC:[ **Tree question pattern**](https://leetcode.com/discuss/interview-question/1337373/Tree-question-pattern-oror2021-placement)****
