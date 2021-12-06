@@ -4,10 +4,10 @@
 
 * [x] LC [208.Implement Trie (Prefix Tree)](https://leetcode.com/problems/implement-trie-prefix-tree/) 📌
 * [x] LC [212. Word Search II](https://leetcode.com/problems/word-search-ii/) ✅🚀 | trie+DFS
-* [x] LC [14.Longest Common Prefix](https://leetcode.com/problems/longest-common-prefix/)✅
+* [x] LC [14.Longest Common Prefix](https://leetcode.com/problems/longest-common-prefix/)✅ 📌
 * [x] LC [676.Implement Magic Dictionary](https://leetcode.com/problems/implement-magic-dictionary/) | trie+DFS
 * [x] LC [211. Design Add and Search Words Data Structure](https://leetcode.com/problems/design-add-and-search-words-data-structure/) | trie+DFS
-* [x] LC 421. [Maximum XOR of Two Numbers in an Array](https://leetcode.com/problems/maximum-xor-of-two-numbers-in-an-array/) | <mark style="color:orange;">`standardQ`</mark> | **@google | must\_do✅**
+* [x] LC 421. [Maximum XOR of Two Numbers in an Array](https://leetcode.com/problems/maximum-xor-of-two-numbers-in-an-array/) | <mark style="color:orange;">`standardQ`</mark> | **@google | must\_do✅📌**
 
 {% tabs %}
 {% tab title="208.(TMPL)📌" %}
@@ -117,48 +117,45 @@ class Solution(object):
 **Complexity**. This is difficult question, space complexity is needed to keep our `trie`, which is `O(k)`, where `k` is sum of length of all words. Time complexity is <mark style="color:orange;">`O(mn*3^T)`</mark>, where `m` and `n` are sizes of our board and `T` is the length of the longest word in `words`. Why? Because we start our `dfs` from all points of our board and do not stop until we make sure that the longest word is checked: if we are not lucky and this word can not be found on board we need to check potentialy to the length `T`. Why `3^T`? Because each time we can choose one of <mark style="color:orange;">three directions</mark>, except the one we came from.
 {% endtab %}
 
-{% tab title="14. cpp✅" %}
+{% tab title="14 ✅" %}
 ```python
-struct TrieNode{
-    TrieNode* children[26];
-    int freq;
-};
-
-void insert(TrieNode* root, string s){
-    TrieNode* node = root;
-    for(char c:s){
-        if(!node->children[c-'a']){
-            TrieNode* child = new TrieNode();
-            child->freq=1;
-            node->children[c-'a'] = child;
-        }else{
-            node->children[c-'a']->freq += 1;
-        }
-        node = node->children[c-'a'];
-    }
-}
-
-void traverse(TrieNode* root, string& ans, int size){
-    for(int i=0;i<26;i++){
-        if(root->children[i] && root->children[i]->freq == size){
-            ans += (i+'a');
-            traverse(root->children[i],ans,size);
-        }
-    }
-}
-
-string longestCommonPrefix(vector<string>& strs) {
-    TrieNode* root = new TrieNode();
-    root->freq=0;
-    for(string s:strs){
-        root->freq += 1;
-        insert(root,s);
-    }
+from collections import defaultdict
+class TrieNode():
+    def __init__(self):
+        self.children = defaultdict(TrieNode)
+        self.is_end = False
+class Trie():
+    def __init__(self):
+        self.root = TrieNode()
     
-    string ans="";
-    traverse(root,ans,strs.size());
-    return ans;
-}
+    def insert(self,word):
+        node = self.root
+        for ch in word:
+            node = node.children[ch]
+        node.is_end = True
+    
+    def search(self,word):
+        pass
+    
+
+class Solution:
+    
+    def longestCommonPrefix(self, strs: List[str]) -> str:
+        trie = Trie()
+        
+        for s in strs:
+            trie.insert(s)
+        
+        root = trie.root
+        res = ''
+        while root:
+            if len(root.children) > 1 or root.is_end:
+                return res
+            key = list(root.children)[0]
+            res += key
+            root = root.children[key]
+            
+        return res
 ```
 {% endtab %}
 
@@ -341,15 +338,15 @@ class Solution:
 {% endtab %}
 {% endtabs %}
 
-##
+
 
 ## 2. Segment Trees
 
 #### ( both: RSQ+RMQ implementations YAAAAAD honi chahiye)
 
-* \*\*Complexity: \*\*Tree Construction: `O( n )`
-* \*\*Complexity: \*\*Query in Range: `O( Log n )`
-* \*\*Complexity:\*\*Updating an element: `O( Log n )`
+* <mark style="color:orange;">**TC:**</mark> Tree Construction: ``` `<mark style="color:orange;">`O( n )`</mark>
+* <mark style="color:orange;">**TC:**</mark> Query in Range: <mark style="color:orange;">`O( Log n )`</mark>
+* <mark style="color:orange;">**TC:**</mark> Updating an element: <mark style="color:orange;">`O( Log n )`</mark>
 
 {% tabs %}
 {% tab title="IMPLEMENTATION: recursive" %}
