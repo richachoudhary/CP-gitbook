@@ -24,7 +24,7 @@
 * [x] LC: [Diameter of N-ary tree](http://leetcode.libaoj.in/diameter-of-n-ary-tree.html) | `TreeDistances I 's` code works here too
 
 {% tabs %}
-{% tab title="template" %}
+{% tab title="tmpl" %}
 ```python
 def f(node):
     #1. Base Condition
@@ -42,7 +42,52 @@ def f(node):
 ```
 {% endtab %}
 
+{% tab title="BOOk#2" %}
+```python
+def solve(G,N):
+    adj = defaultdict(list)
+    inDeg = [0]*(N+1)
+
+    for x,y in G:
+        adj[x].append(y)
+        inDeg[y] += 1
+        
+    topo = []
+    Q = deque()
+    for i in range(1,N+1):
+        if inDeg[i] == 0:
+            Q.append(i)
+    while Q:
+        x = Q.popleft()
+        topo.append(x)
+        
+        for y in adj[x]:
+            inDeg[y] -= 1 
+            if inDeg[y] == 0:
+                Q.append(y)
+                
+    if len(topo) != N:
+        return -1
+    # print(topo
+    ways = [0]*(N+1)
+    ways[topo[0]] = 1
+    for i in range(N):
+        curr = topo[i]
+        for x in adj[curr]:
+            ways[x] += ways[curr]
+    return ways[1:]
+
+
+N = 6
+G = [[1,2],[1,4],[4,5],[5,2],[2,3],[5,3],[3,6]]
+res = solve(G,N)
+print(res)
+```
+{% endtab %}
+
 {% tab title="CF#1." %}
+![](<../../.gitbook/assets/Screenshot 2021-12-06 at 12.46.45 AM.png>)
+
 ```cpp
 / =====================================Complexity is O(N).
 
@@ -84,7 +129,11 @@ int main(){
 ```
 {% endtab %}
 
-{% tab title="TreeDiameter" %}
+{% tab title="TreeDia" %}
+### # As done by @KartikArora&#x20;
+
+### <mark style="color:orange;">>> See TreeDia I (next tab) for the other approach</mark>
+
 ```python
 ---------------------- works only for binary tree❌
 
@@ -130,7 +179,7 @@ int main() {
 ```
 {% endtab %}
 
-{% tab title="TreeDistance I" %}
+{% tab title="TreeDistI" %}
 ```python
 from collections import defaultdict
 
@@ -150,7 +199,7 @@ def dfs(x,p,d):
         if y not in vis and y != p:
             dfs(y,x,d+1)
             
-#=================== DFS#1: getting one end of diameter: ndoe1
+#=================== DFS#1: getting one end of diameter: node1
 par = [-1]*(N+1)
 dists = [0]*(N+1)
 vis = set()
@@ -221,9 +270,9 @@ def solve(node):
     opt2 = max(node.val , lsum+rsum+node.val)
     return max(opt1, opt2)            
 ```
-{% endtab %}
 
-{% tab title="MaxLeafPathSum" %}
+## #2. Max Leaf Path Sum
+
 ```python
 # From Leaf node to leaf node
 def solve(node):
@@ -241,52 +290,9 @@ def solve(node):
     return max(opt1, opt2) 
 ```
 {% endtab %}
-
-{% tab title="BOOk#2" %}
-```python
-def solve(G,N):
-    adj = defaultdict(list)
-    inDeg = [0]*(N+1)
-
-    for x,y in G:
-        adj[x].append(y)
-        inDeg[y] += 1
-        
-    topo = []
-    Q = deque()
-    for i in range(1,N+1):
-        if inDeg[i] == 0:
-            Q.append(i)
-    while Q:
-        x = Q.popleft()
-        topo.append(x)
-        
-        for y in adj[x]:
-            inDeg[y] -= 1 
-            if inDeg[y] == 0:
-                Q.append(y)
-                
-    if len(topo) != N:
-        return -1
-    # print(topo
-    ways = [0]*(N+1)
-    ways[topo[0]] = 1
-    for i in range(N):
-        curr = topo[i]
-        for x in adj[curr]:
-            ways[x] += ways[curr]
-    return ways[1:]
-
-
-N = 6
-G = [[1,2],[1,4],[4,5],[5,2],[2,3],[5,3],[3,6]]
-res = solve(G,N)
-print(res)
-```
-{% endtab %}
 {% endtabs %}
 
-###
+
 
 ### 2.2 Not-so trivial Questions
 
@@ -307,8 +313,6 @@ print(res)
 * [ ] [https://leetcode.com/problems/longest-zigzag-path-in-a-binary-tree/](https://leetcode.com/problems/longest-zigzag-path-in-a-binary-tree/)
 * [ ] [https://leetcode.com/problems/maximum-sum-bst-in-binary-tree/](https://leetcode.com/problems/maximum-sum-bst-in-binary-tree/)
 * [ ] [https://leetcode.com/problems/number-of-ways-to-reorder-array-to-get-same-bst/](https://leetcode.com/problems/number-of-ways-to-reorder-array-to-get-same-bst/)
-
-faf
 
 {% tabs %}
 {% tab title="Subordinates" %}
@@ -342,6 +346,8 @@ print(dp[1:])
 {% endtab %}
 
 {% tab title="TreeDist2💪" %}
+![](<../../.gitbook/assets/Screenshot 2021-12-06 at 1.53.28 AM.png>)
+
 ```python
 # STEP:1 ======================= preprocessing :: rooted@1
 def preprocess_dfs(x, p):
@@ -467,7 +473,19 @@ return minCameras()
 ```
 {% endtab %}
 
-{% tab title="97" %}
+{% tab title="979" %}
+We traverse childs first (post-order traversal), and return the balance of coins.&#x20;
+
+For example, if we get '+3' from the left child, that means that the left subtree has 3 extra coins to move out.&#x20;
+
+If we get '-1' from the right child, we need to move 1 coin in.&#x20;
+
+So, we increase the number of moves by 4 (3 moves out left + 1 moves in right).&#x20;
+
+We then return the final balance: r->val (<mark style="color:orange;">**coins in the root**</mark>) + 3 (<mark style="color:orange;">**left**</mark>) + (-1) (<mark style="color:orange;">**right**</mark>) - 1 (<mark style="color:orange;">**keep one coin for the root**</mark>).
+
+![](<../../.gitbook/assets/Screenshot 2021-12-06 at 2.03.13 AM.png>)
+
 ```cpp
 res = 0
 def distributeCoins(self, root):

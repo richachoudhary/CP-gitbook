@@ -2,14 +2,15 @@
 
 ## 1. Trie
 
-* [x] LC [208.Implement Trie (Prefix Tree)](https://leetcode.com/problems/implement-trie-prefix-tree/) 🔴🔵
-* [x] LC [214. Word Search II](https://leetcode.com/problems/word-search-ii/) ✅🚀
+* [x] LC [208.Implement Trie (Prefix Tree)](https://leetcode.com/problems/implement-trie-prefix-tree/) 📌
+* [x] LC [212. Word Search II](https://leetcode.com/problems/word-search-ii/) ✅🚀 | trie+DFS
 * [x] LC [14.Longest Common Prefix](https://leetcode.com/problems/longest-common-prefix/)✅
+* [x] LC [676.Implement Magic Dictionary](https://leetcode.com/problems/implement-magic-dictionary/) | trie+DFS
+* [x] LC [211. Design Add and Search Words Data Structure](https://leetcode.com/problems/design-add-and-search-words-data-structure/) | trie+DFS
 * [x] LC 421. [Maximum XOR of Two Numbers in an Array](https://leetcode.com/problems/maximum-xor-of-two-numbers-in-an-array/) | <mark style="color:orange;">`standardQ`</mark> | **@google | must\_do✅**
-* [x] **LC** [**212.**Word Search II](https://leetcode.com/problems/word-search-ii/)
 
 {% tabs %}
-{% tab title="208.(TEMPLATE.py)🔵🔴" %}
+{% tab title="208.(TMPL)📌" %}
 ```python
 from collections import defaultdict
 
@@ -22,32 +23,43 @@ class TrieNode(object):
 class Trie(object):
     def __init__(self):
         self.root = TrieNode()
-
+    
+    '''
+        TC: O(len(word))
+    '''
     def insert(self, word):
         curr = self.root
         for char in word:
             curr = curr.nodes[char]
         curr.isword = True
 
+    '''
+        TC: O(len(word))
+    '''
     def search(self, word):
-        curr = self.root
-        for char in word:
-            if char not in curr.nodes:
+        node = self.root
+        for w in word:
+            node = node.children.get(w)
+            if not node:
                 return False
-            curr = curr.nodes[char]
-        return curr.isword
+        return node.isWord
 
     def startsWith(self, prefix):
-        curr = self.root
-        for char in prefix:
-            if char not in curr.nodes:
+        node = self.root
+        for w in word:
+            node = node.children.get(w)
+            if not node:
                 return False
-            curr = curr.nodes[char]
-        return True
+        return return True
+        
+'''
+TC: of all operations is O(n), where n is the size of word. 
+SC:                      O(M), where M is total lengths of all words
+'''                
 ```
 {% endtab %}
 
-{% tab title="214.py🚀" %}
+{% tab title="212🚀" %}
 ```python
 class TrieNode():
     def __init__(self):
@@ -101,6 +113,8 @@ class Solution(object):
         self.dfs(board, node, i, j+1, path+tmp, res)
         board[i][j] = tmp
 ```
+
+**Complexity**. This is difficult question, space complexity is needed to keep our `trie`, which is `O(k)`, where `k` is sum of length of all words. Time complexity is <mark style="color:orange;">`O(mn*3^T)`</mark>, where `m` and `n` are sizes of our board and `T` is the length of the longest word in `words`. Why? Because we start our `dfs` from all points of our board and do not stop until we make sure that the longest word is checked: if we are not lucky and this word can not be found on board we need to check potentialy to the length `T`. Why `3^T`? Because each time we can choose one of <mark style="color:orange;">three directions</mark>, except the one we came from.
 {% endtab %}
 
 {% tab title="14. cpp✅" %}
@@ -145,6 +159,100 @@ string longestCommonPrefix(vector<string>& strs) {
     traverse(root,ans,strs.size());
     return ans;
 }
+```
+{% endtab %}
+
+{% tab title="676" %}
+```python
+from collections import defaultdict
+class TrieNode:
+    def __init__(self):
+        self.children = defaultdict(TrieNode)
+        self.isEnd = False
+
+class Trie:
+    def __init__(self):
+        self.root = TrieNode()
+        
+    def insert(self, word):
+        node = self.root
+        for char in word:
+            node = node.children[char]
+        node.isEnd = True
+
+class MagicDictionary:
+    def __init__(self):
+        self.trie = Trie()
+
+    def buildDict(self, words: List[str]) -> None:
+        for w in words:
+            self.trie.insert(w)
+
+    def search(self, word: str) -> bool:
+        def dfs(node, i, word):
+            if i == len(word):
+                return node.isEnd and self.modified
+            if self.modified:
+                if word[i] in node.children:
+                    return dfs(node.children[word[i]], i + 1, word)
+                else:
+                    return False
+            else:
+                for c in node.children:
+                    self.modified = c != word[i]
+                    if dfs(node.children[c], i + 1, word):
+                            return True
+                return False
+        
+        self.modified = False
+        return dfs(self.trie.root, 0, word)
+```
+{% endtab %}
+
+{% tab title="211" %}
+```python
+class TrieNode:
+    def __init__(self):
+        self.children = {}
+        self.isEnd = False
+
+class WordDictionary:
+    def __init__(self):
+        """
+        Initialize your data structure here.
+        """
+        self.root = TrieNode()
+
+    def addWord(self, word: str) -> None:
+        """
+        Adds a word into the data structure.
+        """
+        node = self.root
+        for char in word:
+            if char not in node.children:
+                node.children[char] = TrieNode()
+            node = node.children[char]
+        node.isEnd = True
+
+    def search(self, word: str) -> bool:
+        """
+        Returns if the word is in the data structure. A word could contain the dot character '.' to represent any one letter.
+        """
+        def dfs(node, i, word):
+            if i == len(word):
+                return node.isEnd
+            if word[i] == '.':
+                for c in node.children:
+                    if dfs(node.children[c], i + 1, word):
+                        return True
+                return False
+            else:
+                if word[i] not in node.children:
+                    return False
+                else:
+                    return dfs(node.children[word[i]], i + 1, word)
+        
+        return dfs(self.root, 0, word)
 ```
 {% endtab %}
 
@@ -230,69 +338,6 @@ class Solution:
 ```
 {% endtab %}
 {% endtabs %}
-{% endtab %}
-
-{% tab title="212" %}
-```python
-'''
-TC: m×n×4^(length_of_largest_word)
-SC: O(nm + wl) (nm space for the visited grid, wl space for the stored Trie)
-
-for single word search in a 2d matrix in WORD SEARCH 1 problem we apply dfs at every block of matrix for that we run 2 for loops and there time complexity is m×n and in each dfs we visit 4^(sizeofword) because we are applying dfs calls to 4 directions for each character of the given word , so the time complexity for that will be m×n×4^(sizeofword)
-
-'''
-class TrieNode():
-    def __init__(self):
-        self.children = collections.defaultdict(TrieNode)
-        self.isWord = False
-    
-class Trie():
-    def __init__(self):
-        self.root = TrieNode()
-    
-    def insert(self, word):
-        node = self.root
-        for w in word:
-            node = node.children[w]
-        node.isWord = True
-    
-    def search(self, word):
-        node = self.root
-        for w in word:
-            node = node.children.get(w)
-            if not node:
-                return False
-        return node.isWord
-    
-class Solution(object):
-    def findWords(self, board, words):
-        res = []
-        trie = Trie()
-        node = trie.root
-        for w in words:
-            trie.insert(w)
-        for i in range(len(board)):
-            for j in range(len(board[0])):
-                self.dfs(board, node, i, j, path="", res)
-        return res
-    
-    def dfs(self, board, node, i, j, path, res):
-        if node.isWord:
-            res.append(path)
-            node.isWord = False
-        if i < 0 or i >= len(board) or j < 0 or j >= len(board[0]):
-            return 
-        tmp = board[i][j]
-        node = node.children.get(tmp)
-        if not node:
-            return 
-        board[i][j] = "#"
-        self.dfs(board, node, i+1, j, path+tmp, res)
-        self.dfs(board, node, i-1, j, path+tmp, res)
-        self.dfs(board, node, i, j-1, path+tmp, res)
-        self.dfs(board, node, i, j+1, path+tmp, res)
-        board[i][j] = tmp
-```
 {% endtab %}
 {% endtabs %}
 
