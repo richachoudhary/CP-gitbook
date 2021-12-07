@@ -312,7 +312,7 @@ def calcEquation(self, equations: List[List[str]], values: List[float], queries:
 
 * [x] [339. Evaluate Division](https://leetcode.com/problems/evaluate-division/) **@coinbase**
 * [x] CSES: [Message Route](https://cses.fi/problemset/task/1667/) | BFS+backtrack ✅✅ | this shit costed me @coinbase job 😖😖
-* [x] [The Maze](https://leetfree.com/problems/the-maze)
+* [x] [490. The Maze](https://leetfree.com/problems/the-maze)
 * [x] [130. Surrounded Regions](https://leetcode.com/problems/surrounded-regions/)
 * [x] [1020.Number of Enclaves](https://leetcode.com/problems/number-of-enclaves/)
 * [x] [1376.Time Needed to Inform All Employees](https://leetcode.com/problems/time-needed-to-inform-all-employees/)
@@ -321,7 +321,7 @@ def calcEquation(self, equations: List[List[str]], values: List[float], queries:
 * [x] [841.Keys and Rooms](https://leetcode.com/problems/keys-and-rooms/)
 * [x] [895. Max Area of Island](https://leetcode.com/problems/max-area-of-island/)
 * [x] [733. Flood Fill](https://leetcode.com/problems/flood-fill/)
-* [x] [542. 01 Matrix](https://leetcode.com/problems/01-matrix/)
+* [x] [542. 01 Matrix](https://leetcode.com/problems/01-matrix/) ✅
 * [x] [1162.As Far from Land as Possible](https://leetcode.com/problems/as-far-from-land-as-possible/) | **DP**(2 traversal)\*\*: \*\*(i) top\_to\_bottom (ii) bottom\_to\_top
 * [x] [994.Rotting Oranges](https://leetcode.com/problems/rotting-oranges/) 🍊🍊
 * [x] [1091.Shortest Path in Binary Matrix](https://leetcode.com/problems/shortest-path-in-binary-matrix/) //see 'Why DP doesnt work here!!'
@@ -329,10 +329,10 @@ def calcEquation(self, equations: List[List[str]], values: List[float], queries:
 * [x] [797.All Paths From Source to Target](https://leetcode.com/problems/all-paths-from-source-to-target/) | dfs + backtrack
 * [x] [332.Reconstruct Itinerary](https://leetcode.com/problems/reconstruct-itinerary/) | dfs + backtrack ✅✈️
 * [x] [1443.Minimum Time to Collect All Apples in a Tree](https://leetcode.com/problems/minimum-time-to-collect-all-apples-in-a-tree/) 🍎
-* [x] [934.Shortest Bridge](https://leetcode.com/problems/shortest-bridge/) | \*\*Google \*\*| BFS+DFS ✅
+* [x] [934.Shortest Bridge](https://leetcode.com/problems/shortest-bridge/) | **@Google** | BFS+DFS ✅
 * [ ] CSES:[ Grid Paths](https://cses.fi/problemset/task/1625) ✅✅✅🐽| [WilliamLin](https://www.youtube.com/watch?v=dZ\_6MS14Mg4\&t=2440s\&ab\_channel=WilliamLin)
-* [x] CSES: [Labyrinth](https://cses.fi/problemset/task/1193) ==> \*\*DFS \*\*fails, **ALWAYS USE BFS for SHORTEST PATH ✅✅**
-* [x] \*\*CSES: \*\*[Monsters](https://cses.fi/problemset/task/1194) | `Lava Flow Problem✅✅✅🔥🔥` | [video](https://www.youtube.com/watch?v=hB59dxdDLII\&ab\_channel=Dardev)
+* [x] CSES: [Labyrinth](https://cses.fi/problemset/task/1193) ==> DFS fails, **ALWAYS USE BFS for SHORTEST PATH ✅✅**
+* [x] CSES: [Monsters](https://cses.fi/problemset/task/1194) | `Lava Flow Problem✅✅✅🔥🔥` | [video](https://www.youtube.com/watch?v=hB59dxdDLII\&ab\_channel=Dardev)
 * [ ] CSES: [Swap Game](https://cses.fi/problemset/task/1670)
 * [x] LC [818. Race Car](https://leetcode.com/problems/race-car/) 😎✅✅
   * [x] Similar: LC [1654.Minimum Jumps to Reach Home](https://leetcode.com/problems/minimum-jumps-to-reach-home/) ✅| must do| DP se nhi honge aise Questions
@@ -341,6 +341,31 @@ def calcEquation(self, equations: List[List[str]], values: List[float], queries:
 * [x] LC [**127. Word Ladder**](https://leetcode.com/problems/word-ladder/) | &[ **126.Word Ladder II**](https://leetcode.com/problems/word-ladder-ii/) - amazon@happy !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!🤯
 
 {% tabs %}
+{% tab title="Untitled" %}
+```python
+def minTime(self, n: int, edges: List[List[int]], hasApple: List[bool]) -> int:
+    G = defaultdict(list)
+
+    for u,v in edges:
+        G[u].append(v) 
+        G[v].append(u) 
+
+    vis = set()
+    def dfs(s):
+        if s in vis:
+            return 0
+        vis.add(s)
+        # dfs on child           
+        dist = 0
+        for t in G[s]:
+            dist += dfs(t)
+        if dist > 0: return dist+2
+        return 2 if hasApple[s] else 0
+
+    return max(dfs(0)-2, 0)
+```
+{% endtab %}
+
 {% tab title="818" %}
 ```python
 def bfs(pos, vel):
@@ -602,11 +627,12 @@ Space: O(M * N), space for the queue.
 
 ## 1. Single Source Shortest/Longest Path - SSSP/SSLP
 
-### **1.1 For DAGs**
+### **1.1 For DAGs ( e.g. Trees)**
 
 #### 1.1.1 SSSP
 
 * Can be done easily in `O(E+V)` using topological sort.
+  * \->Ever heard of Dijkstra's on trees? Lol no.
 * Ref [video](https://www.youtube.com/watch?v=TXkDpqjDMHA\&list=PLDV1Zeh2NRsDGO4--qE8yH72HFL1Km93P\&index=17\&ab\_channel=WilliamFiset)
 
 {% tabs %}
@@ -632,21 +658,29 @@ for node in topo_list:
 
 ### 1.2 For Graphs (non-DAG wale)
 
-#### 1.2.1 Dijkstra :: `(V+E)logV`
+#### 1.2.1 Dijkstra :: <mark style="color:orange;">`(V+E)logV`</mark>
 
 * Fastest among three
 * Fails when _negative cycle_ exists in graph
+* cute animation: [video](https://www.youtube.com/watch?v=EFg3u\_E6eHU\&ab\_channel=SpanningTree)
+* <mark style="color:yellow;">**WHY DIJKSTRA's ( Dijkstra's VS BFS):**</mark>
+  * Dijkstra and BFS, **both are the same algorithm.**&#x20;
+    * <mark style="color:yellow;">**saral bhasha mei =>**</mark> <mark style="color:yellow;"></mark><mark style="color:yellow;">every question of SSSP can be done bijkstra;s; just diff is Dijkstra's is faster</mark>
+  * Dijkstra using priority\_queue whereas BFS using a queue.
+  * Hence: **BFS is slow =>** Time complexity is more than O(E+V) because many of the edges are repeated twice
+  * While **Dijkstra's is fast =>** (V+E)logV
 * **IMPLEMENTATIONS:**
-  * \*\*1.2.1.1 \*\*Lazy Implementation
+  * 1.2.1.1 Lazy Implementation
     * **Why Lazy ?** because it inserts duplicate key-val pairs & then _lazily_ deletes them.
     * This is done because: insertion in PQ(`NlogN`) is more efficient than update( `N` ) in PQ
     * \*\*Why Bad: \*\*for _dense_ graphs we end up with several \_stale outdate \_key-value pair in PQ
   * **1.2.1.2** Eager Implementation
     * This avoids duplicate key-value pair & supports efficient value updates( `logN`) by using `Index PQ`
 
-**1.2.2 Bellman-Ford :: `VE`**
+**1.2.2 Bellman-Ford :: **<mark style="color:orange;">**`VE`**</mark>**` ``🔔`**
 
 * Use when _negative cycles_ exist in graph.
+* <mark style="color:yellow;">**Negative cycle sunte hi kaan mei ghanti 🔔(bell) bajni chahiye**</mark>
 
 {% hint style="info" %}
 **Negative Cycle** means there exists (i)a cycle OR (ii)self loop in graph, whose net sum == 0. Negative edges doesn't ensure negative cycle.
@@ -657,7 +691,7 @@ for node in topo_list:
 * Run the regular Bellman-ford : (i.e. N-1) times for the graph. After that do one more run; if any points distance updates => this is due to negative cycle => hence neg cycle exists.
 {% endhint %}
 
-**1.2.3 Floyd Warshall :**: $$V^3$$OR $$V^2$$ if MEMO is used!
+**1.2.3 Floyd Warshall :**:
 
 * Its an **APSP**(All Pair Shortest Path) algo. Means it can find shortest distance b/w all 2 node pairs.
 * \*\*Code Optimisation: \*\*use MEMOIZATION (similar to _matrix chain multiplication_) : see below code
@@ -712,7 +746,7 @@ for _ in range(m):
     graph.append([u,v,w])
 
 def bellmanFord(src):
-    dist = [float("-inf")] * (n+1)
+    dist = [float("inf")] * (n+1)
     dist[src] = 0
     for node in range(n+1):        # relax each edge (N-1) times
         for u,v,w in graph:
@@ -779,6 +813,29 @@ for _ in range(q):
 | **Can Detect Neg. Cycles?**    | No                              | No             | Yes          | Yes            |
 | **SP on graph weighted graph** | Incorrect SP answer             | Best Algorithm | Works        | Bad in general |
 | **SP on unweighted graph**     | Best algorithm                  | Ok             | Bad          | Bad in general |
+
+### 1.4 Problems: SSSP/SSLP
+
+* [x] CSES: [Investigation](https://cses.fi/problemset/task/1202)🏆✅✅ 📌| Dijkstra's ko nichoooooooooodddddd liya isne
+* [x] [743. Network Delay Time](https://leetcode.com/problems/network-delay-time/) 🍪🍪
+* [x] [1631.Path With Minimum Effort](https://leetcode.com/problems/path-with-minimum-effort/)
+* [x] [787. Cheapest Flights Within K Stops](https://leetcode.com/problems/cheapest-flights-within-k-stops/)[ ✅](https://leetcode.com/problems/cheapest-flights-within-k-stops/)
+* [ ] [882. Reachable Nodes In Subdivided Graph](https://leetcode.com/problems/reachable-nodes-in-subdivided-graph/)
+* [x] [1514.Path with Maximum Probability](https://leetcode.com/problems/path-with-maximum-probability/) | maxHeap
+* [ ] [1334.Find the City With the Smallest Number of Neighbors at a Threshold Distance](https://leetcode.com/problems/find-the-city-with-the-smallest-number-of-neighbors-at-a-threshold-distance/)
+* [ ] [1368.Minimum Cost to Make at Least One Valid Path in a Grid](https://leetcode.com/problems/minimum-cost-to-make-at-least-one-valid-path-in-a-grid/)
+* [ ] [1786. Number of Restricted Paths From First to Last Node](https://leetcode.com/problems/number-of-restricted-paths-from-first-to-last-node/)
+* [ ] [The Maze II](https://leetfree.com/problems/the-maze-ii)
+* [ ] [The Maze III](https://leetfree.com/problems/the-maze-iii)
+* [x] [1928.Minimum Cost to Reach Destination in Time](https://leetcode.com/problems/minimum-cost-to-reach-destination-in-time/) | @contest 🚀❤️ | **Google**
+* [x] CSES: [Longest Flight Route](https://cses.fi/problemset/task/1680) | print paths with `Dijkstras`
+* [x] CSES: [Shortest Routes II](https://cses.fi/problemset/task/1672/) | **`Floyd-Warshall |`**\<standardQ> | must do 🔖🍪🚀🔖
+* [x] CSES: [High Score](https://cses.fi/problemset/task/1673/) | **`Bellman-Ford`**` ``with Negative Cycle Detection` | \<standardQ> | must do 🔖🍪🚀🔖
+* [x] CSES: [Cycle Finding](https://cses.fi/problemset/task/1197/) ✅🐽
+* [x] CSES: [Flight Routes](https://cses.fi/problemset/task/1196) | ✅✅ | [approach](https://www.youtube.com/watch?v=009PBKHXtyA\&ab\_channel=Dardev) | 2-D dijkstra's
+* [x] CSES: [Flight Discount](https://cses.fi/problemset/result/2664805/) | reversed dij: | [approach](https://usaco.guide/problems/cses-1195-flight-discount/solution) ✅✅ aise hi questions toh dekhne mei impossible lagte hai BC!!!!............so damn easy
+* [x] [Currency Arbitrage](https://www.dailycodingproblem.com/blog/how-to-find-arbitrage-opportunities-in-python/) | @coinbase
+* [x] 1368\. [Minimum Cost to Make at Least One Valid Path in a Grid](https://leetcode.com/problems/minimum-cost-to-make-at-least-one-valid-path-in-a-grid/) 🍪🍪🍪| disguised Dijkstra's | too easy when you see it
 
 {% tabs %}
 {% tab title="Investigation" %}
@@ -1117,28 +1174,7 @@ TC: M*N(log(MN))
 {% endtab %}
 {% endtabs %}
 
-### 1.x Problems: SSSP/SSLP
 
-* [x] CSES: [Investigation](https://cses.fi/problemset/task/1202)🏆✅✅
-* [x] [743. Network Delay Time](https://leetcode.com/problems/network-delay-time/) 🍪🍪
-* [x] [1631.Path With Minimum Effort](https://leetcode.com/problems/path-with-minimum-effort/)
-* [x] [787. Cheapest Flights Within K Stops](https://leetcode.com/problems/cheapest-flights-within-k-stops/)[ ✅](https://leetcode.com/problems/cheapest-flights-within-k-stops/)
-* [ ] [882. Reachable Nodes In Subdivided Graph](https://leetcode.com/problems/reachable-nodes-in-subdivided-graph/)
-* [x] [1514.Path with Maximum Probability](https://leetcode.com/problems/path-with-maximum-probability/) | maxHeap
-* [ ] [1334.Find the City With the Smallest Number of Neighbors at a Threshold Distance](https://leetcode.com/problems/find-the-city-with-the-smallest-number-of-neighbors-at-a-threshold-distance/)
-* [ ] [1368.Minimum Cost to Make at Least One Valid Path in a Grid](https://leetcode.com/problems/minimum-cost-to-make-at-least-one-valid-path-in-a-grid/)
-* [ ] [1786. Number of Restricted Paths From First to Last Node](https://leetcode.com/problems/number-of-restricted-paths-from-first-to-last-node/)
-* [ ] [The Maze II](https://leetfree.com/problems/the-maze-ii)
-* [ ] [The Maze III](https://leetfree.com/problems/the-maze-iii)
-* [x] [1928.Minimum Cost to Reach Destination in Time](https://leetcode.com/problems/minimum-cost-to-reach-destination-in-time/) | @contest 🚀❤️ | **Google**
-* [x] CSES: [Longest Flight Route](https://cses.fi/problemset/task/1680) | print paths with `Dijkstras`
-* [x] CSES: [Shortest Routes II](https://cses.fi/problemset/task/1672/) | **`Floyd-Warshall |`**\<standardQ> | must do 🔖🍪🚀🔖
-* [x] CSES: [High Score](https://cses.fi/problemset/task/1673/) | **`Bellman-Ford`**` ``with Negative Cycle Detection` | \<standardQ> | must do 🔖🍪🚀🔖
-* [x] CSES: [Cycle Finding](https://cses.fi/problemset/task/1197/) ✅🐽
-* [x] CSES: [Flight Routes](https://cses.fi/problemset/task/1196) | ✅✅ | [approach](https://www.youtube.com/watch?v=009PBKHXtyA\&ab\_channel=Dardev) | 2-D dijkstra's
-* [x] CSES: [Flight Discount](https://cses.fi/problemset/result/2664805/) | reversed dij: | [approach](https://usaco.guide/problems/cses-1195-flight-discount/solution) ✅✅ aise hi questions toh dekhne mei impossible lagte hai BC!!!!............so damn easy
-* [x] [Currency Arbitrage](https://www.dailycodingproblem.com/blog/how-to-find-arbitrage-opportunities-in-python/) | @coinbase
-* [x] 1368\. [Minimum Cost to Make at Least One Valid Path in a Grid](https://leetcode.com/problems/minimum-cost-to-make-at-least-one-valid-path-in-a-grid/) 🍪🍪🍪| disguised Dijkstra's | too easy when you see it
 
 ## 2. MST&#x20;
 
