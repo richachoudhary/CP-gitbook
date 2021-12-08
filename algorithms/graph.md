@@ -818,7 +818,8 @@ for _ in range(q):
 
 * [x] CSES: [Investigation](https://cses.fi/problemset/task/1202)🏆✅✅ 📌| Dijkstra's ko nichoooooooooodddddd liya isne
 * [x] [743. Network Delay Time](https://leetcode.com/problems/network-delay-time/) 🍪🍪
-* [x] [1631.Path With Minimum Effort](https://leetcode.com/problems/path-with-minimum-effort/)
+* [x] [1631.Path With Minimum Effort](https://leetcode.com/problems/path-with-minimum-effort/) | dijkstra's on matrix ✅ | khud se kiya ji
+* [x] [@google: Min Fuel Path To Travel with capacity](https://leetcode.com/discuss/interview-question/1361977/shortest-path-question-with-a-twist) | **must\_do**
 * [x] [787. Cheapest Flights Within K Stops](https://leetcode.com/problems/cheapest-flights-within-k-stops/)[ ✅](https://leetcode.com/problems/cheapest-flights-within-k-stops/)
 * [ ] [882. Reachable Nodes In Subdivided Graph](https://leetcode.com/problems/reachable-nodes-in-subdivided-graph/)
 * [x] [1514.Path with Maximum Probability](https://leetcode.com/problems/path-with-maximum-probability/) | maxHeap
@@ -897,6 +898,106 @@ print(maxf[n])
 ```
 {% endtab %}
 
+{% tab title="1631" %}
+![](<../.gitbook/assets/Screenshot 2021-12-08 at 12.58.02 AM.png>)
+
+```python
+def minimumEffortPath(self, heights: List[List[int]]) -> int:
+
+    n,m = len(heights), len(heights[0])
+    H = []
+    heappush(H,(0,0,0)) #(d,x,y)
+    d = [[float('inf') for _ in range(m)]for _ in range(n)]        
+
+    vis = set()
+    d[0][0] = 0
+
+    while H:
+        W,x,y = heappop(H)
+
+        if (x,y) in vis: continue
+        vis.add((x,y))
+
+        for dx,dy in [[0,1],[0,-1],[1,0],[-1,0]]:
+            nx, ny = x+dx, y+dy
+            if 0<=nx<n and 0<=ny<m:
+                w = abs(heights[nx][ny] - heights[x][y])
+                d[nx][ny] = min(d[nx][ny],max(w, d[x][y]))
+                heappush(H,(d[nx][ny],nx,ny))
+    return d[n-1][m-1]
+    '''
+Time: O(ElogV) = O(M*N log M*N), where M is the number of rows and N is the number of columns in the matrix.
+
+Space: O(M*N)
+    '''
+```
+{% endtab %}
+
+{% tab title="@google:fuel" %}
+```python
+from collections import deque
+
+def minFuel(n, roads, stations, capacity):                  # BFS;
+                                                            # Assuming vertices 1 to n, starting at 1 and target n.
+    g = [[] for _ in range(n + 1)] 
+    caps = [0] * (n + 1)
+    for u, v in roads:
+        g[u].append(v)
+        g[v].append(u)
+    for v in stations:
+        caps[v] = capacity
+
+    fuel = [0, capacity] + [0] * (n - 1)
+    q = deque([(1, 0)])
+    while q:
+        u, dist = q.popleft()
+        if u == n:
+            return dist
+        for v in g[u]:
+            nu = max(caps[v], fuel[u] - 1)
+            if nu > fuel[v]: # new fuel more than the existing at next node.
+                fuel[v] = nu
+                q.append((v, dist + 1))
+    return -1
+
+
+roads = [[1,2],[1,3],[1,5],[2,4],[2,5],[5,6],[6,8],[7,8],[3,7],[5,9],[9,10],[10,11],[11,12]]
+n = 12
+stations = [2,3,6,9]
+c = 4
+print(minFuel(n,roads,stations, c))
+```
+{% endtab %}
+
+{% tab title="787" %}
+```python
+def findCheapestPrice(self, n: int, flights: List[List[int]], src: int, dst: int, k: int) -> int:
+    G = defaultdict(list)
+    H = []
+    for x,y,w in flights:
+        G[x].append((y,w))
+
+    vis = defaultdict(int)
+    H = [[0,src,0]]
+
+    while H:
+        d,x,_k = heappop(H)
+        if x in vis and vis[x] <= _k:   # already traversable with lesser #nodes
+            continue
+        vis[x] = _k
+        if _k > k+1:
+            continue
+        if x == dst:
+            return d
+
+        for y,w in G[x]:
+            heappush(H,(w+d,y,_k+1))
+    return -1
+```
+{% endtab %}
+{% endtabs %}
+
+{% tabs %}
 {% tab title="HighScore" %}
 ```python
 I = lambda: map(int, input().split())
@@ -1178,16 +1279,16 @@ TC: M*N(log(MN))
 
 ## 2. MST&#x20;
 
-#### 2.1.1 Prim's Algo : `O(ElogE)`
+#### 2.1.1 Prim's Algo : <mark style="color:orange;">`O(ElogE)`</mark>
 
 * Its a greedy approach.
 * Does well on _dense graphs_ (better than Kruskal's)
 * Doesnt work well on disconnected graph; have to run it on each connected component individually.
 
-#### 2.1.2 Kruskal's Algo
+#### 2.1.2 Kruskal's Algo : <mark style="color:orange;">**O(ElogV)**</mark>
 
 **Prim: O((V+E)logV)** because each vertex is inserted in **heap**\
-\*\*Kruskal : O(ElogV) \*\*most time consuming operation is **sorting**
+**Kruskal** : <mark style="color:orange;">**O(ElogV)**</mark> most time consuming operation is **sorting**
 
 {% tabs %}
 {% tab title="Prims" %}
@@ -1258,12 +1359,42 @@ else:
 * [ ] [https://leetcode.com/problems/connecting-cities-with-minimum-cost/](https://leetcode.com/problems/connecting-cities-with-minimum-cost/) 💲
 * [x] CSES: [Road Reparation](https://cses.fi/problemset/task/1675)
 
-## 3. Topological Sort `O(V+E)`
+## 3. Topological Sort <mark style="color:orange;">`O(V+E)`</mark>
 
-* Only DAGs can have topological sorting(graphs with a cycle CANNOT)
-* \*\*How to find if graph has cycle? \*\*=> use \*\*SCC algos \*\*(see **section#6: CycleDetection** below)
+* <mark style="color:yellow;">Only DAGs can have topological sorting</mark>(graphs with a cycle CANNOT)
+* How to find if graph has cycle? => use SCC algos (see **section#6: CycleDetection** below)
 * Most optimized Topological Sort implementation: **Kahn's Algo => `O(V+E)`**
-  * **Logic**: Repeatedly remove the vertices with no dependencies
+  * **Logic**: Repeatedly remove the vertices with no dependencie
+
+### **3.2 Problems: Topological Sort**
+
+* [x] [997.Find the Town Judge](https://leetcode.com/problems/find-the-town-judge/)
+  * [x] SIMILAR: [1557.Minimum Number of Vertices to Reach All Nodes](https://leetcode.com/problems/minimum-number-of-vertices-to-reach-all-nodes/)
+  * [ ] **`return list(set(range(n)) - set(y for x,y in edges))`**
+* [x] [207. Course Schedule](https://leetcode.com/problems/course-schedule/)
+* [x] [210. Course Schedule II](https://leetcode.com/problems/course-schedule-ii/)
+* [x] 1462.[Course Schedule IV](https://leetcode.com/problems/course-schedule-iv) ⭐️ | see how to maintain all-inclusive prerequisite list
+* [x] [269. Alien Dictionary](https://leetfree.com/problems/alien-dictionary) 💲✅
+* [x] [329. Longest Increasing Path in a Matrix](https://leetcode.com/problems/longest-increasing-path-in-a-matrix/) 💯
+* [x] [444. Sequence Reconstruction](https://leetfree.com/problems/sequence-reconstruction) 💲
+* [ ] [1203. Sort Items by Groups Respecting Dependencies](https://leetcode.com/problems/sort-items-by-groups-respecting-dependencies/)
+* [ ] \-------------------------------------- \[Medium] -----------------------------------------------
+* [ ] 851.[Loud and Rich](https://leetcode.com/problems/loud-and-rich)
+* [ ] 802.[Find Eventual Safe States](https://leetcode.com/problems/find-eventual-safe-states)
+* [ ] 1786\. [Number of Restricted Paths From First to Last Node](https://leetcode.com/problems/number-of-restricted-paths-from-first-to-last-node)
+* [ ] 310\. [Minimum Height Trees](https://leetcode.com/problems/minimum-height-trees)
+* [ ] 444.[Sequence Reconstruction](https://leetcode.com/problems/sequence-reconstruction)
+* [ ] \--------------------------------------- \[Hard] ---------------------------------------------------
+* [ ] 1591.[Strange Printer II](https://leetcode.com/problems/strange-printer-ii)
+* [ ] 1916.[Count Ways to Build Rooms in an Ant Colony](https://leetcode.com/problems/count-ways-to-build-rooms-in-an-ant-colony)
+* [ ] 1719.[Number Of Ways To Reconstruct A Tree](https://leetcode.com/problems/number-of-ways-to-reconstruct-a-tree)
+* [ ] 1857.[Largest Color Value in a Directed Graph](https://leetcode.com/problems/largest-color-value-in-a-directed-graph)
+* [ ] 631.[Design Excel Sum Formula](https://leetcode.com/problems/design-excel-sum-formula)
+* [ ] 1632.[Rank Transform of a Matrix](https://leetcode.com/problems/rank-transform-of-a-matrix)
+* [x] CSES: [Longest Flight Route](https://cses.fi/problemset/task/1680) ✅
+* [x] **BOOK#2: Counting the number of paths till node X ✅✅❤️**(repeat from trees) | [**CSES:** Game Routes](https://cses.fi/problemset/task/1681)
+
+
 
 {% tabs %}
 {% tab title="Kahn" %}
@@ -1345,7 +1476,7 @@ while(!q.empty())
 ```
 {% endtab %}
 
-{% tab title="269✅" %}
+{% tab title="269.AlienDict✅" %}
 ```python
 I = lambda : map(str,input().split(','))
     
@@ -1444,33 +1575,7 @@ print(res)
 {% endtab %}
 {% endtabs %}
 
-### **3.2 Problems: Topological Sort**
 
-* [x] [997.Find the Town Judge](https://leetcode.com/problems/find-the-town-judge/)
-  * [x] SIMILAR: [1557.Minimum Number of Vertices to Reach All Nodes](https://leetcode.com/problems/minimum-number-of-vertices-to-reach-all-nodes/)
-  * [ ] **`return list(set(range(n)) - set(y for x,y in edges))`**
-* [x] [207. Course Schedule](https://leetcode.com/problems/course-schedule/)
-* [x] [210. Course Schedule II](https://leetcode.com/problems/course-schedule-ii/)
-* [x] 1462.[Course Schedule IV](https://leetcode.com/problems/course-schedule-iv) ⭐️ | see how to maintain all-inclusive prerequisite list
-* [x] [269. Alien Dictionary](https://leetfree.com/problems/alien-dictionary) 💲✅
-* [x] [329. Longest Increasing Path in a Matrix](https://leetcode.com/problems/longest-increasing-path-in-a-matrix/) 💯
-* [x] [444. Sequence Reconstruction](https://leetfree.com/problems/sequence-reconstruction) 💲
-* [ ] [1203. Sort Items by Groups Respecting Dependencies](https://leetcode.com/problems/sort-items-by-groups-respecting-dependencies/)
-* [ ] \-------------------------------------- \[Medium] -----------------------------------------------
-* [ ] 851.[Loud and Rich](https://leetcode.com/problems/loud-and-rich)
-* [ ] 802.[Find Eventual Safe States](https://leetcode.com/problems/find-eventual-safe-states)
-* [ ] 1786\. [Number of Restricted Paths From First to Last Node](https://leetcode.com/problems/number-of-restricted-paths-from-first-to-last-node)
-* [ ] 310\. [Minimum Height Trees](https://leetcode.com/problems/minimum-height-trees)
-* [ ] 444.[Sequence Reconstruction](https://leetcode.com/problems/sequence-reconstruction)
-* [ ] \--------------------------------------- \[Hard] ---------------------------------------------------
-* [ ] 1591.[Strange Printer II](https://leetcode.com/problems/strange-printer-ii)
-* [ ] 1916.[Count Ways to Build Rooms in an Ant Colony](https://leetcode.com/problems/count-ways-to-build-rooms-in-an-ant-colony)
-* [ ] 1719.[Number Of Ways To Reconstruct A Tree](https://leetcode.com/problems/number-of-ways-to-reconstruct-a-tree)
-* [ ] 1857.[Largest Color Value in a Directed Graph](https://leetcode.com/problems/largest-color-value-in-a-directed-graph)
-* [ ] 631.[Design Excel Sum Formula](https://leetcode.com/problems/design-excel-sum-formula)
-* [ ] 1632.[Rank Transform of a Matrix](https://leetcode.com/problems/rank-transform-of-a-matrix)
-* [x] CSES: [Longest Flight Route](https://cses.fi/problemset/task/1680) ✅
-* [x] **BOOK#2: Counting the number of paths till node X ✅✅❤️**(repeat from trees) | [**CSES:** Game Routes](https://cses.fi/problemset/task/1681)
 
 ![](../.gitbook/assets/screenshot-2021-09-10-at-1.13.22-pm.png)
 
@@ -1930,8 +2035,6 @@ O(n * m * log(n)) for time and O(n) for space, where m = len(requests).
 
 * [WilliamFiset videos](https://www.youtube.com/watch?v=ibjEGG7ylHk\&ab\_channel=WilliamFiset)
 
-***
-
 ## 5. **Graph colouring/Bipartition ⚪️🔴🔵**
 
 * **colors:** **`# -1:grey, 1:blue, 0:red`**
@@ -1939,7 +2042,7 @@ O(n * m * log(n)) for time and O(n) for space, where m = len(requests).
 
 ![](../.gitbook/assets/screenshot-2021-09-10-at-11.49.49-am.png)
 
-* [x] \*\*\*\*[\*\*785. \*\*Is Graph Bipartite?](https://leetcode.com/problems/is-graph-bipartite/)
+* [x] [785. Is Graph Bipartite?](https://leetcode.com/problems/is-graph-bipartite/)
 * [x] [886.Possible Bipartition](https://leetcode.com/problems/possible-bipartition/)
 * [x] CSES:[ Building Teams](https://cses.fi/problemset/task/1668/)
 
@@ -1988,7 +2091,7 @@ def possibleBipartition(self, n: int, dislikes: List[List[int]]) -> bool:
 
 ## 6. Cycle Detection
 
-### \*\*6.1 For Undirected graphs : \*\*use DSU OR par\[]
+### 6.1 For Undirected graphs : use DSU OR par\[] 🟡
 
 * Do [CSES: Round Trip](https://cses.fi/problemset/task/1669) (below) to understand it truly
 

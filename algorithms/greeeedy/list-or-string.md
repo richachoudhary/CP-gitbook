@@ -2,13 +2,13 @@
 
 ## 5. List & String
 
-* [x] [18. 4Sum](https://leetcode.com/problems/4sum/) - generalized for **Ksum**
+* [x] [18. 4Sum](https://leetcode.com/problems/4sum/) - generalized for **Ksum 📌**
 * [x] [1021.Remove Outermost Parentheses](https://leetcode.com/problems/remove-outermost-parentheses/)
 * [x] [443.String Compression](https://leetcode.com/problems/string-compression/)
-* [x] [1520.Maximum Number of Non-Overlapping Substrings](https://leetcode.com/problems/maximum-number-of-non-overlapping-substrings/) 🍪🍪🍪
+* [ ] [1520.Maximum Number of Non-Overlapping Substrings](https://leetcode.com/problems/maximum-number-of-non-overlapping-substrings/) 🍪🍪🍪
 * [x] LC: [8.String to Integer (atoi)](https://leetcode.com/problems/string-to-integer-atoi/)
 * [x] CSES: [Palindrome Reorder](https://cses.fi/problemset/task/1755)
-* [x] \*\*TYPE: Count # Inversions \*\*✅
+* [x] TYPE: Count # Inversions✅
   * [x] CSES: [Collecting Numbers](https://cses.fi/problemset/task/2216) | [Approach](https://discuss.codechef.com/t/cses-collecting-numbers/83775)
   * [x] CSES: [Collecting Numbers II](https://cses.fi/problemset/task/2217) | [Video](https://www.youtube.com/watch?v=LEL3HW4dQew\&ab\_channel=ARSLONGAVITABREVIS) 🐽
 * [x] CSES: [Subarray Sum 1](https://cses.fi/problemset/task/1660/) | only "prefix sum"
@@ -26,34 +26,55 @@
   * Built upon \[EASY] [1592.Rearrange Spaces Between Words](https://leetcode.com/problems/rearrange-spaces-between-words/) ✅💪
 
 {% tabs %}
-{% tab title="18" %}
+{% tab title="18.Ksum" %}
+**IDEA/STEPS:**&#x20;
+
+* recursively call kSum function from every j:\[i+1,N] & new\_k = k-1
+* when k == 2: apply two\_sum algo
+* pay attention how you maintain & append prev call's values to final result
+
 ```python
 def fourSum(self, nums: List[int], target: int) -> List[List[int]]:
-    def dfs(l, r, k, target, path, out):  # [l, r] inclusive
+
+    def k_sum(nums, k, target, arr, start_idx):
         if k == 2:
-            while l < r:
-                if nums[l] + nums[r] == target:
-                    out.append(path + [nums[l], nums[r]])
-                    while l+1 < r and nums[l] == nums[l+1]: l += 1  # Skip duplicate nums[l]
-                    l, r = l + 1, r - 1
-                elif nums[l] + nums[r] > target:
-                    r -= 1  # Decrease sum
-                else:
-                    l += 1  # Increase sum
+            two_sum(nums, arr, k, start_idx, target)
             return
+        for i in range(start_idx, len(nums) - k + 1):
+            if i > start_idx and nums[i] == nums[i - 1]:
+                continue
+            k_sum(nums, k - 1, target - nums[i], arr + [nums[i]], i + 1)
 
-        while l < r:
-            dfs(l+1, r, k - 1, target - nums[l], path + [nums[l]], out)
-            while l+1 < r and nums[l] == nums[l+1]: l += 1  # Skip duplicate nums[i]
-            l += 1
+    def two_sum(nums, arr, k, start_idx, target):
+        left = start_idx
+        right = len(nums) - 1
 
-    def kSum(k):  # k >= 2
-        ans = []
-        nums.sort()
-        dfs(0, len(nums)-1, k, target, [], ans)
-        return ans
+        while left < right:
+            total = nums[left] + nums[right]
+            if total == target:
+                res.append(arr + [nums[left], nums[right]])
+                left += 1
+                right -= 1
 
-    return kSum(4)
+                while left < right and nums[left] == nums[left - 1]:
+                    left += 1  # skip same element to avoid duplicate quadruplets
+                while left < right and nums[right] == nums[right + 1]:
+                    right -= 1  # skip same element to avoid duplicate quadruplets
+            elif total < target:
+                left += 1
+            else:
+                right -= 1
+
+    nums.sort()
+    res = []
+    k_sum(nums, 4, target, [], 0)
+    return res
+
+'''
+Time: O(NlogN + N^(k-1)), where k >= 2, N is number of elements in the array nums.
+Extra space (Without count output as space): O(N)
+Video: https://www.youtube.com/watch?v=-vu9GpZfqLY&ab_channel=CodeAndCoffee
+'''    
 ```
 {% endtab %}
 
@@ -285,8 +306,8 @@ def fullJustify(self, words: List[str], maxWidth: int):
 {% endtabs %}
 
 * [x] CF: [C.Unstable String](https://codeforces.com/problemset/problem/1535/C)
-* [x] LC [**Minimum Swaps to Group All 1's Together**](https://leetcode.com/discuss/interview-question/344778/find-the-minimum-number-of-swaps-required-such-that-all-the-0s-and-all-the-1s-are-together)** | **[**gfg**](https://www.geeksforgeeks.org/minimum-swaps-required-sort-binary-array/)**|  @CareemHackerrank**
-* [x] **LC **[**926. **Flip String to Monotone Increasing](https://leetcode.com/problems/flip-string-to-monotone-increasing/)
+* [x] LC [**Minimum Swaps to Group All 1's Together**](https://leetcode.com/discuss/interview-question/344778/find-the-minimum-number-of-swaps-required-such-that-all-the-0s-and-all-the-1s-are-together)\*\* | [**gfg**](https://www.geeksforgeeks.org/minimum-swaps-required-sort-binary-array/)| @CareemHackerrank\*\*
+* [x] \*\*LC \*\*[\*\*926. \*\*Flip String to Monotone Increasing](https://leetcode.com/problems/flip-string-to-monotone-increasing/)
 
 {% tabs %}
 {% tab title="UnstableStr" %}
@@ -318,7 +339,7 @@ while t:
 ```
 {% endtab %}
 
-{% tab title="Group1's" %}
+{% tab title="Group1" %}
 Firstly, count how many 0's in the entire array (suppose the number of 0's is p), then count how many 1's before index p, which is the answer(since those 1's has to be moved to place where index is larger than p-1).
 
 ```python
