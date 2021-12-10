@@ -50,7 +50,7 @@ while lo<hi:
     pvt = hi        
     # pvt = random.randint(lo,hi) # to avoid the worst case of O(N^2)
     #step 2 in quick sort: partition
-    pvt = partition(lo,hi,pvt)  # now; after partition pvt element is ats correct position
+    pvt = partition(lo,hi,pvt)  # now; after partition pvt element is at its correct position
     if pvt < k:
         lo = pvt+1    # search on right of pvt
     elif pvt > k:    

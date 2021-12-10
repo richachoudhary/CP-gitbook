@@ -176,7 +176,7 @@ ONLY when you're working with all negative or positives or if your input is sort
 * [x] GfG#1: [Maximum sum of subarray of size K](https://www.geeksforgeeks.org/find-maximum-minimum-sum-subarray-size-k/)
 * [x] GfG#2 [First negative integer in every window of size k](https://www.geeksforgeeks.org/first-negative-integer-every-window-size-k/#:\~:text=Recommended%3A%20Please%20solve%20it%20on,the%20current%20subarray\(window\).)
 * [x] [438.Find All Anagrams in a String](https://leetcode.com/problems/find-all-anagrams-in-a-string/) 🚀
-* [x] [239. Sliding Window Maximum](https://leetcode.com/problems/sliding-window-maximum/) 🍪🍪🍪
+* [x] [239. Sliding Window Maximum](https://leetcode.com/problems/sliding-window-maximum/) 🍪🍪🍪 📌
 * [x] 849\. [Maximize Distance to Closest Person](https://leetcode.com/problems/maximize-distance-to-closest-person/) 🤯🐽| \~\~unable to get the 2P method!!!! \~\~not needed
   * [x] 855.[Exam Room](https://leetcode.com/problems/exam-room/) | design problem based on this | **@Google!!!!!💪**
 
