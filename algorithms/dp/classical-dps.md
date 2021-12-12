@@ -2,7 +2,7 @@
 
 ## 1. Kadane's Algorithm
 
-* [x] CSES: [Maximum Subarray Sum](https://cses.fi/problemset/task/1643) | LC [53. Maximum Subarray](https://leetcode.com/problems/maximum-subarray/)
+* [x] CSES: [Maximum Subarray Sum](https://cses.fi/problemset/task/1643) | LC [53. Maximum Subarray](https://leetcode.com/problems/maximum-subarray/) 📌
 * [x] 152.[ Maximum Product Subarray](https://leetcode.com/problems/maximum-product-subarray/) ✅| remember the swap
 * [x] 873\. [Length of Longest Fibonacci Subsequence](https://leetcode.com/problems/length-of-longest-fibonacci-subsequence/) 🍪🍪✅💪
 * [x] 1186.[Maximum Subarray Sum with One Deletion](https://leetcode.com/problems/maximum-subarray-sum-with-one-deletion/) | so similar to Kaden's; yet the so simple approach is unthinkable | [approach\_with\_diag](https://leetcode.com/problems/maximum-subarray-sum-with-one-deletion/discuss/377522/C%2B%2B-forward-and-backward-solution-with-explanation-and-picture) | must do baby ✅💪
@@ -16,7 +16,7 @@
 * [ ] [https://leetcode.com/problems/k-concatenation-maximum-sum/](https://leetcode.com/problems/k-concatenation-maximum-sum/)
 
 {% tabs %}
-{% tab title="53.🌟" %}
+{% tab title="53📌" %}
 ```python
 if n == 0:
     return 0
@@ -51,6 +51,10 @@ return res
 {% tab title="873" %}
 ```python
 '''
+
+FIBO: (b-a) , a, b
+
+
 dp[a, b] represents the length of fibo sequence ends up with (a, b)
 Then we have dp[a, b] = (dp[b - a, a] + 1 ) or 2
 '''
@@ -152,8 +156,8 @@ def maxScoreSightseeingPair(self, A: List[int]) -> int:
 
 ## 2. LCS
 
-* [x] 72\. Edit Distance | ✅✅| aata hai; par fir bhi dekh lo ek baar | _**the R-C initialization**_
-* [x] \*\*\*\*[\*\*1143. LCS \*\*](https://leetcode.com/problems/longest-common-subsequence/)| standard
+* [x] 72\. Edit Distance | ✅✅| aata hai; par fir bhi dekh lo ek baar | _**the R-C initialization 📌**_
+* [x] [1143. LCS](https://leetcode.com/problems/longest-common-subsequence/)| standard 📌
 * [x] 718\. [Maximum Length of Repeated Subarray](https://leetcode.com/problems/maximum-length-of-repeated-subarray/) | Now find this LCS 😎🤯😎
 * [x] 5.[ Longest Palindromic Substring](https://leetcode.com/problems/longest-palindromic-substring/) | **`LPS`** | not a DP question
 * [x] 516.[ Longest Palindromic Subsequence](https://leetcode.com/problems/longest-palindromic-subsequence/) | **`LPS`** | this is a DP question | **`LCS`**`on reversed self` ✅
@@ -650,12 +654,12 @@ https://leetcode.com/problems/where-will-the-ball-fall/discuss/988195/JavaPython
 {% endtab %}
 
 {% tab title="741💪🍒🐞🐞" %}
-#### What the Question wants:
+**What the Question wants:**
 
 * Collect max cherries on TWO right/down fashion traversals
 * HINT: sum collected in way down == sum collected in way up
 
-#### How to solve it?
+**How to solve it?**
 
 * assume 2 bugs are left from (x1=0,y1=0) & (x2=0,y2=0)
 * at every step they can go: (down,down), (right,right), (down,right), (right,down)

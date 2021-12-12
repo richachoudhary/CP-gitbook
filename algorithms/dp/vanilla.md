@@ -53,6 +53,10 @@ def dp(x,k):
 
 
 return dp(0,steps)
+'''
+TC: O(steps * min(arrLen, steps + 1))
+SC: O(steps * min(arrLen, steps + 1))
+'''    
 ```
 {% endtab %}
 
@@ -195,7 +199,7 @@ def solve(A):
 * [ ] CSES: [Array Description](https://cses.fi/problemset/task/1746) | [KartikArora](https://www.youtube.com/watch?v=d1H5JylYG4I\&ab\_channel=KartikArora) .🐽✅🐽
 * [x] Egg Dropping puzzle: [gfg](https://www.geeksforgeeks.org/egg-dropping-puzzle-dp-11/) 🥚🏣✅
 * [x] CSES: [Removal Game](https://cses.fi/problemset/task/1097/) | **standard**
-* [x] **LC **[**801.**Minimum Swaps To Make Sequences Increasing](https://leetcode.com/problems/minimum-swaps-to-make-sequences-increasing/) | 🐽
+* [x] \*\*LC \*\*[\*\*801.\*\*Minimum Swaps To Make Sequences Increasing](https://leetcode.com/problems/minimum-swaps-to-make-sequences-increasing/) | 🐽
 
 {% tabs %}
 {% tab title="GridPaths" %}
@@ -306,13 +310,11 @@ def f():
 {% endtab %}
 {% endtabs %}
 
-
-
 ## 2. String DP
 
 * [x] LC 5. [Longest Palindromic Substring](https://leetcode.com/problems/longest-palindromic-substring/) | [Video](https://www.youtube.com/watch?v=0CKUjDcUYYA) | \*\*NOT A DP Problem!!! \*\*| expand from all mid pts✅🚀✅
-* [x] LC [72. Edit Distance](https://leetcode.com/problems/edit-distance/) | **standard | **@Fk | levenshtein's algo | keyword targeting
-* [x] LC 44: [Wildcard Matching](https://leetcode.com/problems/wildcard-matching/)  | very similar to **Edit Distance!!**
+* [x] LC [72. Edit Distance](https://leetcode.com/problems/edit-distance/) | \*\*standard | \*\*@Fk | levenshtein's algo | keyword targeting
+* [x] LC 44: [Wildcard Matching](https://leetcode.com/problems/wildcard-matching/) | very similar to **Edit Distance!!**
 * [x] LC 10: [Regular Expression Matching](https://leetcode.com/problems/regular-expression-matching/) ✅✅| **diff from #44**. Freq asked in FAANG!! | regex matching [**TusharRoy**](https://www.youtube.com/watch?v=l3hda49XcDE)\*\*\*\*
 * [x] LC 90: [Decode Ways](https://leetcode.com/problems/decode-ways/)
 * [x] LC [140. Word Break II](https://leetcode.com/problems/word-break-ii/) 🚀 | **`startswith`**
@@ -638,4 +640,3 @@ def generateParenthesis(self, n: int) -> List[str]:
 ```
 {% endtab %}
 {% endtabs %}
-

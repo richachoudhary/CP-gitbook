@@ -36,7 +36,7 @@ def knapsack(wt, val, W):    #NOTE: wt is sorted here; if not->first sort
 ```
 {% endtab %}
 
-{% tab title="MoneySums.py" %}
+{% tab title="MoneySums" %}
 ```python
 def dp(n,curr,coins):
     if curr == 0:
@@ -76,22 +76,32 @@ def f():
 
 {% tab title="TwoSets" %}
 ```cpp
-int sum = n*(n+1)/2;
-if(sum&1){
-    cout<<0<<endl;
-}else{
-    sum /= 2;
-    ll dp[n][sum+1];
-    memset(dp,0,sizeof(dp));
-    dp[0][0] = 1;
-    for(int i=1;i<n;i++){
-        for(int j=0;j<=sum;j++){
-            dp[i][j] = dp[i-1][j];
-            if (j >= i) dp[i][j] += dp[i-1][j-i] %= MOD;
-        }
-    }
-    cout<<dp[n-1][sum]<<endl;
-}
+MOD = 10**9 + 7
+n = int(input())
+ 
+DP = {}
+def solve(i,curr):
+    if curr > subset_sum or i > n:
+        return 0
+    if curr == subset_sum:
+        return 1
+ 
+    if (i,curr) in DP:
+        return DP[(i,curr)]
+    op1 = solve(i+1,curr+i)
+    op2 = solve(i+1,curr)
+    DP[(i,curr)] = (op1 + op2)%MOD
+    return DP[(i,curr)]
+    
+total_sum = n*(n+1)//2
+ 
+if total_sum%2 != 0:
+    print('0')
+else:
+    subset_sum = total_sum//2
+    ans = solve(0,0)
+    print(ans//2) # removing the duplicates of type {a},{b} & {b},{a}
+ 
 ```
 {% endtab %}
 
@@ -123,8 +133,6 @@ print(dp(0,-1))
 {% endtab %}
 {% endtabs %}
 
-
-
 ## 2. Unbounded Knapsack
 
 * [x] CSES: [Minimizing Coins](https://cses.fi/problemset/task/1634/)
@@ -133,34 +141,30 @@ print(dp(0,-1))
   * [ ] **NOTE**: Switch the order of loops from 1 to get 2
 * [x] [322.Coin Change](https://leetcode.com/problems/coin-change/) 🌟
 * [x] [518.Coin Change 2](https://leetcode.com/problems/coin-change-2/)
-* [x] GfG: [Rod Cutting Problem](https://www.geeksforgeeks.org/cutting-a-rod-dp-13/)
+* [ ] GfG: [Rod Cutting Problem](https://www.geeksforgeeks.org/cutting-a-rod-dp-13/) 🐽
   * [ ] Similar(but Hard)[1547. Minimum Cost to Cut a Stick](https://leetcode.com/problems/minimum-cost-to-cut-a-stick/)
 * [ ] [279. Perfect Squares](https://leetcode.com/problems/perfect-squares/)
 
 {% tabs %}
-{% tab title="UB knapsack(MEMO; SC-O(N*N)" %}
+{% tab title="MiniCoins" %}
 ```python
-def knapsack(wt, val, W):    #NOTE: wt is sorted here; if not->first sort
-    MEMO = {}
-    def recur(wt,val,W,n):
-        if n == 0 or W == 0:  
-            return 0
-        if (W,n) in MEMO: return MEMO[(W,n)]
-        if wt[n-1] <= W:
-            # we can again take all n elements
-            opt1 = val[n-1] + recur(wt,val,W-wt[n-1],n)  # just this much change
-            opt2 = recur(wt,val,W,n-1)             
-            MEMO[(W,n)] = max(opt1,opt2)
-         else:
-            MEMO[(W,n)] = recur(wt,val,W,n-1)    
-        return MEMO[(W,n)]
-                
-    n = len(wt)
-    return recur(wt,val,W,n)
+def f(a,i,x):
+    if i > len(a) or x<0:
+        return float('inf')
+    if i == len(a):
+        if x == 0: return 0
+        else: return float('inf')
+    op1 = f(a,i+1,x) 
+    op2 = f(a,i,x-a[i])+1
+    return min(op1 , op2)
+
+n, x = 3,11
+a = [1,7,5]
+print(f(a,0,x))
 ```
 {% endtab %}
 
-{% tab title="UB Knapsack: SC-O(N)" %}
+{% tab title="UB Kp: SC-O(N)" %}
 ```cpp
 int dp[x+1];
 dp[0] = 0;
@@ -180,7 +184,7 @@ if(dp[x] >= 1e9){
 ```
 {% endtab %}
 
-{% tab title="CoinCombinations I" %}
+{% tab title="CoinComs I" %}
 ```cpp
 int dp[n][x+1];
 
@@ -198,7 +202,7 @@ for(int i=0;i<n;i++){
 ```
 {% endtab %}
 
-{% tab title="Coin Combinations II" %}
+{% tab title="CoinCombs II" %}
 ```cpp
 dp[0] = 1;
 for (int weight = 0; weight <= x; weight++) {
@@ -210,6 +214,12 @@ for (int weight = 0; weight <= x; weight++) {
 	}
 }
 cout << dp[x] << '\n';
+```
+{% endtab %}
+
+{% tab title="RodCutting" %}
+```python
+fa
 ```
 {% endtab %}
 {% endtabs %}
