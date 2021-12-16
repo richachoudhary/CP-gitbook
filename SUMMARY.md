@@ -11,6 +11,7 @@
 * [Uber\_prev\_Qs](meta/uber\_prev\_qs.md)
 * [Karat@Coinbase](meta/karat-coinbase.md)
 * [HM@coinbase|sharechat](meta/hm-round.md)
+* [GoogleQB: Round#2](meta/googleqb-round-2.md)
 
 ## Algorithms
 
