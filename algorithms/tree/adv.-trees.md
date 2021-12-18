@@ -50,7 +50,7 @@ class Trie(object):
             node = node.children.get(w)
             if not node:
                 return False
-        return return True
+        return True
         
 '''
 TC: of all operations is O(n), where n is the size of word. 

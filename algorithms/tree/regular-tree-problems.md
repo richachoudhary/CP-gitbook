@@ -93,6 +93,8 @@ SC: O(1), w/o function stack
 {% endtab %}
 
 {% tab title="1644" %}
+![](broken-reference) ![](<../../.gitbook/assets/Screenshot 2021-12-18 at 2.45.20 AM (1).png>)
+
 ```python
     def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
         if not q or not p:
@@ -121,6 +123,8 @@ SC: O(1), w/o function stack
 {% endtab %}
 
 {% tab title="1650" %}
+![](broken-reference) ![](<../../.gitbook/assets/Screenshot 2021-12-18 at 2.45.20 AM.png>)
+
 ```python
     """
     # Definition for a Node.
@@ -137,16 +141,16 @@ SC: O(1), w/o function stack
             if p1.parent:
                 p1 = p1.parent
             else:
-                p1 = q
+                p1 = q    # switch to the other node's start
             if p2.parent:
                 p2 = p2.parent
             else:
-                p2 = p
+                p2 = p    # switch to the other node's start
         return p1
 ```
 {% endtab %}
 
-{% tab title="1483" %}
+{% tab title="1483📌" %}
 ![](<../../.gitbook/assets/Screenshot 2021-12-04 at 4.34.59 PM.png>)
 
 ```python
