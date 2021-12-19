@@ -2616,14 +2616,15 @@ class Solution:
     - If all vertices have even degree - choose any of them.
     - If there are exactly 2 vertices having an odd degree - choose one of them.
     - Otherwise no euler circuit or path exists.
-2. If current vertex has no neighbors - add it to circuit, remove the last vertex from the stack and set it as the current one. Otherwise (in case it has neighbors) - add the vertex to the stack, take any of its neighbors, remove the edge between selected neighbor and that vertex, and set that neighbor as the current vertex.
+2. If current vertex has no neighbors - add it to circuit, remove the last vertex from the stack and set it as the current one. 
+    Otherwise (in case it has neighbors) - add the vertex to the stack, take any of its neighbors, remove the edge between selected neighbor and that vertex, and set that neighbor as the current vertex.
 3.Repeat step 2 until the current vertex has no more neighbors and the stack is empty.
 
 COMPLEXITY: O(V+E)
 ```
 {% endtab %}
 
-{% tab title="CODE:(#332.) Finding Euler path" %}
+{% tab title="CODE:(#332.) Finding Euler path | Hierholzer's algo" %}
 ```python
 def dfs(x):
     while G[x]:
@@ -2642,12 +2643,47 @@ dfs("JFK")        # "JFK" is the start node here
 return euler_path[::-1]    # this reversing is part of the standard algo
 ```
 {% endtab %}
+
+{% tab title="2097" %}
+```python
+def validArrangement(self, pairs: List[List[int]]) -> List[List[int]]:
+
+    adj = defaultdict(list)
+    deg = Counter()
+    for u, v in pairs:
+        adj[u].append(v)
+        deg[u] += 1
+        deg[v] -= 1
+
+    for start in adj:
+        if deg[start] == 1:
+            break
+
+    ans = []
+    def dfs(node):
+        while adj[node]:
+            dfs(nei := adj[node].pop())
+            ans.append([node, nei])
+    dfs(start)
+    return ans[::-1]
+
+'''
+Complexity
+
+Time Complexity: O(m+n), 
+where m == pairs.size(), 
+and n is the number of nodes in the graph (the number of distinct numbers in pairs)
+Space Complexity: O(m+n)
+'''    
+```
+{% endtab %}
 {% endtabs %}
 
 ### 8.2 Problems
 
 * [x] [332.Reconstruct Itinerary](https://leetcode.com/problems/reconstruct-itinerary/) ✅✈️ ✏️✏️ | `@google`
 * [ ] [753.Cracking the Safe](https://leetcode.com/problems/cracking-the-safe/) 🐽🐽🐽 `+Google`
+* [x] [2097. Valid Arrangement of Pairs](https://leetcode.com/problems/valid-arrangement-of-pairs/)
 * [ ] [https://www.hackerearth.com/practice/algorithms/graphs/euler-tour-and-path/practice-problems/algorithm/wildcard-tree-problem-c2a1fbac/](https://www.hackerearth.com/practice/algorithms/graphs/euler-tour-and-path/practice-problems/algorithm/wildcard-tree-problem-c2a1fbac/)
 
 ## **9. Articulation Point & Bridges(bi-connected components)**

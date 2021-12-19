@@ -141,6 +141,14 @@ sorted_set.remove(5) # O(logN)
 * Creating a dictionary:
   * `d={}`
   * `d= dict()`
+* <mark style="color:yellow;">**Creating Deep Copy**</mark>**: | **<mark style="color:orange;">**ALWAYS CREATE DEEP COPY**</mark>
+  * **read here about shallow vs Deep copy**&#x20;
+
+```
+import copy
+new_dict = copy.deepcopy(dict1)
+```
+
 * **Populating** a key with a value: `d["foo"] = "bar"`
 * To **check if** a dictionary **has a key**: `foo in d`
 * **Deleting** a key as well as its value:

@@ -165,7 +165,7 @@ class Solution:
 ```
 {% endtab %}
 
-{% tab title="2.✅" %}
+{% tab title="92.✅" %}
 ```python
 dummy = cur = ListNode(0)
 carry = 0
@@ -254,7 +254,7 @@ def copyRandomList(self, head: 'Node') -> 'Node':
 * [x] [138.Copy List with Random Pointer](https://leetcode.com/problems/copy-list-with-random-pointer/) | Deep copy | chillar
 * [x] 23\. [Merge k Sorted Lists](https://leetcode.com/problems/merge-k-sorted-lists/) 🍪🍪🍪✅
 * [x] LC [287. Find the Duplicate Number](https://leetcode.com/problems/find-the-duplicate-number/) | \*\*Rabbit-Tortoise \*\*method on array | had me failed **@ShareChat** back then 💪 | also see in `BinarySearch`
-* [ ] `341. `[Flatten Nested List Iterator](https://leetcode.com/problems/flatten-nested-list-iterator/) | **@Google**
+* [ ] `341.` [Flatten Nested List Iterator](https://leetcode.com/problems/flatten-nested-list-iterator/) | **@Google**
 
 {% tabs %}
 {% tab title="138." %}
