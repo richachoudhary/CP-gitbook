@@ -10,6 +10,37 @@
 
 ### **👉@Flipkart:**<mark style="color:red;">**Sampling**</mark>
 
+#### <mark style="color:green;">**1. SITUATION**</mark>
+
+* With the increasing scale of traffic + features, compute & storage requirements are increasing,
+* and getting machines for them has become difficult and&#x20;
+* we are heading towards a dead-end, where our batch pipelines would not be able to meet any SLAs in the future.&#x20;
+* For big sale events like BBD 2021 where scale will increase multiple folds, we are seeing huge risk in providing data to our consumers in any defined SLA
+
+#### <mark style="color:green;">2. TASK</mark>
+
+* Even though our team was trying various optimisations on the batch processing jobs
+* I had read up couple of articles on Uber's blogs - The whole tech community is marching towards a direction to make insight available as soon as possible with certain guaranteed accuracy and sampling is the key there.
+* along with various optimizations we have to look upon approaches that can **bring down our compute+storage requirements and still meet consumer expectations with a certain degree of accuracy**
+* Current compute asks: 20 TB
+* Available reserved Compute: 9 TB (Dependency on bursting: 50%)
+* Expected BBD 2021 ask: 28 TB
+
+#### <mark style="color:green;">3. ACTION</mark>
+
+* The whole tech community is marching towards a direction to make insight available as soon as possible with certain guaranteed accuracy&#x20;
+* In place of doing a process with 100% data, we should <mark style="color:yellow;">work on a random sample of whole data and project numbers with acceptable accuracy.</mark>&#x20;
+
+#### <mark style="color:green;">4.RESULT</mark>
+
+* Runtime Improvements (BBD@21):
+  * Avg job <mark style="color:orange;">runtime reduced by</mark> <mark style="color:orange;"></mark><mark style="color:orange;">**60%**</mark> from 40 mins daily avg to 16 mins daily avg..
+  * Avg of <mark style="color:orange;">Total Map tasks time of job</mark> is reduced by <mark style="color:orange;">68.9%</mark> from 106 mins to 33 mins.&#x20;
+  * Avg of <mark style="color:orange;">Total Reduce tasks time</mark> of job is reduced by <mark style="color:orange;">80.7%</mark> from 117 mins to 22 mins.&#x20;
+  * Because of less data to process due to sampling, the <mark style="color:orange;">number of reducers required in fact MR job</mark> has also been reduced by <mark style="color:orange;">half</mark> (350 to 175 now).
+
+#### **NOTES:**
+
 * **Problem statement**&#x20;
   * With the increasing scale of traffic + features, compute & storage requirements are increasing, and getting machines for them has become difficult and we are heading towards a dead-end, where our batch pipelines would not be able to meet any SLAs in the future.&#x20;
   * For big sale events like BBD 2021 where scale will increase multiple folds, we are seeing huge risk in providing data to our consumers in any defined SLA.&#x20;
@@ -36,7 +67,83 @@
 
 ### **👉@Flipkart:Jarvis**
 
-### **👉**@Flipkart: Pricing Service Feedback
+#### <mark style="color:green;">**1. SITUATION**</mark>
+
+* .Being on oncall is a painful, especially if you're in data team
+  * Becau of the batch nature of our data pipelines; usually a failure means cascading failures
+  * Reasons for failure:
+    * something wrong with deployment
+    * issue in data from ingestion
+    * resource crunches
+* We have a cron like dashboard- Azkaban; which schedules batch jobs & we can see logs there.
+  * Give that at any point we're bursting 50% of the jobs
+* But the issue is for an oncall person; he has to keep on monitoring all the running jobs (8\*3 at a time)&#x20;
+  * OR the attribution slice-n-dice dashboards to see if there's an issue or not.
+  * OR keep on looking out for job failure emails
+
+#### <mark style="color:green;">2. TASK</mark>
+
+* When I joined FK; was overwhelmed by the humane effort required in job monitoring itself.
+* Sought out that there's a scope for automation.
+* Build some sort of live consolidated dashboards; which shows the status of current & past jobs
+
+#### <mark style="color:green;">3. ACTION</mark>
+
+* Approach: regex on job logs & vis-a-vis on Apache spark logs.
+* Build one simple,plain HTML+JS-tabled page for single pipeline over the weekend & showed it to the team in the next tech-thursday.
+
+#### <mark style="color:green;">4.RESULT</mark>
+
+* The idea was initially met with skepticism; because of its sheer simplicity - but it worked perfectly.
+* We ended up including all the pipelines in it & evolved into one consolidated dashboard-JARVIS
+* Job failure detection time got reduced to failure time + 2 mins(at max).
+
+### **👉**@Flipkart: **Keyword Targeted Advertisements**
+
+****
+
+#### <mark style="color:green;">**1. SITUATION**</mark>
+
+* Flipkart Ads Dashboard came up with keyword based advertisements.
+* e.g:&#x20;
+  * Adidas has some sale going on "Male Sweatshirts"
+  * FK allows it to only show its ad when someone types in relevant keywords; so that Adidas can maximize its chances of win
+
+#### <mark style="color:green;">2. TASK</mark>
+
+* Our data team has to build this mapping:
+  * take a list of custom keywords provided by the advertizer
+  * take up the user raw search query
+    * preprocess it: remove punctuations, non-weighted words etc
+    * Lemmatisation lib by DS team
+  * Run our batch job on these queries to do this matching
+
+#### <mark style="color:green;">3. ACTION</mark>
+
+* .
+
+#### <mark style="color:green;">4.RESULT</mark>
+
+* .
+
+### **👉**@Flipkart: Pricing Service Feedback + Ads Merch Separation
+
+// missing deadline
+
+#### <mark style="color:green;">**1. SITUATION**</mark>
+
+* While placing a bid; show last week's min & max bid won prices to the advertizer.
+* This was to be done only on 3rd party ads & not FK's self ads (merch)
+
+#### <mark style="color:green;">2. TASK/3. ACTION</mark>
+
+* Even though the task was fairley simple; I used this as an opportunity to separate out ads + merch pipelines
+* separate DAGs, separate resources; separate business logic
+
+#### <mark style="color:green;">4.RESULT</mark>
+
+* even though it extneded the delivery date; we were able to solve a long back tech-log.
+  * Achieved optimisation & reduced SLA
 
 ### @Flipkart::Others
 
@@ -50,9 +157,52 @@
 
 ### **👉**@Rzp: Mozart
 
-### **👉**@Rzp: Capital
 
-#### 1. LOS: (Loan Operating System)
+
+#### <mark style="color:green;">**1. SITUATION**</mark>
+
+* .
+
+#### <mark style="color:green;">2. TASK</mark>
+
+* .
+
+#### <mark style="color:green;">3. ACTION</mark>
+
+* .
+
+#### <mark style="color:green;">4.RESULT</mark>
+
+* .
+
+### **👉**@Rzp: Capital->ES (Early Settlements)
+
+* Currently, payments disbursed in t+3 days, we get it in t+2 days.&#x20;
+* ES Delivers payments in less than t+3 days to merchants.
+
+**Types:**&#x20;
+
+* Instant&#x20;
+* On-demand
+
+**Problem statement:**&#x20;
+
+* To Improve ux engineering implementation tracking of ES volumes in dashboard
+
+**User stories:**&#x20;
+
+* Instant ES customer&#x20;
+* On-demand ES customer&#x20;
+* Churning ES customer( <mark style="color:orange;">to find reasons why merchants in v1 of ES stopped using this service, and incorporate the solution for the same in the current version</mark>)
+
+**Features:**&#x20;
+
+* Revamp db in ES&#x20;
+* Merchant should be able to select specific txns for ES.&#x20;
+* Automate integration of ES in merchant dashboard.&#x20;
+* Revised eligibility rules and pricing model
+
+#### 2. LOS: (Loan Operating System)
 
 &#x20;:platform to collect critical customer information and enabling the Loan Processing&#x20;
 
@@ -82,32 +232,7 @@ Features:&#x20;
 * Score for risk&#x20;
 * integration of docs(e-sign,stamp etc)+loan agreement
 
-#### 2. ES (Early Settlements)
-
-* Currently, payments disbursed in t+3 days, we get it in t+2 days.&#x20;
-* ES Delivers payments in less than t+3 days to merchants.
-
-**Types:**&#x20;
-
-* Instant&#x20;
-* On-demand
-
-**Problem statement:**&#x20;
-
-* To Improve ux engineering implementation tracking of ES volumes in dashboard
-
-**User stories:**&#x20;
-
-* Instant ES customer&#x20;
-* On-demand ES customer&#x20;
-* Churning ES customer( to find reasons why merchants in v1 of ES stopped using this service, and incorporate the solution for the same in the current version)
-
-**Features:**&#x20;
-
-* Revamp db in ES&#x20;
-* Merchant should be able to select specific txns for ES.&#x20;
-* Automate integration of ES in merchant dashboard.&#x20;
-* Revised eligibility rules and pricing model
+####
 
 ### **@Rzp::Others**
 
@@ -519,7 +644,7 @@ Here, you can turnaround the interview by **cross-questioning** your interviewer
 * 1#Use data not opinions to make judgements. Ask the same of the other person.
 * 2#Worst case, disagree and commit.
 
-## #1. Keyword Targeting - algo
+## #1. Keyword Targeting - Sampling?
 
 ### 1.1 SITUATION
 
@@ -537,7 +662,7 @@ Here, you can turnaround the interview by **cross-questioning** your interviewer
 
 * ...
 
-## 2. Keyword Targeting -??
+## 2. Keyword Targeting -algo
 {% endtab %}
 
 {% tab title="BQ.2" %}
@@ -662,7 +787,7 @@ Here, you can turnaround the interview by **cross-questioning** your interviewer
 {% endtab %}
 
 {% tab title="[BQ.2]" %}
-## #1. Euekea : hazels of scraping
+## #1. CynicalReader : hazels of scraping
 
 ## #2. Sampling : @BBD'21&#x20;
 {% endtab %}
@@ -687,7 +812,9 @@ Here, you can turnaround the interview by **cross-questioning** your interviewer
 * Thriving in ambiguity means making better decisions
 * \=> Use Data, facts instead of openions/feelings....
 
-## #1. Linguini @Nestaway&#x20;
+## #1. Rzp Capital- ES
+
+## #2. Linguini @Nestaway&#x20;
 
 My internship mentor gives me high level and ambiguous ideas and expects me to flesh them out. I don't have a problem with this, but when I do so, he rejects fleshed out ideas. He wants me to try again and gives me another bunch of new high level ideas.
 
@@ -748,15 +875,22 @@ This is super common when you are new to a company or just to professional life.
 
 {% tabs %}
 {% tab title="BQ.1" %}
-## #1. Rzp: LOS / Early Settlements
+## #1. Rzp: Early Settlements
 
 ### 1.1. SITUATION
 
-* ..
+* Almost 90% users have stopped using ES feature after first week of onboarding;&#x20;
+* Since it was a high revenue project; Rzp cusotmers team was calling them again to collect data points:
+  * Bad UX
+  * Not exactly ES ( takes \~2 days)
+  * Merchant should be able to select specific txns for ES.&#x20;
+  * Automate integration of ES in merchant dashboard.&#x20;
+  * Revised eligibility rules and pricing model
+  * Revamp db in ES&#x20;
 
 ### 1.2. TASK
 
-* ...
+* Built v2 from scratch
 
 ### 1.3. ACTION
 
@@ -837,7 +971,7 @@ This is super common when you are new to a company or just to professional life.
 
 * [ ] **\[LS.1] **<mark style="color:orange;">**(i) At google you may be pulled in a number of directions by a project?**</mark>
   * [ ] &#x20;<mark style="color:orange;">**(ii) What is your strategy to work in an env with continuously changing priorities?**</mark>&#x20;
-  * [ ] <mark style="color:orange;">**(iii) How does constant-changes-in-prioirty impact to your wok quality**</mark>&#x20;
+  * [ ] <mark style="color:orange;">**(iii) How does constant-changes-in-prioirty impact to your work quality**</mark>&#x20;
   * [ ] <mark style="color:orange;">**(iv) how do these changes impact your overall enjoyment of work?**</mark> @HR&#x20;
 * [ ] **\[LS.2] **<mark style="color:blue;">**When you lead some design/ project within team**</mark>
 * [ ] <mark style="color:blue;">**\[**</mark>**LS.3] **<mark style="color:blue;">**I was asked about any project that I have recently delivered and how I prepared for handling failure cases/ obstacles**</mark>
@@ -894,8 +1028,11 @@ This is super common when you are new to a company or just to professional life.
 
 {% tabs %}
 {% tab title="LS.1" %}
-* Documentation ( learnt from Rzp) on Confluence ; (better than scattered docs)
+* tw -> Centralized documentation ( learnt from Rzp) on Confluence ; (better than scattered docs)
 * Oncall Automation
+  * JARVIS
+  * Python lib - Collab of frequenty used things
+    * better clean-up util => usage warning
 * UT Coverage
 * Sampling
 
@@ -1016,7 +1153,7 @@ This is super common when you are new to a company or just to professional life.
 {% endtab %}
 
 {% tab title="LS.2" %}
-## #1. Automate Oncall @Flipkart
+## #1. CynicalReader
 
 ### 1.1. SITUATION
 
