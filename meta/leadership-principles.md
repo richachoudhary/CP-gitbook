@@ -1292,6 +1292,17 @@ This is super common when you are new to a company or just to professional life.
 {% endtab %}
 {% endtabs %}
 
-##
+## # Values (fillers on behavioural Qs)
+
+* **Be Proactive**
+  * be proactive before a situation is exploded
+* **In Private:** Discuss critical feedbacks in private
+* **Active Listening:**
+  * if I'm not practicing active listening; then effectively I am not participating in communication/conflict
+* **Empathetic & Perspecti**ve:
+  * Be empathetic to person/situation
+* **Positivity**
+* **Data Driven Decisions**
+* **Learnings**
 
 ###
