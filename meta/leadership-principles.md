@@ -1,5 +1,7 @@
 # LeaderShip Principles
 
+## FK excalidraw: [link](https://excalidraw.com/#json=PeYdvIiZxxhXq6UDl6A2J,8yQsL62OYzx0vhJQ1jbs3g)
+
 ## S.T.A.R. Format
 
 \======> Situation -> Task -> Action -> Result
