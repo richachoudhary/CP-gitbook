@@ -29,7 +29,7 @@
 * [Bitwise](algorithms/bitwise.md)
 * [Recursion 💪](algorithms/recursion.md)
 * [---> DP](algorithms/dp/README.md)
-  * [Vanilla](algorithms/dp/vanilla.md)
+  * [Vanilla DP](algorithms/dp/vanilla.md)
   * [Knapsack Based](algorithms/dp/knapsack-based.md)
   * [Classical DPs⏯](algorithms/dp/classical-dps.md)
   * [DP on Tree](algorithms/dp/dp-on-tree.md)
